@@ -1,0 +1,47 @@
+body {
+    padding: 1rem;
+}
+
+.container-invisible {
+    display: none;
+}
+
+.container-visible {
+    display: block;
+}
+
+.positionsTable {
+    width: 50%;
+    margin: 1rem auto 1rem;
+    border: 1px solid black;
+}
+
+.positionsTable td {
+    border: 1px solid black;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.containerList ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.containerList li {
+    list-style: none;
+    display: flex;
+    flex-flow: row;
+    border: 1px solid black;
+    margin: 1rem auto 1rem;
+    width: 80%;
+}
+
+.containerList li > div {
+    padding: 1rem;
+    flex: 10% 0;
+}
+
+.containerList li > div:not(:last-child) {
+    border-right: 1px solid black;
+}
