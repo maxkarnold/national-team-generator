@@ -22,7 +22,7 @@ body {
     text-align: center;
 }
 
-.containerList ul {
+ul.containerList {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -39,7 +39,7 @@ body {
 
 .containerList li > div {
     padding: 1rem;
-    flex: 10% 0;
+    flex: 15% 0;
 }
 
 .containerList li > div:not(:last-child) {

@@ -1,3 +1,30 @@
+// *** FUNCTIONS TO ADD ***
+// function generateSecondaryPositions() {
+//     adds other/secondary positions to players based on their main position (not for GKs)
+//     1. Will pick a random number of secondary positions between 1 and 3
+//     2. Picks positions that are close in proximity
+// }
+
+// function generateAge() {
+//     Picks a random age for each player based on probability
+// }
+
+// function getRandomName(nation) {
+//     picks a random name based on nation picked
+//     1. Default name will be a totally random name with any nationality
+//     2. function will accept an argument that has the nation selected
+// }
+
+// function generateRandomFace(nation) {
+//     generates a random face based on ethnicity/nationaltiy
+//     1. Default face will be totally random like the name
+//     2. funciton will accept argument that has nation/ethnicity selected
+// }
+
+// Need to add functionality that has an accordion set up
+// Need to be able to see a screen where you can drag and drop players into positions, this can be on a separate html page
+// *** FUNCTIONS TO ADD ***
+
 const positions = ['GK', 'RB', 'LB', 'CB', 'LWB', 'RWB', 'DM', 'MC', 'ML', 'MR', 'AMR', 'AML', 'AMC', 'ST'];
 let positionObjs = [];
 for (position of positions) {
@@ -8,6 +35,7 @@ for (position of positions) {
 }
 
 const playerAmount = 60;
+let resets = 0;
 
 const genButton = document.querySelector('button');
 const container = document.querySelector('.container')
@@ -21,10 +49,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
     //The maximum is inclusive and the minimum is inclusive
   }
-
-function getRandomName() {
-
-}
 
 function generatePlayers(numArray) {
     let first = getRandomInt(numArray[0], numArray[1]);
@@ -173,6 +197,8 @@ genButton.addEventListener('click', (e) => {
     // numArray represents the number of players from each rating bracket/tier
     // Every two numbers is a range for example 4,8,8,14 represents a range from 4-8 and 8-14
     let numArray = [];
+    resets++
+    console.log(`Reset #${resets}`);
     switch (selectOption.value) {
         case 's':
             numArray = [4, 8, 8, 14, 10, 20, 15, 30, 25, 35];
