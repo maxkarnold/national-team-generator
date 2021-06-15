@@ -1,3 +1,5 @@
+// IMPORTS
+
 // *** FUNCTIONS TO ADD ***
 // function generateSecondaryPositions() {
 //     adds other/secondary positions to players based on their main position (not for GKs)
@@ -13,6 +15,9 @@
 //     picks a random name based on nation picked
 //     1. Default name will be a totally random name with any nationality
 //     2. function will accept an argument that has the nation selected
+
+//     Will use behindthename.com API
+//     Find the API key and instructions here ---> https://www.behindthename.com/api/help.php
 // }
 
 // function generateRandomFace(nation) {
