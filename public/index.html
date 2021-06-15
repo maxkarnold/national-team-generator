@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" integrity="sha512-oHDEc8Xed4hiW6CxD7qjbnI+B07vDdX7hEPTvn9pSZO1bcRqHp8mj9pyr+8RVC2GmtEfI2Bi9Ke9Ass0as+zpg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="index.css">
+
+</head>
+<body>
+    <h1>National team generator</h1>
+    <form action="">
+        <label for="nations-select">Choose a Nation:</label>
+        <select name="nations" id="nations-select" required>
+            <option value="s">S Tier</option>
+            <option value="a">A Tier</option>
+            <option value="b">B Tier</option>
+            <option value="c">C Tier</option>
+            <option value="d">D Tier</option>
+            <option value="e">E Tier</option>
+            <option value="f">F Tier</option>
+        </select>
+        <button class="generate">Generate</button>
+    </form>
+    <div class="container container-invisible">    
+        <table>
+            <h3>Number of Players in each Position</h3>
+        </table>
+        <ul></ul>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+    <script type="module" src="config.js"></script>
+    <script type="module" src="index.js"></script>
+</body>
+</html>

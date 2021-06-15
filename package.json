@@ -1,0 +1,23 @@
+{
+  "name": "national-team-generator",
+  "version": "1.0.0",
+  "description": "Website: https://maxkarnold.github.io/national-team-generator/",
+  "main": "app.js",
+  "dependencies": {
+    "firebase": "^8.6.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxkarnold/national-team-generator.git"
+  },
+  "author": "Max Arnold",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxkarnold/national-team-generator/issues"
+  },
+  "homepage": "https://github.com/maxkarnold/national-team-generator#readme"
+}
