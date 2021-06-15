@@ -1,5 +1,5 @@
 // IMPORTS
-
+import {nameGenerator as nameGen} from './config.js';
 // *** FUNCTIONS TO ADD ***
 // function generateSecondaryPositions() {
 //     adds other/secondary positions to players based on their main position (not for GKs)
@@ -11,14 +11,35 @@
 //     Picks a random age for each player based on probability
 // }
 
-// function getRandomName(nation) {
+async function getRandomNames(index, nation) {
+    
+    // Params and URL
+    let params = {
+        ethnicity: '',
+        key: nameGen.apiKey,
+        number: index,
+    };
+    if (nation !== null) {params.ethnicity = `usage=${nation}&`};
+    let url = `https://www.behindthename.com/api/random.json?gender=m&${params.ethnicity}number=${params.number}&randomsurname=yes&key=${params.key}`;
+    console.log('URL: ', url);
+    // return;
+    // HTTP Request
+    let response = await fetch(url);
+    // console.log('Made an API request!');
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    };
+    let namesObj =  await response.json();
+    // console.log('Response: ', response);
+    console.log('JS Object: ', namesObj);
+    return namesObj;
 //     picks a random name based on nation picked
 //     1. Default name will be a totally random name with any nationality
 //     2. function will accept an argument that has the nation selected
 
 //     Will use behindthename.com API
 //     Find the API key and instructions here ---> https://www.behindthename.com/api/help.php
-// }
+}
 
 // function generateRandomFace(nation) {
 //     generates a random face based on ethnicity/nationaltiy
@@ -32,7 +53,7 @@
 
 const positions = ['GK', 'RB', 'LB', 'CB', 'LWB', 'RWB', 'DM', 'MC', 'ML', 'MR', 'AMR', 'AML', 'AMC', 'ST'];
 let positionObjs = [];
-for (position of positions) {
+for (let position of positions) {
     positionObjs.push({
         position: position,
         amount: 0,
@@ -61,50 +82,64 @@ function generatePlayers(numArray) {
     let third = getRandomInt(numArray[4], numArray[5]);
     let fourth = getRandomInt(numArray[6], numArray[7]);
     let fifth = getRandomInt(numArray[8], numArray[9]);
+
+    let randomNames = [];
     // Create players
     for (let i = 0; i < playerAmount; i++) {
         let player = document.createElement('li');
-        playerAttributes = 2;
         // Each of the player attributes
+        // PlayerName
+        let nameDiv = document.createElement('div');
+        let indexNum;
+        if (i === 56) {indexNum = 3}
+        else if (i % 7 === 0) {indexNum = 6};
+
+        window.setTimeout(() => {
+                let jsObj = getRandomNames(indexNum, null);
+                for (const name of jsObj.names) {
+                    randomNames.push(name);
+                }
+        }, 500);
+        console.log(randomNames[i]);
         // Position
         let pos = document.createElement('div');
         let randomPos = getRandomInt(0, 13);
         // If there are 6 players in a certain position, choose a different position that doesn't have 6
         if (positionObjs[randomPos].amount > 5) {
-            console.log(positionObjs[randomPos].position, positionObjs[randomPos].amount);
+            // console.log(positionObjs[randomPos].position, positionObjs[randomPos].amount);
             let oldPos = randomPos;
             // Prioritize 3 GKs
             if (positionObjs[0].amount < 3) {
                 randomPos = 0;
-                console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
+                // console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
             }   
             // Then prioritize 2 STs
             else if (positionObjs[13].amount < 2) {
                 randomPos = 13;
-                console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
+                // console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
             }
             // Then prioritize 3 CBs
             else if (positionObjs[3].amount < 3) {
                 randomPos = 3;
-                console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
+                // console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
             }
             // Then priortize 3 CMs
             else if (positionObjs[7].amount < 3) {
                 randomPos = 7;
-                console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
+                // console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
             }
             // Otherwise add to any position
             else { 
-                for (positon in positions) {
+                for (let j = 0; j < positions.length; j++) {
                     if (positionObjs[randomPos].amount > 5) {
                         randomPos = getRandomInt(0, 13);
-                        console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
+                        // console.log(`player index: ${j}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
                     }
                 }
             }
             
         }
-        for (obj of positionObjs) {
+        for (let obj of positionObjs) {
             if (obj.position === positions[randomPos]) {
                 obj.amount++;
             }
@@ -128,19 +163,19 @@ function generatePlayers(numArray) {
         let footDiv = document.createElement('div');
         footDiv.innerHTML = `${foot} footed`;
         // Appending elements
-        player.append(pos, ratingDiv, footDiv);
+        player.append(nameDiv, pos, ratingDiv, footDiv);
 
         containerList.appendChild(player);
     }
     // Create Table for position amounts
     for (let i = 0; i < 2; i++) {
         let row = document.createElement('tr');
-        for (position in positions) {
+        for (let j = 0; j < positions.length; j++) {
             let cell = document.createElement('td');
             if (i === 0) {
-                cell.innerHTML = positionObjs[position].position;
+                cell.innerHTML = positionObjs[j].position;
             }   
-            else {cell.innerHTML = positionObjs[position].amount}  
+            else {cell.innerHTML = positionObjs[j].amount}  
             row.appendChild(cell);
         }
         positionsTable.appendChild(row);
@@ -192,7 +227,7 @@ genButton.addEventListener('click', (e) => {
     // RESETS
     containerList.innerHTML = '';
     positionsTable.innerHTML = '';
-    for (position of positionObjs) {
+    for (let position of positionObjs) {
         position.amount = 0;
     }
     // Class assignments
