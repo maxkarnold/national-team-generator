@@ -2,6 +2,8 @@
 
 Website: https://maxkarnold.github.io/national-team-generator/
 
+## Tech Stack
+
 ## Setup
 Initiate NodeJS environment and install node modules
 <br>
@@ -86,3 +88,11 @@ last_names.forEach(function(obj) {
     });
 });
 ```
+
+## Plan
+
+1. Create National Team Generator
+2. Allow for saving of generated teams
+3. Create an interface that allows for drag-drop functionality so that allows for teams to be created. (Like Football Manager)
+4. Create a scoring system and leaderboard to judge the quality of teams created.
+5. Create a tournament that can be entered with a generated team that will be simulated like Football Manager.
