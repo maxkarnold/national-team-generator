@@ -92,7 +92,9 @@ last_names.forEach(function(obj) {
 ## Plan
 
 1. Create National Team Generator
-2. Allow for saving of generated teams
-3. Create an interface that allows for drag-drop functionality so that allows for teams to be created. (Like Football Manager)
-4. Create a scoring system and leaderboard to judge the quality of teams created.
-5. Create a tournament that can be entered with a generated team that will be simulated like Football Manager.
+    - [ ] Reupload firstNames and lastNames JSON files to Firestore.
+    - [ ] Check out larger database of names https://www.behindthename.com/submit/names.
+3. Allow for saving of generated teams
+4. Create an interface that allows for drag-drop functionality so that allows for teams to be created. (Like Football Manager)
+5. Create a scoring system and leaderboard to judge the quality of teams created.
+6. Create a tournament that can be entered with a generated team that will be simulated like Football Manager.
