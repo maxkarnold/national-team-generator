@@ -12,8 +12,8 @@ Website: <s>https://maxkarnold.github.io/national-team-generator/</s>
 
 1. Create National Team Generator
     - [ ] Make it so only male first names are queried.
-    > Might be a good idea to remove all the female only names from the firestore database.
-    > It should cut the collection by at least a third.
+    > <em>Might be a good idea to remove all the female only names from the firestore database.
+    > It should cut the collection by at least a third.</em>
     - [ ] Allow for different queries of the database for different national teams.
     - [ ] Rewrite lastNames JSON files to Firestore.
     - [ ] Check out larger database of names https://www.behindthename.com/submit/names.
