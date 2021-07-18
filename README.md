@@ -1,6 +1,6 @@
 # national-team-generator
 
-Website: https://maxkarnold.github.io/national-team-generator/
+Website: <s>https://maxkarnold.github.io/national-team-generator/</s>
 
 ## Tech Stack
 * Angular
