@@ -1,7 +1,7 @@
 # national-team-generator
 
 <p>Website URL: *** COMING SOON ***</p>
-
+<p>See the <a href="https://github.com/maxkarnold/national-team-generator/wiki">Wiki</a> for more info</p>
 
 ## Tech Stack
 * Angular
