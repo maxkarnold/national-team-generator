@@ -1,31 +1,13 @@
 # national-team-generator
 
-Website: <s>https://maxkarnold.github.io/national-team-generator/</s>
+Website URL: *** COMING SOON ***
+See the Wiki for more information
 
 ## Tech Stack
 * Angular
 * Firebase
 * Express
 * Nodejs
-
-## Plan
-
-1. Create National Team Generator
-    - [ ] Make it so only male first names are queried.
-    > <em>Might be a good idea to remove all the female only names from the firestore database.
-    > It should cut the collection by at least a third.</em>
-    - [ ] Allow for different queries of the database for different national teams.
-    - [ ] Rewrite lastNames JSON files to Firestore.
-    - [ ] Check out larger database of names https://www.behindthename.com/submit/names.
-3. Allow for saving of generated teams
-    - [ ] Create a button that allows you to write the data to Firestore in a separate collection.
-    - [ ] Player data can be written to the user's document in a subcollection
-    - [ ] Player data then can be fetched with a load button with only one set of saved data at a time (for now)
-    - [ ] Create a page or section that allows you to load the team data.
-    - [ ] This can be loaded instead of the generate team html and can be closed out of.
-5. Create an interface that allows for drag-drop functionality so that allows for teams to be created. (Like Football Manager)
-6. Create a scoring system and leaderboard to judge the quality of teams created.
-7. Create a tournament that can be entered with a generated team that will be simulated like Football Manager.
 
 ## Setup (needs to be updated)
 Initiate NodeJS environment and install node modules
