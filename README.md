@@ -19,83 +19,73 @@ Angular Dependencies
 ```
 ng add @angular/material
 ```
+### Create or edit the environments folder in src/app/
+<p>Firebase information can be found in your firebase console.</p>
+<p>`environment.prod.ts` file</p>
 
-Create a config.js file in the root folder.
-
-```javascript
-// IMPORTS
-const firebase = require('firebase');
-require('firebase/firestore');
-
-// behindthename.com API
-// Find the API key and instructions here ---> https://www.behindthename.com/api/help.php
-export const nameGenerator = {
-    apiKey: 'API KEY'
-}
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "API KEY",
-  authDomain: "national-team-generator.firebaseapp.com",
-  projectId: "national-team-generator",
-  storageBucket: "national-team-generator.appspot.com",
-  messagingSenderId: "30261669176",
-  appId: "1:30261669176:web:eca1c9103db91bab6265cd",
-  measurementId: "G-QV0DJSQSL2"
-};
-
-// Initialize Firebase
-
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
-
-export const db = firebase.firestore();
 ```
-
-Create a `json-to-firestore.js` in the `data/` folder
-
-```javascript
-const first_names = require('./first_name_data.json');
-const last_names = require('./last_name_data.json');
-
-const firebase = require("firebase");
-// Required for side-effects
-require("firebase/firestore");
-
-// Initialize Cloud Firestore through Firebase
-firebase.initializeApp({
+export const environment = {
+  production: true,
+  firebase: {
     apiKey: "API_KEY",
     authDomain: "national-team-generator.firebaseapp.com",
-    projectId: "national-team-generator"
-  });
-  
-var db = firebase.firestore();
+    projectId: "national-team-generator",
+    storageBucket: "national-team-generator.appspot.com",
+    messagingSenderId: "30261669176",
+    appId: "APP_ID",
+    measurementId: "G-QV0DJSQSL2"
+  }
+};
+```
 
+<p>`environment.ts` file</p>
 
-first_names.forEach(function(obj) {
-    db.collection("first_names").add({
-        id: obj.id,
-        name: obj.name,
-        gender: obj.gender,
-    }).then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-    });
-});
+```javascript
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
 
-last_names.forEach(function(obj) {
-    db.collection("last_names").add({
-        id: obj.id,
-        surname: obj.surname,
-    }).then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-    });
-});
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: "API_KEY",
+    authDomain: "national-team-generator.firebaseapp.com",
+    projectId: "national-team-generator",
+    storageBucket: "national-team-generator.appspot.com",
+    messagingSenderId: "30261669176",
+    appId: "APP_ID",
+    measurementId: "G-QV0DJSQSL2"
+  }
+};
+
+/*
+ * For easier debugging in development mode, you can import the following file
+ * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ *
+ * This import should be commented out in production mode because it will have a negative impact
+ * on performance if an error is thrown.
+ */
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+
+```
+
+### Create the secrets folder src/app/ 
+<p>Go to your Firebase Console -> Project Settings -> Service Accounts -> and download your `ServiceAccountKey.json`.</p>
+<p>You should add that file to this folder and it should look something like this:</p>
+
+```json
+{
+  "type": "service_account",
+  "project_id": "national-team-generator",
+  "private_key_id": "PRIVATE_KEY_ID",
+  "private_key": "PRIVATE_KEY",
+  "client_email": "CLIENT_EMAIL",
+  "client_id": "CLIENT_ID",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "CLIENT_X509_CERT_URL"
+}
 ```
 
 
