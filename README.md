@@ -4,10 +4,11 @@
 <p>See the <a href="https://github.com/maxkarnold/national-team-generator/wiki">Wiki</a> for more info</p>
 
 ## Tech Stack
-* Angular
-* Firebase
-* Express
-* Nodejs
+* [Angular](https://angular.io/)
+  * [Angular-Material](https://material.angular.io/) 
+* [Firebase](https://firebase.google.com/docs)
+* [Express](https://expressjs.com/)
+* [Nodejs](https://nodejs.org/en/)
 
 ## Setup (needs to be updated)
 Initiate NodeJS environment and install node modules
