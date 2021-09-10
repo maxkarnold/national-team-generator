@@ -1,27 +1,101 @@
-# TeamGenNg
+# national-team-generator
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.2.
+<p>Website URL: *** COMING SOON ***</p>
+<p>See the <a href="https://github.com/maxkarnold/national-team-generator/wiki">Wiki</a> for more info</p>
 
-## Development server
+## Tech Stack
+* Angular
+* Firebase
+* Express
+* Nodejs
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Setup (needs to be updated)
+Initiate NodeJS environment and install node modules
+<br>
+```
+npm install firebase --save
+```
+Angular Dependencies
+```
+ng add @angular/material
+```
 
-## Code scaffolding
+Create a config.js file in the root folder.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```javascript
+// IMPORTS
+const firebase = require('firebase');
+require('firebase/firestore');
 
-## Build
+// behindthename.com API
+// Find the API key and instructions here ---> https://www.behindthename.com/api/help.php
+export const nameGenerator = {
+    apiKey: 'API KEY'
+}
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "API KEY",
+  authDomain: "national-team-generator.firebaseapp.com",
+  projectId: "national-team-generator",
+  storageBucket: "national-team-generator.appspot.com",
+  messagingSenderId: "30261669176",
+  appId: "1:30261669176:web:eca1c9103db91bab6265cd",
+  measurementId: "G-QV0DJSQSL2"
+};
 
-## Running unit tests
+// Initialize Firebase
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
-## Running end-to-end tests
+export const db = firebase.firestore();
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Create a `json-to-firestore.js` in the `data/` folder
 
-## Further help
+```javascript
+const first_names = require('./first_name_data.json');
+const last_names = require('./last_name_data.json');
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+const firebase = require("firebase");
+// Required for side-effects
+require("firebase/firestore");
+
+// Initialize Cloud Firestore through Firebase
+firebase.initializeApp({
+    apiKey: "API_KEY",
+    authDomain: "national-team-generator.firebaseapp.com",
+    projectId: "national-team-generator"
+  });
+  
+var db = firebase.firestore();
+
+
+first_names.forEach(function(obj) {
+    db.collection("first_names").add({
+        id: obj.id,
+        name: obj.name,
+        gender: obj.gender,
+    }).then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+});
+
+last_names.forEach(function(obj) {
+    db.collection("last_names").add({
+        id: obj.id,
+        surname: obj.surname,
+    }).then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+});
+```
+
+

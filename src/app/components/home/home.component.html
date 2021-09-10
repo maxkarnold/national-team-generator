@@ -1,0 +1,74 @@
+<div class="container">
+    <h1>National team generator</h1>
+    <form>  
+        <select name="nations" id="nations-select" class="select-nations browser-default">
+            <option value="" disabled selected>--Choose a Nation--</option>
+            <optgroup label="S Tier" >
+                <option value="any">any</option>
+                <option *ngFor="let nation of this.nations.sTier">{{ nation }}</option>   
+            </optgroup>
+            <optgroup label="A Tier">
+                <option value="any">any</option>
+                <option *ngFor="let nation of this.nations.aTier">{{ nation }}</option>
+            </optgroup>
+            <optgroup label="B Tier">
+                <option value="any">any</option>
+                <option *ngFor="let nation of this.nations.bTier">{{ nation }}</option>
+            </optgroup>
+            <optgroup label="C Tier">
+                <option value="any">any</option>
+                <option *ngFor="let nation of this.nations.cTier">{{ nation }}</option>
+            </optgroup>
+            <optgroup label="D Tier">
+                <option value="any">any</option>
+                <option *ngFor="let nation of this.nations.dTier">{{ nation }}</option>
+            </optgroup>
+            <optgroup label="E Tier">
+                <option value="any">any</option>
+                <option *ngFor="let nation of this.nations.eTier">{{ nation }}</option>
+            </optgroup>
+            <optgroup label="F Tier">
+                <option value="any">any</option>
+                <option *ngFor="let nation of this.nations.fTier">{{ nation }}</option>
+            </optgroup>
+        </select>
+        <button class="generate" type="button" (click)="getPlayers()">Generate</button>
+    </form>
+    <div class="display-container" *ngIf="players.length > 0"> 
+        <h2>Full Roster</h2>
+        <table class="position-table">
+            <h1>Position Breakdown</h1>
+            <tr class="positions">
+                <th *ngFor="let pos of positions">{{pos.position}}</th>
+            </tr>
+            <tr class="amount">
+                <td *ngFor="let pos of positions">{{pos.amount}}</td>
+            </tr>
+            <!-- <tr *ngFor="let position of positions">
+                <td>{{position.amount}}</td>
+            </tr> -->
+        </table> 
+        <table class="player-table" matSort (matSortChange)="sortData($event)">
+            <h1>Player Table</h1>
+            <tr class="table-headings">
+                <th>Index</th>
+                <th mat-sort-header="name">Name</th>
+                <th mat-sort-header="pos">Position</th>
+                <th mat-sort-header="alt_pos">Secondary Positions</th>
+                <th mat-sort-header="foot">Preferred Foot</th>
+                <th mat-sort-header="rating">Rating</th>
+            </tr> 
+            <tbody *ngFor="let player of sortedData; let i = index"> 
+                <tr class="player-row">
+                    <td>#{{i}}</td>
+                    <td>{{player.firstName}} {{player.lastName}}</td>
+                    <td>{{player.position}}</td> 
+                    <td class="alt-positions" >(<span *ngFor="let pos of player.altPositions">{{pos}}</span>)</td>
+                    <td>{{player.foot}}</td>
+                    <td>{{player.rating}}</td>
+                </tr>
+            </tbody>
+        </table> 
+    </div>
+</div>
+

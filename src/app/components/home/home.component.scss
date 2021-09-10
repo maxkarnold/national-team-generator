@@ -1,0 +1,30 @@
+.select-nations {
+    text-transform: capitalize;
+}
+
+.display-container {
+    h2 {
+        text-align: center;
+    }
+    table {
+        margin-bottom: 5rem;
+    }
+    .position-table {
+        .positions {
+            display: flex;
+            justify-content: space-between;
+            th {
+                width: 3rem;
+                text-align: center;
+            }
+        }
+        .amount {
+            display: flex;
+            justify-content: space-between;
+            td {
+                width: 3rem;
+                text-align: center;
+            }
+        }
+    }
+}

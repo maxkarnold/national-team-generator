@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "national-team-generator": {
+      "hosting": {
+        "team-gen-ng": [
+          "national-team-generator"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "national-team-generator"
+  }
+}
