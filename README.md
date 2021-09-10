@@ -15,6 +15,10 @@ Initiate NodeJS environment and install node modules
 ```
 npm install firebase --save
 ```
+Angular Dependencies
+```
+ng add @angular/material
+```
 
 Create a config.js file in the root folder.
 
