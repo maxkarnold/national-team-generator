@@ -71,7 +71,7 @@ export const environment = {
 ```
 
 ### Create the secrets folder src/
-<p>Go to your Firebase Console -> Project Settings -> Service Accounts -> and download your `ServiceAccountKey.json`.</p>
+<p>Go to your Firebase Console -> Project Settings -> Service Accounts -> Click "Generate new private key" -> Click "Generate key" -> Rename the new file `ServiceAccountKey.json`.</p>
 <p>You should add that file to this folder and it should look something like this:</p>
 
 ```json
