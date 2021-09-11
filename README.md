@@ -20,7 +20,7 @@ Angular Dependencies
 ```
 ng add @angular/material
 ```
-### Create or edit the environments folder in src/app/
+### Create or edit the environments folder in src/
 <p>Firebase information can be found in your firebase console.</p>
 <p>`environment.prod.ts` file</p>
 
@@ -70,7 +70,7 @@ export const environment = {
 
 ```
 
-### Create the secrets folder src/app/ 
+### Create the secrets folder src/
 <p>Go to your Firebase Console -> Project Settings -> Service Accounts -> and download your `ServiceAccountKey.json`.</p>
 <p>You should add that file to this folder and it should look something like this:</p>
 
