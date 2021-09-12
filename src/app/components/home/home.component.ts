@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { Player } from '../../models/player';
 import * as nationsModule from '../../data/nations.json';
+import * as positionsModule from '../../data/positions.json';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
+import { LastName } from 'src/app/models/last-name';
+import { FirstName } from 'src/app/models/first-name';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -13,67 +16,12 @@ import { Sort } from '@angular/material/sort';
 export class HomeComponent implements OnInit {
   playerCount = 0;
   players: Player[] = [];
-
   sortedData: Player[];
+
+  lastName$!: Observable<LastName[]>;
+  firstName$!: Observable<FirstName[]>;
   
-  positions = [
-    {
-      position: 'GK',
-      amount: 0,
-    },
-    {
-      position: 'RB',
-      amount: 0,
-    },
-    {
-      position: 'LB',
-      amount: 0,
-    },
-    {
-      position: 'CB',
-      amount: 0,
-    },
-    {
-      position: 'LWB',
-      amount: 0,
-    },
-    {
-      position: 'RWB',
-      amount: 0,
-    },
-    {
-      position: 'DM',
-      amount: 0,
-    },
-    {
-      position: 'MC',
-      amount: 0,
-    },
-    {
-      position: 'ML',
-      amount: 0,
-    },
-    {
-      position: 'MR',
-      amount: 0,
-    },
-    {
-      position: 'AMR',
-      amount: 0,
-    },
-    {
-      position: 'AML',
-      amount: 0,
-    },
-    {
-      position: 'AMC',
-      amount: 0,
-    },
-    {
-      position: 'ST',
-      amount: 0,
-    },
-  ];
+  positions: any = (positionsModule as any).default;
 
   nations: any = (nationsModule as any).default;
 
@@ -149,21 +97,22 @@ export class HomeComponent implements OnInit {
       }
       player.rating = this.getRating(this.playerCount, first, second, third, fourth, fifth);
       
-      // this.afs.getFirstName(nationality).pipe(take(1)).subscribe(firstNameObj => {
-      //   console.log(firstNameObj);
-      //   player.firstName = firstNameObj[0].name;
-      // });
-
-      this.afs.getLastnames().pipe(take(1)).subscribe(lastNameObj => {
-        // console.log(lastNameObj, lastNameObj[0].id);
-        player.lastName = lastNameObj[0].name;
+      this.afs.getFirstName()?.subscribe((firstNameArr) => { 
+        let firstNameObj: any = firstNameArr[0];
+        player.firstName = firstNameObj.name;
       });
+
+      this.afs.getLastName()?.subscribe((lastNameArr) => { 
+        let lastNameObj: any = lastNameArr[0];
+        player.lastName = lastNameObj.name;
+      });
+      
 
       this.players.push(player);
       this.sortedData.push(player);
       this.playerCount++;
     }
-    console.log(this.players, this.sortedData);
+    console.log(this.players);
   }
 
   getPosition() {

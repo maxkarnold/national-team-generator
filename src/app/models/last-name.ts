@@ -3,7 +3,8 @@ import { Timestamp } from '@firebase/firestore-types';
 export interface LastName {
     name: string;
     duplicate: boolean;
-    id: number;
+    alphabeticalId: number;
     usages: string[];    
     timestamp?: Timestamp;
+    firestoreId?: string;
 }

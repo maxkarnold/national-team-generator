@@ -51,7 +51,7 @@
         <table class="player-table" matSort (matSortChange)="sortData($event)">
             <h1>Player Table</h1>
             <tr class="table-headings">
-                <th>Index</th>
+                <!-- <th>Index</th> -->
                 <th mat-sort-header="name">Name</th>
                 <th mat-sort-header="pos">Position</th>
                 <th mat-sort-header="alt_pos">Secondary Positions</th>
@@ -60,7 +60,7 @@
             </tr> 
             <tbody *ngFor="let player of sortedData; let i = index"> 
                 <tr class="player-row">
-                    <td>#{{i}}</td>
+                    <!-- <td>#{{i}}</td> -->
                     <td>{{player.firstName}} {{player.lastName}}</td>
                     <td>{{player.position}}</td> 
                     <td class="alt-positions" >(<span *ngFor="let pos of player.altPositions">{{pos}}</span>)</td>

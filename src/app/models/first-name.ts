@@ -6,5 +6,6 @@ export interface FirstName {
   name: string;
   timestamp: Timestamp;
   usages: string[];
-  id: number;
+  alphabeticalId: number;
+  firestoreId?: string;
 }
