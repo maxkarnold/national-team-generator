@@ -6,7 +6,6 @@
 ## Tech Stack
 * [Angular](https://angular.io/)
   * [Angular-Material](https://material.angular.io/)
-  * [Bower](https://bower.io/) to install [ngFitText](https://github.com/patrickmarabeas/ng-FitText.js) 
 * [Firebase](https://firebase.google.com/docs)
 * [Express](https://expressjs.com/)
 * [Nodejs](https://nodejs.org/en/)
