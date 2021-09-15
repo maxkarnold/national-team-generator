@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { Player } from '../../models/player';
+import { LastName } from 'src/app/models/last-name';
+import { FirstName } from 'src/app/models/first-name';
 import * as nationsModule from '../../data/nations.json';
 import * as positionsModule from '../../data/positions.json';
+import * as pitchPositionsModule from '../../data/pitchPositions.json';
+
 import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
-import { LastName } from 'src/app/models/last-name';
-import { FirstName } from 'src/app/models/first-name';
+import{ CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -17,17 +20,24 @@ export class HomeComponent implements OnInit {
   playerCount = 0;
   players: Player[] = [];
   sortedData: Player[];
+  pitchPlayers: Player[];
+
+  shirtIcon = '../../../assets/img/shirt-icon.jpg';
 
   lastName$!: Observable<LastName[]>;
   firstName$!: Observable<FirstName[]>;
   
   positions: any = (positionsModule as any).default;
+  pitchPositions: any = (pitchPositionsModule as any).default;
 
   nations: any = (nationsModule as any).default;
 
+  playersLoaded = false;
+
+
   constructor(private afs: FirestoreService) {
-    // this.players = [];
     this.sortedData = this.players;
+    this.pitchPlayers = [];
    }
 
   ngOnInit(): void {
@@ -53,6 +63,121 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  drop(event: CdkDragDrop<Player[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      // let oldTarget = this.players[event.previousIndex];
+      // this.players[event.previousIndex] = this.players[event.currentIndex];
+      // this.players[event.currentIndex] = oldTarget;
+    } 
+    else if (event.previousContainer.id === "cdk-drop-list-24") {
+      let starterCount = 0;
+      // Check for 11 players in starting lineup
+      for (const player of this.pitchPlayers) {
+        if (player !== undefined) {
+          if (starterCount > 11) {
+            return new Error("Only allowed to have 11 players in starting lineup")
+          }
+        } 
+      }
+      let playerIndex = event.previousIndex;
+      let playerObj = event.previousContainer.data[playerIndex];
+
+      let positionIndex = Number(event.container.element.nativeElement.classList[2]);
+
+      switch (positionIndex) {
+        case 0:
+          playerObj.pitchPosition = "GK";
+          break;
+        case 1:
+          playerObj.pitchPosition = "DR";
+          break;
+        case 2:
+          playerObj.pitchPosition = "DCR";
+          break;
+        case 3:
+          playerObj.pitchPosition = "DC";
+          break;
+        case 4:
+          playerObj.pitchPosition = "DCL";
+        break;
+        case 5:
+          playerObj.pitchPosition = "DL";
+          break;
+        case 6:
+          playerObj.pitchPosition = "WBR";
+          break;
+        case 7:
+          playerObj.pitchPosition = "DMR";
+          break;
+        case 8:
+          playerObj.pitchPosition = "DMC";
+          break;
+        case 9:
+          playerObj.pitchPosition = "DML";
+          break;
+        case 10:
+          playerObj.pitchPosition = "WBL";
+          break;
+        case 11:
+          playerObj.pitchPosition = "MR";
+          break;
+        case 12:
+          playerObj.pitchPosition = "MCR";
+          break;
+        case 13:
+          playerObj.pitchPosition = "MC";
+          break;
+        case 14:
+          playerObj.pitchPosition = "MCL";
+          break;
+        case 15:
+          playerObj.pitchPosition = "ML";
+          break;
+        case 16:
+          playerObj.pitchPosition = "AMR";
+          break;
+        case 17:
+          playerObj.pitchPosition = "AMCR";
+          break;
+        case 18:
+          playerObj.pitchPosition = "AMC";
+          break;
+        case 19:
+          playerObj.pitchPosition = "AMCL";
+          break;
+        case 20:
+          playerObj.pitchPosition = "AML";
+          break;
+        case 21:
+          playerObj.pitchPosition = "FR";
+          break;
+        case 22:
+          playerObj.pitchPosition = "FC";
+          break;
+        case 23:
+          playerObj.pitchPosition = "FL";
+          break;
+        default:
+          console.log("Error: Check line 165 in home.component.ts");
+          break;
+      }
+      let firstInitial = playerObj.firstName.slice(0, 1);
+      playerObj.firstInitial = firstInitial;
+      this.pitchPlayers.push(playerObj);
+      this.players.splice(playerIndex, 1);
+      event.container.element.nativeElement.innerHTML = `<div>${playerObj.firstInitial}. ${playerObj.lastName} ${playerObj.rating} <span>${playerObj.pitchPosition}</span></div>`;
+      event.container.element.nativeElement.classList.remove("pos-box");
+      event.container.element.nativeElement.children[0].className += "player-box";
+      event.container.element.nativeElement.children[0].children[0].className += "pitch-card-pos";
+      starterCount++;
+      console.log(event.container);
+      console.log("pitch players:\n", this.pitchPlayers);
+    }
+    
+  }
+
+
   
 
   getPlayers() {
@@ -61,10 +186,11 @@ export class HomeComponent implements OnInit {
     this.playerCount = 0;
     this.players = [];
     this.sortedData = [];
+    this.pitchPlayers = [];
     for (let index in this.positions) {
       this.positions[index].amount = 0;
     }
-    let nationality = "any";
+    let nation = "any";
 
     // S Tier
     let numArray = [4, 8, 8, 14, 10, 20, 15, 30, 25, 35];
@@ -97,12 +223,12 @@ export class HomeComponent implements OnInit {
       }
       player.rating = this.getRating(this.playerCount, first, second, third, fourth, fifth);
       
-      this.afs.getFirstName()?.subscribe((firstNameArr) => { 
+      this.afs.getFirstName(nation)?.subscribe((firstNameArr) => { 
         let firstNameObj: any = firstNameArr[0];
         player.firstName = firstNameObj.name;
       });
 
-      this.afs.getLastName()?.subscribe((lastNameArr) => { 
+      this.afs.getLastName(nation)?.subscribe((lastNameArr) => { 
         let lastNameObj: any = lastNameArr[0];
         player.lastName = lastNameObj.name;
       });
@@ -111,6 +237,11 @@ export class HomeComponent implements OnInit {
       this.players.push(player);
       this.sortedData.push(player);
       this.playerCount++;
+
+      // let playerPlus = {
+      //   ...player,
+
+      // }
     }
     console.log(this.players);
   }
@@ -126,29 +257,24 @@ export class HomeComponent implements OnInit {
         // Prioritize 4 GKs
         if (this.positions[0].amount < 4) {
             randomPos = 0;
-            // console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
         }
         // Then prioritize 3 CBs
         else if (this.positions[3].amount < 3) {
             randomPos = 3;
-            // console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
         }
         // Then prioritize 2 STs
         else if (this.positions[13].amount < 2) {
             randomPos = 13;
-            // console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
         }
         // Then priortize 3 CMs
         else if (this.positions[7].amount < 3) {
             randomPos = 7;
-            // console.log(`player index: ${i}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
         }
         // Otherwise add to any position
         else { 
             for (let j = 0; j < this.positions.length; j++) {
                 if (this.positions[randomPos].amount > 5) {
                     randomPos = this.afs.getRandomInt(0, 13);
-                    // console.log(`player index: ${j}\nold position: ${positions[oldPos]}\nnew position: ${positions[randomPos]}`);
                 }
             }
         }
@@ -413,6 +539,75 @@ export class HomeComponent implements OnInit {
     return rating;
   }
 
+  savePlayers() {
+    this.afs.saveRoster(this.players, this.pitchPlayers);
+  }
+
+  loadPlayers() {
+    this.playersLoaded = true;
+    console.log(this.players);
+    console.log(localStorage);  
+    if (localStorage.length > 0) {
+      this.players = [];
+      this.sortedData = [];
+      this.pitchPlayers = [];
+      for (let index in this.positions) {
+        this.positions[index].amount = 0;
+      }
+
+      for (let i = 0; i < 60; i++) {
+        let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
+        let player = JSON.parse(playerString || 'Null Error') as Player;
+        this.players.push(player);
+        this.sortedData.push(player);
+      }
+
+      for (const pos of this.pitchPositions) {
+        let playerString = localStorage.getItem(`TEAMGEN - Starting ${pos.position}`);
+        let playerObj = JSON.parse(playerString || '{}') as Player;
+        if (playerString !== null) {
+          this.pitchPlayers.push(playerObj);
+        }
+      }
+
+      for (const player of this.players) {      
+        for (const pos of this.positions) {
+          if (player.position === pos.position) {
+            pos.amount++;
+            break;
+          }
+        }
+      }
+    }
+    
+    else if (this.players.length < 1 || this.players === undefined){
+      this.afs.getRoster().subscribe((obj) => { 
+        let playersArr: any = obj[0];
+        this.players = playersArr.bench_reserves;
+        this.sortedData = playersArr.bench_reserves;
+        this.pitchPlayers = playersArr.starters;
+
+        for (const player of this.players) {      
+          for (const pos of this.positions) {
+            if (player.position === pos.position) {
+              pos.amount++;
+              break;
+            }
+          }
+        }
+
+        for (let i = 0; i < 60; i++) {
+          localStorage.setItem(`TEAMGEN - Player #${i}`, JSON.stringify(this.players[i]));
+        }
+        for (const player of this.pitchPlayers) {
+          localStorage.setItem(`TEAMGEN - Starting ${player.pitchPosition}`, JSON.stringify(player));
+        }
+
+      });
+    }
+    console.log(this.players);
+  }
+  
 
 }
 

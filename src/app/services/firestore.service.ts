@@ -4,6 +4,7 @@ import { FirstName } from '../models/first-name';
 import { LastName } from '../models/last-name';
 import { merge, Observable, pipe } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
+import { Player } from '../models/player';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,6 @@ export class FirestoreService {
   
   firstNames: Observable<FirstName[]>;
   lastNames: Observable<LastName[]>;
-  country = "any";
   
 
   constructor(public afs: AngularFirestore) {
@@ -27,10 +27,10 @@ export class FirestoreService {
     //The maximum is inclusive and the minimum is inclusive
   }
 
-  getFirstName(){
+  getFirstName(nation: string){
     let randomIndex = this.getRandomInt(1, 5);
     let randomQuery = this.getRandomInt(0, 50000);
-    if (this.country === "any") {
+    if (nation === "any") {
       let request$ = this.afs.collection("firstNames_male", ref => ref.where(`randomNum.${randomIndex}`, ">=", randomQuery).orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
 
       let retryRequest$ = this.afs.collection("firstNames_male", ref => ref.where(`randomNum.${randomIndex}`, "<=", randomQuery).orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
@@ -40,10 +40,10 @@ export class FirestoreService {
       console.log("getFirstName() failed!");
     }
   }
-  getLastName(){
+  getLastName(nation: string){
     let randomIndex = this.getRandomInt(1, 5);
     let randomQuery = this.getRandomInt(0, 50000);
-    if (this.country === "any") {
+    if (nation === "any") {
       let request$ = this.afs.collection("lastNames", ref => ref.where(`randomNum.${randomIndex}`, ">=", randomQuery).orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
 
       let retryRequest$ = this.afs.collection("lastNames", ref => ref.where(`randomNum.${randomIndex}`, "<=", randomQuery).orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
@@ -54,6 +54,23 @@ export class FirestoreService {
     }
   }
 
+  saveRoster(roster: Player[], starters: Player[]) {
+    let docRef = this.afs.collection("savedRosters").doc();
+
+    docRef.set({
+      bench_reserves: roster,
+      starters: starters
+    })
+      .then(() => {
+        console.log("Document successfully written!");
+        alert("Successfully Saved Roster");
+      });
+
+  }
+
+  getRoster() {
+    return this.afs.collection("savedRosters", ref => ref.limit(1)).valueChanges()
+  }
 
 }
 

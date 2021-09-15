@@ -5,4 +5,6 @@ export interface Player {
     altPositions: string[];
     rating: number;
     foot: string;
+    pitchPosition?: string;
+    firstInitial?: string; 
 }

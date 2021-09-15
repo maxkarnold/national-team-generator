@@ -1,6 +1,6 @@
-<div class="container">
+<div class="page-container">
     <h1>National team generator</h1>
-    <form>  
+    <form class="team-generator-form">  
         <select name="nations" id="nations-select" class="select-nations browser-default">
             <option value="" disabled selected>--Choose a Nation--</option>
             <optgroup label="S Tier" >
@@ -32,24 +32,184 @@
                 <option *ngFor="let nation of this.nations.fTier">{{ nation }}</option>
             </optgroup>
         </select>
-        <button class="generate" type="button" (click)="getPlayers()">Generate</button>
+        <div class="form-buttons">
+            <button class="generate" type="button" (click)="getPlayers()">Generate</button>
+            <button class="load-button" type="button" (click)="loadPlayers()">Load</button>
+            <button><a href="#full_roster_heading">Go to Full Roster</a></button>
+        </div>
     </form>
+    <div class="tactics-container" cdkDropListGroup>
+        <!-- <div class="pitch-container" *ngIf="playersLoaded"> -->
+        <div class="pitch-container">
+            <div class="pitch-borders">
+                <div class="goal-box-top pitch-divs"></div>
+                <div class="goal-box-circle-top pitch-divs"></div>
+                <div class="pitch-dot pitch-divs"></div>
+                <div class="pitch-circle pitch-divs"></div>
+                <div class="half-line pitch-divs"></div>
+                <div class="goal-box-circle-bottom pitch-divs"></div>
+                <div class="goal-box-bottom pitch-divs"></div>
+                    <div class="pitch-grid">
+                        <!-- <div class="pos-box {{pos.class}}"  *ngFor="let pos of pitchPositions" cdkDrag>
+                            <div *cdkDragPlaceholder></div>
+                            <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
+                            {{pos.name}} {{pos.lastName}} {{pos.position}} {{pos.rating}}
+                        </div> -->
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 23" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 22" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 21" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 20" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 19" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 18" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 17" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 16" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 15" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 14" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 13" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 12" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 11" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 10" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 9" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 8" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 7" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 6" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 5" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 4" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 3" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box 2" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 1" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box 0" cdkDropList (cdkDropListDropped)="drop($event)"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box empty"></div>
+                        <div class="pos-box empty"></div>
+                    </div>
+            </div> 
+        </div>
+        <div class="bench-players">
+            <h1>Bench Players</h1>
+            <!-- GRID VERSION -->
+            <div class="bench-grid">
+                <ul class="bench-headers">
+                    <li class="name-header">Name</li>
+                    <li>Position</li>
+                    <li>Secondary Positions</li>
+                    <li>Rating</li>
+                </ul>
+                <div class="lineup-spots">
+                    <ul class="pitch-players">
+                        <li class="header">Lineup</li>
+                        <li *ngFor="let pos of pitchPlayers">{{pos.pitchPosition}}</li>
+                    </ul>
+                    <ul class="bench">
+                        <li>Sub 1</li>
+                        <li>Sub 2</li>
+                        <li>Sub 3</li>
+                        <li>Sub 4</li>
+                        <li>Sub 5</li>
+                        <li>Sub 6</li>
+                        <li>Sub 7</li>
+                    </ul>
+                    <ul class="reserves">
+                        <li>19</li>
+                        <li>20</li>
+                        <li>21</li>
+                        <li>22</li>
+                        <li>23</li>
+                        <li>24</li>
+                        <li>25</li>
+                        <li>26</li>
+                        <li>27</li>
+                        <li>28</li>
+                        <li>29</li>
+                        <li>30</li>
+                        <li>31</li>
+                        <li>32</li>
+                        <li>33</li>
+                        <li>34</li>
+                        <li>35</li>
+                        <li>36</li>
+                        <li>37</li>
+                        <li>38</li>
+                        <li>39</li>
+                        <li>40</li>
+                        <li>41</li>
+                        <li>42</li>
+                        <li>43</li>
+                        <li>44</li>
+                        <li>45</li>
+                        <li>46</li>
+                        <li>47</li>
+                        <li>48</li>
+                        <li>49</li>
+                        <li>50</li>
+                        <li>51</li>
+                        <li>52</li>
+                        <li>53</li>
+                        <li>54</li>
+                        <li>55</li>
+                        <li>56</li>
+                        <li>57</li>
+                        <li>58</li>
+                        <li>59</li>
+                        <li>60</li>
+                    </ul>
+                </div>
+                <div class="lineup-container">
+                    <ul class="player-row" *ngFor="let player of pitchPlayers">
+                        <li class="name-cell">{{player.firstName}} {{player.lastName}}</li>
+                        <li>{{player.position}}</li>
+                        <li class="alt-positions">(<span *ngFor="let pos of player.altPositions">{{pos}}</span>)</li>
+                        <li>{{player.rating}}</li>
+                        <li *cdkDragPreview >
+                            <
+                            <div class="player-preview">{{player.lastName}} {{player.position}} {{player.rating}}</div>
+                        </li>
+                    </ul>
+                    <div class="bench-container" cdkDropList [cdkDropListData]="players" (cdkDropListDropped)="drop($event)">  
+                        <ul class="player-row" *ngFor="let player of players" cdkDrag [cdkDragData]="player">
+                            <li class="name-cell">{{player.firstName}} {{player.lastName}}</li>
+                            <li>{{player.position}}</li>
+                            <li class="alt-positions">(<span *ngFor="let pos of player.altPositions">{{pos}}</span>)</li>
+                            <li>{{player.rating}}</li>
+                            <li *cdkDragPreview >
+                                <
+                                <div class="player-preview">{{player.lastName}} {{player.position}} {{player.rating}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
     <div class="display-container" *ngIf="players.length > 0"> 
-        <h2>Full Roster</h2>
-        <table class="position-table">
-            <h1>Position Breakdown</h1>
-            <tr class="positions">
-                <th *ngFor="let pos of positions">{{pos.position}}</th>
-            </tr>
-            <tr class="amount">
-                <td *ngFor="let pos of positions">{{pos.amount}}</td>
-            </tr>
-            <!-- <tr *ngFor="let position of positions">
-                <td>{{position.amount}}</td>
-            </tr> -->
-        </table> 
-        <table class="player-table" matSort (matSortChange)="sortData($event)">
-            <h1>Player Table</h1>
+        <h1 id="full_roster_heading">Full Roster</h1>
+        <div class="roster-buttons">
+            <button class="save-button" type="button" (click)="savePlayers()">Save</button>
+        </div>
+        <div class="position-table">
+            <h2>Position Breakdown</h2>
+            <ul class="positions">
+                <li *ngFor="let pos of positions"><span>{{pos.position}}</span><span>{{pos.amount}}</span></li>
+            </ul>
+        </div> 
+        <h2>Player Table</h2>
+        <table class="player-table" matSort (matSortChange)="sortData($event)">     
             <tr class="table-headings">
                 <!-- <th>Index</th> -->
                 <th mat-sort-header="name">Name</th>

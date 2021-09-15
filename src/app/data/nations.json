@@ -1,23 +1,91 @@
 {
   "sTier": [
-    "france", "brazil", "germany", "italy", "spain", "argentina"
+    "france",
+    "brazil",
+    "germany",
+    "italy",
+    "spain",
+    "argentina"
   ],
   "aTier": [
-    "england", "uruguay", "portugal", "netherlands"
+    "england",
+    "uruguay",
+    "portugal",
+    "netherlands"
   ],
   "bTier": [
-    "belgium", "sweden", "paraguay", "croatia", "chile", "mexico", "colombia"
+    "belgium",
+    "sweden",
+    "paraguay",
+    "croatia",
+    "chile",
+    "mexico",
+    "colombia"
   ],
   "cTier": [
-    "serbia", "nigeria", "russia", "ukraine", "peru", "austria", "switzerland", "hungary", "cameroon", "ghana", "algeria", "ivory coast", "greece"
+    "serbia",
+    "nigeria",
+    "russia",
+    "ukraine",
+    "peru",
+    "austria",
+    "switzerland",
+    "hungary",
+    "cameroon",
+    "ghana",
+    "algeria",
+    "ivory coast",
+    "greece"
   ],
   "dTier": [
-    "usa", "ecuador", "bosnia & herzegovina", "scotland", "slovakia", "slovenia", "south korea", "japan", "ireland", "senegal", "tunisia", "turkey", "iran", "czech republic"
+    "united states",
+    "ecuador",
+    "bosnia & herzegovina",
+    "scotland",
+    "slovakia",
+    "slovenia",
+    "south korea",
+    "japan",
+    "ireland",
+    "senegal",
+    "tunisia",
+    "turkey",
+    "iran",
+    "czech republic"
   ],
   "eTier": [
-    "wales", "northern ireland", "iceland", "morocco", "egypt", "romania", "bolivia", "venezuela", "costa rica", "jamaica", "australia", "honduras", "norway"
+    "wales",
+    "northern ireland",
+    "iceland",
+    "morocco",
+    "egypt",
+    "romania",
+    "bolivia",
+    "venezuela",
+    "costa rica",
+    "jamaica",
+    "australia",
+    "honduras",
+    "norway"
   ],
   "fTier": [
-    "finland", "north macedonia", "montenegro", "albania", "israel", "el salvador", "canada", "panama", "mali", "guinea", "congo DR", "south africa", "belarus", "el salvador", "trinidad & tobago", "saudi arabia", "iraq", "new zealand"
+    "finland",
+    "north macedonia",
+    "montenegro",
+    "albania",
+    "israel",
+    "el salvador",
+    "canada",
+    "panama",
+    "mali",
+    "guinea",
+    "congo DR",
+    "south africa",
+    "belarus",
+    "el salvador",
+    "trinidad & tobago",
+    "saudi arabia",
+    "iraq",
+    "new zealand"
   ]
 }

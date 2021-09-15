@@ -1,30 +1,389 @@
-.select-nations {
-    text-transform: capitalize;
+.page-container {
+    width: 90%;
+    margin: 0 auto;
 }
+h1, h2 {
+    text-align: center;
+}
+h1 {
+    margin: 2.5rem auto;
+}
+h2 {
+    margin: 1.5rem auto;
+}
+.team-generator-form {
+    .select-nations {
+        text-transform: capitalize;
+    }
+    .form-buttons {
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        margin: 2rem auto;
+        width: 75%;
+        height: 7rem;
+        button {
+            height: 3rem;
+            cursor: pointer;
+        }
+    }
+    
+}
+
 
 .display-container {
     h2 {
         text-align: center;
     }
+
+    .roster-buttons {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        button {
+            cursor: pointer;
+            height: 40px;
+            margin: 10px;
+            flex: 1;
+            border-radius: 5px;
+        }
+    }
+
     table {
         margin-bottom: 5rem;
     }
     .position-table {
+        margin: 2rem auto;
         .positions {
             display: flex;
-            justify-content: space-between;
-            th {
+            flex-flow: row wrap;
+            // width: 1rem;
+            margin: 0;
+            // border: 1px solid black;
+            li {
+                display: flex;
+                flex-flow: column;
+                // padding: 0.25rem;
+                // margin: 1rem;
                 width: 3rem;
-                text-align: center;
-            }
-        }
-        .amount {
-            display: flex;
-            justify-content: space-between;
-            td {
-                width: 3rem;
-                text-align: center;
+                // border: 1px solid black;
+                border-right: none;
+
+                span {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 0.5rem;
+                    border: 1px solid black; 
+                }
             }
         }
     }
+    .player-table {
+        font-size: clamp(0.5rem, 2.5vw, 1rem);
+    }
+}
+
+.tactics-container {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    @media screen and (min-width: 800px) {
+        flex-flow: row;
+    }   
+    .bench-players {
+        flex: 1;
+        font-size: clamp(0.5rem, 2.5vw, 1rem);
+        h1{
+            width: 100%;
+            text-align: center;
+        }
+        @media screen and (min-width: 800px) {
+            margin: 0 0 0 0.25rem;
+            font-size: clamp(0.5rem, 1vw, 1rem);
+            h1 {
+                margin: 0 auto 0.5rem;
+            }
+        }   
+        .bench-container {
+            width: 100%;
+            .row-container {
+                display: table-row;
+            }
+            .player-row {
+                cursor: grab;
+                width: 100%;
+            }
+            .player-row:active {
+                cursor: grabbing;
+            }
+        }
+    }
+    .pitch-container {
+        background: #2D7D32;
+        margin: 20px auto;
+        height: 100vh;
+        width: 100%;
+        max-width: 750px;
+        display: flex;
+        align-items: center;
+        @media screen and (min-width: 800px) {
+            width: 75%;
+            margin: 0;
+            position: sticky;
+            top: 0;
+        }
+        .pitch-borders {
+            position: relative;
+            height: 95%;
+            width: 95%;
+            margin: 0.5rem auto;
+            border: 1px solid white;
+            z-index: 2;
+            display: flex;
+            flex-flow: column;
+            justify-content: space-between;
+            align-items: center;
+            .pitch-divs {
+                background-color: #2D7D32;
+                border: 1px solid white;
+            }
+            .goal-box-bottom {
+                z-index: 2;
+                height: 7.5rem;
+                width: 40%;
+                border-bottom: none;
+            }
+            .goal-box-top {
+                z-index: 2;
+                height: 7.5rem;
+                width: 40%;
+                border-top: none;
+            }
+            .goal-box-circle-top {
+                z-index: 1;
+                position: absolute;
+                width: 15%;
+                height: 20%;
+                border-radius: 0 0 150px 150px;
+            }
+            .goal-box-circle-bottom {
+                z-index: 1;
+                position: absolute;
+                bottom: 0;
+                width: 15%;
+                height: 20%;
+                border-radius: 150px 150px 0 0;
+            }
+            .half-line {
+                position: absolute;
+                border-bottom: none;
+                bottom: 50%;
+                width: 100%;
+            }
+            .pitch-dot {
+                z-index: 2;
+                position: absolute;
+                bottom: 49.9%;
+                height: 4px;
+                width: 4px;
+                border-radius: 50%;
+                background-color: white;
+            }
+            .pitch-circle {
+                position: absolute;
+                bottom: 41.5%;
+                height: 9rem;
+                width: 9rem;
+                border-radius: 50%;
+            }
+        }
+        .pitch-grid{
+            z-index: 3;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.25rem;
+            justify-items: center;
+            align-items: center;
+            padding: 0 0.5rem 0;
+            
+            .pos-box {
+                width: 10vw;
+                height: 10.5vh;
+                @media screen and (min-width: 800px) {
+                    width: 6.25vw;
+                    height: 9vh;
+                }
+                background: rgba(144, 238, 144, .25);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                display: flex;
+                flex-flow: column;
+                justify-content: center;
+                align-items: center;
+                cursor: grab;
+                
+            }  
+            .pos-box:active {
+                cursor: grabbing;
+            }
+            .pos-box.empty {
+                visibility: hidden;
+            }
+            .shirtIcon-img {
+                height: 6vh;
+                @media screen and (min-width: 800px) {
+                    height: 8vh;
+                }
+            } 
+            div {
+                width: 12vw;
+                height: 12.5vh;
+                background-color: lightgray;
+                border: 2px solid black;
+                border-radius: 5px;
+                display: flex;
+                flex-flow: column;
+                justify-content: center;
+                align-items: center;
+                @media screen and (min-width: 800px) {
+                    width: 8vw;
+                    height: 8.5vw;
+                }
+                span {
+                    font-weight: bold;
+                }
+            }
+        }
+        
+    }
+}
+
+.bench-grid {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: 3rem 1fr;
+    grid-template-areas: 
+    "lineup th"
+    "lineup player"
+    ;
+    border: 1px solid black;
+    .bench-headers {
+        display: flex;
+        justify-content: stretch;
+        grid-area: th;
+        margin: 0;
+        font-weight: bold;
+        height: 3rem;
+        li {
+            border-bottom: 1px solid black;
+            border-right: 1px solid black;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 25%;
+            padding: 0.25rem;
+        }
+        :last-child {
+            border-right: none;
+        }
+        .name-header {
+            width: 10vw;
+        }
+    }
+    .lineup-container {
+        grid-area: player;
+    }
+    .bench-container,
+    .lineup-container {
+        border-bottom: none;
+        .player-row {
+            display: flex;
+            margin: 0;
+            height: 3rem;
+            justify-content: flex-start;
+            li {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex: 1;
+                width: 25%;
+                padding: 0.25rem;
+                border-right: 1px solid black;
+                border-bottom: 1px solid black;
+            }
+            :last-child {
+                border-right: none;
+            }
+            .name-cell {
+                width: 10vw;
+            }
+            .alt-positions {
+                flex-flow: wrap;
+            }
+        }
+    }
+    
+    .lineup-spots {
+        margin: 0;
+        display: flex;
+        flex-flow: column;
+        grid-area: lineup;
+        ul {
+            margin: 0;
+        }
+        ul:first-child {
+            font-weight: bold;
+        }
+        ul:not(:first-child) {
+            font-weight: 500;
+        }
+        ul li {
+            padding: 0 0.5rem;
+            height: 3rem;
+            border-bottom: 1px solid black;
+            border-right: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
+
+// *** CDK DRAG & DROP classes ***
+// Do not move cdk drag classes inside other classes
+.cdk-drag-preview {
+    box-sizing: border-box;
+    background-color: white;
+    border: 2px inset black;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12)
+    ;
+    padding: 0.5rem;
+    width: 7rem;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    .shirtIcon-img {
+        height: 3rem;
+    }
+}
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.cdk-drag-placeholder {
+    height: 100%;
+    width: 100%;
+    background: #ccc;
+    border: dotted 3px #999;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.cdk-drop-list-receiving, .cdk-drop-list-dragging { 
+    border: dotted 3px rgb(0, 255, 0);
 }
