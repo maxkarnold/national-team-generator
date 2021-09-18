@@ -1,8 +1,8 @@
 # national-team-generator
 
-<p>Website URL: *** COMING SOON ***</p>
-<p>See the <a href="https://github.com/maxkarnold/national-team-generator/wiki">Wiki</a> for more info</p>
-[Google Sheets](https://docs.google.com/spreadsheets/d/1iUR0P_v-qPOfyR1cX4iYIAwLiMCHIRPgRx9xRRmNdwc/edit?usp=sharing)
+* Website URL: *** COMING SOON ***
+* See the [Wiki](https://github.com/maxkarnold/national-team-generator/wiki) for more info
+* Check out my [spreadsheet](https://docs.google.com/spreadsheets/d/1iUR0P_v-qPOfyR1cX4iYIAwLiMCHIRPgRx9xRRmNdwc/edit?usp=sharing) for testing
 
 ## Tech Stack
 * [Angular](https://angular.io/)
