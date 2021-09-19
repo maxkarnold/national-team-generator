@@ -1,52 +1,90 @@
+@import '../../themes.scss';
+
+.load-roster-overlay {
+    background-color: #3F51B5;
+    border: 1px solid whitesmoke;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    padding: 1.5rem;
+    margin: 0;
+    color: white;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    li {
+        list-style: none;
+        margin-bottom: 1rem;
+        width: 100%;
+        button {
+            width: 100%;
+        }
+    }
+    li:last-child {
+        margin-bottom: 0;
+    }
+}   
+header {
+    .nav-spacer {
+        flex: 1 1 auto;
+    }
+    
+}
+
+
 .page-container {
     width: 90%;
     margin: 0 auto;
 }
-h1, h2 {
+h2, h3 {
     text-align: center;
 }
-h1 {
+h2 {
     margin: 2.5rem auto;
 }
-h2 {
+h3 {
     margin: 1.5rem auto;
 }
+
 .team-generator-form {
-    .select-nations {
-        text-transform: capitalize;
+    text-transform: capitalize;
+}
+
+
+.form-buttons {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    margin: 2rem auto;
+    width: 75%;
+    height: 10rem;
+    button {
+        height: 3rem;
+        cursor: pointer;
     }
-    .form-buttons {
+    .load-data-buttons {
         display: flex;
-        flex-flow: column;
-        justify-content: space-between;
-        margin: 2rem auto;
-        width: 75%;
-        height: 7rem;
         button {
-            height: 3rem;
-            cursor: pointer;
+            flex: 1;
         }
     }
-    
+}
+
+.save-buttons {
+    // bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+    button {
+        cursor: pointer;
+        height: 40px;
+        margin: 10px;
+        border-radius: 5px;
+    }
 }
 
 
 .display-container {
     h2 {
         text-align: center;
-    }
-
-    .roster-buttons {
-        display: flex;
-        justify-content: space-around;
-        margin: 20px 0;
-        button {
-            cursor: pointer;
-            height: 40px;
-            margin: 10px;
-            flex: 1;
-            border-radius: 5px;
-        }
     }
 
     table {
@@ -57,7 +95,7 @@ h2 {
         .positions {
             display: flex;
             flex-flow: row wrap;
-            // width: 1rem;
+            justify-content: center;
             margin: 0;
             // border: 1px solid black;
             li {
@@ -81,6 +119,14 @@ h2 {
     }
     .player-table {
         font-size: clamp(0.5rem, 2.5vw, 1rem);
+        .player-row {
+            td {
+                text-transform: capitalize;
+                .club-logo {
+                    width: clamp(0.5rem, 2.5vw, 1rem);
+                }
+            }
+        }
     }
 }
 
@@ -91,18 +137,18 @@ h2 {
     @media screen and (min-width: 800px) {
         flex-flow: row;
     }   
-    .bench-players {
+    .lineup-container {
         flex: 1;
         font-size: clamp(0.5rem, 2.5vw, 1rem);
-        h1{
+        h2{
             width: 100%;
             text-align: center;
         }
         @media screen and (min-width: 800px) {
             margin: 0 0 0 0.25rem;
             font-size: clamp(0.5rem, 1vw, 1rem);
-            h1 {
-                margin: 0 auto 0.5rem;
+            h2 {
+                margin: 0 auto 1rem;
             }
         }   
         .bench-container {
@@ -216,6 +262,7 @@ h2 {
                 height: 10.5vh;
                 @media screen and (min-width: 800px) {
                     width: 6.25vw;
+                    width: 90%;
                     height: 9vh;
                 }
                 background: rgba(144, 238, 144, .25);
@@ -262,7 +309,7 @@ h2 {
     }
 }
 
-.bench-grid {
+.lineup-grid {
     display: grid;
     grid-template-columns: 1fr 5fr;
     grid-template-rows: 3rem 1fr;
@@ -270,8 +317,10 @@ h2 {
     "lineup th"
     "lineup player"
     ;
-    border: 1px solid black;
-    .bench-headers {
+    background: #424242;
+    color: white;
+    border-radius: 4px;
+    .lineup-headers {
         display: flex;
         justify-content: stretch;
         grid-area: th;
@@ -279,8 +328,8 @@ h2 {
         font-weight: bold;
         height: 3rem;
         li {
-            border-bottom: 1px solid black;
-            border-right: 1px solid black;
+            // border-bottom: 1px solid black;
+            // border-right: 1px solid black;
             flex: 1;
             display: flex;
             align-items: center;
@@ -295,11 +344,12 @@ h2 {
             width: 10vw;
         }
     }
-    .lineup-container {
+    .starters {
         grid-area: player;
     }
     .bench-container,
-    .lineup-container {
+    .starters {
+        text-transform: capitalize;
         border-bottom: none;
         .player-row {
             display: flex;
@@ -313,8 +363,8 @@ h2 {
                 flex: 1;
                 width: 25%;
                 padding: 0.25rem;
-                border-right: 1px solid black;
-                border-bottom: 1px solid black;
+                // border-right: 1px solid black;
+                // border-bottom: 1px solid black;
             }
             :last-child {
                 border-right: none;
@@ -338,6 +388,7 @@ h2 {
         }
         ul:first-child {
             font-weight: bold;
+            border-top: none;
         }
         ul:not(:first-child) {
             font-weight: 500;
@@ -345,45 +396,92 @@ h2 {
         ul li {
             padding: 0 0.5rem;
             height: 3rem;
-            border-bottom: 1px solid black;
-            border-right: 1px solid black;
+            border-top: 1px solid rgba(242, 242, 242, 0.25);
+            border-right: 1px solid rgba(242, 242, 242, 0.25);
             display: flex;
             justify-content: center;
             align-items: center;
         }
     }
 }
-
-// *** CDK DRAG & DROP classes ***
+.expanded-info {
+    display: flex;
+    justify-content: space-between;
+}
+// *** ANGULAR CDK DRAG & DROP classes ***
 // Do not move cdk drag classes inside other classes
 .cdk-drag-preview {
     box-sizing: border-box;
-    background-color: white;
+    color: #000000;
+    background-color: #d7d5d5;
     border: 2px inset black;
     border-radius: 4px;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
         0 8px 10px 1px rgba(0, 0, 0, 0.14),
         0 3px 14px 2px rgba(0, 0, 0, 0.12)
     ;
-    padding: 0.5rem;
-    width: 7rem;
+    padding: 1rem;
+    width: 8vw;
+    height: 10vh;
     display: flex;
     flex-flow: column;
     align-items: center;
     .shirtIcon-img {
-        height: 3rem;
+        height: 4vh;
     }
 }
 .cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-.cdk-drag-placeholder {
+.cdk-drag-placeholder.lineup-drag-placeholder {
     height: 100%;
     width: 100%;
-    background: #ccc;
-    border: dotted 3px #999;
+    background: white;
+    color: #424242;
+    border: dotted 3px rgb(0, 200, 0);
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+.cdk-drag-placeholder.pitch-placeholder {
+    height: 100%;
+    width: 100%;
+    
+}
 .cdk-drop-list-receiving, .cdk-drop-list-dragging { 
-    border: dotted 3px rgb(0, 255, 0);
+    border: dotted 3px rgb(0, 200, 0);
+}
+
+.cdk-drop-list-dragging {
+    cursor: grabbing;
+}
+
+//  *** ANGULAR MATERIAL classes ***
+// Do not move MATERIAL classes inside other classes
+
+.mat-optgroup {
+    text-transform: capitalize;
+}
+.mat-option.nation-option {
+    color: black;
+    text-transform: capitalize;
+}
+.mat-list-base.list .mat-list-item {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(242, 242, 242, 0.25);
+}
+.mat-expansion-panel, 
+.mat-accordion .mat-expansion-panel:first-of-type {
+    border-radius: 0;
+    box-sizing: border-box;
+    // cursor: grab;
+    // pointer-events: none;
+}
+.mat-expansion-panel-header {
+    border-top: 1px solid rgba(242, 242, 242, 0.25);
+    height: 3rem;
+    padding: 0 0.5rem;
+    cursor: grab;
+}
+.mat-expansion-panel-spacing {
+    margin: 0;
 }

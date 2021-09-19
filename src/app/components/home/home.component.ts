@@ -4,25 +4,36 @@ import { Player } from '../../models/player';
 import { LastName } from 'src/app/models/last-name';
 import { FirstName } from 'src/app/models/first-name';
 import * as nationsModule from '../../data/nations.json';
+import * as clubsModule from '../../data/clubs.json';
 import * as positionsModule from '../../data/positions.json';
 import * as pitchPositionsModule from '../../data/pitchPositions.json';
 
 import { Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
-import{ CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
+import{ CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Overlay } from '@angular/cdk/overlay';
+
+export interface PositionBox {
+  pitchPlayer?: Player;
+  class: string;
+  dragDisabled: boolean;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit {
   playerCount = 0;
-  players: Player[] = [];
+  players: Player[];
   sortedData: Player[];
   pitchPlayers: Player[];
+  savedData: any[];
 
   shirtIcon = '../../../assets/img/shirt-icon.jpg';
+  blankCrest = '../../../assets/img/blank-crest.jpg';
 
   lastName$!: Observable<LastName[]>;
   firstName$!: Observable<FirstName[]>;
@@ -31,16 +42,63 @@ export class HomeComponent implements OnInit {
   pitchPositions: any = (pitchPositionsModule as any).default;
 
   nations: any = (nationsModule as any).default;
+  nationsList: string[];
+  clubs: any = (clubsModule as any).default;
 
-  playersLoaded = false;
+  overlayOpen = false;
+  navToggle = false;
+  nation = "";
+  
+  positionBoxes: PositionBox[] = [
+    {
+      class: 'pox-box empty',
+      dragDisabled: true
+    },
+    {
+      class: 'pox-box empty',
+      dragDisabled: true
+    },
+    {
+      class: 'pox-box 23',
+      dragDisabled: true
+    },
+    {
+      class: 'pox-box 22',
+      dragDisabled: true
+    },
+    {
+      class: 'pox-box 21',
+      dragDisabled: true
+    },
+    {
+      class: 'pox-box empty',
+      dragDisabled: true
+    },
+    {
+      class: 'pox-box empty',
+      dragDisabled: true
+    },
+  ]
 
 
   constructor(private afs: FirestoreService) {
+    this.players = [];
     this.sortedData = this.players;
     this.pitchPlayers = [];
-   }
+    this.savedData = [];
+    this.nationsList = [];
+  }
 
   ngOnInit(): void {
+    for (const tierObj of this.nations) {
+      for (let i = 0; i < tierObj.nations.length; i++) {
+        this.nationsList.push(tierObj.nations[i]);
+      }
+    }
+  }
+
+  consoleLog() {
+    console.log(this.nation);
   }
 
   sortData(sort: Sort) {
@@ -54,24 +112,37 @@ export class HomeComponent implements OnInit {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'name': return compare(a.lastName, b.lastName, isAsc);
+        case 'club': return compare(a.club, b.club, isAsc);
         case 'pos': return compare(a.position, b.position, isAsc);
-        case 'alt_pos': return compare(a.altPositions[0], b.altPositions[0], isAsc);
+        case 'altPositions': return compare(a.altPositions[0], b.altPositions[0], isAsc);
         case 'foot': return compare(a.foot, b.foot, isAsc);
         case 'rating': return compare(a.rating, b.rating, isAsc);
+        case 'age': return compare(a.age, b.age, isAsc);
+        case 'nationality': return compare(a.nationality, b.nationality, isAsc);
         default: return 0;
       }
     });
   }
 
   drop(event: CdkDragDrop<Player[]>) {
+    let starterCount = 0;
+    let playerIndex = event.previousIndex;
+    let playerObj = event.previousContainer.data[playerIndex];
+    console.log(event.container.element.nativeElement.classList[2]);
+    let positionIndex = parseInt(event.container.element.nativeElement.classList[2]);
+    console.log(positionIndex);
+    // THINGS TO ADD
+    // If you hover over a position, the border should be either green, yellow, or red based on position
+    // The rating should be changed depending on the match
+    // A player should have a new rating/property for secondary positions about 2-3 ratings lower.
+    // Property will be called altRating
+    // Player should also have a badRating property. This will be 10-15 ratings lower. Not sure how to calculate as of yet.
+    // We might need a goalkeeper rating for outfield players and a outfield rating for goalkeepers.
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      // let oldTarget = this.players[event.previousIndex];
-      // this.players[event.previousIndex] = this.players[event.currentIndex];
-      // this.players[event.currentIndex] = oldTarget;
+      console.log(event.container.data);
     } 
     else if (event.previousContainer.id === "cdk-drop-list-24") {
-      let starterCount = 0;
       // Check for 11 players in starting lineup
       for (const player of this.pitchPlayers) {
         if (player !== undefined) {
@@ -80,11 +151,7 @@ export class HomeComponent implements OnInit {
           }
         } 
       }
-      let playerIndex = event.previousIndex;
-      let playerObj = event.previousContainer.data[playerIndex];
-
-      let positionIndex = Number(event.container.element.nativeElement.classList[2]);
-
+      console.log(positionIndex);
       switch (positionIndex) {
         case 0:
           playerObj.pitchPosition = "GK";
@@ -162,25 +229,51 @@ export class HomeComponent implements OnInit {
           console.log("Error: Check line 165 in home.component.ts");
           break;
       }
-      let firstInitial = playerObj.firstName.slice(0, 1);
-      playerObj.firstInitial = firstInitial;
+      
       this.pitchPlayers.push(playerObj);
       this.players.splice(playerIndex, 1);
-      event.container.element.nativeElement.innerHTML = `<div>${playerObj.firstInitial}. ${playerObj.lastName} ${playerObj.rating} <span>${playerObj.pitchPosition}</span></div>`;
-      event.container.element.nativeElement.classList.remove("pos-box");
-      event.container.element.nativeElement.children[0].className += "player-box";
-      event.container.element.nativeElement.children[0].children[0].className += "pitch-card-pos";
+      let el = event.container.element.nativeElement;
+      el.innerHTML = `${playerObj.firstInitial}. ${playerObj.lastName} ${playerObj.rating} <span>${playerObj.pitchPosition}</span>`;
+      el.classList.remove("pos-box");
+      el.classList.add("player-box");
+      el.children[0].className += "pitch-card-pos";
       starterCount++;
-      console.log(event.container);
-      console.log("pitch players:\n", this.pitchPlayers);
+      console.log(event.container.data, this.pitchPlayers);
     }
+    // Else if the player is moved to the bench
+    else if (event.container.id === "cdk-drop-list-24"){
+      starterCount--;
+      playerObj.pitchPosition = "";
+      let el = event.previousContainer.element.nativeElement;
+      el.innerHTML = `<div>${playerObj.firstInitial}. ${playerObj.lastName} ${playerObj.rating} <span>${playerObj.pitchPosition}</span></div>`;
+      el.classList.remove("player-box");
+      el.children[0].className += "pox-box";
+      el.children[0].children[0].className += "pitch-card-pos";
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+      console.log(event.container.data);
+    } 
+    // Else if the player is moved to another pitch position
     
   }
 
+  hoverPlayer(event: any) {
+    // console.log("Hover On Event:\n", event);
+  }
+
+  hoverOffPlayer(event: any) {
+    // console.log("Hover Off Event:\n", event);
+  }
 
   
 
   getPlayers() {
+    if (this.nation === "") {
+      alert("You must select a nation or random nationalities before generating a team");
+      return false
+    }
     // RESETS
     console.log("New set of players!")
     this.playerCount = 0;
@@ -190,10 +283,9 @@ export class HomeComponent implements OnInit {
     for (let index in this.positions) {
       this.positions[index].amount = 0;
     }
-    let nation = "any";
 
-    // S Tier
-    let numArray = [4, 8, 8, 14, 10, 20, 15, 30, 25, 35];
+    let tier = this.getNation("tier");
+    let numArray = this.getRatingBreakdown(tier);
 
     let first = this.afs.getRandomInt(numArray[0], numArray[1]);
     let second = this.afs.getRandomInt(numArray[2], numArray[3]);
@@ -210,40 +302,74 @@ export class HomeComponent implements OnInit {
         position: '',
         altPositions: [],
         rating: 0,
-        foot: ''
+        foot: '',
+        nationality: '',
+        age: 0,
+        club: ''
       };
+      
       player.position = this.getPosition();
       player.foot = this.getFoot(player.position);
       player.altPositions = this.getAltPositions(player.position, player.foot);
       for (let i = 0; i < player.altPositions.length - 1; i++) {
         player.altPositions[i] += ", ";
       }
-      if (player.altPositions.length < 1) {
-        // player.altPositions = "";
+      player.nationality = this.getNation("nationality");
+      let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth);
+      player.rating = ratingObj.rating;
+      let clubObj = this.getClub(ratingObj.clubRep);
+      player.club = clubObj.clubName;
+      player.clubLogo = clubObj.clubLogoUrl;
+      if (player.clubLogo = "") {
+        player.clubLogo = this.blankCrest;
       }
-      player.rating = this.getRating(this.playerCount, first, second, third, fourth, fifth);
-      
-      this.afs.getFirstName(nation)?.subscribe((firstNameArr) => { 
+      player.age = this.getAge(player.rating);
+
+      this.afs.getFirstName(player.nationality)?.subscribe((firstNameArr) => { 
         let firstNameObj: any = firstNameArr[0];
         player.firstName = firstNameObj.name;
+        player.firstInitial = player.firstName.slice(0, 1);
       });
 
-      this.afs.getLastName(nation)?.subscribe((lastNameArr) => { 
+      this.afs.getLastName(player.nationality)?.subscribe((lastNameArr) => { 
         let lastNameObj: any = lastNameArr[0];
         player.lastName = lastNameObj.name;
       });
-      
 
       this.players.push(player);
       this.sortedData.push(player);
       this.playerCount++;
 
-      // let playerPlus = {
-      //   ...player,
-
-      // }
     }
     console.log(this.players);
+  }
+
+  getNation(property: string) {
+    
+    if (property === "tier") {
+      let nationality: string = this.nation;
+      let tier: string = "";
+      if (nationality.includes("tier")) {
+        tier = nationality.slice(0, 1);
+      } else {
+        for (const tierLevel of this.nations) {
+          if (tierLevel.nations.includes(nationality)) {
+            tier = tierLevel;
+            break;
+          }
+        }
+      }
+      console.log("Tier:\n", tier)
+      return tier
+    } else {
+      let nationality: string = this.nation;
+      if (nationality.includes("tier")) {
+        let num = this.afs.getRandomInt(0, this.nationsList.length - 1);
+        nationality = this.nationsList[num];
+      }
+      console.log("Nationality:\n", nationality)
+      return nationality
+    }
   }
 
   getPosition() {
@@ -526,66 +652,209 @@ export class HomeComponent implements OnInit {
 
   }
 
-  getRating(i: number, first: number, second: number, third: number, fourth: number, fifth: number) {
+  getRatingBreakdown(tier: string): number[] {
+    console.log(tier);
+    switch (tier) {
+      case "s":
+        return [1, 5, 8, 14, 10, 20, 15, 30, 25, 35]
+      case "a":
+        return [1, 3]
+      case "b":
+        return [0, 2]
+      case "c":
+        return [0, 1]
+      case "d":
+        return [0, 1]
+      case "e":
+        return [0, 1]
+      case "f":
+        return [0, 0]
+      default:
+        throw new Error("getRatingBreakdown() had an error");
+    }
+  }
+
+  getRatingAndClubRep(i: number, first: number, second: number, third: number, fourth: number, fifth: number) {
+
     let rating: number = 0;
+    let clubRep = "";
+
     if (i < first) {
-            rating = Math.min(this.afs.getRandomInt(85,99), this.afs.getRandomInt(85, 99), this.afs.getRandomInt(85, 99));
-        }
-    else if(i < first + second) {rating = this.afs.getRandomInt(77, 84)}
-    else if (i < first + second + third) {rating = this.afs.getRandomInt(70, 76)}
-    else if (i < first + second + third + fourth) {rating = this.afs.getRandomInt(62, 69)}
-    else if (i < first + second + third + fourth + fifth) {rating = this.afs.getRandomInt(55, 61)}
+      rating = Math.min(this.afs.getRandomInt(85,99), this.afs.getRandomInt(85, 99), this.afs.getRandomInt(85, 99));
+      clubRep = "giant";
+    } else if(i < first + second) {
+      rating = this.afs.getRandomInt(77, 84);
+      clubRep = "championsLeague";
+    } else if (i < first + second + third) {
+      rating = this.afs.getRandomInt(70, 76);
+      clubRep = "europaLeague";
+    } else if (i < first + second + third + fourth) {
+      rating = this.afs.getRandomInt(62, 69);
+      clubRep = "europaConferenceLeague"
+    } else if (i < first + second + third + fourth + fifth) {
+      rating = this.afs.getRandomInt(55, 61);
+      clubRep = "eflChampionship";
+    }
 
-    return rating;
+    return {
+      rating, 
+      clubRep
+    };
   }
 
-  savePlayers() {
-    this.afs.saveRoster(this.players, this.pitchPlayers);
+  getClub(clubRep: string) {
+    let clubArr =  this.clubs[clubRep];
+    console.log(clubArr);
+    let index = this.afs.getRandomInt(0, clubArr.length - 1);
+    let clubName = clubArr[index].club;
+    let clubLogoUrl = clubArr[index].logo;
+    // console.log(clubLogoUrl);
+    return {
+      clubName,
+      clubLogoUrl
+    };
   }
 
-  loadPlayers() {
-    this.playersLoaded = true;
-    console.log(this.players);
-    console.log(localStorage);  
-    if (localStorage.length > 0) {
-      this.players = [];
-      this.sortedData = [];
-      this.pitchPlayers = [];
-      for (let index in this.positions) {
-        this.positions[index].amount = 0;
+  getAge(rating: number) {
+    // Average ages are based on this website https://football-observatory.com/IMG/sites/mr/mr49/en/
+    let ageIndex: number;
+    if (rating > 84) {
+      ageIndex = Math.max(this.afs.getRandomInt(0, 1000), this.afs.getRandomInt(0, 1000), this.afs.getRandomInt(0, 1000));
+    } else if (rating > 76) {
+      ageIndex = Math.max(this.afs.getRandomInt(0, 1000), this.afs.getRandomInt(0, 1000));
+    } else {
+      ageIndex = this.afs.getRandomInt(0, 1000);
+    }
+
+    if (ageIndex < 1) {
+      return 16
+    } else if (ageIndex >= 1 && ageIndex <= 8) {
+      return 17
+    } else if (ageIndex >= 9 && ageIndex <= 30) {
+      return 18
+    } else if (ageIndex >= 31 && ageIndex <= 74) {
+      return 19
+    } else if (ageIndex >= 75 && ageIndex <= 133) {
+      return 20
+    } else if (ageIndex >= 134 && ageIndex <= 207) {
+      return 21
+    } else if (ageIndex >= 208 && ageIndex <= 286) {
+      return 22
+    } else if (ageIndex >= 287 && ageIndex <= 365) {
+      return 23
+    } else if (ageIndex >= 365 && ageIndex <= 447) {
+      return 24
+    } else if (ageIndex >= 448 && ageIndex <= 524) {
+      return 25
+    } else if (ageIndex >= 525 && ageIndex <= 599) {
+      return 26
+    } else if (ageIndex >= 600 && ageIndex <= 669) {
+      return 27
+    } else if (ageIndex >= 670 && ageIndex <= 735) {
+      return 28
+    } else if (ageIndex >= 736 && ageIndex <= 794) {
+      return 29
+    } else if (ageIndex >= 795 && ageIndex <= 843) {
+      return 30
+    } else if (ageIndex >= 844 && ageIndex <= 890) {
+      return 31
+    } else if (ageIndex >= 891 && ageIndex <= 925) {
+      return 32
+    } else if (ageIndex >= 926 && ageIndex <= 952) {
+      return 33
+    } else if (ageIndex >= 953 && ageIndex <= 970) {
+      return 34
+    } else if (ageIndex >= 971 && ageIndex <= 983) {
+      return 35
+    } else if (ageIndex >= 984 && ageIndex <= 991) {
+      return 36
+    } else if (ageIndex >= 992 && ageIndex <= 996) {
+      return 37
+    } else {
+      return 38
+    }
+  }
+
+  savePlayers(saveLocation: string) {
+    if (saveLocation === 'firestore') {
+      if (window.confirm("Are you sure you want to save?")) {
+        this.afs.saveRoster(this.players, this.pitchPlayers);
+      } else {
+        return false
       }
-
+    } else if (saveLocation === 'localStorage') {
+      if (localStorage.length > 0) {
+        if (window.confirm("Are you sure you want to overwrite your current roster saved in Local Storage?")) {
+          localStorage.clear();
+        } else {
+          return false
+        }
+      }
       for (let i = 0; i < 60; i++) {
-        let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
-        let player = JSON.parse(playerString || 'Null Error') as Player;
-        this.players.push(player);
-        this.sortedData.push(player);
+        localStorage.setItem(`TEAMGEN - Player #${i}`, JSON.stringify(this.players[i]));
       }
-
-      for (const pos of this.pitchPositions) {
-        let playerString = localStorage.getItem(`TEAMGEN - Starting ${pos.position}`);
-        let playerObj = JSON.parse(playerString || '{}') as Player;
-        if (playerString !== null) {
-          this.pitchPlayers.push(playerObj);
-        }
+      for (const player of this.pitchPlayers) {
+        localStorage.setItem(`TEAMGEN - Starting ${player.pitchPosition}`, JSON.stringify(player));
       }
-
-      for (const player of this.players) {      
-        for (const pos of this.positions) {
-          if (player.position === pos.position) {
-            pos.amount++;
-            break;
-          }
-        }
-      }
+      // console.log(localStorage);
+    } else {
+      throw new Error("Problem with saving!");
     }
     
-    else if (this.players.length < 1 || this.players === undefined){
-      this.afs.getRoster().subscribe((obj) => { 
-        let playersArr: any = obj[0];
-        this.players = playersArr.bench_reserves;
-        this.sortedData = playersArr.bench_reserves;
-        this.pitchPlayers = playersArr.starters;
+  }
+
+  saveDataOverlay(loadMore?: string) {
+    this.overlayOpen = true;
+    if (loadMore !== 'check'){
+      return false
+    }
+    this.afs.getRosterId().subscribe((obj) => {
+      console.log("Checking firestore for save data...\n")
+      for (const roster of obj) {
+        let id = roster.payload.doc.id;
+        let duplicateId = false;
+        for (let i = 0; i < this.savedData.length; i++) {
+          if (this.savedData[i].id === id) {
+            duplicateId = true;
+          }
+        }
+        if (!duplicateId) {
+          this.savedData.push({id: id});
+        }
+      }
+    });
+  }
+
+  closeSaveDataOverlay() {
+    this.overlayOpen = false;
+  }
+
+  loadPlayers(saveLocation: string) {
+    console.log("Save Data\n", saveLocation);
+    this.overlayOpen = false;
+    if (saveLocation === 'loadLocalStorage') {
+      if (localStorage.length > 0) {
+        this.players = [];
+        this.sortedData = [];
+        this.pitchPlayers = [];
+        for (let index in this.positions) {
+          this.positions[index].amount = 0;
+        }
+
+        for (let i = 0; i < 60; i++) {
+          let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
+          let player = JSON.parse(playerString || 'Null Error') as Player;
+          this.players.push(player);
+          this.sortedData.push(player);
+        }
+
+        for (const pos of this.pitchPositions) {
+          let playerString = localStorage.getItem(`TEAMGEN - Starting ${pos.position}`);
+          let playerObj = JSON.parse(playerString || '{}') as Player;
+          if (playerString !== null) {
+            this.pitchPlayers.push(playerObj);
+          }
+        }
 
         for (const player of this.players) {      
           for (const pos of this.positions) {
@@ -595,20 +864,34 @@ export class HomeComponent implements OnInit {
             }
           }
         }
-
-        for (let i = 0; i < 60; i++) {
-          localStorage.setItem(`TEAMGEN - Player #${i}`, JSON.stringify(this.players[i]));
-        }
-        for (const player of this.pitchPlayers) {
-          localStorage.setItem(`TEAMGEN - Starting ${player.pitchPosition}`, JSON.stringify(player));
-        }
-
-      });
+        console.log("Successfully loaded", this.players);
+      } else {
+        throw new Error("Local Storage Data not found");
+      }
+    } else {
+        this.afs.getRoster(saveLocation).subscribe((obj) => {
+          console.log(obj);
+          if (obj !== undefined) {      
+            this.players = obj.benchReserves;
+            this.sortedData = obj.benchReserves;
+            console.log("GOT PLAYERS: \n", this.players);
+            this.pitchPlayers = obj.starters;
+            console.log("Got STARTERS:\n", this.pitchPlayers);
+          } else {
+            console.log("Problem loading data from firestore");
+          }
+          for (const player of this.players) {      
+            for (const pos of this.positions) {
+              if (player.position === pos.position) {
+                pos.amount++;
+                break;
+              }
+            }
+          }
+        });
     }
-    console.log(this.players);
   }
   
-
 }
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {

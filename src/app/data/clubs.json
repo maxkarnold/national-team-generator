@@ -1,0 +1,364 @@
+{
+    "giant": [
+        {
+            "club": "liverpool",
+            "logo": "https://fmdataba.com/images/c/s/676.png"
+        },
+        {
+            "club": "manchester city",
+            "logo": "https://fmdataba.com/images/c/s/679.png"
+        },
+        {
+            "club": "bayern munich",
+            "logo": "https://fmdataba.com/images/c/s/915.png"
+        },
+        {
+            "club": "FC barcelona",
+            "logo": "https://fmdataba.com/images/c/s/1708.png"
+        },
+        {
+            "club": "paris saint-germain",
+            "logo": "https://fmdataba.com/images/c/s/868.png"
+        },
+        {
+            "club": "real madrid",
+            "logo": "https://fmdataba.com/images/c/s/1736.png"
+        },
+        {
+            "club": "chelsea",
+            "logo": "https://fmdataba.com/images/c/s/630.png"
+        },
+        {
+            "club": "manchester united",
+            "logo": "https://fmdataba.com/images/c/s/680.png"
+        },
+        {
+            "club": "atlético madrid",
+            "logo": "https://fmdataba.com/images/c/s/1687.png"
+        },
+        {
+            "club": "juventus",
+            "logo": "https://fmdataba.com/images/c/s/1139.png"
+        },
+        {
+            "club": "inter",
+            "logo": "https://fmdataba.com/images/c/s/1135.png"
+        }
+    ],
+    "championsLeague": [
+        {
+            "club": "borussia dortmund",
+            "logo": "https://fmdataba.com/images/c/s/907.png"
+        },
+        {
+            "club": "AC milan",
+            "logo": "https://fmdataba.com/images/c/s/1099.png"
+        },
+        {
+            "club": "atalanta",
+            "logo": "https://fmdataba.com/images/c/s/1106.png"
+        },
+        {
+            "club": "tottenham",
+            "logo": "https://fmdataba.com/images/c/s/728.png"
+        },
+        {
+            "club": "arsenal",
+            "logo": "https://fmdataba.com/images/c/s/602.png"
+        },
+        {
+            "club": "ajax",
+            "logo": "https://fmdataba.com/images/c/s/992.png"
+        },
+        {
+            "club": "sevilla",
+            "logo": "https://fmdataba.com/images/c/s/1759.png"
+        },
+        {
+            "club": "napoli",
+            "logo": "https://fmdataba.com/images/c/s/1150.png"
+        },
+        {
+            "club": "leicester city",
+            "logo": "https://fmdataba.com/images/c/s/673.png"
+        },
+        {
+            "club": "RB leipzig",
+            "logo": "https://fmdataba.com/images/c/s/91013388.png"
+        },
+        {
+            "club": "FC porto",
+            "logo": "https://fmdataba.com/images/c/s/1478.png"
+        },
+        {
+            "club": "villarreal",
+            "logo": "https://fmdataba.com/images/c/s/1777.png"
+        }
+    ],
+    "europaLeague": [
+        {
+            "club": "everton",
+            "logo": "https://fmdataba.com/images/c/s/650.png"
+        },
+        {
+            "club": "west ham united",
+            "logo": ""
+        },
+        {
+            "club": "roma",
+            "logo": "https://fmdataba.com/images/c/s/1100.png"
+        },
+        {
+            "club": "RB salzburg",
+            "logo": ""
+        },
+        {
+            "club": "SL benfica",
+            "logo": ""
+        },
+        {
+            "club": "real sociedad",
+            "logo": "https://fmdataba.com/images/c/s/1742.png"
+        },
+        {
+            "club": "vfl wolfsburg",
+            "logo": ""
+        },
+        {
+            "club": "lazio",
+            "logo": "https://fmdataba.com/images/c/s/1140.png"
+        },
+        {
+            "club": "bayer 04 leverkusen",
+            "logo": "https://fmdataba.com/images/c/s/901.png"
+        },
+        {
+            "club": "borussia mönchengladbach",
+            "logo": ""
+        },
+        {
+            "club": "lyon",
+            "logo": ""
+        },
+        {
+            "club": "marseille",
+            "logo": ""
+        },
+        {
+            "club": "AS monaco",
+            "logo": ""
+        },
+        {
+            "club": "lille OSC",
+            "logo": ""
+        },
+        {
+            "club": "sporting CP",
+            "logo": "https://fmdataba.com/images/c/s/1489.png"
+        }
+    ],
+    "europaConferenceLeague": [
+        {
+            "club": "leeds united",
+            "logo": ""
+        },
+        {
+            "club": "aston villa",
+            "logo": ""
+        },
+        {
+            "club": "wolves",
+            "logo": "https://fmdataba.com/images/c/s/740.png"
+        },
+        {
+            "club": "athletic bilbao",
+            "logo": "https://fmdataba.com/images/c/s/1664.png"
+        },
+        {
+            "club": "real betis",
+            "logo": "https://fmdataba.com/images/c/s/1733.png"
+        },
+        {
+            "club": "fiorentina",
+            "logo": "https://fmdataba.com/images/c/s/992.png"
+        },
+        {
+            "club": "valencia",
+            "logo": "https://fmdataba.com/images/c/s/1775.png"
+        },
+        {
+            "club": "SC braga",
+            "logo": ""
+        },
+        {
+            "club": "PSV eindhoven",
+            "logo": ""
+        },
+        {
+            "club": "sassuolo",
+            "logo": ""
+        },
+        {
+            "club": "hertha BSC",
+            "logo": ""
+        },
+        {
+            "club": "eintracht frankfurt",
+            "logo": ""
+        },
+        {
+            "club": "TSG 1899 hoffenheim",
+            "logo": ""
+        },
+        {
+            "club": "ogc nice",
+            "logo": ""
+        },
+        {
+            "club": "bordeaux",
+            "logo": ""
+        },
+        {
+            "club": "stade rennais",
+            "logo": ""
+        },
+        {
+            "club": "AS saint-étienne",
+            "logo": ""
+        },
+        {
+            "club": "southampton",
+            "logo": "https://fmdataba.com/images/c/s/713.png"
+        },
+        {
+            "club": "newcastle united",
+            "logo": ""
+        },
+        {
+            "club": "crystal palace",
+            "logo": ""
+        },
+        {
+            "club": "young boys",
+            "logo": ""
+        },
+        {
+            "club": "FC basel",
+            "logo": ""
+        },
+        {
+            "club": "union berlin",
+            "logo": ""
+        },
+        {
+            "club": "sc freiburg",
+            "logo": ""
+        },
+        {
+            "club": "celta vigo",
+            "logo": ""
+        },
+        {
+            "club": "olympiakos",
+            "logo": ""
+        },
+        {
+            "club": "shakhtar donetsk",
+            "logo": ""
+        },
+        {
+            "club": "dynamo kyiv",
+            "logo": ""
+        },
+        {
+            "club": "zenit",
+            "logo": ""
+        },
+        {
+            "club": "celtic",
+            "logo": ""
+        },
+        {
+            "club": "rangers",
+            "logo": ""
+        },
+        {
+            "club": "dinamo zagreb",
+            "logo": ""
+        },
+        {
+            "club": "slavia praha",
+            "logo": ""
+        },
+        {
+            "club": "feyenoord",
+            "logo": ""
+        },
+        {
+            "club": "FK partizan",
+            "logo": ""
+        },
+        {
+            "club": "red star belgrade",
+            "logo": ""
+        }
+    ],
+    "eflChampionship": [
+        {
+            "club": "burnley",
+            "logo": ""
+        },
+        {
+            "club": "brentford",
+            "logo": ""
+        },
+        {
+            "club": "watford",
+            "logo": ""
+        },
+        {
+            "club": "norwich city",
+            "logo": ""
+        },
+        {
+            "club": "bournemouth",
+            "logo": ""
+        },
+        {
+            "club": "sheffield united",
+            "logo": ""
+        },
+        {
+            "club": "fulham",
+            "logo": ""
+        },
+        {
+            "club": "west brom",
+            "logo": ""
+        },
+        {
+            "club": "cardiff city",
+            "logo": ""
+        },
+        {
+            "club": "swansea city",
+            "logo": ""
+        },
+        {
+            "club": "blackburn",
+            "logo": ""
+        },
+        {
+            "club": "QPR",
+            "logo": ""
+        },
+        {
+            "club": "nottingham forest",
+            "logo": ""
+        },
+        {
+            "club": "derby county",
+            "logo": ""
+        }
+    ]
+}

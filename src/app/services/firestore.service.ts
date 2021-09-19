@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, QuerySnapshot } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { FirstName } from '../models/first-name';
 import { LastName } from '../models/last-name';
 import { merge, Observable, pipe } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
 import { Player } from '../models/player';
+
+export interface Roster {
+  starters: Player[];
+  benchReserves: Player[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +18,15 @@ export class FirestoreService {
   
   firstNames: Observable<FirstName[]>;
   lastNames: Observable<LastName[]>;
+  // private rosterDoc: AngularFirestoreDocument<Roster>
+  // roster: Observable<Roster>
   
 
   constructor(public afs: AngularFirestore) {
     this.firstNames = new Observable;
     this.lastNames = new Observable;
+    // this.rosterDoc = afs.doc<Roster>()
+    // this.roster = this.rosterDoc.valueChanges();
   }
 
   getRandomInt(min: number, max: number) {
@@ -28,6 +37,7 @@ export class FirestoreService {
   }
 
   getFirstName(nation: string){
+    nation = "any";
     let randomIndex = this.getRandomInt(1, 5);
     let randomQuery = this.getRandomInt(0, 50000);
     if (nation === "any") {
@@ -40,7 +50,9 @@ export class FirestoreService {
       console.log("getFirstName() failed!");
     }
   }
+
   getLastName(nation: string){
+    nation = "any";
     let randomIndex = this.getRandomInt(1, 5);
     let randomQuery = this.getRandomInt(0, 50000);
     if (nation === "any") {
@@ -54,11 +66,11 @@ export class FirestoreService {
     }
   }
 
-  saveRoster(roster: Player[], starters: Player[]) {
+  saveRoster(benchReserves: Player[], starters: Player[]) {
     let docRef = this.afs.collection("savedRosters").doc();
 
     docRef.set({
-      bench_reserves: roster,
+      benchReserves: benchReserves,
       starters: starters
     })
       .then(() => {
@@ -68,8 +80,12 @@ export class FirestoreService {
 
   }
 
-  getRoster() {
-    return this.afs.collection("savedRosters", ref => ref.limit(1)).valueChanges()
+  getRosterId() {
+    return this.afs.collection("savedRosters").snapshotChanges()
+  }
+
+  getRoster(firestoreId: string) {
+    return this.afs.doc<Roster>(`savedRosters/${firestoreId}`).valueChanges();
   }
 
 }
