@@ -1,74 +1,122 @@
 [
     {
-        "position": "GK"
+        "position": "GK",
+        "playerPosition": "GK",
+        "boxIndex": 38
     },
     {
-        "position": "DR"
+        "position": "DR",
+        "playerPosition": "RB",
+        "boxIndex": 34
     },
     {
-        "position": "DCR"
+        "position": "DCR",
+        "playerPosition": "CB",
+        "boxIndex": 32
     },
     {
-        "position": "DC"
+        "position": "DC",
+        "playerPosition": "CB",
+        "boxIndex": 31
     },
     {
-        "position": "DCL"
+        "position": "DCL",
+        "playerPosition": "CB",
+        "boxIndex": 30
     },
     {
-        "position": "DL"
+        "position": "DL",
+        "playerPosition": "LB",
+        "boxIndex": 28
     },
     {
-        "position": "WBR"
+        "position": "WBR",
+        "playerPosition": "RWB",
+        "boxIndex": 27
     },
     {
-        "position": "DMR"
+        "position": "DMR",
+        "playerPosition": "DM",
+        "boxIndex": 25
     },
     {
-        "position": "DMC"
+        "position": "DMC",
+        "playerPosition": "DM",
+        "boxIndex": 24
     },
     {
-        "position": "DML"
+        "position": "DML",
+        "playerPosition": "DM",
+        "boxIndex": 23
     },
     {
-        "position": "WBL"
+        "position": "WBL",
+        "playerPosition": "LWB",
+        "boxIndex": 21
     },
     {
-        "position": "MR"
+        "position": "MR",
+        "playerPosition": "MR",
+        "boxIndex": 20
     },
     {
-        "position": "MCR"
+        "position": "MCR",
+        "playerPosition": "MC",
+        "boxIndex": 18
     },
     {
-        "position": "MC"
+        "position": "MC",
+        "playerPosition": "MC",
+        "boxIndex": 17
     },
     {
-        "position": "MCL"
+        "position": "MCL",
+        "playerPosition": "MC",
+        "boxIndex": 16
     },
     {
-        "position": "ML"
+        "position": "ML",
+        "playerPosition": "ML",
+        "boxIndex": 14
     },
     {
-        "position": "AMR"
+        "position": "AMR",
+        "playerPosition": "AMR",
+        "boxIndex": 13
     },
     {
-        "position": "AMCR"
+        "position": "AMCR",
+        "playerPosition": "AMC",
+        "boxIndex": 11
     },
     {
-        "position": "AMC"
+        "position": "AMC",
+        "playerPosition": "AMC",
+        "boxIndex": 10
     },
     {
-        "position": "AMCL"
+        "position": "AMCL",
+        "playerPosition": "AMC",
+        "boxIndex": 9
     },
     {
-        "position": "AML"
+        "position": "AML",
+        "playerPosition": "AML",
+        "boxIndex": 7
     },
     {
-        "position": "FR"
+        "position": "FR",
+        "playerPosition": "ST",
+        "boxIndex": 4
     },
     {
-        "position": "FC"
+        "position": "FC",
+        "playerPosition": "ST",
+        "boxIndex": 3
     },
     {
-        "position": "FL"
+        "position": "FL",
+        "playerPosition": "ST",
+        "boxIndex": 2
     }
 ]

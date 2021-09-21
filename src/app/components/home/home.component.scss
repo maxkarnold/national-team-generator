@@ -151,7 +151,8 @@ h3 {
                 margin: 0 auto 1rem;
             }
         }   
-        .bench-container {
+        .bench-container,
+        .starters-container {
             width: 100%;
             .row-container {
                 display: table-row;
@@ -170,11 +171,12 @@ h3 {
         margin: 20px auto;
         height: 100vh;
         width: 100%;
-        max-width: 750px;
+        
         display: flex;
         align-items: center;
         @media screen and (min-width: 800px) {
             width: 75%;
+            max-width: 60vw;
             margin: 0;
             position: sticky;
             top: 0;
@@ -247,7 +249,7 @@ h3 {
         .pitch-grid{
             z-index: 3;
             position: absolute;
-            width: 100%;
+            // width: 100%;
             height: 100%;
             display: grid;
             grid-template-rows: repeat(6, 1fr);
@@ -257,56 +259,68 @@ h3 {
             align-items: center;
             padding: 0 0.5rem 0;
             
-            .pos-box {
-                width: 10vw;
-                height: 10.5vh;
-                @media screen and (min-width: 800px) {
-                    width: 6.25vw;
-                    width: 90%;
-                    height: 9vh;
-                }
-                background: rgba(144, 238, 144, .25);
-                border: 1px solid rgba(255, 255, 255, 0.5);
-                display: flex;
-                flex-flow: column;
-                justify-content: center;
-                align-items: center;
-                cursor: grab;
-                
-            }  
-            .pos-box:active {
-                cursor: grabbing;
-            }
-            .pos-box.empty {
-                visibility: hidden;
-            }
             .shirtIcon-img {
                 height: 6vh;
                 @media screen and (min-width: 800px) {
                     height: 8vh;
                 }
             } 
-            div {
-                width: 12vw;
-                height: 12.5vh;
-                background-color: lightgray;
-                border: 2px solid black;
-                border-radius: 5px;
-                display: flex;
-                flex-flow: column;
-                justify-content: center;
-                align-items: center;
+            .pos-box {
+                
+                // background-color: lightgray;
+                // border: 2px solid black;
+                // border-radius: 5px;
                 @media screen and (min-width: 800px) {
-                    width: 8vw;
-                    height: 8.5vw;
+                    // width: 8vw;
+                    // height: 8.5vw;
                 }
-                span {
-                    font-weight: bold;
-                }
+                
             }
         }
         
     }
+}
+
+.empty {
+    visibility: hidden;
+}
+.pos-box {
+    
+    @media screen and (min-width: 800px) {
+        width: 6.25vw;
+        width: 90%;
+        height: 9vh;
+    }
+}  
+
+.active {
+    display: flex;
+    flex-flow: column;
+}
+.inactive {
+    display: none;
+}
+.active.player-box {
+    width: 10vw;
+    height: 10.5vh;
+    max-width: 10rem;
+    max-height: 10.5rem;
+    background: #a3a1a1;
+    border: 1px solid white;
+    color: white;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+}
+.active.pos-box {
+    max-width: 90%;
+    max-height: 10.5rem;
+    background: rgba(144, 238, 144, .25);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
 }
 
 .lineup-grid {
@@ -348,7 +362,7 @@ h3 {
         grid-area: player;
     }
     .bench-container,
-    .starters {
+    .starters-container {
         text-transform: capitalize;
         border-bottom: none;
         .player-row {
@@ -438,16 +452,22 @@ h3 {
     width: 100%;
     background: white;
     color: #424242;
-    border: dotted 3px rgb(0, 200, 0);
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+.green-placeholder {
+    border: dotted 3px rgb(0, 255, 0);
+}
+.yellow-placeholder {
+    border: dotted 3px rgb(255, 255, 0);
+}
+.red-placeholder {
+    border: dotted 3px rgb(255, 0, 0);
+}
+
 .cdk-drag-placeholder.pitch-placeholder {
     height: 100%;
     width: 100%;
     
-}
-.cdk-drop-list-receiving, .cdk-drop-list-dragging { 
-    border: dotted 3px rgb(0, 200, 0);
 }
 
 .cdk-drop-list-dragging {

@@ -16,10 +16,10 @@
         <mat-label>-- Choose a Nation --</mat-label>  
         <mat-select appearance="fill" [(ngModel)]="nation" class="select-nations">
             <mat-optgroup *ngFor="let tierGroup of this.nations" [label]="tierGroup.tier">
-                <mat-option [value]="tierGroup.tier" class="nation-option" (click)="consoleLog()">
+                <mat-option [value]="tierGroup.tier" class="nation-option">
                     Random Nationalities
                 </mat-option>
-                <mat-option *ngFor="let nation of tierGroup.nations" [value]="nation" class="nation-option" (click)="consoleLog()">
+                <mat-option *ngFor="let nation of tierGroup.nations" [value]="nation" class="nation-option">
                     {{nation}}
                 </mat-option>
             </mat-optgroup>
@@ -61,17 +61,22 @@
                 <div class="half-line pitch-divs"></div>
                 <div class="goal-box-circle-bottom pitch-divs"></div>
                 <div class="goal-box-bottom pitch-divs"></div>
-                <div class="pitch-grid" >
-                    <!-- <div *ngFor="let box of positionBoxes" [class]="box.class" [cdkDragData]="pitchPlayers" cdkDrag [cdkDragDisabled]="box.dragDisabled">
-                        <ng-container *ngIf="box.pitchPlayer === undefined; else elseTemplate">
-                            Placeholder
-                        </ng-container>
-                        <ng-template #elseTemplate>
-                            Actual Player
-                        </ng-template>
+                <div class="pitch-grid">
+                    <div *ngFor="let box of positionBoxes" [class]="getPositionBoxes(box)" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="pitchPlayers">
+                        <div [class]="getPlayerClass(box)" cdkDrag>
+                            <!-- <div *cdkDragPreview>
+                                <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
+                                <div class="player-preview">{{pitchPlayers[23].lastName}} {{pitchPlayers[23].position}} {{pitchPlayers[23].rating}}</div>
+                            </div> -->
+                            
+                        </div>
+                        <div [class]="getPosBoxClass(box)">
+                            {{box.class}}
+                            <!-- <div [class]="getPosPlaceholder(box)" *cdkDragPlaceholder>Placeholder</div> -->
+                        </div>
                         
-                    </div> -->
-                    <div class="pos-box empty"></div>
+                    </div>
+                    <!-- <div class="pos-box empty"></div>
                     <div class="pos-box empty"></div>
                     <div class="pos-box 23" cdkDrag cdkDropList (cdkDropListDropped)="drop($event)">
                         <div class="pitch-placeholder" *cdkDragPlaceholder><img class="shirtIcon-img" [src]="shirtIcon" [alt]="">Placeholder</div>
@@ -164,8 +169,8 @@
                     </div>
                     <div class="pos-box empty"></div>
                     <div class="pos-box empty"></div>
-                    <div class="pos-box empty"></div>
-                </div>
+                    <div class="pos-box empty"></div> -->
+                </div> 
             </div> 
         </div>
         <div class="lineup-container">
@@ -175,7 +180,7 @@
                 <ul class="lineup-headers">
                     <li class="name-header">Name</li>
                     <li>Position</li>
-                    <li>Other Positions</li>
+                    <li>Age</li>
                     <li>Rating</li>
                 </ul>
                 <div class="lineup-spots">
@@ -250,43 +255,13 @@
                 </div>
                 <div class="players-container">
                     <mat-accordion multi>
-                        <mat-expansion-panel *ngFor="let player of pitchPlayers">
-                            <mat-expansion-panel-header>
-                                <ul class="player-row" (mouseenter)="hoverPlayer($event)" (mouseleave)="hoverOffPlayer($event)">
-                                    <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
-                                    <li>{{player.position}}</li>
-                                    <li class="alt-positions">(<span *ngFor="let pos of player.altPositions">{{pos}}</span>)</li>
-                                    <li>{{player.rating}}</li>
-                                    <li *cdkDragPreview>
-                                        <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
-                                        <div class="player-preview">{{player.lastName}} {{player.position}} {{player.rating}}</div>
-                                    </li>
-                                </ul>
-                            </mat-expansion-panel-header>
-                            <p class="expanded-info">
-                                <span>Full Name:</span><span>{{player.firstName}} {{player.lastName}}</span>
-                            </p>
-                            <p class="expanded-info">
-                                <span>Club:</span><span>{{player.clubLogo}} {{player.club}}</span>
-                            </p>
-                            <p class="expanded-info">
-                                <span>Nationality:</span><span>{{player.nationality}}</span>
-                            </p>
-                            <p class="expanded-info">
-                                <span>Age:</span><span>{{player.age}}</span>
-                            </p>
-                            <p class="expanded-info">
-                                <span>Preferred Foot:</span><span>{{player.foot}}</span>
-                            </p>
-                            
-                        </mat-expansion-panel>
-                        <div class="bench-container" cdkDropList [cdkDropListData]="players" (cdkDropListDropped)="drop($event)" >
-                            <mat-expansion-panel *ngFor="let player of players" cdkDrag [cdkDragData]="player" (mouseenter)="hoverPlayer($event)" (mouseleave)="hoverOffPlayer($event)">
-                                <mat-expansion-panel-header>
+                        <div class="starters-container">
+                            <mat-expansion-panel *ngFor="let player of pitchPlayers">
+                                <mat-expansion-panel-header [class]="getPlayerClass()">
                                     <ul class="player-row">
                                         <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
                                         <li>{{player.position}}</li>
-                                        <li class="alt-positions">(<span *ngFor="let pos of player.altPositions">{{pos}}</span>)</li>
+                                        <li>{{player.age}}</li>
                                         <li>{{player.rating}}</li>
                                         <li *cdkDragPreview>
                                             <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
@@ -298,13 +273,45 @@
                                     <span>Full Name:</span><span>{{player.firstName}} {{player.lastName}}</span>
                                 </p>
                                 <p class="expanded-info">
-                                    <span>Club:</span><span>{{player.clubLogo}}{{player.club}}</span>
+                                    <span>Other Positions:</span><span *ngFor="let pos of player.altPositions">{{pos}}</span>
+                                </p>
+                                <p class="expanded-info">
+                                    <span>Club:</span><span>{{player.clubLogo}} {{player.club}}</span>
                                 </p>
                                 <p class="expanded-info">
                                     <span>Nationality:</span><span>{{player.nationality}}</span>
                                 </p>
                                 <p class="expanded-info">
-                                    <span>Age:</span><span>{{player.age}}</span>
+                                    <span>Preferred Foot:</span><span>{{player.foot}}</span>
+                                </p>
+                                
+                            </mat-expansion-panel>
+                        </div>
+                        <div class="bench-container" cdkDropList id="bench-players" [cdkDropListData]="players" (cdkDropListDropped)="drop($event)" >
+                            <mat-expansion-panel *ngFor="let player of players" cdkDrag [cdkDragData]="player" (cdkDragStarted)="getPositionOutline($event)" (cdkDragReleased)="removeOutlineRelease($event)" (cdkDragDropped)="removeOutlineDrop($event)">
+                                <mat-expansion-panel-header>
+                                    <ul class="player-row">
+                                        <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
+                                        <li>{{player.position}}</li>
+                                        <li>{{player.age}}</li>
+                                        <li>{{player.rating}}</li>
+                                        <li *cdkDragPreview>
+                                            <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
+                                            <div class="player-preview">{{player.lastName}} {{player.position}} {{player.rating}}</div>
+                                        </li>
+                                    </ul>
+                                </mat-expansion-panel-header>
+                                <p class="expanded-info">
+                                    <span>Full Name:</span><span>{{player.firstName}} {{player.lastName}}</span>
+                                </p>
+                                <p class="expanded-info">
+                                    <span>Other Positions:</span><span *ngFor="let pos of player.altPositions">{{pos}}</span>
+                                </p>
+                                <p class="expanded-info">
+                                    <span>Club:</span><span>{{player.clubLogo}}{{player.club}}</span>
+                                </p>
+                                <p class="expanded-info">
+                                    <span>Nationality:</span><span>{{player.nationality}}</span>
                                 </p>
                                 <p class="expanded-info">
                                     <span>Preferred Foot:</span><span>{{player.foot}}</span>
@@ -342,7 +349,7 @@
             <tbody *ngFor="let player of sortedData"> 
                 <tr class="player-row">
                     <td>{{player.firstName}} {{player.lastName}}</td>
-                    <td><img [src]="player.clubLogo" [alt]="player.club" class="club-logo">{{player.club}}</td>
+                    <td><img [src]="'//' + player.clubLogo" [alt]="player.club" class="club-logo">{{player.club}}</td>
                     <td>{{player.position}}</td> 
                     <td class="alt-positions" >(<span *ngFor="let pos of player.altPositions">{{pos}}</span>)</td>
                     <td>{{player.foot}}</td>

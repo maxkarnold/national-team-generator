@@ -4,6 +4,9 @@ export interface Player {
     position: string;
     altPositions: string[];
     rating: number;
+    yellowRating: number;
+    redRating: number;
+    gkRating: number;
     foot: string;
     firstInitial?: string;
     nationality: string;
@@ -12,7 +15,7 @@ export interface Player {
     clubLogo?: string;
     // Properties only for the drag/drop pitch UI
     pitchPosition?: string;
-    class?: string;
+    pitchPositionIndex?: number;
     dragDisabled?: boolean;
     // *** Above are properties we've already added ***
     // *** Below are properties we've yet to add ***

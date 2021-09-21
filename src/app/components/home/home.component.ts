@@ -10,13 +10,14 @@ import * as pitchPositionsModule from '../../data/pitchPositions.json';
 
 import { Observable } from 'rxjs';
 import { Sort } from '@angular/material/sort';
-import{ CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import{ CdkDragDrop, CdkDragEnter, CdkDragExit, CdkDragRelease, CdkDragStart, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Overlay } from '@angular/cdk/overlay';
 
 export interface PositionBox {
   pitchPlayer?: Player;
   class: string;
-  dragDisabled: boolean;
+  posBoxClass: string;
+  playerClass: string;
 }
 
 @Component({
@@ -48,37 +49,184 @@ export class HomeComponent implements OnInit {
   overlayOpen = false;
   navToggle = false;
   nation = "";
+
+  defaultPosBox = {
+    playerClass: 'inactive player-box ',
+    posBoxClass: 'active pos-box'
+  }
   
   positionBoxes: PositionBox[] = [
     {
-      class: 'pox-box empty',
-      dragDisabled: true
+      class: 'pos-box empty',
+      ...this.defaultPosBox
     },
     {
-      class: 'pox-box empty',
-      dragDisabled: true
+      class: 'pos-box empty',
+      ...this.defaultPosBox
     },
     {
-      class: 'pox-box 23',
-      dragDisabled: true
+      class: 'pos-box 23',
+      ...this.defaultPosBox
     },
     {
-      class: 'pox-box 22',
-      dragDisabled: true
+      class: 'pos-box 22',
+      ...this.defaultPosBox
     },
     {
-      class: 'pox-box 21',
-      dragDisabled: true
+      class: 'pos-box 21',
+      ...this.defaultPosBox
     },
     {
-      class: 'pox-box empty',
-      dragDisabled: true
+      class: 'pos-box empty',
+      ...this.defaultPosBox
     },
     {
-      class: 'pox-box empty',
-      dragDisabled: true
+      class: 'pos-box empty',
+      ...this.defaultPosBox
     },
+    {
+      class: 'pos-box 20',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 19',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 18',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 17',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 16',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 15',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 14',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 13',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 12',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 11',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 10',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 9',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 8',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 7',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 6',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 5',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 4',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 3',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 2',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 1',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box 0',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    },
+    {
+      class: 'pos-box empty',
+      ...this.defaultPosBox
+    }
   ]
+
+  
 
 
   constructor(private afs: FirestoreService) {
@@ -97,8 +245,36 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  consoleLog() {
-    console.log(this.nation);
+  getPositionBoxes(box: PositionBox) {
+    return box.class
+  }
+
+  getPlayerClass(box?: PositionBox) {  
+    if (box === undefined) {
+      return 'starters-fix'
+    }
+    let pos = parseInt(box.class.slice(-2));
+    if (!isNaN(pos)) {
+      for (const player of this.pitchPlayers) {
+        if (player.pitchPositionIndex === pos) {
+          box.playerClass = 'active player-box';
+          // console.log(box.playerClass);
+          return box.playerClass
+        }
+      }
+    } 
+  }
+
+  getPosBoxClass(box: PositionBox) {
+    let pos = parseInt(box.class.slice(-2));
+    if (!isNaN(pos)) {
+      for (const player of this.pitchPlayers) {
+        if (player.pitchPositionIndex === pos) {
+          box.posBoxClass = 'inactive pos-box';
+        }
+      }
+    }
+    return box.posBoxClass
   }
 
   sortData(sort: Sort) {
@@ -125,12 +301,9 @@ export class HomeComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Player[]>) {
-    let starterCount = 0;
     let playerIndex = event.previousIndex;
     let playerObj = event.previousContainer.data[playerIndex];
-    console.log(event.container.element.nativeElement.classList[2]);
-    let positionIndex = parseInt(event.container.element.nativeElement.classList[2]);
-    console.log(positionIndex);
+    let positionIndex = parseInt(event.container.element.nativeElement.classList[1]);
     // THINGS TO ADD
     // If you hover over a position, the border should be either green, yellow, or red based on position
     // The rating should be changed depending on the match
@@ -140,18 +313,18 @@ export class HomeComponent implements OnInit {
     // We might need a goalkeeper rating for outfield players and a outfield rating for goalkeepers.
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      console.log(event.container.data);
+      // console.log(event.container.data);
     } 
-    else if (event.previousContainer.id === "cdk-drop-list-24") {
+    else if (event.previousContainer.id === "bench-players") {
+      // console.log(event.container.data, event.currentIndex);
+      // console.log(event);
       // Check for 11 players in starting lineup
-      for (const player of this.pitchPlayers) {
-        if (player !== undefined) {
-          if (starterCount > 11) {
-            return new Error("Only allowed to have 11 players in starting lineup")
-          }
-        } 
+      if (this.pitchPlayers.length === 11) {
+        alert("You can only have 11 players starting.");
+        console.log("Only 11 pitchPlayers are allowed");
+        return false
       }
-      console.log(positionIndex);
+      playerObj.pitchPositionIndex = positionIndex;
       switch (positionIndex) {
         case 0:
           playerObj.pitchPosition = "GK";
@@ -229,44 +402,117 @@ export class HomeComponent implements OnInit {
           console.log("Error: Check line 165 in home.component.ts");
           break;
       }
-      
       this.pitchPlayers.push(playerObj);
       this.players.splice(playerIndex, 1);
       let el = event.container.element.nativeElement;
-      el.innerHTML = `${playerObj.firstInitial}. ${playerObj.lastName} ${playerObj.rating} <span>${playerObj.pitchPosition}</span>`;
-      el.classList.remove("pos-box");
-      el.classList.add("player-box");
-      el.children[0].className += "pitch-card-pos";
-      starterCount++;
-      console.log(event.container.data, this.pitchPlayers);
+      el.children[0].innerHTML = `${playerObj.firstInitial}. ${playerObj.lastName} ${playerObj.rating} <span>${playerObj.pitchPosition}</span>`;
+      el.children[0].className = "active player-box";
+      el.children[1].className = "inactive pos-box"
+      // el.classList.add("player-box");
+      // el.children[0].className += "pitch-card-pos";
+      // console.log(event.container.data, this.pitchPlayers);
     }
     // Else if the player is moved to the bench
-    else if (event.container.id === "cdk-drop-list-24"){
-      starterCount--;
+    else if (event.container.id === "bench-players"){
       playerObj.pitchPosition = "";
+      playerObj.pitchPositionIndex = NaN;
       let el = event.previousContainer.element.nativeElement;
-      el.innerHTML = `<div>${playerObj.firstInitial}. ${playerObj.lastName} ${playerObj.rating} <span>${playerObj.pitchPosition}</span></div>`;
-      el.classList.remove("player-box");
-      el.children[0].className += "pox-box";
-      el.children[0].children[0].className += "pitch-card-pos";
+      el.children[0].innerHTML = "";
+      el.children[0].className = 'inactive player-box'
+      el.children[1].className = 'active pos-box';
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      console.log(event.container.data);
+      // console.log(event.container.data);
     } 
     // Else if the player is moved to another pitch position
-    
+    console.log(this.pitchPlayers);
   }
 
-  hoverPlayer(event: any) {
-    // console.log("Hover On Event:\n", event);
+  getPositionOutline(event: CdkDragStart) {
+    // // Grab the current positions for the dragged player
+    let player: Player = event.source.data;
+    let mainPos = player.position;
+    let altPosArr = player.altPositions;
+    let greenPosArr = [];
+    let yellowPosArr = [];
+
+    for (let i = 0; i < this.pitchPositions.length; i++) {
+      // if the player's main position matches the playerPosition
+      if (mainPos === this.pitchPositions[i].playerPosition) {
+        // push that position to the array
+        greenPosArr.push(this.pitchPositions[i].position);
+      } else if (altPosArr.includes(this.pitchPositions[i].playerPosition)){
+        // For each alt position
+        for (let j = 0; j < altPosArr.length; j++) {
+          // if the player's alt position matches the playerPosition
+          if (altPosArr[j] === this.pitchPositions[i].playerPosition) {
+            // push that position to the array
+            yellowPosArr.push(this.pitchPositions[i].position);
+          }
+        }
+      } 
+      
+    }
+
+    // For each playing position
+    for (let i = 0; i < this.pitchPositions.length; i++) {
+      // and for each position box
+      for (let j = 0; j < this.positionBoxes.length; j++) {
+        // get the number from the position box class if possible
+        let boxNum = parseInt(this.positionBoxes[j].class.slice(-2));
+        // if there is a number in the class, it must be a playable position
+        if (!isNaN(boxNum)) {
+          // If the pitchPosition index correlates with the box index, it's the same position
+          if (this.pitchPositions[i].boxIndex === j) {
+            // If this position correlates with the green array
+            if (greenPosArr.includes(this.pitchPositions[i].position)) {
+              this.positionBoxes[j].class += " green-placeholder";
+            } 
+            // Else if this position correlates with the yellow array
+            else if (yellowPosArr.includes(this.pitchPositions[i].position)) {
+              this.positionBoxes[j].class += " yellow-placeholder";
+            }
+            // Else the position is red
+            else {
+              this.positionBoxes[j].class += " red-placeholder";
+            }
+          }
+        }
+      }
+    }
+
   }
 
-  hoverOffPlayer(event: any) {
-    // console.log("Hover Off Event:\n", event);
+  removeOutlineDrop(event: CdkDragDrop<Player>) {
+    for (const box of this.positionBoxes) {
+      let classArr = box.class.split(' ');
+      if (classArr[2] === "green-placeholder") {
+        box.class = box.class.slice(0, -18);
+      } else if (classArr[2] === "yellow-placeholder") {
+        box.class = box.class.slice(0, -19);
+      } else if (classArr[2] === "red-placeholder") {
+        box.class = box.class.slice(0, -16);
+      }
+    }
+  
   }
 
+  removeOutlineRelease(event: CdkDragRelease) {
+    for (const box of this.positionBoxes) {
+      let classArr = box.class.split(' ');
+      if (classArr[2] === "green-placeholder") {
+        box.class = box.class.slice(0, -18);
+      } else if (classArr[2] === "yellow-placeholder") {
+        box.class = box.class.slice(0, -19);
+      } else if (classArr[2] === "red-placeholder") {
+        box.class = box.class.slice(0, -16);
+      }
+      
+    }
+  }
+  
   
 
   getPlayers() {
@@ -302,6 +548,9 @@ export class HomeComponent implements OnInit {
         position: '',
         altPositions: [],
         rating: 0,
+        yellowRating: 0,
+        redRating: 0,
+        gkRating: 0,
         foot: '',
         nationality: '',
         age: 0,
@@ -311,12 +560,19 @@ export class HomeComponent implements OnInit {
       player.position = this.getPosition();
       player.foot = this.getFoot(player.position);
       player.altPositions = this.getAltPositions(player.position, player.foot);
-      for (let i = 0; i < player.altPositions.length - 1; i++) {
-        player.altPositions[i] += ", ";
-      }
+      // for (let i = 0; i < player.altPositions.length - 1; i++) {
+      //   player.altPositions[i] += ", ";
+      // }
       player.nationality = this.getNation("nationality");
       let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth);
       player.rating = ratingObj.rating;
+      player.yellowRating = player.rating - 5;
+      player.redRating = player.rating - 20;
+      if (player.position === "GK") {
+        player.gkRating = player.rating;
+      } else {
+        player.gkRating = 25;
+      }
       let clubObj = this.getClub(ratingObj.clubRep);
       player.club = clubObj.clubName;
       player.clubLogo = clubObj.clubLogoUrl;
@@ -359,7 +615,7 @@ export class HomeComponent implements OnInit {
           }
         }
       }
-      console.log("Tier:\n", tier)
+      // console.log("Tier:\n", tier)
       return tier
     } else {
       let nationality: string = this.nation;
@@ -367,7 +623,7 @@ export class HomeComponent implements OnInit {
         let num = this.afs.getRandomInt(0, this.nationsList.length - 1);
         nationality = this.nationsList[num];
       }
-      console.log("Nationality:\n", nationality)
+      // console.log("Nationality:\n", nationality)
       return nationality
     }
   }
@@ -466,7 +722,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'LB':
@@ -476,7 +734,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'RB':
@@ -486,7 +746,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'LWB':
@@ -496,7 +758,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'RWB':
@@ -506,7 +770,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'MR':
@@ -516,7 +782,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'ML':
@@ -526,7 +794,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'AMR':
@@ -547,7 +817,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'AML':
@@ -568,7 +840,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'DM':
@@ -589,7 +863,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'MC':
@@ -610,7 +886,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'AMC':
@@ -631,7 +909,9 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          
+          altPos.push(str[0]);
         }
         break;
       case 'ST':
@@ -641,7 +921,8 @@ export class HomeComponent implements OnInit {
           if (num - i < 0) {
             num = arr.length;
           }
-          altPos.push(arr[num - i]);
+          let str = arr[num - i].split(', ');
+          altPos.push(str[0]);
         }
         break;
       default:
@@ -704,10 +985,10 @@ export class HomeComponent implements OnInit {
 
   getClub(clubRep: string) {
     let clubArr =  this.clubs[clubRep];
-    console.log(clubArr);
+    // console.log(clubArr);
     let index = this.afs.getRandomInt(0, clubArr.length - 1);
-    let clubName = clubArr[index].club;
-    let clubLogoUrl = clubArr[index].logo;
+    let clubName: string = clubArr[index].club;
+    let clubLogoUrl: string = clubArr[index].logo;
     // console.log(clubLogoUrl);
     return {
       clubName,
@@ -790,7 +1071,7 @@ export class HomeComponent implements OnInit {
           return false
         }
       }
-      for (let i = 0; i < 60; i++) {
+      for (let i = 0; i < this.players.length; i++) {
         localStorage.setItem(`TEAMGEN - Player #${i}`, JSON.stringify(this.players[i]));
       }
       for (const player of this.pitchPlayers) {
@@ -843,14 +1124,20 @@ export class HomeComponent implements OnInit {
 
         for (let i = 0; i < 60; i++) {
           let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
-          let player = JSON.parse(playerString || 'Null Error') as Player;
-          this.players.push(player);
-          this.sortedData.push(player);
+          console.log(playerString);
+          if (playerString !== undefined || null) {
+            let player = JSON.parse(playerString || 'Null Error') as Player;
+            this.players.push(player);
+            this.sortedData.push(player);
+          } else {
+            break;
+          }
         }
-
+        console.log("Did I make it here");
         for (const pos of this.pitchPositions) {
+          console.log("Made it");
           let playerString = localStorage.getItem(`TEAMGEN - Starting ${pos.position}`);
-          let playerObj = JSON.parse(playerString || '{}') as Player;
+          let playerObj = JSON.parse(playerString || 'Null Error') as Player;
           if (playerString !== null) {
             this.pitchPlayers.push(playerObj);
           }
