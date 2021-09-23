@@ -3,6 +3,8 @@ import { FirestoreService } from '../../services/firestore.service';
 import { Player } from '../../models/player';
 import { LastName } from 'src/app/models/last-name';
 import { FirstName } from 'src/app/models/first-name';
+import { PositionBox } from 'src/app/models/positionBox';
+import { positionBoxes } from 'src/app/data/positionBoxes';
 import * as nationsModule from '../../data/nations.json';
 import * as clubsModule from '../../data/clubs.json';
 import * as positionsModule from '../../data/positions.json';
@@ -10,15 +12,8 @@ import * as pitchPositionsModule from '../../data/pitchPositions.json';
 
 import { Observable } from 'rxjs';
 import { Sort } from '@angular/material/sort';
-import{ CdkDragDrop, CdkDragEnter, CdkDragExit, CdkDragRelease, CdkDragStart, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import{ CdkDragDrop, CdkDragRelease, CdkDragStart, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Overlay } from '@angular/cdk/overlay';
-
-export interface PositionBox {
-  pitchPlayer?: Player;
-  class: string;
-  posBoxClass: string;
-  playerClass: string;
-}
 
 @Component({
   selector: 'app-home',
@@ -48,184 +43,9 @@ export class HomeComponent implements OnInit {
 
   overlayOpen = false;
   navToggle = false;
-  nation = "";
+  nationName = "";
 
-  defaultPosBox = {
-    playerClass: 'inactive player-box ',
-    posBoxClass: 'active pos-box'
-  }
-  
-  positionBoxes: PositionBox[] = [
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 23',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 22',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 21',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 20',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 19',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 18',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 17',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 16',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 15',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 14',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 13',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 12',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 11',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 10',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 9',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 8',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 7',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 6',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 5',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 4',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 3',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 2',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 1',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box 0',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    },
-    {
-      class: 'pos-box empty',
-      ...this.defaultPosBox
-    }
-  ]
-
+  positionBoxes = positionBoxes;
   
 
 
@@ -240,9 +60,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     for (const tierObj of this.nations) {
       for (let i = 0; i < tierObj.nations.length; i++) {
-        this.nationsList.push(tierObj.nations[i]);
+        this.nationsList.push(tierObj.nations[i].name);
       }
     }
+    console.log("nations list", this.nationsList);
   }
 
   getPositionBoxes(box: PositionBox) {
@@ -316,8 +137,6 @@ export class HomeComponent implements OnInit {
       // console.log(event.container.data);
     } 
     else if (event.previousContainer.id === "bench-players") {
-      // console.log(event.container.data, event.currentIndex);
-      // console.log(event);
       // Check for 11 players in starting lineup
       if (this.pitchPlayers.length === 11) {
         alert("You can only have 11 players starting.");
@@ -402,10 +221,32 @@ export class HomeComponent implements OnInit {
           console.log("Error: Check line 165 in home.component.ts");
           break;
       }
+      let pitchRating = 0;
+      
+      for (const pos of this.pitchPositions) {
+        if (pos.position === playerObj.pitchPosition) {
+          // if main position
+          if (playerObj.position === pos.playerPosition) {
+            pitchRating = playerObj.rating;
+          } 
+          // else if alt position
+          else if (playerObj.altPositions.includes(pos.playerPosition)) {
+            pitchRating = playerObj.yellowRating;
+          }
+          // else if gk position but not gk
+          else if (pos.playerPosition === "GK") {
+            pitchRating = playerObj.gkRating;
+          }
+          // any other position
+          else {
+            pitchRating = playerObj.redRating;
+          }
+        }
+      }
       this.pitchPlayers.push(playerObj);
       this.players.splice(playerIndex, 1);
       let el = event.container.element.nativeElement;
-      el.children[0].innerHTML = `${playerObj.firstInitial}. ${playerObj.lastName} ${playerObj.rating} <span>${playerObj.pitchPosition}</span>`;
+      el.children[0].innerHTML = `${playerObj.firstInitial}. ${playerObj.lastName} ${pitchRating} <span>${playerObj.pitchPosition}</span>`;
       el.children[0].className = "active player-box";
       el.children[1].className = "inactive pos-box"
       // el.classList.add("player-box");
@@ -516,7 +357,7 @@ export class HomeComponent implements OnInit {
   
 
   getPlayers() {
-    if (this.nation === "") {
+    if (this.nationName === "") {
       alert("You must select a nation or random nationalities before generating a team");
       return false
     }
@@ -530,7 +371,7 @@ export class HomeComponent implements OnInit {
       this.positions[index].amount = 0;
     }
 
-    let tier = this.getNation("tier");
+    let tier = this.getNation("tier").tier || '';
     let numArray = this.getRatingBreakdown(tier);
 
     let first = this.afs.getRandomInt(numArray[0], numArray[1]);
@@ -553,17 +394,22 @@ export class HomeComponent implements OnInit {
         gkRating: 0,
         foot: '',
         nationality: '',
+        nationalityLogo: '',
         age: 0,
-        club: ''
+        club: '',
+        clubLogo: this.blankCrest
       };
       
       player.position = this.getPosition();
       player.foot = this.getFoot(player.position);
       player.altPositions = this.getAltPositions(player.position, player.foot);
-      // for (let i = 0; i < player.altPositions.length - 1; i++) {
-      //   player.altPositions[i] += ", ";
-      // }
-      player.nationality = this.getNation("nationality");
+      
+
+      let nationObj = this.getNation("nationality") || '';
+      player.nationality = nationObj.nationality || '';
+      player.nationalityLogo = nationObj.logo || '';
+      console.log(this.nationName);
+      console.log("getPlayers() function:\n", player.nationality, player.nationalityLogo);
       let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth);
       player.rating = ratingObj.rating;
       player.yellowRating = player.rating - 5;
@@ -576,9 +422,6 @@ export class HomeComponent implements OnInit {
       let clubObj = this.getClub(ratingObj.clubRep);
       player.club = clubObj.clubName;
       player.clubLogo = clubObj.clubLogoUrl;
-      if (player.clubLogo = "") {
-        player.clubLogo = this.blankCrest;
-      }
       player.age = this.getAge(player.rating);
 
       this.afs.getFirstName(player.nationality)?.subscribe((firstNameArr) => { 
@@ -603,28 +446,44 @@ export class HomeComponent implements OnInit {
   getNation(property: string) {
     
     if (property === "tier") {
-      let nationality: string = this.nation;
+      let nationality: string = this.nationName;
       let tier: string = "";
       if (nationality.includes("tier")) {
         tier = nationality.slice(0, 1);
       } else {
+        tierLevels:
         for (const tierLevel of this.nations) {
-          if (tierLevel.nations.includes(nationality)) {
-            tier = tierLevel;
-            break;
+          nations:
+          for (const nation of tierLevel.nations) {
+            if (nation.name === nationality) {
+              tier = tierLevel.tier;
+              break tierLevels;
+            }
           }
         }
       }
-      // console.log("Tier:\n", tier)
-      return tier
+      return {
+        tier
+      }
     } else {
-      let nationality: string = this.nation;
+      let nationality: string = this.nationName;
+      let logo: string = "";
       if (nationality.includes("tier")) {
         let num = this.afs.getRandomInt(0, this.nationsList.length - 1);
         nationality = this.nationsList[num];
       }
-      // console.log("Nationality:\n", nationality)
-      return nationality
+      for (const tier of this.nations) {
+        for (const nation of tier.nations) {
+          if (nationality === nation.name) {
+            logo = nation.logo;
+          }
+        }
+      }
+      console.log("Nationality:\n", nationality, "Logo:\n", logo);
+      return {
+        nationality,
+        logo
+      }
     }
   }
 
@@ -989,7 +848,6 @@ export class HomeComponent implements OnInit {
     let index = this.afs.getRandomInt(0, clubArr.length - 1);
     let clubName: string = clubArr[index].club;
     let clubLogoUrl: string = clubArr[index].logo;
-    // console.log(clubLogoUrl);
     return {
       clubName,
       clubLogoUrl
@@ -1123,26 +981,59 @@ export class HomeComponent implements OnInit {
         }
 
         for (let i = 0; i < 60; i++) {
-          let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
-          console.log(playerString);
-          if (playerString !== undefined || null) {
-            let player = JSON.parse(playerString || 'Null Error') as Player;
+          let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`) || '';
+          let player;
+          try {
+            player = JSON.parse(playerString) as Player;
             this.players.push(player);
             this.sortedData.push(player);
-          } else {
-            break;
+          } catch(err) {
+            // console.log("Error on parsing string", err);
           }
         }
-        console.log("Did I make it here");
         for (const pos of this.pitchPositions) {
-          console.log("Made it");
-          let playerString = localStorage.getItem(`TEAMGEN - Starting ${pos.position}`);
-          let playerObj = JSON.parse(playerString || 'Null Error') as Player;
-          if (playerString !== null) {
-            this.pitchPlayers.push(playerObj);
+          let playerString = localStorage.getItem(`TEAMGEN - Starting ${pos.position}`) || '';
+          let player;
+          try {
+            player = JSON.parse(playerString) as Player;
+            this.pitchPlayers.push(player);
+          } catch(err) {
+            // console.log("Error on parsing string", err);
           }
+
         }
 
+        for (const player of this.pitchPlayers) {
+          let pitchRating = 0;
+          for (let i = 0; i < this.pitchPositions.length; i++) {
+            let pos = this.pitchPositions[i];
+            if (pos.position === player.pitchPosition) {
+              // if main position
+              if (player.position === pos.playerPosition) {
+                pitchRating = player.rating;
+              } 
+              // else if alt position
+              else if (player.altPositions.includes(pos.playerPosition)) {
+                pitchRating = player.yellowRating;
+              }
+              // else if gk position but not gk
+              else if (pos.playerPosition === "GK") {
+                pitchRating = player.gkRating;
+              }
+              // any other position
+              else {
+                pitchRating = player.redRating;
+              }
+            }
+            let boxIndex = this.pitchPositions[player.pitchPositionIndex || 0].boxIndex;
+            for (let j = 0; j < this.positionBoxes.length; j++) {
+              if (this.positionBoxes[j] === this.positionBoxes[boxIndex]) {
+                this.positionBoxes[j].html = `${player.firstInitial}. ${player.lastName} ${pitchRating} \n${player.pitchPosition}`;
+
+              }
+            }
+          }
+        }
         for (const player of this.players) {      
           for (const pos of this.positions) {
             if (player.position === pos.position) {
@@ -1166,6 +1057,38 @@ export class HomeComponent implements OnInit {
             console.log("Got STARTERS:\n", this.pitchPlayers);
           } else {
             console.log("Problem loading data from firestore");
+          }
+
+          for (const player of this.pitchPlayers) {
+            let pitchRating = 0;
+            for (let i = 0; i < this.pitchPositions.length; i++) {
+              let pos = this.pitchPositions[i];
+              if (pos.position === player.pitchPosition) {
+                // if main position
+                if (player.position === pos.playerPosition) {
+                  pitchRating = player.rating;
+                } 
+                // else if alt position
+                else if (player.altPositions.includes(pos.playerPosition)) {
+                  pitchRating = player.yellowRating;
+                }
+                // else if gk position but not gk
+                else if (pos.playerPosition === "GK") {
+                  pitchRating = player.gkRating;
+                }
+                // any other position
+                else {
+                  pitchRating = player.redRating;
+                }
+              }
+              let boxIndex = this.pitchPositions[player.pitchPositionIndex || 0].boxIndex;
+              for (let j = 0; j < this.positionBoxes.length; j++) {
+                if (this.positionBoxes[j] === this.positionBoxes[boxIndex]) {
+                  this.positionBoxes[j].html = `${player.firstInitial}. ${player.lastName} ${pitchRating} \n${player.pitchPosition}`;
+
+                }
+              }
+            }
           }
           for (const player of this.players) {      
             for (const pos of this.positions) {

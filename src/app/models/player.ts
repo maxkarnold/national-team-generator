@@ -10,9 +10,10 @@ export interface Player {
     foot: string;
     firstInitial?: string;
     nationality: string;
+    nationalityLogo: string;
     age: number;
     club: string; 
-    clubLogo?: string;
+    clubLogo: string;
     // Properties only for the drag/drop pitch UI
     pitchPosition?: string;
     pitchPositionIndex?: number;
