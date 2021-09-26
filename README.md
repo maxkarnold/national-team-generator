@@ -1,11 +1,12 @@
 # national-team-generator
 
-<p>Website URL: *** COMING SOON ***</p>
-<p>See the <a href="https://github.com/maxkarnold/national-team-generator/wiki">Wiki</a> for more info</p>
+* Website URL: *** COMING SOON ***
+* See the [Wiki](https://github.com/maxkarnold/national-team-generator/wiki) for more info
+* Check out my [spreadsheet](https://docs.google.com/spreadsheets/d/1iUR0P_v-qPOfyR1cX4iYIAwLiMCHIRPgRx9xRRmNdwc/edit?usp=sharing) for testing
 
 ## Tech Stack
 * [Angular](https://angular.io/)
-  * [Angular-Material](https://material.angular.io/) 
+  * [Angular-Material](https://material.angular.io/)
 * [Firebase](https://firebase.google.com/docs)
 * [Express](https://expressjs.com/)
 * [Nodejs](https://nodejs.org/en/)
@@ -20,7 +21,7 @@ Angular Dependencies
 ```
 ng add @angular/material
 ```
-### Create or edit the environments folder in src/app/
+### Create or edit the environments folder in src/
 <p>Firebase information can be found in your firebase console.</p>
 <p>`environment.prod.ts` file</p>
 
@@ -70,8 +71,8 @@ export const environment = {
 
 ```
 
-### Create the secrets folder src/app/ 
-<p>Go to your Firebase Console -> Project Settings -> Service Accounts -> and download your `ServiceAccountKey.json`.</p>
+### Create the secrets folder src/
+<p>Go to your Firebase Console -> Project Settings -> Service Accounts -> Click "Generate new private key" -> Click "Generate key" -> Rename the new file `ServiceAccountKey.json`.</p>
 <p>You should add that file to this folder and it should look something like this:</p>
 
 ```json
