@@ -1,0 +1,2805 @@
+{
+    "top50": [
+        {
+            "club": "liverpool",
+            "logo": "https://fmdataba.com/images/c/s/676.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "manchester city",
+            "logo": "https://fmdataba.com/images/c/s/679.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "bayern munich",
+            "logo": "https://fmdataba.com/images/c/s/915.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "FC barcelona",
+            "logo": "https://fmdataba.com/images/c/s/1708.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "paris saint-germain",
+            "logo": "https://fmdataba.com/images/c/s/868.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "real madrid",
+            "logo": "https://fmdataba.com/images/c/s/1736.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "chelsea",
+            "logo": "https://fmdataba.com/images/c/s/630.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "manchester united",
+            "logo": "https://fmdataba.com/images/c/s/680.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "atlético madrid",
+            "logo": "https://fmdataba.com/images/c/s/1687.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "juventus",
+            "logo": "https://fmdataba.com/images/c/s/1139.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "italy",
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "inter",
+            "logo": "https://fmdataba.com/images/c/s/1135.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "italy",
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        }
+    ],
+    "top200": [
+        {
+            "club": "liverpool",
+            "logo": "https://fmdataba.com/images/c/s/676.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "manchester city",
+            "logo": "https://fmdataba.com/images/c/s/679.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "bayern munich",
+            "logo": "https://fmdataba.com/images/c/s/915.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "FC barcelona",
+            "logo": "https://fmdataba.com/images/c/s/1708.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "paris saint-germain",
+            "logo": "https://fmdataba.com/images/c/s/868.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "real madrid",
+            "logo": "https://fmdataba.com/images/c/s/1736.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "chelsea",
+            "logo": "https://fmdataba.com/images/c/s/630.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "manchester united",
+            "logo": "https://fmdataba.com/images/c/s/680.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "atlético madrid",
+            "logo": "https://fmdataba.com/images/c/s/1687.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "juventus",
+            "logo": "https://fmdataba.com/images/c/s/1139.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "italy",
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "inter",
+            "logo": "https://fmdataba.com/images/c/s/1135.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "italy",
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "borussia dortmund",
+            "logo": "https://fmdataba.com/images/c/s/907.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "AC milan",
+            "logo": "https://fmdataba.com/images/c/s/1099.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "italy",
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "atalanta",
+            "logo": "https://fmdataba.com/images/c/s/1106.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "italy",
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "tottenham",
+            "logo": "https://fmdataba.com/images/c/s/728.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "arsenal",
+            "logo": "https://fmdataba.com/images/c/s/602.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "ajax",
+            "logo": "https://fmdataba.com/images/c/s/992.png",
+            "mainNations": [],
+            "altNations": [
+                "sweden",
+                "greece",
+                "suriname",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "sevilla",
+            "logo": "https://fmdataba.com/images/c/s/1759.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "napoli",
+            "logo": "https://fmdataba.com/images/c/s/1150.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "italy",
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "leicester city",
+            "logo": "https://fmdataba.com/images/c/s/673.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "RB leipzig",
+            "logo": "https://fmdataba.com/images/c/s/91013388.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "FC porto",
+            "logo": "https://fmdataba.com/images/c/s/1478.png",
+            "mainNations": [],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "villarreal",
+            "logo": "https://fmdataba.com/images/c/s/1777.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        }
+    ],
+    "regularInternational": [
+        {
+            "club": "liverpool",
+            "logo": "https://fmdataba.com/images/c/s/676.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "manchester city",
+            "logo": "https://fmdataba.com/images/c/s/679.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "bayern munich",
+            "logo": "https://fmdataba.com/images/c/s/915.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "FC barcelona",
+            "logo": "https://fmdataba.com/images/c/s/1708.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "paris saint-germain",
+            "logo": "https://fmdataba.com/images/c/s/868.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "real madrid",
+            "logo": "https://fmdataba.com/images/c/s/1736.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "chelsea",
+            "logo": "https://fmdataba.com/images/c/s/630.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "manchester united",
+            "logo": "https://fmdataba.com/images/c/s/680.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "atlético madrid",
+            "logo": "https://fmdataba.com/images/c/s/1687.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "juventus",
+            "logo": "https://fmdataba.com/images/c/s/1139.png",
+            "mainNations": [
+                "italy",
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "inter",
+            "logo": "https://fmdataba.com/images/c/s/1135.png",
+            "mainNations": [
+                "italy",
+                "poland",
+                "romania",
+                "slovenia"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "borussia dortmund",
+            "logo": "https://fmdataba.com/images/c/s/907.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "AC milan",
+            "logo": "https://fmdataba.com/images/c/s/1099.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "atalanta",
+            "logo": "https://fmdataba.com/images/c/s/1106.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "tottenham",
+            "logo": "https://fmdataba.com/images/c/s/728.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "arsenal",
+            "logo": "https://fmdataba.com/images/c/s/602.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "ajax",
+            "logo": "https://fmdataba.com/images/c/s/992.png",
+            "mainNations": [],
+            "altNations": [
+                "sweden",
+                "greece",
+                "suriname",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "sevilla",
+            "logo": "https://fmdataba.com/images/c/s/1759.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "napoli",
+            "logo": "https://fmdataba.com/images/c/s/1150.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "leicester city",
+            "logo": "https://fmdataba.com/images/c/s/673.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "RB leipzig",
+            "logo": "https://fmdataba.com/images/c/s/91013388.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "FC porto",
+            "logo": "https://fmdataba.com/images/c/s/1478.png",
+            "mainNations": [],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "villarreal",
+            "logo": "https://fmdataba.com/images/c/s/1777.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "everton",
+            "logo": "https://fmdataba.com/images/c/s/650.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "west ham united",
+            "logo": "https://fmdataba.com/images/c/s/735.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "roma",
+            "logo": "https://fmdataba.com/images/c/s/1100.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "RB salzburg",
+            "logo": "https://fmdataba.com/images/c/s/158.png",
+            "mainNations": [],
+            "altNations": [
+                "georgia",
+                "germany",
+                "slovenia",
+                "bosnia & herzegovina",
+                "israel"
+            ]
+        },
+        {
+            "club": "SL benfica",
+            "logo": "https://fmdataba.com/images/c/s/1487.png",
+            "mainNations": [],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "real sociedad",
+            "logo": "https://fmdataba.com/images/c/s/1742.png",
+            "mainNations": [
+                "mexico"
+            ],
+            "altNations": [
+                "spain",
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "vfl wolfsburg",
+            "logo": "https://fmdataba.com/images/c/s/961.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "lazio",
+            "logo": "https://fmdataba.com/images/c/s/1140.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina"
+            ]
+        },
+        {
+            "club": "bayer 04 leverkusen",
+            "logo": "https://fmdataba.com/images/c/s/901.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "borussia mönchengladbach",
+            "logo": "https://fmdataba.com/images/c/s/908.png",
+            "mainNations": [
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "germany",
+                "switzerland",
+                "czech republic"
+            ]
+        },
+        {
+            "club": "lyon",
+            "logo": "https://fmdataba.com/images/c/s/865.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "marseille",
+            "logo": "https://fmdataba.com/images/c/s/866.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "AS monaco",
+            "logo": "https://fmdataba.com/images/c/s/826.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "lille OSC",
+            "logo": "https://fmdataba.com/images/c/s/858.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "sporting CP",
+            "logo": "https://fmdataba.com/images/c/s/1489.png",
+            "mainNations": [],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        }
+    ],
+    "averagePlayer": [
+        {
+            "club": "borussia dortmund",
+            "logo": "https://fmdataba.com/images/c/s/907.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "AC milan",
+            "logo": "https://fmdataba.com/images/c/s/1099.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "atalanta",
+            "logo": "https://fmdataba.com/images/c/s/1106.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "tottenham",
+            "logo": "https://fmdataba.com/images/c/s/728.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "arsenal",
+            "logo": "https://fmdataba.com/images/c/s/602.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "ajax",
+            "logo": "https://fmdataba.com/images/c/s/992.png",
+            "mainNations": [],
+            "altNations": [
+                "sweden",
+                "greece",
+                "suriname",
+                "curaçao",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "sevilla",
+            "logo": "https://fmdataba.com/images/c/s/1759.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "napoli",
+            "logo": "https://fmdataba.com/images/c/s/1150.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "leicester city",
+            "logo": "https://fmdataba.com/images/c/s/673.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "RB leipzig",
+            "logo": "https://fmdataba.com/images/c/s/91013388.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "FC porto",
+            "logo": "https://fmdataba.com/images/c/s/1478.png",
+            "mainNations": [],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "villarreal",
+            "logo": "https://fmdataba.com/images/c/s/1777.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "everton",
+            "logo": "https://fmdataba.com/images/c/s/650.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "west ham united",
+            "logo": "https://fmdataba.com/images/c/s/735.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "roma",
+            "logo": "https://fmdataba.com/images/c/s/1100.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "RB salzburg",
+            "logo": "https://fmdataba.com/images/c/s/158.png",
+            "mainNations": [],
+            "altNations": [
+                "georgia",
+                "germany",
+                "slovenia",
+                "bosnia & herzegovina",
+                "israel",
+                "austria"
+            ]
+        },
+        {
+            "club": "SL benfica",
+            "logo": "https://fmdataba.com/images/c/s/1487.png",
+            "mainNations": [],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "real sociedad",
+            "logo": "https://fmdataba.com/images/c/s/1742.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "vfl wolfsburg",
+            "logo": "https://fmdataba.com/images/c/s/961.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "lazio",
+            "logo": "https://fmdataba.com/images/c/s/1140.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "bayer 04 leverkusen",
+            "logo": "https://fmdataba.com/images/c/s/901.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "borussia mönchengladbach",
+            "logo": "https://fmdataba.com/images/c/s/908.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "lyon",
+            "logo": "https://fmdataba.com/images/c/s/865.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "marseille",
+            "logo": "https://fmdataba.com/images/c/s/866.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "AS monaco",
+            "logo": "https://fmdataba.com/images/c/s/826.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "lille OSC",
+            "logo": "https://fmdataba.com/images/c/s/858.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "sporting CP",
+            "logo": "https://fmdataba.com/images/c/s/1489.png",
+            "mainNations": [],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "leeds united",
+            "logo": "https://fmdataba.com/images/c/s/671.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "aston villa",
+            "logo": "https://fmdataba.com/images/c/s/603.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "wolves",
+            "logo": "https://fmdataba.com/images/c/s/740.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "portugal"
+            ]
+        },
+        {
+            "club": "athletic bilbao",
+            "logo": "https://fmdataba.com/images/c/s/1664.png",
+            "mainNations": [
+                "spain"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "real betis",
+            "logo": "https://fmdataba.com/images/c/s/1733.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "fiorentina",
+            "logo": "https://fmdataba.com/images/c/s/992.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "valencia",
+            "logo": "https://fmdataba.com/images/c/s/1775.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "SC braga",
+            "logo": "https://fmdataba.com/images/c/s/1488.png",
+            "mainNations": [],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "PSV eindhoven",
+            "logo": "https://fmdataba.com/images/c/s/1028.png",
+            "mainNations": [],
+            "altNations": [
+                "sweden",
+                "greece",
+                "suriname",
+                "curaçao",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "sassuolo",
+            "logo": "https://fmdataba.com/images/c/s/3800256.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "hertha BSC",
+            "logo": "https://fmdataba.com/images/c/s/2247.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "eintracht frankfurt",
+            "logo": "https://fmdataba.com/images/c/s/912.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "TSG 1899 hoffenheim",
+            "logo": "https://fmdataba.com/images/c/s/879226.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "ogc nice",
+            "logo": "https://fmdataba.com/images/c/s/862.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "bordeaux",
+            "logo": "https://fmdataba.com/images/c/s/851.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "stade rennais",
+            "logo": "https://fmdataba.com/images/c/s/884.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "AS saint-étienne",
+            "logo": "https://fmdataba.com/images/c/s/828.png",
+            "mainNations": [
+                "mali"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "southampton",
+            "logo": "https://fmdataba.com/images/c/s/713.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "newcastle united",
+            "logo": "https://fmdataba.com/images/c/s/688.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "crystal palace",
+            "logo": "https://fmdataba.com/images/c/s/642.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "young boys",
+            "logo": "https://fmdataba.com/images/c/s/1847.png",
+            "mainNations": [],
+            "altNations": [
+                "switzerland",
+                "kosovo"
+            ]
+        },
+        {
+            "club": "FC basel",
+            "logo": "https://fmdataba.com/images/c/s/1849.png",
+            "mainNations": [],
+            "altNations": [
+                "switzerland",
+                "kosovo"
+            ]
+        },
+        {
+            "club": "union berlin",
+            "logo": "https://fmdataba.com/images/c/s/121182.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "sc freiburg",
+            "logo": "https://fmdataba.com/images/c/s/944.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "celta vigo",
+            "logo": "https://fmdataba.com/images/c/s/1724.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "olympiakos",
+            "logo": "https://fmdataba.com/images/c/s/981.png",
+            "mainNations": [
+                "greece"
+            ],
+            "altNations": [
+                "switzerland",
+                "kosovo",
+                "argentina"
+            ]
+        },
+        {
+            "club": "shakhtar donetsk",
+            "logo": "https://fmdataba.com/images/c/s/1895.png",
+            "mainNations": [
+                "ukraine"
+            ],
+            "altNations": [
+                "brazil",
+                "belarus",
+                "azerbaijan",
+                "georgia"
+            ]
+        },
+        {
+            "club": "dynamo kyiv",
+            "logo": "https://fmdataba.com/images/c/s/1885.png",
+            "mainNations": [
+                "ukraine"
+            ],
+            "altNations": [
+                "brazil",
+                "belarus",
+                "azerbaijan",
+                "georgia"
+            ]
+        },
+        {
+            "club": "zenit",
+            "logo": "https://fmdataba.com/images/c/s/1301108.png",
+            "mainNations": [
+                "russia",
+                "poland",
+                "armenia",
+                "kazakhstan",
+                "uzbekistan"
+            ],
+            "altNations": [
+                "ukraine",
+                "georgia",
+                "belarus"
+            ]
+        },
+        {
+            "club": "celtic",
+            "logo": "https://fmdataba.com/images/c/s/1569.png",
+            "mainNations": [
+                "scotland",
+                "northern ireland",
+                "ireland",
+                "wales"
+            ],
+            "altNations": [
+                "england",
+                "canada",
+                "australia"
+            ]
+        },
+        {
+            "club": "rangers",
+            "logo": "https://fmdataba.com/images/c/s/1570.png",
+            "mainNations": [
+                "scotland",
+                "northern ireland",
+                "ireland",
+                "wales"
+            ],
+            "altNations": [
+                "england",
+                "canada",
+                "australia"
+            ]
+        },
+        {
+            "club": "dinamo zagreb",
+            "logo": "https://fmdataba.com/images/c/s/432.png",
+            "mainNations": [],
+            "altNations": [
+                "croatia",
+                "north macedonia",
+                "albania",
+                "kosovo",
+                "bosnia & herzegovina",
+                "slovenia"
+            ]
+        },
+        {
+            "club": "slavia praha",
+            "logo": "https://fmdataba.com/images/c/s/474.png",
+            "mainNations": [],
+            "altNations": [
+                "czech republic",
+                "slovakia",
+                "romania"
+            ]
+        },
+        {
+            "club": "sparta praha",
+            "logo": "https://fmdataba.com/images/c/s/476.png",
+            "mainNations": [],
+            "altNations": [
+                "czech republic",
+                "slovakia",
+                "romania"
+            ]
+        },
+        {
+            "club": "viktoria plzen",
+            "logo": "https://fmdataba.com/images/c/s/477.png",
+            "mainNations": [],
+            "altNations": [
+                "czech republic",
+                "slovakia",
+                "romania"
+            ]
+        },
+        {
+            "club": "feyenoord",
+            "logo": "https://fmdataba.com/images/c/s/1028.png",
+            "mainNations": [],
+            "altNations": [
+                "sweden",
+                "greece",
+                "suriname",
+                "curaçao",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "FK partizan",
+            "logo": "https://fmdataba.com/images/c/s/1952.png",
+            "mainNations": [],
+            "altNations": [
+                "montenegro",
+                "bosnia & herzegovina",
+                "north macedonia"
+            ]
+        },
+        {
+            "club": "red star belgrade",
+            "logo": "https://fmdataba.com/images/c/s/1955.png",
+            "mainNations": [],
+            "altNations": [
+                "montenegro",
+                "bosnia & herzegovina",
+                "north macedonia"
+            ]
+        },
+        {
+            "club": "sturm graz",
+            "logo": "https://fmdataba.com/images/c/s/156.png",
+            "mainNations": [],
+            "altNations": [
+                "georgia",
+                "germany",
+                "slovenia",
+                "bosnia & herzegovina",
+                "israel",
+                "austria"
+            ]
+        },
+        {
+            "club": "rapid wien",
+            "logo": "https://fmdataba.com/images/c/s/155.png",
+            "mainNations": [],
+            "altNations": [
+                "georgia",
+                "germany",
+                "slovenia",
+                "bosnia & herzegovina",
+                "israel",
+                "austria"
+            ]
+        },
+        {
+            "club": "LASK linz",
+            "logo": "https://fmdataba.com/images/c/s/154.png",
+            "mainNations": [],
+            "altNations": [
+                "georgia",
+                "germany",
+                "slovenia",
+                "bosnia & herzegovina",
+                "israel",
+                "austria"
+            ]
+        }
+    ],
+    "average2ndDivPlayer": [
+        {
+            "club": "leeds united",
+            "logo": "https://fmdataba.com/images/c/s/671.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "aston villa",
+            "logo": "https://fmdataba.com/images/c/s/603.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "wolves",
+            "logo": "https://fmdataba.com/images/c/s/740.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "portugal"
+            ]
+        },
+        {
+            "club": "athletic bilbao",
+            "logo": "https://fmdataba.com/images/c/s/1664.png",
+            "mainNations": [
+                "spain"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "real betis",
+            "logo": "https://fmdataba.com/images/c/s/1733.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "fiorentina",
+            "logo": "https://fmdataba.com/images/c/s/992.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "valencia",
+            "logo": "https://fmdataba.com/images/c/s/1775.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "SC braga",
+            "logo": "https://fmdataba.com/images/c/s/1488.png",
+            "mainNations": [
+                "portugal"
+            ],
+            "altNations": [
+                "brazil",
+                "guinea - bissau",
+                "venezuela",
+                "iran",
+                "cape verde",
+                "mozambique",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "PSV eindhoven",
+            "logo": "https://fmdataba.com/images/c/s/1028.png",
+            "mainNations": [
+                "netherlands"
+            ],
+            "altNations": [
+                "sweden",
+                "greece",
+                "suriname",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "sassuolo",
+            "logo": "https://fmdataba.com/images/c/s/3800256.png",
+            "mainNations": [
+                "poland",
+                "romania",
+                "slovenia",
+                "italy"
+            ],
+            "altNations": [
+                "albania",
+                "slovakia",
+                "kosovo",
+                "bosnia & herzegovina",
+                "argentina"
+            ]
+        },
+        {
+            "club": "hertha BSC",
+            "logo": "https://fmdataba.com/images/c/s/2247.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "eintracht frankfurt",
+            "logo": "https://fmdataba.com/images/c/s/912.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "TSG 1899 hoffenheim",
+            "logo": "https://fmdataba.com/images/c/s/879226.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "ogc nice",
+            "logo": "https://fmdataba.com/images/c/s/862.png",
+            "mainNations": [
+                "mali",
+                "france"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "bordeaux",
+            "logo": "https://fmdataba.com/images/c/s/851.png",
+            "mainNations": [
+                "mali",
+                "france"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "stade rennais",
+            "logo": "https://fmdataba.com/images/c/s/884.png",
+            "mainNations": [
+                "mali",
+                "france"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "AS saint-étienne",
+            "logo": "https://fmdataba.com/images/c/s/828.png",
+            "mainNations": [
+                "mali",
+                "france"
+            ],
+            "altNations": [
+                "senegal",
+                "algeria",
+                "cameroon",
+                "tunisia",
+                "mozambique"
+            ]
+        },
+        {
+            "club": "southampton",
+            "logo": "https://fmdataba.com/images/c/s/713.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "newcastle united",
+            "logo": "https://fmdataba.com/images/c/s/688.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "crystal palace",
+            "logo": "https://fmdataba.com/images/c/s/642.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "young boys",
+            "logo": "https://fmdataba.com/images/c/s/1847.png",
+            "mainNations": [
+                "switzerland"
+            ],
+            "altNations": [
+                "kosovo"
+            ]
+        },
+        {
+            "club": "FC basel",
+            "logo": "https://fmdataba.com/images/c/s/1849.png",
+            "mainNations": [
+                "switzerland"
+            ],
+            "altNations": [
+                "kosovo"
+            ]
+        },
+        {
+            "club": "union berlin",
+            "logo": "https://fmdataba.com/images/c/s/121182.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "sc freiburg",
+            "logo": "https://fmdataba.com/images/c/s/944.png",
+            "mainNations": [
+                "germany",
+                "poland",
+                "austria",
+                "hungary",
+                "japan",
+                "united states"
+            ],
+            "altNations": [
+                "switzerland",
+                "czech republic",
+                "netherlands"
+            ]
+        },
+        {
+            "club": "celta vigo",
+            "logo": "https://fmdataba.com/images/c/s/1724.png",
+            "mainNations": [
+                "spain",
+                "mexico"
+            ],
+            "altNations": [
+                "argentina",
+                "uruguay",
+                "equatorial guinea"
+            ]
+        },
+        {
+            "club": "olympiakos",
+            "logo": "https://fmdataba.com/images/c/s/981.png",
+            "mainNations": [
+                "greece"
+            ],
+            "altNations": [
+                "switzerland",
+                "kosovo",
+                "argentina"
+            ]
+        },
+        {
+            "club": "shakhtar donetsk",
+            "logo": "https://fmdataba.com/images/c/s/1895.png",
+            "mainNations": [
+                "ukraine"
+            ],
+            "altNations": [
+                "brazil",
+                "belarus",
+                "azerbaijan",
+                "georgia"
+            ]
+        },
+        {
+            "club": "dynamo kyiv",
+            "logo": "https://fmdataba.com/images/c/s/1885.png",
+            "mainNations": [
+                "ukraine"
+            ],
+            "altNations": [
+                "brazil",
+                "belarus",
+                "azerbaijan",
+                "georgia"
+            ]
+        },
+        {
+            "club": "zenit",
+            "logo": "https://fmdataba.com/images/c/s/1301108.png",
+            "mainNations": [
+                "russia",
+                "poland",
+                "armenia",
+                "kazakhstan",
+                "uzbekistan"
+            ],
+            "altNations": [
+                "ukraine",
+                "georgia",
+                "belarus"
+            ]
+        },
+        {
+            "club": "celtic",
+            "logo": "https://fmdataba.com/images/c/s/1569.png",
+            "mainNations": [
+                "scotland",
+                "northern ireland",
+                "ireland",
+                "wales"
+            ],
+            "altNations": [
+                "england",
+                "canada",
+                "australia"
+            ]
+        },
+        {
+            "club": "rangers",
+            "logo": "https://fmdataba.com/images/c/s/1570.png",
+            "mainNations": [
+                "scotland",
+                "northern ireland",
+                "ireland",
+                "wales"
+            ],
+            "altNations": [
+                "england",
+                "canada",
+                "australia"
+            ]
+        },
+        {
+            "club": "dinamo zagreb",
+            "logo": "https://fmdataba.com/images/c/s/432.png",
+            "mainNations": [
+                "croatia"
+            ],
+            "altNations": [
+                "north macedonia",
+                "albania",
+                "kosovo",
+                "bosnia & herzegovina",
+                "slovenia"
+            ]
+        },
+        {
+            "club": "slavia praha",
+            "logo": "https://fmdataba.com/images/c/s/474.png",
+            "mainNations": [
+                "czech republic"
+            ],
+            "altNations": [
+                "slovakia",
+                "romania"
+            ]
+        },
+        {
+            "club": "sparta praha",
+            "logo": "https://fmdataba.com/images/c/s/476.png",
+            "mainNations": [
+                "czech republic"
+            ],
+            "altNations": [
+                "slovakia",
+                "romania"
+            ]
+        },
+        {
+            "club": "viktoria plzen",
+            "logo": "https://fmdataba.com/images/c/s/477.png",
+            "mainNations": [
+                "czech republic"
+            ],
+            "altNations": [
+                "slovakia",
+                "romania"
+            ]
+        },
+        {
+            "club": "feyenoord",
+            "logo": "https://fmdataba.com/images/c/s/1028.png",
+            "mainNations": [
+                "netherlands"
+            ],
+            "altNations": [
+                "sweden",
+                "greece",
+                "suriname",
+                "curaçao"
+            ]
+        },
+        {
+            "club": "FK partizan",
+            "logo": "https://fmdataba.com/images/c/s/1952.png",
+            "mainNations": [
+                "serbia"
+            ],
+            "altNations": [
+                "montenegro",
+                "bosnia & herzegovina",
+                "north macedonia"
+            ]
+        },
+        {
+            "club": "red star belgrade",
+            "logo": "https://fmdataba.com/images/c/s/1955.png",
+            "mainNations": [
+                "serbia"
+            ],
+            "altNations": [
+                "montenegro",
+                "bosnia & herzegovina",
+                "north macedonia"
+            ]
+        },
+        {
+            "club": "sturm graz",
+            "logo": "https://fmdataba.com/images/c/s/156.png",
+            "mainNations": [
+                "austria"
+            ],
+            "altNations": [
+                "georgia",
+                "germany",
+                "slovenia",
+                "bosnia & herzegovina",
+                "israel"
+            ]
+        },
+        {
+            "club": "rapid wien",
+            "logo": "https://fmdataba.com/images/c/s/155.png",
+            "mainNations": [
+                "austria"
+            ],
+            "altNations": [
+                "georgia",
+                "germany",
+                "slovenia",
+                "bosnia & herzegovina",
+                "israel"
+            ]
+        },
+        {
+            "club": "LASK linz",
+            "logo": "https://fmdataba.com/images/c/s/154.png",
+            "mainNations": [
+                "austria"
+            ],
+            "altNations": [
+                "georgia",
+                "germany",
+                "slovenia",
+                "bosnia & herzegovina",
+                "israel"
+            ]
+        },
+        {
+            "club": "burnley",
+            "logo": "https://fmdataba.com/images/c/s/622.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "brentford",
+            "logo": "https://fmdataba.com/images/c/s/617.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "watford",
+            "logo": "https://fmdataba.com/images/c/s/732.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "norwich city",
+            "logo": "https://fmdataba.com/images/c/s/691.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": []
+        },
+        {
+            "club": "bournemouth",
+            "logo": "https://fmdataba.com/images/c/s/600.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "sheffield united",
+            "logo": "https://fmdataba.com/images/c/s/708.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "fulham",
+            "logo": "https://fmdataba.com/images/c/s/654.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "west brom",
+            "logo": "https://fmdataba.com/images/c/s/734.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "cardiff city",
+            "logo": "https://fmdataba.com/images/c/s/625.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "swansea city",
+            "logo": "https://fmdataba.com/images/c/s/724.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "blackburn",
+            "logo": "https://fmdataba.com/images/c/s/612.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "QPR",
+            "logo": "https://fmdataba.com/images/c/s/701.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "nottingham forest",
+            "logo": "https://fmdataba.com/images/c/s/692.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "reading",
+            "logo": "https://fmdataba.com/images/c/s/702.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "stoke city",
+            "logo": "https://fmdataba.com/images/c/s/721.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "coventry city",
+            "logo": "https://fmdataba.com/images/c/s/639.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        },
+        {
+            "club": "preston north end",
+            "logo": "https://fmdataba.com/images/c/s/700.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        }
+    ]
+}

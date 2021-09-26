@@ -1,6 +1,6 @@
 // Importing global styles
 @use '~@angular/material' as mat;
-@import '../styles';
+@import './styles';
 
 @include mat-core();
 

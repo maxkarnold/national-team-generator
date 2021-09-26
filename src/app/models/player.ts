@@ -20,6 +20,8 @@ export interface Player {
     dragDisabled?: boolean;
     // *** Above are properties we've already added ***
     // *** Below are properties we've yet to add ***
+    middleName?: string;
+    nickname?: string;
     altNationality?: string;
     relationships?: any[];
     // Relationships should be an array of players, it will show that the two are linked. Not sure if this should be an array or an object yet.

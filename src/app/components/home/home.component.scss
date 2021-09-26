@@ -1,4 +1,4 @@
-@import '../../themes.scss';
+// @import '../../themes.scss';
 
 .load-roster-overlay {
     background-color: #3F51B5;
@@ -46,6 +46,7 @@ h3 {
 
 .team-generator-form {
     text-transform: capitalize;
+    margin-top: 2rem;
 }
 
 
@@ -117,14 +118,26 @@ h3 {
             }
         }
     }
-    .player-table {
-        font-size: clamp(0.5rem, 2.5vw, 1rem);
-        .player-row {
-            td {
-                text-transform: capitalize;
-                .club-logo {
-                    width: clamp(0.5rem, 2.5vw, 1rem);
-                }
+}
+
+.player-table {
+    font-size: clamp(0.5rem, 2.5vw, 1rem);
+    // background-color: #424242;
+    // color: white;
+    .player-row {
+        td {
+            text-transform: capitalize;
+            padding: 0.2rem;
+            div {
+                display: inline-flex;
+                align-items: center;   
+            }
+            div > * {
+                margin: 0.2rem;
+            }
+            img {
+                max-width: 1.75rem;
+                // margin: 0.2rem;
             }
         }
     }
@@ -318,6 +331,10 @@ h3 {
     background: #424242;
     color: white;
     border-radius: 4px;
+    .players-container {
+        background: #424242;
+        color: white;
+    }
     .lineup-headers {
         display: flex;
         justify-content: stretch;
@@ -506,4 +523,22 @@ h3 {
 }
 .mat-expansion-panel-spacing {
     margin: 0;
+}
+.bench-container .mat-expansion-panel,
+.starter-container .mat-expansion-panel {
+    background: #424242;
+    color: white;
+}
+@media (hover: none) {
+    .mat-expansion-panel:not(.mat-expanded):not([aria-disabled=true]) .mat-expansion-panel-header:hover {
+        background: #424242;
+    }
+}
+.bench-container .mat-expansion-panel-header span.mat-expansion-indicator::after,
+.starters-container .mat-expansion-panel-header span.mat-expansion-indicator::after{
+    color: #c8c8c8;
+}
+
+.expanded-info:first-of-type {
+  margin-top: 16px;
 }

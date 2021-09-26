@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { FirstName } from '../models/first-name';
 import { LastName } from '../models/last-name';
-import { merge, Observable, pipe } from 'rxjs';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Player } from '../models/player';
 
 export interface Roster {
@@ -36,18 +35,61 @@ export class FirestoreService {
     //The maximum is inclusive and the minimum is inclusive
   }
 
-  getFirstName(nation: string){
-    nation = "any";
+getFirstName(nation: string){
     let randomIndex = this.getRandomInt(1, 5);
     let randomQuery = this.getRandomInt(0, 50000);
-    if (nation === "any") {
-      let request$ = this.afs.collection("firstNames_male", ref => ref.where(`randomNum.${randomIndex}`, ">=", randomQuery).orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
-
-      let retryRequest$ = this.afs.collection("firstNames_male", ref => ref.where(`randomNum.${randomIndex}`, "<=", randomQuery).orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
-      return request$
+    if (nation === "any" || nation === "united states") {
+      let request$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+      let retryRequest$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+      return {
+        request$,
+        retryRequest$
+      }
     }
     else {
-      console.log("getFirstName() failed!");
+      let nameOrigin: string[];
+      switch (nation) {
+        case "france":
+          nameOrigin = ["French", "Medieval French", "Arabic", "Western African", "Occitan", "Breton", "Basque", "Corsican"];
+          break;
+        case "brazil":
+          nameOrigin = ["Portuguese"];
+          break;
+        case "germany":
+          nameOrigin = ["German", "Ancient Germanic", "Germanic Mythology", "Frisian", "Limburgish", "Turkish"];
+          break;
+        case "italy":
+          nameOrigin = ["Italian", "Sardinian", "Occitan"];
+          break;
+        case "spain":
+          nameOrigin = ["Spanish", "Medieval Spanish", "Occitan", "Basque", "Galician", "Catalan"];
+          break;
+        case "argentina":
+          nameOrigin = ["Spanish"];
+          break;
+        case "england":
+          nameOrigin = ["English", "Cornish", "Arabic"];
+          break;
+        default:
+          nameOrigin = ["English"];
+          break;
+      }
+      let request$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+      let retryRequest$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+      return {
+        request$, 
+        retryRequest$
+      }
     }
   }
 

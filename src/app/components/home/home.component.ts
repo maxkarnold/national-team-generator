@@ -6,7 +6,7 @@ import { FirstName } from 'src/app/models/first-name';
 import { PositionBox } from 'src/app/models/positionBox';
 import { positionBoxes } from 'src/app/data/positionBoxes';
 import * as nationsModule from '../../data/nations.json';
-import * as clubsModule from '../../data/clubs.json';
+import * as clubsModule from '../../data/clubs/clubs.json';
 import * as positionsModule from '../../data/positions.json';
 import * as pitchPositionsModule from '../../data/pitchPositions.json';
 
@@ -43,7 +43,8 @@ export class HomeComponent implements OnInit {
 
   overlayOpen = false;
   navToggle = false;
-  nationName = "";
+  loggedIn = true;
+  nationName = "s tier";
 
   positionBoxes = positionBoxes;
   
@@ -58,12 +59,19 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.loggedIn) {
+      this.loadPlayers('loadLocalStorage');
+    }
     for (const tierObj of this.nations) {
       for (let i = 0; i < tierObj.nations.length; i++) {
         this.nationsList.push(tierObj.nations[i].name);
       }
     }
-    console.log("nations list", this.nationsList);
+    // console.log("nations list", this.nationsList);
+  }
+
+  consoleLog(value: string) {
+    console.log(value);
   }
 
   getPositionBoxes(box: PositionBox) {
@@ -408,7 +416,7 @@ export class HomeComponent implements OnInit {
       let nationObj = this.getNation("nationality") || '';
       player.nationality = nationObj.nationality || '';
       player.nationalityLogo = nationObj.logo || '';
-      console.log(this.nationName);
+      // console.log(this.nationName);
       console.log("getPlayers() function:\n", player.nationality, player.nationalityLogo);
       let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth);
       player.rating = ratingObj.rating;
@@ -419,21 +427,36 @@ export class HomeComponent implements OnInit {
       } else {
         player.gkRating = 25;
       }
-      let clubObj = this.getClub(ratingObj.clubRep);
+      let clubObj = this.getClub(ratingObj.clubRep, player.nationality);
       player.club = clubObj.clubName;
       player.clubLogo = clubObj.clubLogoUrl;
       player.age = this.getAge(player.rating);
+      console.log("Player Nationality:\n", player.nationality);
+      let firstNameReq = this.afs.getFirstName(player.nationality)?.request$;
+      let firstNameRetry = this.afs.getFirstName(player.nationality)?.retryRequest$;
 
-      this.afs.getFirstName(player.nationality)?.subscribe((firstNameArr) => { 
-        let firstNameObj: any = firstNameArr[0];
-        player.firstName = firstNameObj.name;
-        player.firstInitial = player.firstName.slice(0, 1);
+      firstNameReq.subscribe((firstNameArr) => {
+        if (firstNameArr !== undefined) {
+          let firstNameObj: any = firstNameArr[0];
+          player.firstName = firstNameObj.name;
+          player.firstInitial = player.firstName.slice(0, 1);
+        } 
+        else {
+          firstNameRetry.subscribe((firstNameArr) => { 
+            let firstNameObj: any = firstNameArr[0];
+            player.firstName = firstNameObj.name;
+            player.firstInitial = player.firstName.slice(0, 1);
+          });
+        }
+        // add nickname based on nationality
+        // Brazil, Spain
       });
 
       this.afs.getLastName(player.nationality)?.subscribe((lastNameArr) => { 
         let lastNameObj: any = lastNameArr[0];
         player.lastName = lastNameObj.name;
       });
+      // getMiddleName function
 
       this.players.push(player);
       this.sortedData.push(player);
@@ -453,10 +476,9 @@ export class HomeComponent implements OnInit {
       } else {
         tierLevels:
         for (const tierLevel of this.nations) {
-          nations:
           for (const nation of tierLevel.nations) {
             if (nation.name === nationality) {
-              tier = tierLevel.tier;
+              tier = tierLevel.tier.slice(0, 1);
               break tierLevels;
             }
           }
@@ -468,6 +490,7 @@ export class HomeComponent implements OnInit {
     } else {
       let nationality: string = this.nationName;
       let logo: string = "";
+      // If random nationalities
       if (nationality.includes("tier")) {
         let num = this.afs.getRandomInt(0, this.nationsList.length - 1);
         nationality = this.nationsList[num];
@@ -479,7 +502,7 @@ export class HomeComponent implements OnInit {
           }
         }
       }
-      console.log("Nationality:\n", nationality, "Logo:\n", logo);
+      // console.log("Nationality:\n", nationality, "Logo:\n", logo);
       return {
         nationality,
         logo
@@ -820,20 +843,20 @@ export class HomeComponent implements OnInit {
     let clubRep = "";
 
     if (i < first) {
-      rating = Math.min(this.afs.getRandomInt(85,99), this.afs.getRandomInt(85, 99), this.afs.getRandomInt(85, 99));
-      clubRep = "giant";
+      rating = Math.min(this.afs.getRandomInt(82,99), this.afs.getRandomInt(82, 99), this.afs.getRandomInt(82, 99));
+      clubRep = "top50";
     } else if(i < first + second) {
-      rating = this.afs.getRandomInt(77, 84);
-      clubRep = "championsLeague";
+      rating = this.afs.getRandomInt(76, 81);
+      clubRep = "top200";
     } else if (i < first + second + third) {
-      rating = this.afs.getRandomInt(70, 76);
-      clubRep = "europaLeague";
+      rating = this.afs.getRandomInt(70, 75);
+      clubRep = "regularInternational";
     } else if (i < first + second + third + fourth) {
       rating = this.afs.getRandomInt(62, 69);
-      clubRep = "europaConferenceLeague"
+      clubRep = "averagePlayer"
     } else if (i < first + second + third + fourth + fifth) {
       rating = this.afs.getRandomInt(55, 61);
-      clubRep = "eflChampionship";
+      clubRep = "average2ndDivPlayer";
     }
 
     return {
@@ -842,16 +865,80 @@ export class HomeComponent implements OnInit {
     };
   }
 
-  getClub(clubRep: string) {
-    let clubArr =  this.clubs[clubRep];
-    // console.log(clubArr);
-    let index = this.afs.getRandomInt(0, clubArr.length - 1);
-    let clubName: string = clubArr[index].club;
-    let clubLogoUrl: string = clubArr[index].logo;
-    return {
-      clubName,
-      clubLogoUrl
-    };
+  getClub(clubRep: string, playerNation: string) {
+    let clubArr: any[] =  this.clubs[clubRep];
+    let clubName: string = "";
+    let clubLogoUrl: string = "";
+    let randomIndexArr = [];
+
+    for (let i = 0; i < clubArr.length; i++) {
+      let randIndex = this.afs.getRandomInt(0, clubArr.length - 1);
+      randomIndexArr.push(randIndex);
+    }
+    console.log(randomIndexArr, clubArr);
+
+    // About a 80% (100%-20%) chance to play for team with same mainNation
+    let mainNationChance = 1;
+    // About a 50% (75%-20%-5%) chance to play for team with same altNation
+    let altNationChance = this.afs.getRandomInt(1, 4);
+    // Maybe should add a third chance `thirdNationChance`. This would be 25%.
+
+    if (mainNationChance === 1) {
+      // for each club in the random indexed array
+      for (let i = 0; i < randomIndexArr.length; i++) {
+        let club = clubArr[randomIndexArr[i]];
+        for (let j = 0; j < club.mainNations.length; j++) {
+          if (club.mainNations[j] === playerNation) {
+            clubName = club.club;
+            clubLogoUrl = club.logo;
+            return {
+              clubName,
+              clubLogoUrl
+            };
+          }
+        }
+      }
+      let randIndex = this.afs.getRandomInt(0, randomIndexArr.length - 1);
+      let club = clubArr[randIndex];
+      clubName = club.club;
+      clubLogoUrl = club.logo;
+      return {
+        clubName,
+        clubLogoUrl
+      };
+    } else if (altNationChance < 4) {
+      // for each club in the random indexed array
+      for (let i = 0; i < randomIndexArr.length; i++) {
+        let club = clubArr[randomIndexArr[i]];
+        for (let j = 0; j < club.altNations.length; j++) {
+          if (club.altNations[j] === playerNation) {
+            clubName = club.club;
+            clubLogoUrl = club.logo;
+            return {
+              clubName,
+              clubLogoUrl
+            };
+          }
+        }
+      }
+      let randIndex = this.afs.getRandomInt(0, randomIndexArr.length - 1);
+      let club = clubArr[randIndex];
+      clubName = club.club;
+      clubLogoUrl = club.logo;
+      return {
+        clubName,
+        clubLogoUrl
+      };
+    } else {
+      let randIndex = this.afs.getRandomInt(0, randomIndexArr.length - 1);
+      let club = clubArr[randIndex];
+      clubName = club.club;
+      clubLogoUrl = club.logo;
+      return {
+        clubName,
+        clubLogoUrl
+      };
+    }
   }
 
   getAge(rating: number) {
@@ -1048,13 +1135,13 @@ export class HomeComponent implements OnInit {
       }
     } else {
         this.afs.getRoster(saveLocation).subscribe((obj) => {
-          console.log(obj);
+          // console.log(obj);
           if (obj !== undefined) {      
             this.players = obj.benchReserves;
             this.sortedData = obj.benchReserves;
-            console.log("GOT PLAYERS: \n", this.players);
+            // console.log("GOT PLAYERS: \n", this.players);
             this.pitchPlayers = obj.starters;
-            console.log("Got STARTERS:\n", this.pitchPlayers);
+            // console.log("Got STARTERS:\n", this.pitchPlayers);
           } else {
             console.log("Problem loading data from firestore");
           }
