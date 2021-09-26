@@ -18,6 +18,7 @@ Each property represents a rating bracket that every player falls under. The pla
 * 70-75
 * 62-69
 * 55-61
+
 Each rating bracket has an array of clubs. These clubs can show up in multiple rating brackets. The clubs have a name and a logo. They also have arrays for `mainNations` and `altNations`.
 
 These represent countries/nationalities that are the most likely to play for this club. The thought process can be kind of confusing and is difficult to explain. 
