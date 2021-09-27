@@ -1481,7 +1481,7 @@
         },
         {
             "club": "fiorentina",
-            "logo": "https://fmdataba.com/images/c/s/992.png",
+            "logo": "https://fmdataba.com/images/c/s/1129.png",
             "mainNations": [
                 "poland",
                 "romania",
@@ -2027,7 +2027,7 @@
         },
         {
             "club": "fiorentina",
-            "logo": "https://fmdataba.com/images/c/s/992.png",
+            "logo": "https://fmdataba.com/images/c/s/1129.png",
             "mainNations": [
                 "poland",
                 "romania",
@@ -2784,6 +2784,25 @@
                 "congo DR"
             ]
         },
+        {
+            "club": "preston north end",
+            "logo": "https://fmdataba.com/images/c/s/700.png",
+            "mainNations": [
+                "england",
+                "jamaica",
+                "wales",
+                "northern ireland",
+                "ireland",
+                "scotland"
+            ],
+            "altNations": [
+                "australia",
+                "united states",
+                "congo DR"
+            ]
+        }
+    ],
+    "fillerPlayer": [
         {
             "club": "preston north end",
             "logo": "https://fmdataba.com/images/c/s/700.png",

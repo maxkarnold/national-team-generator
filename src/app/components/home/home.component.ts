@@ -380,13 +380,14 @@ export class HomeComponent implements OnInit {
     }
 
     let tier = this.getNation("tier").tier || '';
-    let numArray = this.getRatingBreakdown(tier);
+    let numArray: number[] = this.getRatingBreakdown(tier);
 
     let first = this.afs.getRandomInt(numArray[0], numArray[1]);
     let second = this.afs.getRandomInt(numArray[2], numArray[3]);
     let third = this.afs.getRandomInt(numArray[4], numArray[5]);
     let fourth = this.afs.getRandomInt(numArray[6], numArray[7]);
     let fifth = this.afs.getRandomInt(numArray[8], numArray[9]);
+    let sixth = this.afs.getRandomInt(numArray[10], numArray[11]);
 
     
     // Loops 60 times for 60 players
@@ -418,7 +419,7 @@ export class HomeComponent implements OnInit {
       player.nationalityLogo = nationObj.logo || '';
       // console.log(this.nationName);
       console.log("getPlayers() function:\n", player.nationality, player.nationalityLogo);
-      let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth);
+      let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth, sixth);
       player.rating = ratingObj.rating;
       player.yellowRating = player.rating - 5;
       player.redRating = player.rating - 20;
@@ -819,25 +820,29 @@ export class HomeComponent implements OnInit {
     console.log(tier);
     switch (tier) {
       case "s":
-        return [1, 5, 8, 14, 10, 20, 15, 30, 25, 35]
+        return [3, 9, 10, 30, 40, 70, 180, 200, 0, 0, 0, 0];
       case "a":
-        return [1, 3]
+        return [2, 5, 4, 12, 16, 45, 90, 130, 150, 200, 0, 0];
       case "b":
-        return [0, 2]
+        return [0, 4, 1, 5, 4, 15, 25, 150, 85, 200, 0, 0];
       case "c":
-        return [0, 1]
+        return [0, 2, 0, 3, 3, 12, 20, 50, 70, 180, 0 ,0];
       case "d":
-        return [0, 1]
+        return [0, 1, 0, 3, 1, 7, 15, 45, 70, 160, 0 ,0];
       case "e":
-        return [0, 1]
+        return [0, 1, 0, 2, 0, 6, 15, 25, 40, 70, 50, 50];
       case "f":
-        return [0, 0]
+        return [0, 1, 0, 2, 0, 4, 3, 20, 30, 80, 50, 50];
+      case "g":
+        return [0, 1, 0, 1, 0, 4, 3, 12, 15, 45, 50, 50];
+      case "h":
+        return [0, 0, 0, 1, 0, 2, 2, 8, 10, 25, 50, 50];
       default:
         throw new Error("getRatingBreakdown() had an error");
     }
   }
 
-  getRatingAndClubRep(i: number, first: number, second: number, third: number, fourth: number, fifth: number) {
+  getRatingAndClubRep(i: number, first: number, second: number, third: number, fourth: number, fifth: number, sixth: number) {
 
     let rating: number = 0;
     let clubRep = "";
@@ -857,6 +862,9 @@ export class HomeComponent implements OnInit {
     } else if (i < first + second + third + fourth + fifth) {
       rating = this.afs.getRandomInt(55, 61);
       clubRep = "average2ndDivPlayer";
+    } else if (i < first + second + third + fourth + fifth + sixth) {
+      rating = this.afs.getRandomInt(47, 54);
+      clubRep = "fillerPlayer";
     }
 
     return {
@@ -875,7 +883,7 @@ export class HomeComponent implements OnInit {
       let randIndex = this.afs.getRandomInt(0, clubArr.length - 1);
       randomIndexArr.push(randIndex);
     }
-    console.log(randomIndexArr, clubArr);
+    // console.log(randomIndexArr, clubArr);
 
     // About a 80% (100%-20%) chance to play for team with same mainNation
     let mainNationChance = 1;

@@ -503,10 +503,14 @@ h3 {
         width: 2rem;
     }
 }
+.mat-list-base {
+    background-color: #3F51B5;
+}
 .mat-list-base.list .mat-list-item {
     display: flex;
     justify-content: center;
     border-top: 1px solid rgba(242, 242, 242, 0.25);
+    color: white;
 }
 .mat-expansion-panel, 
 .mat-accordion .mat-expansion-panel:first-of-type {
@@ -525,7 +529,7 @@ h3 {
     margin: 0;
 }
 .bench-container .mat-expansion-panel,
-.starter-container .mat-expansion-panel {
+.starters-container .mat-expansion-panel {
     background: #424242;
     color: white;
 }
