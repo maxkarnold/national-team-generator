@@ -5,7 +5,7 @@ import { LastName } from 'src/app/models/last-name';
 import { FirstName } from 'src/app/models/first-name';
 import { PositionBox } from 'src/app/models/positionBox';
 import { positionBoxes } from 'src/app/data/positionBoxes';
-import * as nationsModule from '../../data/nations.json';
+import * as nationsModule from '../../data/nations/nations.json';
 import * as clubsModule from '../../data/clubs/clubs.json';
 import * as positionsModule from '../../data/positions.json';
 import * as pitchPositionsModule from '../../data/pitchPositions.json';
@@ -45,6 +45,7 @@ export class HomeComponent implements OnInit {
   navToggle = false;
   loggedIn = true;
   nationName = "s tier";
+  realisticNationalities = true;
 
   positionBoxes = positionBoxes;
   
@@ -412,13 +413,7 @@ export class HomeComponent implements OnInit {
       player.position = this.getPosition();
       player.foot = this.getFoot(player.position);
       player.altPositions = this.getAltPositions(player.position, player.foot);
-      
 
-      let nationObj = this.getNation("nationality") || '';
-      player.nationality = nationObj.nationality || '';
-      player.nationalityLogo = nationObj.logo || '';
-      // console.log(this.nationName);
-      console.log("getPlayers() function:\n", player.nationality, player.nationalityLogo);
       let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth, sixth);
       player.rating = ratingObj.rating;
       player.yellowRating = player.rating - 5;
@@ -428,11 +423,15 @@ export class HomeComponent implements OnInit {
       } else {
         player.gkRating = 25;
       }
+
+      let nationObj = this.getNation("nationality", player.rating) || '';
+      player.nationality = nationObj.nationality || '';
+      player.nationalityLogo = nationObj.logo || '';
+
       let clubObj = this.getClub(ratingObj.clubRep, player.nationality);
       player.club = clubObj.clubName;
       player.clubLogo = clubObj.clubLogoUrl;
       player.age = this.getAge(player.rating);
-      console.log("Player Nationality:\n", player.nationality);
       let firstNameReq = this.afs.getFirstName(player.nationality)?.request$;
       let firstNameRetry = this.afs.getFirstName(player.nationality)?.retryRequest$;
 
@@ -467,7 +466,7 @@ export class HomeComponent implements OnInit {
     console.log(this.players);
   }
 
-  getNation(property: string) {
+  getNation(property: string, rating?: number) {
     
     if (property === "tier") {
       let nationality: string = this.nationName;
@@ -491,13 +490,35 @@ export class HomeComponent implements OnInit {
     } else {
       let nationality: string = this.nationName;
       let logo: string = "";
+      
       // If random nationalities
       if (nationality.includes("tier")) {
-        let num = this.afs.getRandomInt(0, this.nationsList.length - 1);
-        nationality = this.nationsList[num];
+        // realistic nationalities turned on
+        if (this.realisticNationalities === true) {
+          let tierName = "";
+          if (rating !== undefined) {
+            tierName = this.getRandomNationTier(rating);
+          }
+          
+          let nationList = [];
+          for (const tier of this.nations) {
+            if (tier.tier === tierName) {
+              for (const nation of tier.nations) {
+                nationList.push(nation.name);
+              }
+              let i = this.afs.getRandomInt(0, nationList.length - 1);
+              nationality = nationList[i];
+            }
+          }
+        } else {
+          // realistic nationalities turned off
+          let randomNum = this.afs.getRandomInt(0, this.nationsList.length - 1);
+          nationality = this.nationsList[randomNum];
+        }
+        
       }
       for (const tier of this.nations) {
-        for (const nation of tier.nations) {
+        for (const nation of tier.nations) {     
           if (nationality === nation.name) {
             logo = nation.logo;
           }
@@ -817,7 +838,6 @@ export class HomeComponent implements OnInit {
   }
 
   getRatingBreakdown(tier: string): number[] {
-    console.log(tier);
     switch (tier) {
       case "s":
         return [3, 9, 10, 30, 40, 70, 180, 200, 0, 0, 0, 0];
@@ -834,9 +854,13 @@ export class HomeComponent implements OnInit {
       case "f":
         return [0, 1, 0, 2, 0, 4, 3, 20, 30, 80, 50, 50];
       case "g":
-        return [0, 1, 0, 1, 0, 4, 3, 12, 15, 45, 50, 50];
+        return [0, 1, 0, 1, 0, 4, 3, 13, 25, 45, 50, 50];
       case "h":
-        return [0, 0, 0, 1, 0, 2, 2, 8, 10, 25, 50, 50];
+        return [0, 0, 0, 1, 0, 2, 2, 10, 10, 25, 50, 50];
+      case "i":
+        return [0, 0, 0, 1, 0, 1, 0, 8, 2, 16, 100, 100];
+      case "j":
+        return [0, 0, 0, 0, 0, 1, 0, 1, 0, 10, 100, 100];
       default:
         throw new Error("getRatingBreakdown() had an error");
     }
@@ -863,7 +887,7 @@ export class HomeComponent implements OnInit {
       rating = this.afs.getRandomInt(55, 61);
       clubRep = "average2ndDivPlayer";
     } else if (i < first + second + third + fourth + fifth + sixth) {
-      rating = this.afs.getRandomInt(47, 54);
+      rating = this.afs.getRandomInt(40, 54);
       clubRep = "fillerPlayer";
     }
 
@@ -953,9 +977,11 @@ export class HomeComponent implements OnInit {
     // Average ages are based on this website https://football-observatory.com/IMG/sites/mr/mr49/en/
     let ageIndex: number;
     if (rating > 84) {
-      ageIndex = Math.max(this.afs.getRandomInt(0, 1000), this.afs.getRandomInt(0, 1000), this.afs.getRandomInt(0, 1000));
+      let arr = [this.afs.getRandomInt(0, 1000), this.afs.getRandomInt(0, 1000), this.afs.getRandomInt(0, 1000)];
+      ageIndex = median(arr);
     } else if (rating > 76) {
-      ageIndex = Math.max(this.afs.getRandomInt(0, 1000), this.afs.getRandomInt(0, 1000));
+      let sum = this.afs.getRandomInt(0, 1000) + this.afs.getRandomInt(0, 1000);
+      ageIndex = sum / 2;
     } else {
       ageIndex = this.afs.getRandomInt(0, 1000);
     }
@@ -1007,6 +1033,64 @@ export class HomeComponent implements OnInit {
     } else {
       return 38
     }
+  }
+
+  getRandomNationTier(rating: number) {
+    let randomNum = this.afs.getRandomInt(0, 100);
+    let half = this.afs.getRandomInt(0, 1);
+    let third = this.afs.getRandomInt(0, 2);
+    let quarter = this.afs.getRandomInt(0, 3);
+    let tier = "";
+
+    if (rating > 69) {
+      if (randomNum < 70) {
+        if (third < 2) {
+          tier = "s";
+        } else {
+          tier = "a";
+        }
+      } else if (randomNum < 85) {
+        if (half > 0) {
+          tier = "b";
+        } else {
+          tier = "c";
+        }
+      } else if (randomNum < 95){
+        switch (quarter) {
+          case 0:
+            tier = "d";
+            break;
+          case 1:
+            tier = "e";
+            break;
+          case 2:
+            tier = "f";
+            break;
+          case 3:
+            tier = "g";
+            break;
+          default:
+            tier = "d";
+            break;
+        }
+      } else {
+        let randNum = this.afs.getRandomInt(1, 10);
+        if (randNum < 6) {
+          tier = "h";
+        } else if (randNum < 9) {
+          tier = "i";
+        } else {
+          tier = "j";
+        }
+      }
+    } else {
+      let arr = ["s", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+      let i = this.afs.getRandomInt(0, arr.length - 1);
+      tier = arr[i];
+    }
+
+    tier += " tier";
+    return tier
   }
 
   savePlayers(saveLocation: string) {
@@ -1201,4 +1285,19 @@ export class HomeComponent implements OnInit {
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function median(values: number[]){
+  if(values.length ===0) throw new Error("No inputs");
+
+  values.sort(function(a,b){
+    return a-b;
+  });
+
+  var half = Math.floor(values.length / 2);
+  
+  if (values.length % 2)
+    return values[half];
+  
+  return (values[half - 1] + values[half]) / 2.0;
 }

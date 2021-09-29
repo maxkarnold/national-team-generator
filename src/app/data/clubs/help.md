@@ -11,6 +11,7 @@ The club info is stored in a json file. It has five main properties.
 * regularInternational
 * averagePlayer
 * average2ndDivPlayer
+* fillerPlayer
 Each property represents a rating bracket that every player falls under. The players within these brackets are in these rating ranges, which can be found in the `home.component.ts` file.
 ### Rating Brackets
 * 82-99
@@ -18,6 +19,7 @@ Each property represents a rating bracket that every player falls under. The pla
 * 70-75
 * 62-69
 * 55-61
+* 40-54
 
 Each rating bracket has an array of clubs. These clubs can show up in multiple rating brackets. The clubs have a name and a logo. They also have arrays for `mainNations` and `altNations`.
 

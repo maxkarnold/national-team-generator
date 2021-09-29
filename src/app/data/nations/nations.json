@@ -241,6 +241,10 @@
         "logo": "https://fmdataba.com/images/n/MLI.svg"
       },
       {
+        "name": "south africa",
+        "logo": "https://fmdataba.com/images/n/RSA.svg"
+      },
+      {
         "name": "congo DR",
         "logo": "https://fmdataba.com/images/n/COD.svg"
       }
@@ -254,16 +258,8 @@
         "logo": "https://fmdataba.com/images/n/KVX.svg"
       },
       {
-        "name": "guinea",
-        "logo": "https://fmdataba.com/images/n/GUI.svg"
-      },
-      {
         "name": "wales",
         "logo": "https://fmdataba.com/images/n/WAL.svg"
-      },
-      {
-        "name": "northern ireland",
-        "logo": "https://fmdataba.com/images/n/NIR.svg"
       },
       {
         "name": "iceland",
@@ -290,6 +286,22 @@
         "logo": "https://fmdataba.com/images/n/MNE.svg"
       },
       {
+        "name": "israel",
+        "logo": "https://fmdataba.com/images/n/ISR.svg"
+      },
+      {
+        "name": "bulgaria",
+        "logo": "https://fmdataba.com/images/n/BUL.svg"
+      },
+      {
+        "name": "panama",
+        "logo": "https://fmdataba.com/images/n/PAN.svg"
+      },
+      {
+        "name": "georiga",
+        "logo": "https://fmdataba.com/images/n/GEO.svg"
+      },
+      {
         "name": "australia",
         "logo": "https://fmdataba.com/images/n/AUS.svg"
       }
@@ -299,16 +311,222 @@
     "tier": "h tier",
     "nations": [
       {
+        "name": "northern ireland",
+        "logo": "https://fmdataba.com/images/n/NIR.svg"
+      },
+      {
+        "name": "guinea",
+        "logo": "https://fmdataba.com/images/n/GUI.svg"
+      },
+      {
         "name": "jamaica",
         "logo": "https://fmdataba.com/images/n/JAM.svg"
+      },
+      {
+        "name": "cape verde",
+        "logo": "https://fmdataba.com/images/n/CPV.svg"
+      },
+      {
+        "name": "belarus",
+        "logo": "https://fmdataba.com/images/n/BLR.svg"
       },
       {
         "name": "honduras",
         "logo": "https://fmdataba.com/images/n/HON.svg"
       },
       {
+        "name": "iraq",
+        "logo": "https://fmdataba.com/images/n/IRQ.svg"
+      },
+      {
+        "name": "angola",
+        "logo": "https://fmdataba.com/images/n/ANG.svg"
+      },
+      {
+        "name": "saudi arabia",
+        "logo": "https://fmdataba.com/images/n/KSA.svg"
+      },
+      {
+        "name": "canada",
+        "logo": "https://fmdataba.com/images/n/CAN.svg"
+      },
+      {
+        "name": "uzbekistan",
+        "logo": "https://fmdataba.com/images/n/UZB.svg"
+      },
+      {
+        "name": "gambia",
+        "logo": "https://fmdataba.com/images/n/GAM.svg"
+      },
+      {
+        "name": "zimbabwe",
+        "logo": "https://fmdataba.com/images/n/ZIM.svg"
+      },
+      {
+        "name": "armenia",
+        "logo": "https://fmdataba.com/images/n/ARM.svg"
+      },
+      {
+        "name": "burkina faso",
+        "logo": "https://fmdataba.com/images/n/BFA.svg"
+      },
+      {
+        "name": "zambia",
+        "logo": "https://fmdataba.com/images/n/ZAM.svg"
+      },
+      {
         "name": "north macedonia",
         "logo": "https://fmdataba.com/images/n/MKD.svg"
+      }
+    ]
+  },
+  {
+    "tier": "i tier",
+    "nations": [
+      {
+        "name": "new zealand",
+        "logo": "https://fmdataba.com/images/n/NZL.svg"
+      },
+      {
+        "name": "benin",
+        "logo": "https://fmdataba.com/images/n/BEN.svg"
+      },
+      {
+        "name": "togo",
+        "logo": "https://fmdataba.com/images/n/TOG.svg"
+      },
+      {
+        "name": "guinea - bissau",
+        "logo": "https://fmdataba.com/images/n/GNB.svg"
+      },
+      {
+        "name": "equatorial guinea",
+        "logo": "https://fmdataba.com/images/n/EQG.svg"
+      },
+      {
+        "name": "trinidad & tobago",
+        "logo": "https://fmdataba.com/images/n/TRI.svg"
+      },
+      {
+        "name": "congo",
+        "logo": "https://fmdataba.com/images/n/CGO.svg"
+      },
+      {
+        "name": "mozambique",
+        "logo": "https://fmdataba.com/images/n/MOZ.svg"
+      },
+      {
+        "name": "gabon",
+        "logo": "https://fmdataba.com/images/n/GAB.svg"
+      },
+      {
+        "name": "madagascar",
+        "logo": "https://fmdataba.com/images/n/MAD.svg"
+      },
+      {
+        "name": "martinique",
+        "logo": "https://fmdataba.com/images/n/MTQ.svg"
+      },
+      {
+        "name": "suriname",
+        "logo": "https://fmdataba.com/images/n/SUR.svg"
+      },
+      {
+        "name": "sierra leone",
+        "logo": "https://fmdataba.com/images/n/SLE.svg"
+      },
+      {
+        "name": "china PR",
+        "logo": "https://fmdataba.com/images/n/CHN.svg"
+      },
+      {
+        "name": "cyprus",
+        "logo": "https://fmdataba.com/images/n/CYP.svg"
+      },
+      {
+        "name": "estonia",
+        "logo": "https://fmdataba.com/images/n/EST.svg"
+      },
+      {
+        "name": "qatar",
+        "logo": "https://fmdataba.com/images/n/QAT.svg"
+      },
+      {
+        "name": "UAE",
+        "logo": "https://fmdataba.com/images/n/UAE.svg"
+      },
+      {
+        "name": "curaçao",
+        "logo": "https://fmdataba.com/images/n/CUW.svg"
+      },
+      {
+        "name": "syria",
+        "logo": "https://fmdataba.com/images/n/SYR.svg"
+      },
+      {
+        "name": "lithuania",
+        "logo": "https://fmdataba.com/images/n/LTU.svg"
+      }
+    ]
+  },
+  {
+    "tier": "j tier",
+    "nations": [
+      {
+        "name": "el salvador",
+        "logo": "https://fmdataba.com/images/n/SLV.svg"
+      },
+      {
+        "name": "luxembourg",
+        "logo": "https://fmdataba.com/images/n/LUX.svg"
+      },
+      {
+        "name": "french guiana",
+        "logo": "https://fmdataba.com/images/n/GUF.svg"
+      },
+      {
+        "name": "central african republic",
+        "logo": "https://fmdataba.com/images/n/CTA.svg"
+      },
+      {
+        "name": "philippines",
+        "logo": "https://fmdataba.com/images/n/PHI.svg"
+      },
+      {
+        "name": "grenada",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Grenada.svg"
+      },
+      {
+        "name": "chad",
+        "logo": "https://fmdataba.com/images/n/CHA.svg"
+      },
+      {
+        "name": "uganda",
+        "logo": "https://fmdataba.com/images/n/UGA.svg"
+      },
+      {
+        "name": "haiti",
+        "logo": "https://fmdataba.com/images/n/HAI.svg"
+      },
+      {
+        "name": "lebanon",
+        "logo": "https://fmdataba.com/images/n/LIB.svg"
+      },
+      {
+        "name": "jordan",
+        "logo": "https://fmdataba.com/images/n/JOR.svg"
+      },
+      {
+        "name": "bahrain",
+        "logo": "https://fmdataba.com/images/n/BHR.svg"
+      },
+      {
+        "name": "kyrgyzstan",
+        "logo": "https://fmdataba.com/images/n/KGZ.svg"
+      },
+      {
+        "name": "dominican republic",
+        "logo": "https://fmdataba.com/images/n/DOM.svg"
       }
     ]
   }
