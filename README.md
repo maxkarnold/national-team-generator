@@ -91,7 +91,7 @@ export const environment = {
 ```
 
 ### Build/Deploy the app
-Delete anything in the `dist/` directory (especially the index.html) and build the app with:
+Delete anything in the `dist/` directory (especially the `index.html`) and build the app with:
 
 ```
 ng build
