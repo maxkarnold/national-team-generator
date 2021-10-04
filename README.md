@@ -91,20 +91,20 @@ export const environment = {
 ```
 
 ### Build/Deploy the app
-<p>You must build the angular assets in the terminal with:</p>
+You must build the angular assets in the terminal with:
 
 ```
 ng build
 ```
 
-<p>Change the `public` property in `firebases.json`</p>
+Change the `public` property in `firebase.json`.
 
 
 ```json
 "public": "dist/team-gen-ng",
 ```
 
-<p>Then deploy to the website with firebase in the terminal`</p>
+Then deploy to the website with firebase in the terminal.
 
 ```
 firebase deploy
