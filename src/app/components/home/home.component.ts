@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
+import { AuthService } from '../../services/auth.service'
 import { Player } from '../../models/player';
 import { LastName } from 'src/app/models/last-name';
 import { FirstName } from 'src/app/models/first-name';
@@ -22,6 +23,7 @@ import { Overlay } from '@angular/cdk/overlay';
 })
 
 export class HomeComponent implements OnInit {
+
   playerCount = 0;
   players: Player[];
   sortedData: Player[];
@@ -41,17 +43,20 @@ export class HomeComponent implements OnInit {
   nationsList: string[];
   clubs: any = (clubsModule as any).default;
 
-  overlayOpen = false;
+  saveDataOverlayOpen = false;
+  loginOverlayOpen = false;
   navToggle = false;
-  loggedIn = true;
-  nationName = "s tier";
+  isLoggedIn: boolean = false;
+  nationName = "";
+  nationSelectValue = "s tier"
   realisticNationalities = true;
 
   positionBoxes = positionBoxes;
+
   
 
 
-  constructor(private afs: FirestoreService) {
+  constructor(private afs: FirestoreService, private auth: AuthService) {
     this.players = [];
     this.sortedData = this.players;
     this.pitchPlayers = [];
@@ -60,8 +65,12 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.loggedIn) {
+    if (localStorage.getItem('user') !== null) {
+      // console.log(JSON.parse(localStorage.getItem('user') || 'No Current User'));
+      this.isLoggedIn = true;
       this.loadPlayers('loadLocalStorage');
+    } else {
+      this.isLoggedIn = false;
     }
     for (const tierObj of this.nations) {
       for (let i = 0; i < tierObj.nations.length; i++) {
@@ -69,6 +78,31 @@ export class HomeComponent implements OnInit {
       }
     }
     // console.log("nations list", this.nationsList);
+  }
+
+  loginOverlay() {
+    
+    if (!this.loginOverlayOpen) {
+      this.loginOverlayOpen = true;
+    } else {
+      this.loginOverlayOpen = false;
+    }
+  }
+
+  async login(email: string, password: string) {
+    await this.auth.login(email, password);
+    if (this.auth.isLoggedIn) {
+      this.isLoggedIn = true;
+      this.loginOverlayOpen = false;
+    }
+    
+    console.log('Logged in');
+  }
+
+  logout() {
+    this.auth.logout();
+    console.log('logged out');
+    this.isLoggedIn = false;
   }
 
   consoleLog(value: string) {
@@ -366,7 +400,11 @@ export class HomeComponent implements OnInit {
   
 
   getPlayers() {
-    if (this.nationName === "") {
+    if (!this.isLoggedIn) {
+      alert("You must login to generate a team.");
+      return false
+    }
+    else if (this.nationSelectValue === "") {
       alert("You must select a nation or random nationalities before generating a team");
       return false
     }
@@ -376,6 +414,7 @@ export class HomeComponent implements OnInit {
     this.players = [];
     this.sortedData = [];
     this.pitchPlayers = [];
+    this.nationName = this.nationSelectValue;
     for (let index in this.positions) {
       this.positions[index].amount = 0;
     }
@@ -449,12 +488,24 @@ export class HomeComponent implements OnInit {
           });
         }
         // add nickname based on nationality
-        // Brazil, Spain
+        // About 90% chance: Mozambique
+        // About 50% chance: Brazil, Spain, Portugal, Angola, Equatorial Guinea, Guinea-Bissau
       });
 
-      this.afs.getLastName(player.nationality)?.subscribe((lastNameArr) => { 
-        let lastNameObj: any = lastNameArr[0];
-        player.lastName = lastNameObj.name;
+      let lastNameReq = this.afs.getLastName(player.nationality)?.request$;
+      let lastNameRetry = this.afs.getLastName(player.nationality)?.retryRequest$;
+
+      lastNameReq.subscribe((lastNameArr) => {
+        if (lastNameArr !== undefined) {
+          let lastNameObj: any = lastNameArr[0];
+          player.lastName = lastNameObj.name;
+        } 
+        else {
+          lastNameRetry.subscribe((lastNameArr) => { 
+            let lastNameObj: any = lastNameArr[0];
+            player.lastName = lastNameObj.name;
+          });
+        }
       });
       // getMiddleName function
 
@@ -469,7 +520,7 @@ export class HomeComponent implements OnInit {
   getNation(property: string, rating?: number) {
     
     if (property === "tier") {
-      let nationality: string = this.nationName;
+      let nationality: string = this.nationSelectValue;
       let tier: string = "";
       if (nationality.includes("tier")) {
         tier = nationality.slice(0, 1);
@@ -488,7 +539,7 @@ export class HomeComponent implements OnInit {
         tier
       }
     } else {
-      let nationality: string = this.nationName;
+      let nationality: string = this.nationSelectValue;
       let logo: string = "";
       
       // If random nationalities
@@ -842,7 +893,7 @@ export class HomeComponent implements OnInit {
       case "s":
         return [3, 9, 10, 30, 40, 70, 180, 200, 0, 0, 0, 0];
       case "a":
-        return [2, 5, 4, 12, 16, 45, 90, 130, 150, 200, 0, 0];
+        return [2, 5, 4, 12, 16, 45, 90, 130, 0, 0, 0, 0];
       case "b":
         return [0, 4, 1, 5, 4, 15, 25, 150, 85, 200, 0, 0];
       case "c":
@@ -909,13 +960,13 @@ export class HomeComponent implements OnInit {
     }
     // console.log(randomIndexArr, clubArr);
 
-    // About a 80% (100%-20%) chance to play for team with same mainNation
-    let mainNationChance = 1;
-    // About a 50% (75%-20%-5%) chance to play for team with same altNation
-    let altNationChance = this.afs.getRandomInt(1, 4);
+    // About a 60% chance to play for team with same mainNation
+    let mainNationChance = this.afs.getRandomInt(1, 10);
+    // About a 40% (45%-5%) chance to play for team with same altNation
+    let altNationChance = this.afs.getRandomInt(1, 20);
     // Maybe should add a third chance `thirdNationChance`. This would be 25%.
 
-    if (mainNationChance === 1) {
+    if (mainNationChance < 7) {
       // for each club in the random indexed array
       for (let i = 0; i < randomIndexArr.length; i++) {
         let club = clubArr[randomIndexArr[i]];
@@ -938,7 +989,7 @@ export class HomeComponent implements OnInit {
         clubName,
         clubLogoUrl
       };
-    } else if (altNationChance < 4) {
+    } else if (altNationChance < 10) {
       // for each club in the random indexed array
       for (let i = 0; i < randomIndexArr.length; i++) {
         let club = clubArr[randomIndexArr[i]];
@@ -1094,16 +1145,25 @@ export class HomeComponent implements OnInit {
   }
 
   savePlayers(saveLocation: string) {
+    
     if (saveLocation === 'firestore') {
+      if (!this.isLoggedIn) {
+        alert('You must be logged in to save roster to cloud');
+        return false
+      }
       if (window.confirm("Are you sure you want to save?")) {
-        this.afs.saveRoster(this.players, this.pitchPlayers);
+        this.afs.saveRoster(this.players, this.pitchPlayers, this.nationName);
       } else {
         return false
       }
     } else if (saveLocation === 'localStorage') {
-      if (localStorage.length > 0) {
+      if (localStorage.length > 1) {
         if (window.confirm("Are you sure you want to overwrite your current roster saved in Local Storage?")) {
+          let user = localStorage.getItem('user');
           localStorage.clear();
+          if (user !== null) {
+            localStorage.setItem('user', user);
+          }
         } else {
           return false
         }
@@ -1114,6 +1174,7 @@ export class HomeComponent implements OnInit {
       for (const player of this.pitchPlayers) {
         localStorage.setItem(`TEAMGEN - Starting ${player.pitchPosition}`, JSON.stringify(player));
       }
+      localStorage.setItem(`TEAMGEN - Tier/Nationality`, JSON.stringify(this.nationName));
       // console.log(localStorage);
     } else {
       throw new Error("Problem with saving!");
@@ -1122,9 +1183,13 @@ export class HomeComponent implements OnInit {
   }
 
   saveDataOverlay(loadMore?: string) {
-    this.overlayOpen = true;
+    this.saveDataOverlayOpen = true;
     if (loadMore !== 'check'){
-      return false
+      return false;
+    }
+    if (!this.isLoggedIn) {
+      alert('You must be logged in to access cloud saved data');
+      return false;
     }
     this.afs.getRosterId().subscribe((obj) => {
       console.log("Checking firestore for save data...\n")
@@ -1144,17 +1209,20 @@ export class HomeComponent implements OnInit {
   }
 
   closeSaveDataOverlay() {
-    this.overlayOpen = false;
+    this.saveDataOverlayOpen = false;
   }
 
   loadPlayers(saveLocation: string) {
     console.log("Save Data\n", saveLocation);
-    this.overlayOpen = false;
+    this.saveDataOverlayOpen = false;
     if (saveLocation === 'loadLocalStorage') {
-      if (localStorage.length > 0) {
+      if (localStorage.length > 1) {
         this.players = [];
         this.sortedData = [];
         this.pitchPlayers = [];
+        this.nationName = localStorage.getItem(`TEAMGEN - Tier/Nationality`) || '';
+        this.nationName = this.nationName.slice(1, -1);
+        console.log(this.nationName);
         for (let index in this.positions) {
           this.positions[index].amount = 0;
         }
@@ -1233,6 +1301,7 @@ export class HomeComponent implements OnInit {
             this.sortedData = obj.benchReserves;
             // console.log("GOT PLAYERS: \n", this.players);
             this.pitchPlayers = obj.starters;
+            this.nationName = obj.nationOrTier;
             // console.log("Got STARTERS:\n", this.pitchPlayers);
           } else {
             console.log("Problem loading data from firestore");

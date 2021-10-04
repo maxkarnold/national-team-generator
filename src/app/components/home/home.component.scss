@@ -1,5 +1,64 @@
 // @import '../../themes.scss';
 
+button {
+    cursor: pointer;
+}
+
+.desktop {
+    display: none;
+}
+@media screen and (min-width: 800px) {
+    .mobile {
+        display: none;
+    }
+    header.desktop {
+        display: block;
+    }
+    td.desktop, 
+    th.desktop {
+        display: table-cell;
+    }
+}
+
+header.desktop a{
+    padding: 0 1rem;
+    color: white;
+}
+
+.login-overlay {
+    background-color: #3F51B5;
+    border: 1px solid whitesmoke;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    padding: 1.5rem;
+    float: right;
+    margin: 0 auto;
+    color: white;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    width: 100%;
+    @media screen and (min-width: 800px) {
+        width: 25rem;
+    }
+    input {
+        color: white;
+    }
+
+    .exit-container {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            display: flex;
+            justify-content: center;
+            min-width: 2.5rem;
+            width: auto;
+            padding: 0;
+        }
+    }
+    .login-button {
+        background-color: white;
+    }
+}
 .load-roster-overlay {
     background-color: #3F51B5;
     border: 1px solid whitesmoke;
@@ -122,8 +181,7 @@ h3 {
 
 .player-table {
     font-size: clamp(0.5rem, 2.5vw, 1rem);
-    // background-color: #424242;
-    // color: white;
+    width: 100%;
     .player-row {
         td {
             text-transform: capitalize;
@@ -434,6 +492,10 @@ h3 {
         }
     }
 }  
+.nation-name-heading {
+    text-transform: capitalize;
+    // font-weight: bold;
+}
 // *** ANGULAR CDK DRAG & DROP classes ***
 // Do not move cdk drag classes inside other classes
 .cdk-drag-preview {
