@@ -94,7 +94,7 @@ export const environment = {
 <p>You must build the angular assets in the terminal with:</p>
 
 ```
-   ng build
+ng build
 ```
 
 <p>Change the `public` property in `firebases.json`</p>
