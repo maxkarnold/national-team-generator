@@ -66,7 +66,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if (localStorage.getItem('user') !== null) {
-      // console.log(JSON.parse(localStorage.getItem('user') || 'No Current User'));
+      console.log('User is logged in.')
       this.isLoggedIn = true;
       this.loadPlayers('loadLocalStorage');
     } else {
@@ -1213,7 +1213,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadPlayers(saveLocation: string) {
-    console.log("Save Data\n", saveLocation);
+    console.log("Save Data is from:\n", saveLocation);
     this.saveDataOverlayOpen = false;
     if (saveLocation === 'loadLocalStorage') {
       if (localStorage.length > 1) {
@@ -1222,7 +1222,6 @@ export class HomeComponent implements OnInit {
         this.pitchPlayers = [];
         this.nationName = localStorage.getItem(`TEAMGEN - Tier/Nationality`) || '';
         this.nationName = this.nationName.slice(1, -1);
-        console.log(this.nationName);
         for (let index in this.positions) {
           this.positions[index].amount = 0;
         }
