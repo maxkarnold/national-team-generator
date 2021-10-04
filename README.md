@@ -1,6 +1,6 @@
 # national-team-generator
 
-* Website URL: *** COMING SOON ***
+* Website URL: https://national-team-generator.web.app/
 * See the [Wiki](https://github.com/maxkarnold/national-team-generator/wiki) for more info
 * Check out my [spreadsheet](https://docs.google.com/spreadsheets/d/1iUR0P_v-qPOfyR1cX4iYIAwLiMCHIRPgRx9xRRmNdwc/edit?usp=sharing) for testing
 
