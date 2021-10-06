@@ -5,6 +5,59 @@ button {
 .desktop {
     display: none;
 }
+
+.buttons-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    @media screen and (max-width: 800px) {
+        flex-flow: column;
+        align-items: stretch;
+        justify-content: stretch;
+        button {
+            width: 90%;
+        }
+        .load-data-buttons {
+            width: 90%;
+            button {
+                flex: 1;
+            }
+        }
+        .form-buttons,
+        .save-buttons {
+            flex-flow: column;
+        }
+    }
+    padding: 20px 0;
+    button {
+        height: 40px;
+        margin: 5px;
+        border-radius: 10px;
+    }
+    .team-generator-form {
+        text-transform: capitalize;
+        margin: 5px;
+        position: relative;
+        top: 7.5px;
+    }
+    .form-buttons {
+        display: flex;
+        align-items: center;
+    }   
+    .load-data-buttons {
+        display: flex;
+        margin: 5px;
+        button {
+            margin: 0 1px;
+        }
+    }
+    .save-buttons {
+        display: flex;
+        align-items: center;
+    }
+}
+
+
 @media screen and (min-width: 800px) {
     .mobile {
         display: none;
@@ -99,44 +152,6 @@ h2 {
 }
 h3 {
     margin: 1.5rem auto;
-}
-
-.team-generator-form {
-    text-transform: capitalize;
-    margin-top: 2rem;
-}
-
-
-.form-buttons {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-around;
-    margin: 2rem auto;
-    width: 75%;
-    height: 10rem;
-    button {
-        height: 3rem;
-        cursor: pointer;
-    }
-    .load-data-buttons {
-        display: flex;
-        button {
-            flex: 1;
-        }
-    }
-}
-
-.save-buttons {
-    // bottom: 1rem;
-    display: flex;
-    justify-content: flex-end;
-    margin: 20px 0;
-    button {
-        cursor: pointer;
-        height: 40px;
-        margin: 10px;
-        border-radius: 5px;
-    }
 }
 
 
@@ -605,4 +620,9 @@ h3 {
 
 .expanded-info:first-of-type {
   margin-top: 16px;
+}
+
+.mat-form-field-wrapper, 
+.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding: 0;
 }
