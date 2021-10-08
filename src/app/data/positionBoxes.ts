@@ -1,7 +1,7 @@
 import { PositionBox } from '../models/positionBox';
 
 let defaultPosBox = {
-    playerClass: 'inactive player-box ',
+    playerClass: 'inactive player-box',
     posBoxClass: 'active pos-box',
     html: ''
   }

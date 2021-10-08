@@ -77,7 +77,6 @@ export class HomeComponent implements OnInit {
         this.nationsList.push(tierObj.nations[i].name);
       }
     }
-    // console.log("nations list", this.nationsList);
   }
 
   loginOverlay() {
@@ -109,30 +108,69 @@ export class HomeComponent implements OnInit {
     console.log(value);
   }
 
+  resetStarters() {
+    this.players = this.pitchPlayers.concat(this.players);
+    this.pitchPlayers = [];
+    for (const box of this.positionBoxes) {
+      box.playerClass = 'inactive player-box';
+      box.posBoxClass = 'active pos-box';
+      box.html = '';
+    }
+  }
+
   getPositionBoxes(box: PositionBox) {
     return box.class
   }
 
-  getPlayerClass(box?: PositionBox) {  
-    if (box === undefined) {
-      return 'starters-fix'
-    }
+  getPlayerClass(box: PositionBox) {  
     let pos = parseInt(box.class.slice(-2));
+    // if posBox is a playable position
     if (!isNaN(pos)) {
       for (const player of this.pitchPlayers) {
+        let pitchRating = 0;
+        for (const pos of this.pitchPositions) {
+          if (pos.position === player.pitchPosition) {
+            // if main position
+            if (player.position === pos.playerPosition) {
+              pitchRating = player.rating;
+            } 
+            // else if alt position
+            else if (player.altPositions.includes(pos.playerPosition)) {
+              pitchRating = player.yellowRating;
+            }
+            // else if gk position but not gk
+            else if (pos.playerPosition === "GK") {
+              pitchRating = player.gkRating;
+            }
+            // any other position
+            else {
+              pitchRating = player.redRating;
+            }
+          }
+        }
         if (player.pitchPositionIndex === pos) {
+          
           box.playerClass = 'active player-box';
+          box.html = `${player.firstInitial}. ${player.lastName} ${pitchRating} ${player.pitchPosition}`;
+          box.pitchPlayer = player;
           // console.log(box.playerClass);
           return box.playerClass
         }
       }
+      box.playerClass = 'inactive player-box';
+      box.html = "";
+      return box.playerClass
     } 
+    
   }
 
   getPosBoxClass(box: PositionBox) {
     let pos = parseInt(box.class.slice(-2));
+    // if posBox is a playable position
     if (!isNaN(pos)) {
+      // for each of the current pitch players
       for (const player of this.pitchPlayers) {
+        // if the current player is located in this positionBox
         if (player.pitchPositionIndex === pos) {
           box.posBoxClass = 'inactive pos-box';
         }
@@ -165,100 +203,233 @@ export class HomeComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Player[]>) {
-    let playerIndex = event.previousIndex;
-    let playerObj = event.previousContainer.data[playerIndex];
+    let newPlayerIndex = event.previousIndex;
+    let newPlayer = event.previousContainer.data[newPlayerIndex];
     let positionIndex = parseInt(event.container.element.nativeElement.classList[1]);
-    // THINGS TO ADD
-    // If you hover over a position, the border should be either green, yellow, or red based on position
-    // The rating should be changed depending on the match
-    // A player should have a new rating/property for secondary positions about 2-3 ratings lower.
-    // Property will be called altRating
-    // Player should also have a badRating property. This will be 10-15 ratings lower. Not sure how to calculate as of yet.
-    // We might need a goalkeeper rating for outfield players and a outfield rating for goalkeepers.
+
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      // console.log(event.container.data);
+      // console.log('moving within array');
     } 
     else if (event.previousContainer.id === "bench-players") {
-      // Check for 11 players in starting lineup
-      if (this.pitchPlayers.length === 11) {
+      // Check for 11 players in starting lineup and no player swap
+      if (this.pitchPlayers.length === 11 && event.container.element.nativeElement.innerText === "") {
         alert("You can only have 11 players starting.");
         console.log("Only 11 pitchPlayers are allowed");
         return false
       }
-      playerObj.pitchPositionIndex = positionIndex;
+      newPlayer.pitchPositionIndex = positionIndex;
       switch (positionIndex) {
         case 0:
-          playerObj.pitchPosition = "GK";
+          newPlayer.pitchPosition = "GK";
           break;
         case 1:
-          playerObj.pitchPosition = "DR";
+          newPlayer.pitchPosition = "DR";
           break;
         case 2:
-          playerObj.pitchPosition = "DCR";
+          newPlayer.pitchPosition = "DCR";
           break;
         case 3:
-          playerObj.pitchPosition = "DC";
+          newPlayer.pitchPosition = "DC";
           break;
         case 4:
-          playerObj.pitchPosition = "DCL";
+          newPlayer.pitchPosition = "DCL";
         break;
         case 5:
-          playerObj.pitchPosition = "DL";
+          newPlayer.pitchPosition = "DL";
           break;
         case 6:
-          playerObj.pitchPosition = "WBR";
+          newPlayer.pitchPosition = "WBR";
           break;
         case 7:
-          playerObj.pitchPosition = "DMR";
+          newPlayer.pitchPosition = "DMR";
           break;
         case 8:
-          playerObj.pitchPosition = "DMC";
+          newPlayer.pitchPosition = "DMC";
           break;
         case 9:
-          playerObj.pitchPosition = "DML";
+          newPlayer.pitchPosition = "DML";
           break;
         case 10:
-          playerObj.pitchPosition = "WBL";
+          newPlayer.pitchPosition = "WBL";
           break;
         case 11:
-          playerObj.pitchPosition = "MR";
+          newPlayer.pitchPosition = "MR";
           break;
         case 12:
-          playerObj.pitchPosition = "MCR";
+          newPlayer.pitchPosition = "MCR";
           break;
         case 13:
-          playerObj.pitchPosition = "MC";
+          newPlayer.pitchPosition = "MC";
           break;
         case 14:
-          playerObj.pitchPosition = "MCL";
+          newPlayer.pitchPosition = "MCL";
           break;
         case 15:
-          playerObj.pitchPosition = "ML";
+          newPlayer.pitchPosition = "ML";
           break;
         case 16:
-          playerObj.pitchPosition = "AMR";
+          newPlayer.pitchPosition = "AMR";
           break;
         case 17:
-          playerObj.pitchPosition = "AMCR";
+          newPlayer.pitchPosition = "AMCR";
           break;
         case 18:
-          playerObj.pitchPosition = "AMC";
+          newPlayer.pitchPosition = "AMC";
           break;
         case 19:
-          playerObj.pitchPosition = "AMCL";
+          newPlayer.pitchPosition = "AMCL";
           break;
         case 20:
-          playerObj.pitchPosition = "AML";
+          newPlayer.pitchPosition = "AML";
           break;
         case 21:
-          playerObj.pitchPosition = "FR";
+          newPlayer.pitchPosition = "FR";
           break;
         case 22:
-          playerObj.pitchPosition = "FC";
+          newPlayer.pitchPosition = "FC";
           break;
         case 23:
-          playerObj.pitchPosition = "FL";
+          newPlayer.pitchPosition = "FL";
+          break;
+        default:
+          console.log("Error: Check line 165 in home.component.ts");
+          break;
+      }  
+
+      // if swapping a player
+      if (event.container.element.nativeElement.innerText !== "") {
+        for (let i = 0; i < this.pitchPlayers.length; i++) {
+          if (this.pitchPlayers[i].pitchPosition === newPlayer.pitchPosition) { 
+            let oldPlayer = this.pitchPlayers[i];
+            oldPlayer.pitchPosition = "";
+            oldPlayer.pitchPositionIndex = NaN;
+            this.pitchPlayers.splice(i, 1);
+            this.players.splice(newPlayerIndex, 1, oldPlayer);
+            // console.log(this.positionBoxes);
+          }
+        }
+      } else {  
+        this.players.splice(newPlayerIndex, 1);
+      }
+      this.pitchPlayers.push(newPlayer);
+      let el = event.container.element.nativeElement;
+      // el.children[0].className = "active player-box";
+      el.children[1].className = "inactive pos-box";
+    }
+    // Else if the player is moved to the bench
+    else if (event.container.id === "bench-players"){
+      let el = event.previousContainer.element.nativeElement;
+
+      console.log(el, event, this.pitchPlayers);
+      for (let i = 0; i < this.pitchPlayers.length; i++) {
+        if (parseInt(el.classList[1]) === this.pitchPlayers[i].pitchPositionIndex) {
+          let prevIndex = i;
+          transferArrayItem(event.previousContainer.data,
+            event.container.data,
+            prevIndex,
+            event.currentIndex);
+            let movingPlayer: Player = event.container.data[event.currentIndex];
+            movingPlayer.pitchPosition = "";
+            movingPlayer.pitchPositionIndex = NaN;
+        }
+      }
+      el.children[0].className = 'inactive player-box';
+      el.children[1].className = 'active pos-box';
+    } 
+    // Else if the player is moved to another pitch position
+    else if (event.previousContainer.id !== "bench-players" && event.container.id !== "bench-players") {
+      newPlayer = event.item.data.pitchPlayer;
+      let el = event.container.element.nativeElement;
+      let prevEl = event.previousContainer.element.nativeElement;
+      // if swapping a player
+      if (event.container.element.nativeElement.innerText !== "") {
+        for (let i = 0; i < this.pitchPlayers.length; i++) {
+          if (this.pitchPlayers[i].pitchPositionIndex === parseInt(event.container.element.nativeElement.classList[1])) { 
+            
+            let oldPlayer = this.pitchPlayers[i];
+            oldPlayer.pitchPosition = newPlayer.pitchPosition;
+            oldPlayer.pitchPositionIndex = newPlayer.pitchPositionIndex;
+            console.log(oldPlayer);
+          }
+        }
+      } else {  
+        prevEl.children[1].className = "active pos-box";
+      }
+      newPlayer.pitchPositionIndex = positionIndex;
+      el.children[1].className = "inactive pos-box";
+      switch (positionIndex) {
+        case 0:
+          newPlayer.pitchPosition = "GK";
+          break;
+        case 1:
+          newPlayer.pitchPosition = "DR";
+          break;
+        case 2:
+          newPlayer.pitchPosition = "DCR";
+          break;
+        case 3:
+          newPlayer.pitchPosition = "DC";
+          break;
+        case 4:
+          newPlayer.pitchPosition = "DCL";
+        break;
+        case 5:
+          newPlayer.pitchPosition = "DL";
+          break;
+        case 6:
+          newPlayer.pitchPosition = "WBR";
+          break;
+        case 7:
+          newPlayer.pitchPosition = "DMR";
+          break;
+        case 8:
+          newPlayer.pitchPosition = "DMC";
+          break;
+        case 9:
+          newPlayer.pitchPosition = "DML";
+          break;
+        case 10:
+          newPlayer.pitchPosition = "WBL";
+          break;
+        case 11:
+          newPlayer.pitchPosition = "MR";
+          break;
+        case 12:
+          newPlayer.pitchPosition = "MCR";
+          break;
+        case 13:
+          newPlayer.pitchPosition = "MC";
+          break;
+        case 14:
+          newPlayer.pitchPosition = "MCL";
+          break;
+        case 15:
+          newPlayer.pitchPosition = "ML";
+          break;
+        case 16:
+          newPlayer.pitchPosition = "AMR";
+          break;
+        case 17:
+          newPlayer.pitchPosition = "AMCR";
+          break;
+        case 18:
+          newPlayer.pitchPosition = "AMC";
+          break;
+        case 19:
+          newPlayer.pitchPosition = "AMCL";
+          break;
+        case 20:
+          newPlayer.pitchPosition = "AML";
+          break;
+        case 21:
+          newPlayer.pitchPosition = "FR";
+          break;
+        case 22:
+          newPlayer.pitchPosition = "FC";
+          break;
+        case 23:
+          newPlayer.pitchPosition = "FL";
           break;
         default:
           console.log("Error: Check line 165 in home.component.ts");
@@ -267,56 +438,37 @@ export class HomeComponent implements OnInit {
       let pitchRating = 0;
       
       for (const pos of this.pitchPositions) {
-        if (pos.position === playerObj.pitchPosition) {
+        if (pos.position === newPlayer.pitchPosition) {
           // if main position
-          if (playerObj.position === pos.playerPosition) {
-            pitchRating = playerObj.rating;
+          if (newPlayer.position === pos.playerPosition) {
+            pitchRating = newPlayer.rating;
           } 
           // else if alt position
-          else if (playerObj.altPositions.includes(pos.playerPosition)) {
-            pitchRating = playerObj.yellowRating;
+          else if (newPlayer.altPositions.includes(pos.playerPosition)) {
+            pitchRating = newPlayer.yellowRating;
           }
           // else if gk position but not gk
           else if (pos.playerPosition === "GK") {
-            pitchRating = playerObj.gkRating;
+            pitchRating = newPlayer.gkRating;
           }
           // any other position
           else {
-            pitchRating = playerObj.redRating;
+            pitchRating = newPlayer.redRating;
           }
         }
       }
-      this.pitchPlayers.push(playerObj);
-      this.players.splice(playerIndex, 1);
-      let el = event.container.element.nativeElement;
-      el.children[0].innerHTML = `${playerObj.firstInitial}. ${playerObj.lastName} ${pitchRating} <span>${playerObj.pitchPosition}</span>`;
-      el.children[0].className = "active player-box";
-      el.children[1].className = "inactive pos-box"
-      // el.classList.add("player-box");
-      // el.children[0].className += "pitch-card-pos";
-      // console.log(event.container.data, this.pitchPlayers);
+      
+
     }
-    // Else if the player is moved to the bench
-    else if (event.container.id === "bench-players"){
-      playerObj.pitchPosition = "";
-      playerObj.pitchPositionIndex = NaN;
-      let el = event.previousContainer.element.nativeElement;
-      el.children[0].innerHTML = "";
-      el.children[0].className = 'inactive player-box'
-      el.children[1].className = 'active pos-box';
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-      // console.log(event.container.data);
-    } 
-    // Else if the player is moved to another pitch position
-    console.log(this.pitchPlayers);
+    // console.log("Pitch Players Array", this.pitchPlayers);
   }
 
   getPositionOutline(event: CdkDragStart) {
+    // console.log(event.source);
+    // Add a placeholder element in origin
+
     // // Grab the current positions for the dragged player
-    let player: Player = event.source.data;
+    let player: Player = event.source.data.pitchPlayer || event.source.data;
     let mainPos = player.position;
     let altPosArr = player.altPositions;
     let greenPosArr = [];
@@ -370,6 +522,7 @@ export class HomeComponent implements OnInit {
   }
 
   removeOutlineDrop(event: CdkDragDrop<Player>) {
+    // console.log("Drop", event);
     for (const box of this.positionBoxes) {
       let classArr = box.class.split(' ');
       if (classArr[2] === "green-placeholder") {
@@ -384,6 +537,7 @@ export class HomeComponent implements OnInit {
   }
 
   removeOutlineRelease(event: CdkDragRelease) {
+    // console.log("Release", event);
     for (const box of this.positionBoxes) {
       let classArr = box.class.split(' ');
       if (classArr[2] === "green-placeholder") {
@@ -475,16 +629,23 @@ export class HomeComponent implements OnInit {
       let firstNameRetry = this.afs.getFirstName(player.nationality)?.retryRequest$;
 
       firstNameReq.subscribe((firstNameArr) => {
-        if (firstNameArr !== undefined) {
+        if (firstNameArr[0] !== undefined) {
           let firstNameObj: any = firstNameArr[0];
           player.firstName = firstNameObj.name;
-          player.firstInitial = player.firstName.slice(0, 1);
+          player.firstInitial = player.firstName.charAt(0);
+          if (player.firstInitial === "'") {
+            player.firstInitial = player.firstName.charAt(1);
+          }
         } 
         else {
           firstNameRetry.subscribe((firstNameArr) => { 
             let firstNameObj: any = firstNameArr[0];
             player.firstName = firstNameObj.name;
-            player.firstInitial = player.firstName.slice(0, 1);
+            player.firstInitial = player.firstName.charAt(0);
+            if (player.firstInitial === "'") {
+              player.firstInitial = player.firstName.charAt(1);
+            }
+            console.log("First Name Retry working");
           });
         }
         // add nickname based on nationality
@@ -496,7 +657,7 @@ export class HomeComponent implements OnInit {
       let lastNameRetry = this.afs.getLastName(player.nationality)?.retryRequest$;
 
       lastNameReq.subscribe((lastNameArr) => {
-        if (lastNameArr !== undefined) {
+        if (lastNameArr[0] !== undefined) {
           let lastNameObj: any = lastNameArr[0];
           player.lastName = lastNameObj.name;
         } 
@@ -504,6 +665,7 @@ export class HomeComponent implements OnInit {
           lastNameRetry.subscribe((lastNameArr) => { 
             let lastNameObj: any = lastNameArr[0];
             player.lastName = lastNameObj.name;
+            console.log("Last Name Retry working");
           });
         }
       });
@@ -1171,8 +1333,8 @@ export class HomeComponent implements OnInit {
       for (let i = 0; i < this.players.length; i++) {
         localStorage.setItem(`TEAMGEN - Player #${i}`, JSON.stringify(this.players[i]));
       }
-      for (const player of this.pitchPlayers) {
-        localStorage.setItem(`TEAMGEN - Starting ${player.pitchPosition}`, JSON.stringify(player));
+      for (let i = 0; i < this.pitchPlayers.length; i++) {
+        localStorage.setItem(`TEAMGEN - Starting Player #${i + 1}`, JSON.stringify(this.pitchPlayers[i]));
       }
       localStorage.setItem(`TEAMGEN - Tier/Nationality`, JSON.stringify(this.nationName));
       // console.log(localStorage);
@@ -1227,26 +1389,21 @@ export class HomeComponent implements OnInit {
         }
 
         for (let i = 0; i < 60; i++) {
-          let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`) || '';
-          let player;
-          try {
-            player = JSON.parse(playerString) as Player;
+          let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
+          let player: Player;
+          if (playerString !== null) {
+            player = JSON.parse(playerString);
             this.players.push(player);
             this.sortedData.push(player);
-          } catch(err) {
-            // console.log("Error on parsing string", err);
-          }
+          } 
         }
-        for (const pos of this.pitchPositions) {
-          let playerString = localStorage.getItem(`TEAMGEN - Starting ${pos.position}`) || '';
-          let player;
-          try {
-            player = JSON.parse(playerString) as Player;
+        for (let i = 0; i < 11; i++) {
+          let playerString = localStorage.getItem(`TEAMGEN - Starting Player #${i + 1}`);
+          let player: Player;
+          if (playerString !== null) {
+            player = JSON.parse(playerString);
             this.pitchPlayers.push(player);
-          } catch(err) {
-            // console.log("Error on parsing string", err);
           }
-
         }
 
         for (const player of this.pitchPlayers) {
@@ -1271,16 +1428,21 @@ export class HomeComponent implements OnInit {
                 pitchRating = player.redRating;
               }
             }
-            let boxIndex = this.pitchPositions[player.pitchPositionIndex || 0].boxIndex;
-            for (let j = 0; j < this.positionBoxes.length; j++) {
-              if (this.positionBoxes[j] === this.positionBoxes[boxIndex]) {
-                this.positionBoxes[j].html = `${player.firstInitial}. ${player.lastName} ${pitchRating} \n${player.pitchPosition}`;
-
+            if (player.pitchPositionIndex !== undefined) {
+              let boxIndex = this.pitchPositions[player.pitchPositionIndex].boxIndex;
+              for (let j = 0; j < this.positionBoxes.length; j++) {
+                if (this.positionBoxes[j] === this.positionBoxes[boxIndex]) {
+                  this.positionBoxes[j].html = `${player.firstInitial}. ${player.lastName} ${pitchRating} \n${player.pitchPosition}`;
+                }
               }
+            } else {
+              console.log("Error!");
             }
+            
           }
         }
-        for (const player of this.players) {      
+        let combinedPlayers = this.pitchPlayers.concat(this.players);
+        for (const player of combinedPlayers) {      
           for (const pos of this.positions) {
             if (player.position === pos.position) {
               pos.amount++;
@@ -1288,7 +1450,7 @@ export class HomeComponent implements OnInit {
             }
           }
         }
-        console.log("Successfully loaded", this.players);
+        console.log("Successfully loaded", this.players, this.pitchPlayers);
       } else {
         throw new Error("Local Storage Data not found");
       }
@@ -1328,16 +1490,20 @@ export class HomeComponent implements OnInit {
                   pitchRating = player.redRating;
                 }
               }
-              let boxIndex = this.pitchPositions[player.pitchPositionIndex || 0].boxIndex;
-              for (let j = 0; j < this.positionBoxes.length; j++) {
-                if (this.positionBoxes[j] === this.positionBoxes[boxIndex]) {
-                  this.positionBoxes[j].html = `${player.firstInitial}. ${player.lastName} ${pitchRating} \n${player.pitchPosition}`;
-
-                }
+              if (player.pitchPositionIndex !== undefined) {
+                let boxIndex = this.pitchPositions[player.pitchPositionIndex].boxIndex;
+                for (let j = 0; j < this.positionBoxes.length; j++) {
+                  if (this.positionBoxes[j] === this.positionBoxes[boxIndex]) {
+                    this.positionBoxes[j].html = `${player.firstInitial}. ${player.lastName} ${pitchRating} \n${player.pitchPosition}`;
+                  }
+              }
+              } else {
+                console.log("Error!");
               }
             }
           }
-          for (const player of this.players) {      
+          let combinedPlayers = this.pitchPlayers.concat(this.players);
+          for (const player of combinedPlayers) {      
             for (const pos of this.positions) {
               if (player.position === pos.position) {
                 pos.amount++;
@@ -1369,3 +1535,4 @@ function median(values: number[]){
   
   return (values[half - 1] + values[half]) / 2.0;
 }
+

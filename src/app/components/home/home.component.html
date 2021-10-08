@@ -78,6 +78,7 @@
     
     <div class="tactics-container" cdkDropListGroup>
         <div class="pitch-container">
+            <button mat-raised-button color="primary" type="button" (click)="resetStarters()" class="reset-button">Reset XI</button>
             <div class="pitch-borders">
                 <div class="goal-box-top pitch-divs"></div>
                 <div class="goal-box-circle-top pitch-divs"></div>
@@ -88,7 +89,7 @@
                 <div class="goal-box-bottom pitch-divs"></div>
                 <div class="pitch-grid">
                     <div *ngFor="let box of positionBoxes" [class]="getPositionBoxes(box)" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="pitchPlayers">
-                        <div [class]="getPlayerClass(box)" cdkDrag>
+                        <div [class]="getPlayerClass(box)" cdkDrag [cdkDragData]="box" (cdkDragStarted)="getPositionOutline($event)" (cdkDragReleased)="removeOutlineRelease($event)" (cdkDragDropped)="removeOutlineDrop($event)">
                             <!-- <div *cdkDragPreview>
                                 <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
                                 <div class="player-preview">{{pitchPlayers[23].lastName}} {{pitchPlayers[23].position}} {{pitchPlayers[23].rating}}</div>
@@ -187,7 +188,7 @@
                     <mat-accordion multi>
                         <div class="starters-container">
                             <mat-expansion-panel *ngFor="let player of pitchPlayers">
-                                <mat-expansion-panel-header [class]="getPlayerClass()">
+                                <mat-expansion-panel-header>
                                     <ul class="player-row">
                                         <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
                                         <li>{{player.position}}</li>

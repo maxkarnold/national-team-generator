@@ -286,7 +286,7 @@ export class FirestoreService {
         nameOrigin = ["Chinese"];
         break;
       case "philippines":
-        nameOrigin = ["Filipino, English"];
+        nameOrigin = ["Filipino", "English"];
         break;
       default:
         nameOrigin = ["English"];
@@ -559,7 +559,7 @@ export class FirestoreService {
         nameOrigin = ["Chinese"];
         break;
       case "philippines":
-        nameOrigin = ["Filipino, English", "Spanish (Philippines)"];
+        nameOrigin = ["Filipino", "English", "Spanish (Philippines)"];
         break;
       default:
         nameOrigin = ["English"];
