@@ -27,6 +27,146 @@
           "order": "ASCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "firstNames_male",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`1`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "lastNames",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`1`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "firstNames_male",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`2`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "lastNames",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`2`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "firstNames_male",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`3`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "lastNames",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`3`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "firstNames_male",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`4`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "lastNames",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`4`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "firstNames_male",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`5`",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "lastNames",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "usages",
+          "order": "CONTAINS"
+        },
+        {
+          "fieldPath": "randomNum.`5`",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": []
