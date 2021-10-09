@@ -6,7 +6,6 @@ export interface Player {
     rating: number;
     yellowRating: number;
     redRating: number;
-    gkRating: number;
     foot: string;
     firstInitial?: string;
     nationality: string;
@@ -14,9 +13,14 @@ export interface Player {
     age: number;
     club: string; 
     clubLogo: string;
+    playerFace: string;
+    preferredRole: string;
+    preferredDuty: string; 
     // Properties only for the drag/drop pitch UI
+    displayName?: string;
     pitchPosition?: string;
     pitchPositionIndex?: number;
+    pitchRating?: number;
     dragDisabled?: boolean;
     // *** Above are properties we've already added ***
     // *** Below are properties we've yet to add ***
@@ -24,7 +28,7 @@ export interface Player {
     lastNameUsage?: string;
     middleName?: string;
     nickname?: string;
-    displayName?: string;
+    
     altNationality?: string;
     relationships?: any[];
     // Relationships should be an array of players, it will show that the two are linked. Not sure if this should be an array or an object yet.

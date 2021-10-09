@@ -75,9 +75,10 @@
         </ng-template>
     </div>
     
-    
     <div class="tactics-container" cdkDropListGroup>
         <div class="pitch-container">
+            <div class="starters-total-rating" *ngIf="this.pitchPlayers.length > 0">Avg Rating {{startersTotalRating}}</div>
+            <div class="squad-total-rating" *ngIf="checkSquadRules()">Squad Rating {{squadTotalRating}}</div>
             <button mat-raised-button color="primary" type="button" (click)="resetStarters()" class="reset-button">Reset XI</button>
             <div class="pitch-borders">
                 <div class="goal-box-top pitch-divs"></div>
@@ -90,11 +91,19 @@
                 <div class="pitch-grid">
                     <div *ngFor="let box of positionBoxes" [class]="getPositionBoxes(box)" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="pitchPlayers">
                         <div [class]="getPlayerClass(box)" cdkDrag [cdkDragData]="box" (cdkDragStarted)="getPositionOutline($event)" (cdkDragReleased)="removeOutlineRelease($event)" (cdkDragDropped)="removeOutlineDrop($event)">
+                            <div *ngIf="box.pitchPlayer !== undefined">
+                                <img [src]="box.pitchPlayer.playerFace" alt="" class="player-face">
+                                <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchRating}}</span>
+                                <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchPosition}}</span>
+                                <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.nationalityLogo">
+                                <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.clubLogo">
+                                <span *ngIf="box.pitchPlayer !== undefined" class="player-name">{{box.pitchPlayer.displayName}}</span>
+                            </div>
+                            
                             <!-- <div *cdkDragPreview>
                                 <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
                                 <div class="player-preview">{{pitchPlayers[23].lastName}} {{pitchPlayers[23].position}} {{pitchPlayers[23].rating}}</div>
-                            </div> -->
-                            {{box.html}}
+                            </div> -->   
                         </div>
                         <div [class]="getPosBoxClass(box)">
                             <!-- {{box.class}} -->
@@ -127,81 +136,37 @@
                         <li>Sub 5</li>
                         <li>Sub 6</li>
                         <li>Sub 7</li>
+                        <li>Sub 8</li>
+                        <li>Sub 9</li>
+                        <li>Sub 10</li>
+                        <li>Sub 11</li>
+                        <li>Sub 12</li>
                     </ul>
                     <ul class="reserves">
-                        <li>19</li>
-                        <li>20</li>
-                        <li>21</li>
-                        <li>22</li>
-                        <li>23</li>
-                        <li>24</li>
-                        <li>25</li>
-                        <li>26</li>
-                        <li>27</li>
-                        <li>28</li>
-                        <li>29</li>
-                        <li>30</li>
-                        <li>31</li>
-                        <li>32</li>
-                        <li>33</li>
-                        <li>34</li>
-                        <li>35</li>
-                        <li>36</li>
-                        <li>37</li>
-                        <li>38</li>
-                        <li>39</li>
-                        <li>40</li>
-                        <li>41</li>
-                        <li>42</li>
-                        <li>43</li>
-                        <li>44</li>
-                        <li>45</li>
-                        <li>46</li>
-                        <li>47</li>
-                        <li>48</li>
-                        <li>49</li>
-                        <li>50</li>
-                        <li>51</li>
-                        <li>52</li>
-                        <li>53</li>
-                        <li>54</li>
-                        <li>55</li>
-                        <li>56</li>
-                        <li>57</li>
-                        <li>58</li>
-                        <li>59</li>
-                        <li>60</li>
-                        <li>60</li>
-                        <li>61</li>
-                        <li>62</li>
-                        <li>63</li>
-                        <li>64</li>
-                        <li>65</li>
-                        <li>66</li>
-                        <li>67</li>
-                        <li>68</li>
-                        <li>69</li>
-                        <li>70</li>
+                        <li *ngFor="let player of players.slice(12); let i = index">{{i + 24}}</li>
                     </ul>
                 </div>
                 <div class="players-container">
                     <mat-accordion multi>
                         <div class="starters-container">
-                            <mat-expansion-panel *ngFor="let player of pitchPlayers">
+                            <mat-expansion-panel *ngFor="let player of sortedPitchPlayers">
                                 <mat-expansion-panel-header>
                                     <ul class="player-row">
                                         <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
                                         <li>{{player.position}}</li>
                                         <li>{{player.age}}</li>
                                         <li>{{player.rating}}</li>
-                                        <li *cdkDragPreview>
+                                        <!-- <li *cdkDragPreview>
                                             <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
                                             <div class="player-preview">{{player.lastName}} {{player.position}} {{player.rating}}</div>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </mat-expansion-panel-header>
                                 <p class="expanded-info">
                                     <span>Full Name:</span><span>{{player.firstName}} {{player.lastName}}</span>
+                                </p>
+                                <p class="expanded-info">
+                                    <span>Preferred Role/Duty:</span><span>{{player.preferredRole}} - {{player.preferredDuty}}</span>
                                 </p>
                                 <p class="expanded-info">
                                     <span>Other Positions:</span><span *ngFor="let pos of player.altPositions">{{pos}}</span>
@@ -236,13 +201,16 @@
                                         <li>{{player.age}}</li>
                                         <li>{{player.rating}}</li>
                                         <li *cdkDragPreview>
-                                            <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
+                                            <!-- <img class="shirtIcon-img" [src]="shirtIcon" [alt]=""> -->
                                             <div class="player-preview">{{player.lastName}} {{player.position}} {{player.rating}}</div>
                                         </li>
                                     </ul>
                                 </mat-expansion-panel-header>
                                     <p class="expanded-info">
                                         <span>Full Name:</span><span>{{player.firstName}} {{player.lastName}}</span>
+                                    </p>
+                                    <p class="expanded-info">
+                                        <span>Preferred Role/Duty:</span><span>{{player.preferredRole}} - {{player.preferredDuty}}</span>
                                     </p>
                                     <p class="expanded-info">
                                         <span>Other Positions:</span><span *ngFor="let pos of player.altPositions">{{pos}}</span>
@@ -288,6 +256,7 @@
                 <th mat-sort-header="name">Name</th>
                 <th mat-sort-header="club">Club</th>
                 <th mat-sort-header="nationality" class="desktop">Nationality</th>
+                <th mat-sort-header="roleDuty" class="desktop">Preferred Role/Duty</th>
                 <th mat-sort-header="pos">Position</th>
                 <th mat-sort-header="altPositions" class="desktop">Other Positions</th>
                 <th mat-sort-header="foot" class="desktop">Preferred Foot</th>
@@ -309,6 +278,7 @@
                             <span>{{player.nationality}}</span>
                         </div>  
                     </td>
+                    <td class="desktop">{{player.preferredRole}} - {{player.preferredDuty}}</td>
                     <td>{{player.position}}</td> 
                     <td class="alt-positions desktop">
                         <div>

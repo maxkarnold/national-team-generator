@@ -4,5 +4,4 @@ export interface PositionBox {
     class: string;
     posBoxClass: string;
     playerClass: string;
-    html: string;
 }
