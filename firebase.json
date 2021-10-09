@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/team-gen-ng",
+    "public": "dist/team-gen",
     "ignore": [
       "firebase.json",
       "**/.*",
