@@ -51,7 +51,7 @@
             <button mat-raised-button color="primary" class="generate" type="button" (click)="getPlayers()">Generate</button>
             <div class="load-data-buttons">
                 <button mat-raised-button color="primary" class="load-button" type="button" (click)="saveDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Load</button>
-                <button mat-raised-button color="warn" *ngIf="saveDataOverlayOpen === true" type="button" (click)="closeSaveDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Close Overlay</button>
+                <button mat-raised-button color="warn" *ngIf="saveDataOverlayOpen" type="button" (click)="closeSaveDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Close Overlay</button>
             </div>
         </div>
         <div class="save-buttons" *ngIf="players.length > 0">
@@ -73,12 +73,31 @@
                 </ul>
             </ul>
         </ng-template>
+        <div class="instructions">
+            <div class="info">
+                <button mat-raised-button type="button" color="accent" (click)="infoOverlay()" *ngIf="!instructionsOpen" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Instructions</button>
+                <button mat-raised-button type="button" color="accent" (click)="infoOverlay()" *ngIf="instructionsOpen" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Close Instructions</button>
+                <ng-template  cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="instructionsOpen">
+                        <p class="info-overlay">
+                            Drag and drop players from the bench to the pitch. Players have ratings based on their positions. The box that highlights in green is the best position for a player. The box that highlights yellow is an alternate position (-5 rating). 
+                            The box that highlights red is not a viable position (-20 rating).
+                        </p>
+                </ng-template>
+            </div>
+            <div class="rules">
+                <h4 class="rules-heading">Squad Rules</h4>
+                <hr>
+                <ul>
+                    <li *ngFor="let rule of squadRules"><span>{{rule.check}}</span> {{rule.text}}</li>
+                </ul>
+            </div>
+        </div>
     </div>
-    
+    <div class="formation" *ngIf="this.pitchPlayers.length > 0">Formation: {{formation}}</div>
     <div class="tactics-container" cdkDropListGroup>
-        <div class="pitch-container">
+        <div class="pitch-container">   
             <div class="starters-total-rating" *ngIf="this.pitchPlayers.length > 0">Avg Rating {{startersTotalRating}}</div>
-            <div class="squad-total-rating" *ngIf="checkSquadRules()">Squad Rating {{squadTotalRating}}</div>
+            <div class="squad-total-rating" *ngIf="checkFormation()">Squad Rating {{squadTotalRating}}</div>
             <button mat-raised-button color="primary" type="button" (click)="resetStarters()" class="reset-button">Reset XI</button>
             <div class="pitch-borders">
                 <div class="goal-box-top pitch-divs"></div>
@@ -125,7 +144,7 @@
                 </ul>
                 <div class="lineup-spots">
                     <ul class="pitch-players">
-                        <li class="header">Roster</li>
+                        <li class="header">Pos</li>
                         <li *ngFor="let pos of pitchPlayers">{{pos.pitchPosition}}</li>
                     </ul>
                     <ul class="bench">

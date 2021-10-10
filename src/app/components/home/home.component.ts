@@ -48,12 +48,48 @@ export class HomeComponent implements OnInit {
   saveDataOverlayOpen = false;
   loginOverlayOpen = false;
   navToggle = false;
+  instructionsOpen = false;
   isLoggedIn: boolean = false;
   nationName = "";
   nationSelectValue = "s tier"
   realisticNationalities = true;
   startersTotalRating = 0;
   squadTotalRating = 0;
+  formation = "";
+  squadRules = [
+    {
+      text: '1 starting goalkeeper', 
+      check: '❌'
+    },
+    {
+      text: '3 goalkeepers in squad', 
+      check: '❌'
+    },
+    {
+      text: '3-5 starting defenders', 
+      check: '❌'
+    },
+    {
+      text: '6 defenders in squad', 
+      check: '❌'
+    },
+    {
+      text: '2-6 starting midfielders', 
+      check: '❌'
+    },
+    {
+      text: '5 midfielders in squad', 
+      check: '❌'
+    },
+    {
+      text: 'Backup player in each position', 
+      check: '❌'
+    },
+    {
+      text: '', 
+      check: '→'
+    }
+  ]
 
   positionBoxes = positionBoxes;
 
@@ -82,15 +118,21 @@ export class HomeComponent implements OnInit {
         this.nationsList.push(tierObj.nations[i].name);
       }
     }
-    console.log("pitchPlayers Array:\n", this.pitchPlayers, "\nplayers Array:\n", this.players);
   }
 
   loginOverlay() {
-    
     if (!this.loginOverlayOpen) {
       this.loginOverlayOpen = true;
     } else {
       this.loginOverlayOpen = false;
+    }
+  }
+
+  infoOverlay() {
+    if (!this.instructionsOpen) {
+      this.instructionsOpen = true;
+    } else {
+      this.instructionsOpen = false;
     }
   }
 
@@ -123,6 +165,11 @@ export class HomeComponent implements OnInit {
       }
       this.players = this.pitchPlayers.concat(this.players);
       this.pitchPlayers = [];
+      this.sortedPitchPlayers = [];
+      for (const rule of this.squadRules) {
+        rule.check = '❌';
+      }
+      this.squadRules[7].check = '→';
       for (const box of this.positionBoxes) {
         box.playerClass = 'inactive player-box';
         box.posBoxClass = 'active pos-box';
@@ -133,7 +180,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  checkSquadRules() {
+  checkFormation() {
     let squad = this.pitchPlayers.concat(this.players.slice(0, 12));
     let gkCount = 0;
     let defCount = 0;
@@ -141,11 +188,24 @@ export class HomeComponent implements OnInit {
     let fwCount = 0;
     let startMidCount = 0;
     let startDefCount = 0;
+    let startGkCount = 0;
+    let startFwCount = 0;
+    let midFormCount = 0;
+    let attMidFormCount = 0;
+
     for (const player of this.pitchPlayers) {
-      if (player.pitchPosition?.includes("M")) {
+      if (player.pitchPosition?.slice(0, 1) !== "A" && player.pitchPosition?.includes("M")) {
+        midFormCount++;
         startMidCount++;
       } else if (player.pitchPosition?.includes("D") || player.pitchPosition?.includes("W")) {
         startDefCount++;
+      } else if (player.pitchPosition?.includes("AM")) {
+        attMidFormCount++;
+        startMidCount++;
+      } else if (player.pitchPosition?.includes("STC")) {
+        startFwCount++;
+      } else {
+        startGkCount++;
       }
     }
     for (const player of squad) {
@@ -159,11 +219,101 @@ export class HomeComponent implements OnInit {
         fwCount++;
       }
     } 
-    // console.log(gkCount, defCount, midCount, fwCount, "Starters", startDefCount, startMidCount);
-    if (this.pitchPlayers.length === 11 && gkCount > 2 && defCount > 5 && midCount > 4 && startDefCount < 6 && startMidCount < 7) {// rules for squadRating/submission
-      return true
+    // Formation
+    if (attMidFormCount === 0 && startFwCount > 0) {
+      this.formation = `${startDefCount}-${midFormCount}-${startFwCount}`;
+    } else if (startFwCount === 0) {
+      this.formation = `${startDefCount}-${midFormCount}-${attMidFormCount}`;
     } else {
-      return false
+      this.formation = `${startDefCount}-${midFormCount}-${attMidFormCount}-${startFwCount}`;
+    } 
+    
+    // rules for squadRating/submission
+    let count = [gkCount, defCount, midCount, fwCount, startGkCount, startDefCount, startMidCount, startFwCount];
+    return this.checkSquadRules(count);
+  }
+
+  checkSquadRules(countArr: number[]): boolean {
+
+    if (countArr[4] > 0) {
+      this.squadRules[0].check = '✅';
+    }
+    if (countArr[0] > 2) {
+      this.squadRules[1].check = '✅';
+    }
+    if (countArr[5] > 2 && countArr[5] < 6) {
+      this.squadRules[2].check = '✅';
+    }
+    if (countArr[1] > 5) {
+      this.squadRules[3].check = '✅';
+    }
+    if (countArr[6] > 1 && countArr[6] < 7) {
+      this.squadRules[4].check = '✅';
+    }
+    if (countArr[2] > 4) {
+      this.squadRules[5].check = '✅';
+    }
+
+    for (const rule of this.squadRules) {
+      if (rule.check === '❌') {
+        return false
+      }
+    }
+    return true
+  }
+
+  getBackupPositions() {
+    let startingPositions: string[] = [];
+    for (const player of this.pitchPlayers) {
+      for (const pos of this.pitchPositions) {
+        if (player.pitchPosition === pos.position) {
+          startingPositions.push(pos.playerPosition);
+        }
+      }
+    }
+    // console.log(startingPositions, this.players.slice(0, 12));
+    let playersLeft = this.players.slice(0, 12);
+    for (let j = 0; j < this.players.slice(0, 12).length; j++) { // for each player on the bench
+    
+      let used = false;
+      let duplicates: string[] = [];
+
+      for (let i = 0; i < startingPositions.length; i++) { // for each position in the starting lineup
+        if (!duplicates.includes(startingPositions[i]) && startingPositions[i] !== '') { // if position hasn't already been used by same player
+          if (startingPositions[i] === playersLeft[j].position) { // if main pos mathces
+            // console.log("loop#:", j, "mainPos", playersLeft[j]);
+            used = true;
+            duplicates.push(startingPositions[i]);
+            startingPositions[i] = '';
+            continue;
+          }
+          for (const altPos of playersLeft[j].altPositions) {
+            if (startingPositions[i] === altPos) { // if altPos matches
+              // console.log("loop#", j, "altPos", playersLeft[j]);
+              used = true;
+              duplicates.push(startingPositions[i]);
+              startingPositions[i] = '';
+              break;
+            }
+          }
+        }
+      }
+      if (used) {
+        playersLeft.splice(j, 1, {} as Player);
+      }
+    }
+    console.log("playersLeft", playersLeft);
+    console.log("startingPositionsLeft", startingPositions);
+    this.squadRules[7].text = '';
+    for (let i = 0; i < startingPositions.length; i++) {
+      if (startingPositions[i] !== '') {
+        this.squadRules[7].text += ` ${startingPositions[i]}`;
+      }
+    }
+    if (this.squadRules[7].text === '') {
+      this.squadRules[6].check = '✅';
+    } else {
+      this.squadRules[6].check = '❌';
     }
   }
 
@@ -536,6 +686,14 @@ export class HomeComponent implements OnInit {
       } else if (this.pitchPlayers.length > 0) {
         this.sortedPitchPlayers = this.pitchPlayers;
       }
+
+      // backupPositionChecker
+      if (this.pitchPlayers.length === 11) {
+        this.getBackupPositions();
+      } else {
+        this.squadRules[6].check = '❌';
+      }
+      
       
 
     }, 250);
@@ -665,6 +823,12 @@ export class HomeComponent implements OnInit {
     for (let index in this.positions) {
       this.positions[index].amount = 0;
     }
+    for (const rule of this.squadRules) {
+      if (rule.check === '✅') {
+        rule.check = '❌';
+      }
+      this.squadRules[7].text = '';
+    }
 
     let tier = this.getNation("tier").tier || '';
     let numArray: number[] = this.getRatingBreakdown(tier);
@@ -700,12 +864,11 @@ export class HomeComponent implements OnInit {
       
       player.position = this.getPosition();
 
-      let roleObj = this.getPositionRole(player.position);
-      player.preferredRole = roleObj.role;
-      player.preferredDuty = roleObj.duty;
-
       player.foot = this.getFoot(player.position);
       player.altPositions = this.getAltPositions(player.position, player.foot);
+      let roleObj = this.getPositionRole(player.position, player.altPositions, player.foot);
+      player.preferredRole = roleObj.role;
+      player.preferredDuty = roleObj.duty;
 
       let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth, sixth);
       player.rating = ratingObj.rating;
@@ -843,12 +1006,19 @@ export class HomeComponent implements OnInit {
 
   getPosition() {
     let randomPos = this.afs.getRandomInt(0, 13);
-    if (this.playerCount === 59 && this.positions[0].amount < 3) {
-      randomPos = 0;
+    if (this.playerCount > 50 && (this.positions[0].amount < 3 || this.positions[3].amount < 3 || this.positions[13].amount < 2 || this.positions[7].amount < 3)) { 
+      if (this.positions[0].amount < 3) {
+        randomPos = 0;
+      } else if (this.positions[3].amount < 3) {
+        randomPos = 3;
+      } else if (this.positions[13].amount < 2) {
+        randomPos = 13;
+      } else {
+        randomPos = 7;
+      }
     }
     // If there are 7 players in a certain position, choose a different position that doesn't have 7
-    else if (this.positions[randomPos].amount > 6 || this.positions[0].amount > 3) {
-        let oldPos = randomPos;
+    else if (this.positions[randomPos].amount > 6) {
         // Prioritize 4 GKs
         if (this.positions[0].amount < 4) {
             randomPos = 0;
@@ -879,10 +1049,11 @@ export class HomeComponent implements OnInit {
     return this.positions[randomPos].position;
   }
 
-  getPositionRole(pos: string) {
+  getPositionRole(pos: string, altPosArr: string[], foot: string) {
     let num1, num2, role, duty;
     let roles: string[];
     let duties: string[];
+    let arr = [];
     switch (pos) {
       case 'GK':
         num1 = this.afs.getRandomInt(0, 1);
@@ -896,14 +1067,25 @@ export class HomeComponent implements OnInit {
         break;
       case 'RB':
       case 'LB':
-        num1 = this.afs.getRandomInt(0, 4);
+        arr = [this.afs.getRandomInt(0, 4), this.afs.getRandomInt(1, 2), this.afs.getRandomInt(1, 2)];
+        num1 = arr[this.afs.getRandomInt(0, 2)];
         num2 = this.afs.getRandomInt(0, 2);
+        if ((pos === 'RB' && foot === 'left') || (pos === 'LB' && foot === 'right')) {
+          num1 = 0;
+        } else if (!altPosArr.includes('CB')) {
+          arr = [this.afs.getRandomInt(0, 3), this.afs.getRandomInt(1, 2), this.afs.getRandomInt(1, 2)];
+          num1 = arr[this.afs.getRandomInt(0, 2)];
+        } else if (altPosArr.includes('ML') || altPosArr.includes('MR') || altPosArr.includes('MC')) {
+          arr = [this.afs.getRandomInt(0, 3), this.afs.getRandomInt(1, 2), this.afs.getRandomInt(1, 2)];
+          num1 = arr[this.afs.getRandomInt(0, 2)];
+          num2 = this.afs.getRandomInt(1, 2);
+        }
         roles = ['IWB', 'WB', 'FB', 'CWB', 'DFB'];
         duties = ['De', 'Su', 'At'];
         if (num1 === 3) {
           duties = ['Su', 'At'];
           num2 = this.afs.getRandomInt(0, 1);
-        } else if (num1 = 4) {
+        } else if (num1 === 4) {
           duties = ['De'];
           num2 = 0;
         }
@@ -912,8 +1094,18 @@ export class HomeComponent implements OnInit {
         break;
       case 'RWB':
       case 'LWB':
-        num1 = this.afs.getRandomInt(0, 2);
+        arr = [this.afs.getRandomInt(0, 2), 1];
+        num1 = arr[this.afs.getRandomInt(0, 1)];
         num2 = this.afs.getRandomInt(0, 2);
+        if ((pos === 'RWB' && foot === 'left') || (pos === 'LWB' && foot === 'right')) {
+          num1 = 0;
+        }
+        if (altPosArr.includes('AML') || altPosArr.includes('AMR')) {
+          num2 = 2
+        } else if (altPosArr.includes('ML') || altPosArr.includes('MR') || altPosArr.includes('MC')) {
+          num2 = this.afs.getRandomInt(1, 2);
+        }
+        
         roles = ['IWB', 'WB', 'CWB'];
         duties = ['De', 'Su', 'At'];
         if (num1 === 2) {
@@ -923,8 +1115,11 @@ export class HomeComponent implements OnInit {
         break;
       case 'CB':
         num1 = this.afs.getRandomInt(0, 3);
+        if (altPosArr.includes('DM')) {
+          num1 = this.afs.getRandomInt(1, 3);
+        }
         num2 = this.afs.getRandomInt(0, 2);
-        roles = ['BPD', 'CD', 'DCB', 'WCB'];
+        roles = ['DCB', 'BPD', 'CD', 'WCB'];
         duties = ['De', 'Co', 'St'];
         if (num1 > 2) {
           duties = ['De', 'Su', 'At'];
@@ -932,9 +1127,16 @@ export class HomeComponent implements OnInit {
         
         break;
       case 'DM':
-        num1 = this.afs.getRandomInt(0, 7);
+        arr = [this.afs.getRandomInt(0, 7), this.afs.getRandomInt(2, 4)];
+        num1 = arr[this.afs.getRandomInt(0, 1)];
         num2 = this.afs.getRandomInt(0, 1);
-        roles = ['A', 'HB', 'DM', 'DLP', 'BWM', 'RGA', 'RPM', 'VOL'];
+        if (altPosArr.includes('CB')) {
+          num1 = this.afs.getRandomInt(0, 2);
+        } 
+        if (altPosArr.includes('AMC')) {
+          num1 = this.afs.getRandomInt(4, 7);
+        }
+        roles = ['A', 'HB', 'DM', 'BWM', 'DLP', 'RGA', 'RPM', 'VOL'];
         duties = ['De', 'Su'];
         if (num1 < 2) {
           duties = ['De'];
@@ -950,6 +1152,14 @@ export class HomeComponent implements OnInit {
       case 'MC':
         num1 = this.afs.getRandomInt(0, 7);
         num2 = 0;
+        if (altPosArr.includes('DM')) {
+          num1 = this.afs.getRandomInt(0, 5);
+        }
+        if (altPosArr.includes('AMC')) {
+          num1 = this.afs.getRandomInt(6, 7);
+        } else if (altPosArr.includes('MR') || altPosArr.includes('ML')) {
+          num1 = this.afs.getRandomInt(2, 7);
+        }
         roles = ['DLP', 'BWM', 'RPM', 'CM', 'CAR', 'BBM', 'MEZ', 'AP'];
         duties = ['Su'];
         if (num1 < 2) {
@@ -966,6 +1176,14 @@ export class HomeComponent implements OnInit {
       case 'AMC':
         num1 = this.afs.getRandomInt(0, 4);
         num2 = this.afs.getRandomInt(0, 1);
+        if (altPosArr.includes('ST')) {
+          num1 = this.afs.getRandomInt(3, 4);
+          num2 = 1;
+        } else if (altPosArr.includes('DM')) {
+          num1 = this.afs.getRandomInt(0, 2);
+          num2 = 0;
+        }
+        
         roles = ['AP', 'AM', 'EG', 'T', 'SS'];
         duties = ['Su', 'At'];
         if (num1 > 1) {
@@ -977,6 +1195,15 @@ export class HomeComponent implements OnInit {
       case 'ML':
         num1 = this.afs.getRandomInt(0, 4);
         num2 = this.afs.getRandomInt(0, 1);
+        if (altPosArr.includes('MC')) {
+          num1 = this.afs.getRandomInt(2, 3);
+        } else if ((foot === 'right' && pos === 'ML') || (foot === 'left' && pos === 'MR')) {
+          num1 = this.afs.getRandomInt(1, 2);
+        } else if (altPosArr.includes('LB') || altPosArr.includes('RB')) {
+          num1 = this.afs.getRandomInt(3, 4);
+        } else {
+          num1 = 0;
+        }
         roles = ['W', 'IW', 'WP', 'WM', 'DW'];
         duties = ['Su', 'At'];
         if (num1 > 3) {
@@ -988,9 +1215,18 @@ export class HomeComponent implements OnInit {
         break;
       case 'AMR':
       case 'AML':
-        num1 = this.afs.getRandomInt(0, 6);
+        arr = [this.afs.getRandomInt(0, 6), this.afs.getRandomInt(0, 3)];
+        num1 = arr[this.afs.getRandomInt(0, 1)];
         num2 = this.afs.getRandomInt(0, 1);
-        roles = ['W', 'AP', 'IW', 'IF', 'WTM', 'T', 'RMD'];
+        if (altPosArr.includes('ST')) {
+          num1 = Math.min(this.afs.getRandomInt(3, 6), this.afs.getRandomInt(3, 6));
+        } else if ((pos === 'AMR' && foot === 'left') || (pos === 'AML' && foot === 'right')) {
+          num1 = this.afs.getRandomInt(1, 3);
+        } else if (altPosArr.includes('LWB') || altPosArr.includes('RWB')) {
+          num1 = this.afs.getRandomInt(0, 2);
+          num2 = 0;
+        }
+        roles = ['W', 'AP', 'IW', 'IF', 'T', 'WTM', 'RMD'];
         duties = ['Su', 'At'];
         if (num1 > 4) {
           duties = ["At"];
@@ -998,8 +1234,15 @@ export class HomeComponent implements OnInit {
         }
         break;
       case 'ST':
-        num1 = this.afs.getRandomInt(0, 7);
+        arr = [0, this.afs.getRandomInt(1, 7)];
+        num1 = arr[this.afs.getRandomInt(0, 1)];
         num2 = this.afs.getRandomInt(0, 1);
+        if (altPosArr.includes('AML') || altPosArr.includes('AMR')) {
+          let arr = [this.afs.getRandomInt(2, 3), this.afs.getRandomInt(6, 7)];
+          num1 = arr[this.afs.getRandomInt(0, 1)];
+        } else if (altPosArr.includes('MC')) {
+          num2 = 0;
+        }
         roles = ['AF', 'P', 'T', 'CF', 'TM', 'DLF', 'F9', 'PF'];
         duties = ['Su', 'At'];
         if (num1 < 3) {
@@ -1068,230 +1311,238 @@ export class HomeComponent implements OnInit {
   }
 
   getAltPositions(mainPos: string, mainFoot: string) {
-    let altPosCount = this.afs.getRandomInt(1, 3);
+    let altPosCount = Math.min(this.afs.getRandomInt(1, 3), this.afs.getRandomInt(1, 3));
+    console.log(altPosCount);
     let altPos: string[] = [];
     let arr: string[];
     let num: number;
     let max: number;
-
-    switch (mainPos) {
-      case 'GK':
-        altPos = ['N/A'];
-        break;
-      case 'CB':
-        arr = ['DM', 'RB', 'LB'];
-        num = this.afs.getRandomInt(0, 2);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'LB':
-        arr = ['CB', 'LWB', 'ML', 'RB', 'DM', 'MC'];
-        num = this.afs.getRandomInt(0, 5);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'RB':
-        arr = ['CB', 'MR', 'RWB', 'LB', 'DM', 'MC'];
-        num = this.afs.getRandomInt(0, 5);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'LWB':
-        arr = ['RWB', 'ML', 'LB', 'AML', 'MC', 'DM'];
-        num = this.afs.getRandomInt(0, 5);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'RWB':
-        arr = ['RB', 'MR', 'LWB', 'AMR', 'MC', 'DM'];
-        num = this.afs.getRandomInt(0, 5);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'MR':
-        arr = ['RB', 'RWB', 'ML', 'MC', 'AMR', 'AML'];
-        num = this.afs.getRandomInt(0, 5);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'ML':
-        arr = ['LB', 'LWB', 'MR', 'MC', 'AML', 'AMR'];
-        num = this.afs.getRandomInt(0, 5);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'AMR':
-        arr = ['AML', 'AMC', 'ST'];
-        
-        if (mainFoot === 'right') {
-          arr.push('MR', 'RWB');
-          max = 4;
-        } else if (mainFoot === 'left') {
-          arr.push('ML' , 'LWB');
-          max = 4;
-        } else {
-          arr.push('MR', 'ML', 'RWB', 'LWB');
-          max = 6;
-        }
-        num = this.afs.getRandomInt(0, max);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'AML':
-        arr = ['AMR', 'AMC', 'ST'];
-        
-        if (mainFoot === 'right') {
-          arr.push('MR', 'RWB');
-          max = 4;
-        } else if (mainFoot === 'left') {
-          arr.push('ML' , 'LWB');
-          max = 4;
-        } else {
-          arr.push('MR', 'ML', 'RWB', 'LWB');
-          max = 6;
-        }
-        num = this.afs.getRandomInt(0, max);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'DM':
-        arr = ['CB', 'MC', 'AMC'];
-        
-        if (mainFoot === 'right') {
-          arr.push('RB');
-          max = 3;
-        } else if (mainFoot === 'left') {
-          arr.push('LB');
-          max = 3;
-        } else {
-          arr.push('RB', 'LB');
-          max = 4;
-        }
-        num = this.afs.getRandomInt(0, max);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'MC':
-        arr = ['DM', 'AMC'];
-        
-        if (mainFoot === 'right') {
-          arr.push('MR');
-          max = 2;
-        } else if (mainFoot === 'left') {
-          arr.push('ML');
-          max = 2;
-        } else {
-          arr.push('MR', 'ML');
-          max = 3;
-        }
-        num = this.afs.getRandomInt(0, max);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'AMC':
-        arr = ['DM', 'MC', 'AMR', 'AML', 'ST'];
-        
-        if (mainFoot === 'right') {
-          arr.push('MR');
-          max = 5;
-        } else if (mainFoot === 'left') {
-          arr.push('ML');
-          max = 5;
-        } else {
-          arr.push('MR', 'ML');
-          max = 6;
-        }
-        num = this.afs.getRandomInt(0, max);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          
-          altPos.push(str[0]);
-        }
-        break;
-      case 'ST':
-        arr = ['AMC', 'AMR', 'AML', 'MC']; 
-        num = this.afs.getRandomInt(0, 3);
-        for (let i = 0; i < altPosCount; i++) {
-          if (num - i < 0) {
-            num = arr.length;
-          }
-          let str = arr[num - i].split(', ');
-          altPos.push(str[0]);
-        }
-        break;
-      default:
-          console.log('Error in the function getAltPositions()');
+    if (altPosCount === 0) {
+      altPos = ['N/A'];
+      // console.log(altPos);
+    } else {
+      switch (mainPos) {
+        case 'GK':
+          altPos = ['N/A'];
+          console.log(altPos);
           break;
+        case 'CB':
+          arr = ['DM', 'RB', 'LB'];
+          num = this.afs.getRandomInt(0, 2);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'LB':
+          arr = ['CB', 'LWB', 'ML', 'RB', 'DM', 'MC'];
+          num = this.afs.getRandomInt(0, 5);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'RB':
+          arr = ['CB', 'MR', 'RWB', 'LB', 'DM', 'MC'];
+          num = this.afs.getRandomInt(0, 5);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'LWB':
+          arr = ['RWB', 'ML', 'LB', 'AML', 'MC', 'DM'];
+          num = this.afs.getRandomInt(0, 5);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'RWB':
+          arr = ['RB', 'MR', 'LWB', 'AMR', 'MC', 'DM'];
+          num = this.afs.getRandomInt(0, 5);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'MR':
+          arr = ['RB', 'RWB', 'ML', 'MC', 'AMR', 'AML'];
+          num = this.afs.getRandomInt(0, 5);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'ML':
+          arr = ['LB', 'LWB', 'MR', 'MC', 'AML', 'AMR'];
+          num = this.afs.getRandomInt(0, 5);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'AMR':
+          arr = ['AML', 'AMC', 'ST'];
+          
+          if (mainFoot === 'right') {
+            arr.push('MR', 'RWB');
+            max = 4;
+          } else if (mainFoot === 'left') {
+            arr.push('ML' , 'LWB');
+            max = 4;
+          } else {
+            arr.push('MR', 'ML', 'RWB', 'LWB');
+            max = 6;
+          }
+          num = this.afs.getRandomInt(0, max);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'AML':
+          arr = ['AMR', 'AMC', 'ST'];
+          
+          if (mainFoot === 'right') {
+            arr.push('MR', 'RWB');
+            max = 4;
+          } else if (mainFoot === 'left') {
+            arr.push('ML' , 'LWB');
+            max = 4;
+          } else {
+            arr.push('MR', 'ML', 'RWB', 'LWB');
+            max = 6;
+          }
+          num = this.afs.getRandomInt(0, max);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'DM':
+          arr = ['CB', 'MC', 'AMC'];
+          
+          if (mainFoot === 'right') {
+            arr.push('RB');
+            max = 3;
+          } else if (mainFoot === 'left') {
+            arr.push('LB');
+            max = 3;
+          } else {
+            arr.push('RB', 'LB');
+            max = 4;
+          }
+          num = this.afs.getRandomInt(0, max);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'MC':
+          arr = ['DM', 'AMC'];
+          
+          if (mainFoot === 'right') {
+            arr.push('MR');
+            max = 2;
+          } else if (mainFoot === 'left') {
+            arr.push('ML');
+            max = 2;
+          } else {
+            arr.push('MR', 'ML');
+            max = 3;
+          }
+          num = this.afs.getRandomInt(0, max);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'AMC':
+          arr = ['DM', 'MC', 'AMR', 'AML', 'ST'];
+          
+          if (mainFoot === 'right') {
+            arr.push('MR');
+            max = 5;
+          } else if (mainFoot === 'left') {
+            arr.push('ML');
+            max = 5;
+          } else {
+            arr.push('MR', 'ML');
+            max = 6;
+          }
+          num = this.afs.getRandomInt(0, max);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            
+            altPos.push(str[0]);
+          }
+          break;
+        case 'ST':
+          arr = ['AMC', 'AMR', 'AML', 'MC']; 
+          num = this.afs.getRandomInt(0, 3);
+          for (let i = 0; i < altPosCount; i++) {
+            if (num - i < 0) {
+              num = arr.length;
+            }
+            let str = arr[num - i].split(', ');
+            altPos.push(str[0]);
+          }
+          break;
+        default:
+            console.log('Error in the function getAltPositions()');
+            break;
+      }
     }
+
+    
     return altPos;
 
   }
@@ -1495,12 +1746,12 @@ export class HomeComponent implements OnInit {
   }
 
   getRandomNationTier(rating: number) {
-    let randomNum = this.afs.getRandomInt(0, 100);
+    let randomNum = median([this.afs.getRandomInt(0, 100), this.afs.getRandomInt(0, 100)]);
     let half = this.afs.getRandomInt(0, 1);
     let third = this.afs.getRandomInt(0, 2);
-    let quarter = this.afs.getRandomInt(0, 3);
+    let quarter = Math.min(this.afs.getRandomInt(0, 3), this.afs.getRandomInt(0, 3));
     let tier = "";
-
+    // console.log("randomNum: ", randomNum);
     if (rating > 69) {
       if (randomNum < 70) {
         if (third < 2) {
@@ -1514,7 +1765,7 @@ export class HomeComponent implements OnInit {
         } else {
           tier = "c";
         }
-      } else if (randomNum < 95){
+      } else if (randomNum < 98){
         switch (quarter) {
           case 0:
             tier = "d";
@@ -1544,10 +1795,11 @@ export class HomeComponent implements OnInit {
       }
     } else {
       let arr = ["s", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
-      let i = this.afs.getRandomInt(0, arr.length - 1);
+      let i = Math.min(this.afs.getRandomInt(0, arr.length - 1), this.afs.getRandomInt(0, arr.length - 1));
       tier = arr[i];
     }
-
+    // console.log("Rating: ", rating);
+    // console.log("Tier: ", tier);
     tier += " tier";
     return tier
   }
@@ -1710,10 +1962,20 @@ export class HomeComponent implements OnInit {
             return 0
           });
         } else if (this.pitchPlayers.length > 0) {
-        this.sortedPitchPlayers = this.pitchPlayers;
-      }
-        console.log(this.sortedPitchPlayers);
+          this.sortedPitchPlayers = this.pitchPlayers;
+        }
 
+        for (const rule of this.squadRules) {
+          if (rule.check === '✅') {
+            rule.check = '❌';
+          }
+          this.squadRules[7].text = '';
+        }
+        if (this.pitchPlayers.length === 11) {
+          this.getBackupPositions();
+        } else {
+          this.squadRules[6].check = '❌';
+        }
         console.log("Successfully loaded", this.players, this.pitchPlayers);
       } else {
         throw new Error("Local Storage Data not found");
@@ -1789,6 +2051,17 @@ export class HomeComponent implements OnInit {
           } else if (this.pitchPlayers.length > 0) {
             this.sortedPitchPlayers = this.pitchPlayers;
           }
+          for (const rule of this.squadRules) {
+            if (rule.check === '✅') {
+              rule.check = '❌';
+            }
+            this.squadRules[7].text = '';
+          }
+          if (this.pitchPlayers.length === 11) {
+            this.getBackupPositions();
+          } else {
+            this.squadRules[6].check = '❌';
+          }
         });
     }
   }
@@ -1798,10 +2071,6 @@ export class HomeComponent implements OnInit {
 function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
-
-// function positionSort() {
-
-// }
 
 function median(values: number[]){
   if(values.length ===0) throw new Error("No inputs");

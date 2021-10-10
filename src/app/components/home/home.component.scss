@@ -8,7 +8,7 @@ button {
 
 .buttons-container {
     display: flex;
-    justify-content: flex-start;
+    justify-content: stretch;
     align-items: center;
     @media screen and (max-width: 800px) {
         flex-flow: column;
@@ -29,6 +29,33 @@ button {
         }
     }
     padding: 20px 0;
+    .instructions {
+        display: flex;
+        flex: 1;
+        justify-content: space-around;
+        align-items: center;
+        @media screen and (max-width: 800px) {
+            flex-flow: column;
+        }
+        & > div.info {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            // width: 50%;
+        }
+        .rules {
+            h4.rules-heading  {
+                margin: 0;
+            }
+            ul {
+                margin: 0;
+            }
+            hr {
+                border: 1px solid #8080807c;
+                margin: 5px 0;
+            }
+        }
+    }
     button {
         height: 40px;
         margin: 5px;
@@ -54,6 +81,18 @@ button {
     .save-buttons {
         display: flex;
         align-items: center;
+    }
+}
+
+.info-overlay {
+    background: #353535;
+    color: white;
+    padding: 15px;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    width: 50%;
+    margin: 1rem;
+    @media screen and (max-width: 800px) {
+        width: 100%;
     }
 }
 
@@ -143,6 +182,8 @@ header {
 .page-container {
     width: 90%;
     margin: 0 auto;
+    display: flex;
+    flex-flow: column;
 }
 h2, h3 {
     text-align: center;
@@ -208,10 +249,18 @@ h3 {
             }
             img {
                 max-width: 1.75rem;
-                // margin: 0.2rem;
             }
         }
     }
+}
+
+.formation {
+    font-size: 1.75rem;
+    line-height: normal;
+    padding: 10px;
+    background: #353535;
+    color: #ebebeb;
+    width: 16rem;
 }
 
 .tactics-container {
@@ -265,6 +314,7 @@ h3 {
             position: sticky;
             top: 0;
         }
+        
         .reset-button {
             position: absolute;
             display: flex;
@@ -287,24 +337,24 @@ h3 {
             color: white;
             background-color: #424242;
             padding: 6px;
+            width: 10.5vw;
+            text-align: center;
             border-radius: 5px;
             position: absolute;
             z-index: 4; 
             font-size: 0.75rem;
+            left: 2.5%;
+            transform: translate(10%, -10%);
             @media screen and (min-width: 800px) {
                 font-size: 0.9rem;
                 padding: 10px;
             }
         }
         .starters-total-rating {
-            top: 5%;
-            left: 5%;
-            transform: translate(10%, -10%);
+            top: 2.5%;
         }
         .squad-total-rating {
-            top: 12%;
-            left: 5%;
-            transform: translate(8.5%, -10%);
+            top: 10%;
         }
         .pitch-borders {
             position: relative;

@@ -2,7 +2,7 @@
   "targets": {
     "national-team-generator": {
       "hosting": {
-        "team-gen-ng": [
+        "team-gen": [
           "national-team-generator"
         ]
       }

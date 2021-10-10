@@ -101,7 +101,7 @@ Change the `public` property in `firebase.json`.
 
 
 ```json
-"public": "dist/team-gen-ng",
+"public": "dist/team-gen",
 ```
 
 Then deploy to the website with firebase in the terminal.
