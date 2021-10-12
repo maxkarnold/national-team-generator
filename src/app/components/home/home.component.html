@@ -125,14 +125,17 @@
                                 <span *ngIf="box.pitchPlayer !== undefined" class="player-name">{{box.pitchPlayer.displayName}}</span>
                             </div>
                             
-                            <!-- <div *cdkDragPreview>
-                                <img class="shirtIcon-img" [src]="shirtIcon" [alt]="">
-                                <div class="player-preview">{{pitchPlayers[23].lastName}} {{pitchPlayers[23].position}} {{pitchPlayers[23].rating}}</div>
-                            </div> -->   
+                            <!-- <div *cdkDragPreview  class="player-box active">
+                                    <img [src]="box.pitchPlayer.playerFace" alt="" class="player-face" *ngIf="box.pitchPlayer !== undefined">
+                                    <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchRating}}</span>
+                                    <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchPosition}}</span>
+                                    <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.nationalityLogo">
+                                    <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.clubLogo">
+                                    <span *ngIf="box.pitchPlayer !== undefined" class="player-name">{{box.pitchPlayer.displayName}}</span>
+                            </div>    -->
+                            <!-- <div class="player-box active" *cdkDragPlaceholder>Placeholder</div> -->
                         </div>
                         <div [class]="getPosBoxClass(box)">
-                            <!-- {{box.class}} -->
-                            <!-- <div [class]="getPosPlaceholder(box)" *cdkDragPlaceholder>Placeholder</div> -->
                         </div>
                     </div>
                 </div> 
