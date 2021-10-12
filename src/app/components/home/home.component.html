@@ -78,10 +78,16 @@
                 <button mat-raised-button type="button" color="accent" (click)="infoOverlay()" *ngIf="!instructionsOpen" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Instructions</button>
                 <button mat-raised-button type="button" color="accent" (click)="infoOverlay()" *ngIf="instructionsOpen" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Close Instructions</button>
                 <ng-template  cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="instructionsOpen">
-                        <p class="info-overlay">
-                            Drag and drop players from the bench to the pitch. Players have ratings based on their positions. The box that highlights in green is the best position for a player. The box that highlights yellow is an alternate position (-5 rating). 
-                            The box that highlights red is not a viable position (-20 rating).
-                        </p>
+                        <div class="info-overlay">
+                            <div class="exit-container">
+                                <button mat-button (click)="infoOverlay()" ><mat-icon>close</mat-icon></button>
+                            </div>
+                            <p>
+                                Drag and drop players from the bench to the pitch. Players have ratings based on their positions. The box that highlights in green is the best position for a player. The box that highlights yellow is an alternate position (-5 rating). 
+                                The box that highlights red is not a viable position (-20 rating).
+                            </p>
+                            
+                        </div>
                 </ng-template>
             </div>
             <div class="rules">
