@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service'
-import { Player } from '../../models/player';
+
+import { Player } from 'src/app/models/player';
+import { OutfieldAttributes } from 'src/app/models/outfieldAttributes';
+import { GkAttributes } from 'src/app/models/gkAttributes';
 import { LastName } from 'src/app/models/last-name';
 import { FirstName } from 'src/app/models/first-name';
 import { PositionBox } from 'src/app/models/positionBox';
 import { positionBoxes } from 'src/app/data/positionBoxes';
+
 import * as nationsModule from '../../data/nations/nations.json';
 import * as clubsModule from '../../data/clubs/clubs.json';
 import * as positionsModule from '../../data/positions.json';
@@ -14,6 +18,7 @@ import * as pitchPositionsModule from '../../data/pitchPositions.json';
 import { Observable } from 'rxjs';
 import { Sort } from '@angular/material/sort';
 import{ CdkDragDrop, CdkDragRelease, CdkDragStart, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-home',
@@ -45,6 +50,7 @@ export class HomeComponent implements OnInit {
   clubs: any = (clubsModule as any).default;
 
   saveDataOverlayOpen = false;
+  loadDataOverlayOpen = false;
   loginOverlayOpen = false;
   navToggle = false;
   instructionsOpen = false;
@@ -413,6 +419,8 @@ export class HomeComponent implements OnInit {
         case 'age': return compare(a.age, b.age, isAsc);
         case 'nationality': return compare(a.nationality, b.nationality, isAsc);
         case 'roleDuty': return compare(a.preferredRole, b.preferredRole, isAsc);
+        // case 'displayHeight': return compare(a.height, b.height, isAsc);
+        // case 'weight': return compare(a.weight, b.weight, isAsc);
         default: return 0;
       }
     });
@@ -906,6 +914,10 @@ export class HomeComponent implements OnInit {
         nationality: '',
         nationalityLogo: '',
         age: 0,
+        height: 0,
+        weight: 0,
+        attributes: {} as GkAttributes | OutfieldAttributes,
+        weakFoot: 0,
         club: '',
         clubLogo: this.blankCrest,
         playerFace: this.blankPlayerPic
@@ -934,6 +946,14 @@ export class HomeComponent implements OnInit {
       player.club = clubObj.clubName;
       player.clubLogo = clubObj.clubLogoUrl;
       player.age = this.getAge(player.rating);
+
+      let attrObj = this.getAttributes(player.position, player.altPositions,player.preferredRole, player.preferredDuty, player.rating, player.age);
+      player.height = attrObj.height;
+      player.displayHeight = `${player.height * 12}' ${player.height % 12}"`;
+      player.weight = attrObj.weight;
+      player.weakFoot = attrObj.weakFoot;
+      // player.attributes = attrObj.attributes;
+
       let firstNameReq = this.afs.getFirstName(player.nationality)?.request$;
       let firstNameRetry = this.afs.getFirstName(player.nationality)?.retryRequest$;
 
@@ -1337,27 +1357,23 @@ export class HomeComponent implements OnInit {
       case 'AMC':
       case 'ST':
           if (num < 76.5) { return 'right' } 
-          else if (num < 96) { return 'left' }
-          else { return 'either' }
+          else {return 'left'}
       case 'AML':
       case 'ML':
           if (num < 50) { return 'left' }
-          else if (num < 96) { return 'right' }
-          else {return 'either' }
+          else { return 'right' }
       case 'LB':
       case 'LWB':
           if (num < 75) {return 'left'}
-          else if (num < 96) {return 'right'}
-          else {return 'either'}
+          else {return 'right'}
       case 'AMR':
       case 'MR':
           if (num < 70) {return 'right'}
-          else if (num < 96) {return 'left'}
-          else {return 'either'}
+          else {return 'left'}
       case 'RB':
       case 'RWB':
-          if (num < 96) {return 'right'}
-          else {return 'either'}
+          if (num < 98) {return 'right'}
+          else {return 'left'}
       
       default:
           console.log('Error in the function getPlayerFoot()');
@@ -1986,6 +2002,139 @@ export class HomeComponent implements OnInit {
     };
   }
 
+  getAttributes(pos: string, altPos: string[], role: string, duty: string, rating: number, age: number) {
+    let height = 0; // in inches
+    let weight = 0; // in lbs
+    let weakFoot = 0; // 1-4 very weak, 5-8 weak, 8-11 reasonable, 12-14 fairly strong, 15-17 strong, 18-20 very strong
+    // very weak and weak is right/left only, reasonable and fairly strong is right/left, and strong and very strong is either footed
+    let bmi = median([getRandomInt(19, 29), getRandomInt(19, 29)]);
+
+    if (pos === 'GK') {
+      height = median([getRandomInt(69, 78), getRandomInt(69, 78)]);
+    } else {
+      height = median([getRandomInt(62, 78), getRandomInt(62, 78)]);
+    }
+    
+    weight = Math.round((bmi * Math.pow(height, 2)) / 703);
+
+
+    // current ability / potential ability
+    let currentAbility = rating * 2;
+    let potentialAbility;
+    let gkAttributes = {} as GkAttributes;
+    let outAttributes = {} as OutfieldAttributes;
+    let attributes = {};
+
+    switch (pos) {
+      case "GK":
+        
+        // 2.5, 1.65, 0.92, 0.6, 0.35, 0.125, 0
+        let attr25 = ['handling', 'reflexes']; 
+        let attr17 = ['aerialReach', 'commandOfArea', 'communication', 'kicking', 'oneOnOnes', 'bravery', 'concentration', 'decisions', 'positioning', 'agility'];
+        let attr09 = ['throwing', 'acceleration', 'strength'];
+        let attr06 = ['weakFoot'];
+        let attr04 = ['anticipation', 'composure', 'leadership', 'teamwork', 'balance', 'pace'];
+        let attr01 = ['firstTouch', 'vision', 'workRate', 'jumpingReach', 'stamina', 'technique'];
+        let attr0 = ['eccentricity', 'freeKickTaking', 'penalty taking', 'rushingOutTendency', 'punchingTendency', 'aggression', 'determination', 'flair', 'offTheBall', 'naturalFitness'];
+        for (let i = 0; i < attr0.length; i++) {
+          gkAttributes[attr0[i]] = getRandomInt(1, 20);
+        } 
+        let ability = 0;
+        while (ability < currentAbility) {
+          //green attributes
+          gkAttributes.reflexes = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+          gkAttributes.kicking = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+          gkAttributes.commandOfArea = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+          gkAttributes.concentration = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+          gkAttributes.positioning = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+          gkAttributes.agility = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+          // blue attributes
+          gkAttributes.throwing = getRandomInt(5, 20);
+          gkAttributes.decisions = getRandomInt(5, 20);
+          // others
+          gkAttributes.eccentricity = getRandomInt(1, 20);
+          gkAttributes.punchingTendency = getRandomInt(1, 20);
+          if (role === 'GK') {
+            // green attributes
+            gkAttributes.aerialReach = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+            gkAttributes.communication = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+            gkAttributes.handling = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+            // blue attributes
+            gkAttributes.oneOnOnes = getRandomInt(5, 20);
+            gkAttributes.anticipation = getRandomInt(5, 20);
+            // others
+            gkAttributes.firstTouch = getRandomInt(1, 20);
+            gkAttributes.passing = getRandomInt(1, 20);
+            gkAttributes.rushingOutTendency = getRandomInt(1, 20);
+            gkAttributes.composure = getRandomInt(1, 20);
+            gkAttributes.vision = getRandomInt(1, 20);
+            gkAttributes.acceleration = getRandomInt(1, 20);
+          } else if (role === 'SK') {
+            // green attributes
+            gkAttributes.oneOnOnes = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+            gkAttributes.rushingOutTendency = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+            gkAttributes.anticipation = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+            gkAttributes.composure = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+            // blue attributes
+            gkAttributes.aerialReach = getRandomInt(5, 20);
+            gkAttributes.communication = getRandomInt(5, 20);
+            gkAttributes.handling = getRandomInt(5, 20);
+            gkAttributes.firstTouch = getRandomInt(5, 20);
+            gkAttributes.passing = getRandomInt(5, 20);
+            gkAttributes.vision = getRandomInt(5, 20);
+            gkAttributes.acceleration = getRandomInt(5, 20);
+            // others
+          }
+          
+        }
+        attributes = gkAttributes;        
+
+        break
+      case "CB":
+
+        break
+      case "RB":
+      case "LB":
+
+        break
+      case "RWB":
+      case "LWB":
+
+        break
+      case "DM":
+
+        break
+      case "MR":
+      case "ML":
+
+        break
+      case "MC":
+
+        break
+      case "AMR":
+      case "AML":
+
+        break
+      case "AMC":
+
+        break
+      case "ST":
+
+        break
+      default:
+        attributes = outAttributes;
+       break
+    }
+
+    console.log(weight, height, weakFoot);
+    return {
+      height,
+      weight,
+      weakFoot,
+      attributes
+    }
+  }
+
   getClub(clubRep: string, playerNation: string) {
     let clubArr: any[] =  this.clubs[clubRep];
     let clubName: string = "";
@@ -2183,19 +2332,47 @@ export class HomeComponent implements OnInit {
     return tier
   }
 
-  savePlayers(saveLocation: string) {
+  async savePlayers(saveLocation: string, saveName?: string) {
     
-    if (saveLocation === 'firestore') {
+    if (saveLocation === 'firestore' && saveName !== undefined) {
       if (!this.isLoggedIn) {
         alert('You must be logged in to save roster to cloud');
         return false
       }
-      if (window.confirm("Are you sure you want to save?")) {
-        let user = JSON.parse(localStorage.getItem('user') || '');
-        this.afs.saveRoster(user.uid, this.players, this.pitchPlayers, this.nationName);
-      } else {
+      if (saveName.length < 4) {
+        alert('Must be 4-20 characters long.');
         return false
       }
+      if (this.savedData.length < 1) {
+        this.loadDataOverlay('save', saveName);
+      } else {
+        for (let i = 0; i < this.savedData.length; i++) {
+          // if it's a duplicate saveName
+          if (this.savedData[i].id === saveName) {
+            // ask the user if they want to overwrite
+            if (window.confirm(`${saveName} is already a roster name. Overwrite?`)) {
+              if (window.confirm("Are you sure you want to save?")) {
+                let user = JSON.parse(localStorage.getItem('user') || '');
+                this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName);
+                this.saveDataOverlayOpen = false;
+              } else {
+                return false
+              }
+            } else {
+              return false
+            }
+          }
+        }
+        if (window.confirm("Are you sure you want to save?")) {
+          let user = JSON.parse(localStorage.getItem('user') || '');
+          this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName);
+          this.saveDataOverlayOpen = false;
+        } else {
+          return false
+        }
+      }
+      
+      
     } else if (saveLocation === 'localStorage') {
       if (localStorage.length > 1) {
         if (window.confirm("Are you sure you want to overwrite your current roster saved in Local Storage?")) {
@@ -2222,11 +2399,24 @@ export class HomeComponent implements OnInit {
     
   }
 
-  saveDataOverlay(loadMore?: string) {
-    this.saveDataOverlayOpen = true;
-    if (loadMore !== 'check'){
-      return false;
+  saveDataOverlay() {
+    this.loadDataOverlayOpen = false;
+    if (this.saveDataOverlayOpen === false) {
+      this.saveDataOverlayOpen = true;
+    } else {
+      this.saveDataOverlayOpen = false;
     }
+  }
+
+  loadDataOverlay(loadMore?: string, saveName?: string) {
+    if (loadMore !== 'save') {
+      this.loadDataOverlayOpen = true;
+      this.saveDataOverlayOpen = false;
+      if (loadMore !== 'check'){
+        return false;
+      }
+    }  
+    
     if (!this.isLoggedIn) {
       alert('You must be logged in to access cloud saved data');
       return false;
@@ -2246,17 +2436,46 @@ export class HomeComponent implements OnInit {
           this.savedData.push({id: id});
         }
       }
+
+      if (saveName !== undefined) {
+        for (let i = 0; i < this.savedData.length; i++) {
+          // if it's a duplicate saveName
+          if (this.savedData[i].id === saveName) {
+            // ask the user if they want to overwrite
+            if (window.confirm(`${saveName} is already a roster name. Overwrite?`)) {
+              if (window.confirm("Are you sure you want to save?")) {
+                let user = JSON.parse(localStorage.getItem('user') || '');
+                this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName);
+                this.saveDataOverlayOpen = false;
+              } else {
+                return false
+              }
+            } else {
+              return false
+            }
+          }
+        }
+        if (window.confirm("Are you sure you want to save?")) {
+          let user = JSON.parse(localStorage.getItem('user') || '');
+          this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName);
+          this.saveDataOverlayOpen = false;
+        } else {
+          return false
+        }
+      }
+
+      
     });
     
   }
 
-  closeSaveDataOverlay() {
-    this.saveDataOverlayOpen = false;
+  closeLoadDataOverlay() {
+    this.loadDataOverlayOpen = false;
   }
 
   loadPlayers(saveLocation: string) {
     console.log("Save Data is from:\n", saveLocation);
-    this.saveDataOverlayOpen = false;
+    this.loadDataOverlayOpen = false;
     if (saveLocation === 'loadLocalStorage') {
       if (localStorage.length > 1) {
         this.players = [];

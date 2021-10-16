@@ -50,21 +50,32 @@
         <div class="form-buttons">
             <button mat-raised-button color="primary" class="generate" type="button" (click)="getPlayers()">Generate</button>
             <div class="load-data-buttons">
-                <button mat-raised-button color="primary" class="load-button" type="button" (click)="saveDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Load</button>
-                <button mat-raised-button color="warn" *ngIf="saveDataOverlayOpen" type="button" (click)="closeSaveDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Close Overlay</button>
+                <button mat-raised-button color="primary" class="load-button" type="button" (click)="loadDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Load</button>
+                <button mat-raised-button color="warn" *ngIf="loadDataOverlayOpen" type="button" (click)="closeLoadDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Close Overlay</button>
             </div>
         </div>
         <div class="save-buttons" *ngIf="players.length > 0">
-            <button class="save-button" type="button" (click)="savePlayers('firestore')" mat-raised-button color="primary">Save to Cloud</button>
+            <button class="save-button" type="button" (click)="saveDataOverlay()" mat-raised-button color="primary" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Save to Cloud</button>
             <button class="save-button" type="button" (click)="savePlayers('localStorage')" mat-raised-button color="primary">Save to Local Storage</button>
         </div>
-        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="saveDataOverlayOpen">
+        <ng-container *ngIf="saveDataOverlayOpen">
+            <div class="save-data-overlay">
+                <div class="exit-container">
+                    <button mat-button (click)="saveDataOverlay()"><mat-icon>close</mat-icon></button>
+                </div>
+                
+                <input type="text" #saveFile placeholder="Roster Name" required minlength="4" maxlength="20">
+                <label>* name must be 4-20 characters long</label>
+                <button mat-raised-button type="submit" (click)="savePlayers('firestore', saveFile.value)" class="save-button">Save</button>
+            </div>
+        </ng-container>
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="loadDataOverlayOpen">
             <ul class="load-roster-overlay">
                 <li>
                     <button type="button" (click)="loadPlayers('loadLocalStorage')">Load from local storage</button>
                 </li>
                 <li>
-                    <button type="button" (click)="saveDataOverlay('check')">Check cloud saved data</button>
+                    <button type="button" (click)="loadDataOverlay('check')">Check cloud saved data</button>
                 </li>
                 <ul>Save Data Ids:
                     <li *ngFor="let data of savedData">
@@ -289,6 +300,8 @@
                 <th mat-sort-header="altPositions" class="desktop">Other Positions</th>
                 <th mat-sort-header="foot" class="desktop">Preferred Foot</th>
                 <th mat-sort-header="rating">Rating</th>
+                <!-- <th mat-sort-header="displayHeight" class="desktop">Height</th>
+                <th mat-sort-header="weight" class="desktop">Weight</th> -->
                 <th mat-sort-header="age">Age</th> 
             </tr> 
             <tbody> 
@@ -315,6 +328,8 @@
                     </td>
                     <td class="desktop">{{player.foot}}</td>
                     <td>{{player.rating}}</td>
+                    <!-- <td class="desktop">{{player.displayHeight}}</td>
+                    <td class="desktop">{{player.weight}}</td> -->
                     <td>{{player.age}}</td>
                 </tr>
             </tbody>

@@ -580,8 +580,8 @@ export class FirestoreService {
     
   }
 
-  saveRoster(uid: string, benchReserves: Player[], starters: Player[], nation: string) {
-    let docRef = this.afs.collection("users").doc(uid).collection("savedRosters").doc();
+  saveRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], nation: string) {
+    let docRef = this.afs.collection("users").doc(uid).collection("savedRosters").doc(saveName);
 
     docRef.set({
       benchReserves: benchReserves,

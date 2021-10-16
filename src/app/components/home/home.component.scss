@@ -118,7 +118,7 @@ header.desktop a{
     color: white;
 }
 
-.login-overlay {
+.login-overlay, .save-data-overlay {
     background-color: #3F51B5;
     border: 1px solid whitesmoke;
     box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
@@ -150,6 +150,17 @@ header.desktop a{
     }
     .login-button {
         background-color: white;
+    }
+}
+.save-data-overlay {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    transform: translate(-30%, -30%);
+    z-index: 6;
+    label {
+        color: #f5f5f5bd;
+        padding: 0.5rem 0;
     }
 }
 .load-roster-overlay {
