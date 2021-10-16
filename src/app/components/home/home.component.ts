@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
       check: '❌'
     },
     {
-      text: '6 defenders in squad', 
+      text: 'min. 6 defenders in squad', 
       check: '❌'
     },
     {
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
       check: '❌'
     },
     {
-      text: '5 midfielders in squad', 
+      text: 'min. 5 midfielders in squad', 
       check: '❌'
     },
     {
@@ -117,6 +117,7 @@ export class HomeComponent implements OnInit {
         this.nationsList.push(tierObj.nations[i].name);
       }
     }
+    
   }
 
   loginOverlay() {
@@ -141,7 +142,6 @@ export class HomeComponent implements OnInit {
       this.isLoggedIn = true;
       this.loginOverlayOpen = false;
     }
-    
     console.log('Logged in');
   }
 
@@ -237,7 +237,7 @@ export class HomeComponent implements OnInit {
     if (countArr[4] > 0) {
       this.squadRules[0].check = '✅';
     }
-    if (countArr[0] > 2) {
+    if (countArr[0] === 3) {
       this.squadRules[1].check = '✅';
     }
     if (countArr[5] > 2 && countArr[5] < 6) {
@@ -301,8 +301,7 @@ export class HomeComponent implements OnInit {
         playersLeft.splice(j, 1, {} as Player);
       }
     }
-    console.log("playersLeft", playersLeft);
-    console.log("startingPositionsLeft", startingPositions);
+
     this.squadRules[7].text = '';
     for (let i = 0; i < startingPositions.length; i++) {
       if (startingPositions[i] !== '') {
@@ -336,7 +335,13 @@ export class HomeComponent implements OnInit {
               player.pitchRating = player.rating - 3;
             }
             // add another section for playable positions (new property: competent ~ dark yellow-green ~ -6 change)
+            else if (player.competentPositions.includes(pos.playerPosition)) {
+              player.pitchRating = player.rating - 6;
+            }
             // add another section for playable positions (new property: unconvincing ~ dark yellow ~ -12 change)
+            else if (player.unconvincingPositions.includes(pos.playerPosition)) {
+              player.pitchRating = player.rating - 12;
+            }
             // else if gk position but not gk or else if outfield position but gk (ineffectual ~ red)
             else if ((pos.playerPosition === "GK" && player.position !== "GK") || (pos.playerPosition !== "GK" && player.position === "GK")) {
               player.pitchRating = 20;
@@ -1052,6 +1057,10 @@ export class HomeComponent implements OnInit {
 
   getPosition() {
     let randomPos = getRandomInt(0, 13);
+    // trying to lessen the amount of natural wing backs/wing players
+    if (randomPos !== 0 && randomPos !== 3 && randomPos !== 6 && randomPos !== 6 && randomPos !== 12 && randomPos !== 13) {
+      randomPos = getRandomInt(0, 13);
+    }
     if (this.playerCount > 50 && (this.positions[0].amount < 3 || this.positions[3].amount < 3 || this.positions[13].amount < 2 || this.positions[7].amount < 3)) { 
       if (this.positions[0].amount < 3) {
         randomPos = 0;
@@ -1375,12 +1384,10 @@ export class HomeComponent implements OnInit {
 
     if (altPosCount === 0) {
       altPos = ['N/A'];
-      // console.log(altPos);
     } else {
       switch (mainPos) {
         case 'GK':
           altPos = ['N/A'];
-          console.log(altPos);
           break;
         case 'CB':
           arr = ['DM', 'RB', 'LB'];
@@ -2184,7 +2191,8 @@ export class HomeComponent implements OnInit {
         return false
       }
       if (window.confirm("Are you sure you want to save?")) {
-        this.afs.saveRoster(this.players, this.pitchPlayers, this.nationName);
+        let user = JSON.parse(localStorage.getItem('user') || '');
+        this.afs.saveRoster(user.uid, this.players, this.pitchPlayers, this.nationName);
       } else {
         return false
       }
@@ -2223,7 +2231,8 @@ export class HomeComponent implements OnInit {
       alert('You must be logged in to access cloud saved data');
       return false;
     }
-    this.afs.getRosterId().subscribe((obj) => {
+    let user = JSON.parse(localStorage.getItem('user') || '');
+    this.afs.getRosterId(user.uid).subscribe((obj) => {
       console.log("Checking firestore for save data...\n")
       for (const roster of obj) {
         let id = roster.payload.doc.id;
@@ -2238,6 +2247,7 @@ export class HomeComponent implements OnInit {
         }
       }
     });
+    
   }
 
   closeSaveDataOverlay() {
@@ -2353,7 +2363,8 @@ export class HomeComponent implements OnInit {
         throw new Error("Local Storage Data not found");
       }
     } else {
-        this.afs.getRoster(saveLocation).subscribe((obj) => {
+        let user = JSON.parse(localStorage.getItem('user') || '');
+        this.afs.getRoster(user.uid, saveLocation).subscribe((obj) => {
           // console.log(obj);
           if (obj !== undefined) {      
             this.players = obj.benchReserves;

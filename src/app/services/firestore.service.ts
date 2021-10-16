@@ -5,11 +5,11 @@ import { LastName } from '../models/last-name';
 import { Observable } from 'rxjs';
 import { Player } from '../models/player';
 
-export interface Roster {
-  starters: Player[];
-  benchReserves: Player[];
-  nationOrTier: string;
-}
+// export interface Roster {
+//   starters: Player[];
+//   benchReserves: Player[];
+//   nationOrTier: string;
+// }
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +85,7 @@ export class FirestoreService {
         nameOrigin = ["Spanish"];
         break;
       case "england":
-        nameOrigin = ["English", "Cornish", "Arabic"];
+        nameOrigin = ["English", "Cornish"];
         break;
       case "wales": 
         nameOrigin = ["English", "Welsh"];
@@ -356,7 +356,7 @@ export class FirestoreService {
         nameOrigin = ["Spanish"];
         break;
       case "england":
-        nameOrigin = ["English", "Arabic"];
+        nameOrigin = ["English"];
         break;
       case "wales": 
         nameOrigin = ["English", "Welsh"];
@@ -580,8 +580,8 @@ export class FirestoreService {
     
   }
 
-  saveRoster(benchReserves: Player[], starters: Player[], nation: string) {
-    let docRef = this.afs.collection("savedRosters").doc();
+  saveRoster(uid: string, benchReserves: Player[], starters: Player[], nation: string) {
+    let docRef = this.afs.collection("users").doc(uid).collection("savedRosters").doc();
 
     docRef.set({
       benchReserves: benchReserves,
@@ -595,12 +595,12 @@ export class FirestoreService {
 
   }
 
-  getRosterId() {
-    return this.afs.collection("savedRosters").snapshotChanges()
+  getRosterId(uid: string) {
+    return this.afs.collection("users").doc(uid).collection("savedRosters").snapshotChanges()
   }
 
-  getRoster(firestoreId: string) {
-    return this.afs.doc<Roster>(`savedRosters/${firestoreId}`).valueChanges();
+  getRoster(uid: string, rosterId: string) {
+    return this.afs.collection("users").doc(uid).collection("savedRosters").doc(rosterId).valueChanges();
   }
 
 }
