@@ -1,4 +1,26 @@
 
 <router-outlet>
-  <app-home></app-home>
+  <header class="mobile">
+    <mat-toolbar color="primary">
+        <a routerLink="/" routerLink="active"><span>National Team Generator</span></a>
+        <span class="nav-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="navToggle = !navToggle" >
+            <mat-icon>menu</mat-icon>
+        </button>
+    </mat-toolbar>
+    <mat-nav-list class="primaryColorBG list" role="list" *ngIf="navToggle">
+        <a mat-list-item routerLink="/leaderboard" routerLinkActive="active" class="nav-item">Leaderboards</a>
+        <a mat-list-item href="#" class="nav-item" (click)="loginOverlay()" *ngIf="!isLoggedIn" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Login</a>
+        <a mat-list-item href="#" class="nav-item" (click)="logout()" *ngIf="isLoggedIn">Logout</a>
+    </mat-nav-list>
+  </header>
+  <header class="desktop">
+    <mat-toolbar color="primary">
+        <span>National Team Generator</span> 
+        <span class="nav-spacer"></span>
+        <a href="#" (click)="loginOverlay()" *ngIf="!isLoggedIn"><span>Login</span></a>
+        <a href="#" (click)="logout()" *ngIf="isLoggedIn"><span>Logout</span></a>
+    </mat-toolbar>
+  </header>
+  <app-home [isLoggedIn]="isLoggedIn"></app-home>
 </router-outlet>

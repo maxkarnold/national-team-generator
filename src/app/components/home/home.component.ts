@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service'
 
@@ -28,6 +28,8 @@ import{ CdkDragDrop, CdkDragRelease, CdkDragStart, moveItemInArray, transferArra
 
 export class HomeComponent implements OnInit {
 
+  @Input() isLoggedIn = false;
+
   playerCount = 0;
   players: Player[];
   sortedData: Player[];
@@ -51,10 +53,7 @@ export class HomeComponent implements OnInit {
 
   saveDataOverlayOpen = false;
   loadDataOverlayOpen = false;
-  loginOverlayOpen = false;
-  navToggle = false;
   instructionsOpen = false;
-  isLoggedIn: boolean = false;
   nationName = "";
   nationSelectValue = "s tier"
   realisticNationalities = true;
@@ -126,35 +125,12 @@ export class HomeComponent implements OnInit {
     
   }
 
-  loginOverlay() {
-    if (!this.loginOverlayOpen) {
-      this.loginOverlayOpen = true;
-    } else {
-      this.loginOverlayOpen = false;
-    }
-  }
-
   infoOverlay() {
     if (!this.instructionsOpen) {
       this.instructionsOpen = true;
     } else {
       this.instructionsOpen = false;
     }
-  }
-
-  async login(email: string, password: string) {
-    await this.auth.login(email, password);
-    if (this.auth.isLoggedIn) {
-      this.isLoggedIn = true;
-      this.loginOverlayOpen = false;
-    }
-    console.log('Logged in');
-  }
-
-  logout() {
-    this.auth.logout();
-    console.log('logged out');
-    this.isLoggedIn = false;
   }
 
   consoleLog(value: string) {
