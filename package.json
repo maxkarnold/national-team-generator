@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "~12.1.2",
     "@angular/router": "~12.1.2",
     "cheerio": "^1.0.0-rc.10",
-    "firebase": "^8.10.0",
     "firebase-admin": "^9.11.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.6.0",

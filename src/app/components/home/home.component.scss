@@ -476,7 +476,7 @@ h3 {
     max-height: 10.5rem;
     background: rgba(144, 238, 144, .25);
     border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 5px;
+    border-radius: 50% / 10%;
     justify-content: center;
     align-items: center;
     @media screen and (max-width: 800px) {
@@ -501,23 +501,23 @@ h3 {
     }
     &.diamond {
        background: linear-gradient(45deg, #f3f4ff, #68aeff); 
+       background: linear-gradient(45deg, hsla(186, 100%, 69%, 1) 0%, hsla(217, 100%, 50%, 1) 100%);
     }
     &.platinum {
-        background: linear-gradient(45deg, #ffffff, #bcc8fd); 
+        background: linear-gradient(45deg, #ffffff, #9fb0fc); 
     }
     &.gold {
         background: linear-gradient(45deg, #fff2a8, #e7d52c);
-        // background: gold;
     }
     &.silver {
-        background: linear-gradient(45deg, #bbbbbb, #838383);
-        background: silver;
+        background: linear-gradient(45deg, #bbbbbb, #c0c0c0);
+        // background: #c0c0c0;
     }
     &.bronze {
-        background: linear-gradient(45deg, #e06513, #884c31);
+        background: linear-gradient(45deg, #e06513, #a73906);
     }
     &.brown {
-        background: #693e29;
+        background: linear-gradient(45deg #967260, #533729);
     }
     & > div {
         width: 100%;
@@ -728,16 +728,34 @@ h3 {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     border: 2px dashed white;
 }
-.green-placeholder {
-    border: ridge 2px rgb(0, 255, 0);
+.natural-placeholder {
+    border: ridge 2px #00ff00;
+    background-color: #00ff00;
     border-radius: 50% / 10%;
 }
-.yellow-placeholder {
-    border: ridge 2px rgb(255, 255, 0);
+.accomplished-placeholder {
+    border: ridge 2px #009700;
+    background-color: #009700;
     border-radius: 50% / 10%;
 }
-.red-placeholder {
-    border: ridge 2px rgb(255, 0, 0);
+.competent-placeholder {
+    border: ridge 2px #699424;
+    background-color: #699424;
+    border-radius: 50% / 10%;
+}
+.unconvincing-placeholder {
+    border: ridge 2px #888800;
+    background-color: #888800;
+    border-radius: 50% / 10%;
+}
+.awkward-placeholder {
+    border: ridge 2px #b36302;
+    background-color: #b36302;
+    border-radius: 50% / 10%;
+}
+.ineffectual-placeholder {
+    border: ridge 2px #830000;
+    background-color: #830000;
     border-radius: 50% / 10%;
 }
 

@@ -3,9 +3,9 @@ export interface Player {
     lastName: string;
     position: string;
     altPositions: string[];
+    competentPositions: string[];
+    unconvincingPositions: string[];
     rating: number;
-    yellowRating: number;
-    redRating: number;
     foot: string;
     firstInitial?: string;
     nationality: string;
