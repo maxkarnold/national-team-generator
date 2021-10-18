@@ -162,15 +162,15 @@ export class HomeComponent implements OnInit, OnDestroy {
             starters: this.pitchPlayers
           }
         }
-        // this.afs.getSubmittedRosters().subscribe((data) => {
-        //   for (const roster of data) {
-        //     if (roster.payload.doc.id === this.rosterId) {
-        //       alert("Already submitted roster");
-        //       return false
-        //     }
-        //   }
+        this.afs.getSubmittedRosters().subscribe((data) => {
+          for (const roster of data) {
+            if (roster.payload.doc.id === this.rosterId) {
+              alert("Already submitted roster");
+              return false
+            }
+          }
           this.afs.submitRoster(submittedRoster);
-        // });  
+        });  
       } else {
         throw new Error("User not signed in - login error");
       }
