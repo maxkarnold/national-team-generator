@@ -1,0 +1,11 @@
+ul {
+    width: 90%;
+    display: flex;
+    flex-flow: column;
+    align-content: center;
+}
+
+.roster {
+    display: flex;
+    justify-content: space-between;
+}

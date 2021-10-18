@@ -1,1 +1,13 @@
-<p>leaderboard works!</p>
+<h1>Leaderboards</h1>
+<p *ngIf="!isLoggedIn">You must login to see leaderboard</p>
+
+<button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button>
+<ul>
+    <li *ngFor="let roster of rosters" class="roster">
+        <span>{{roster.id}}</span>
+        <span>{{roster.user}}</span>
+        <span>{{roster.squadRating}}</span>
+        <span>{{roster.startersRating}}</span>
+        <span>{{roster.nation}}</span>
+    </li>
+</ul>

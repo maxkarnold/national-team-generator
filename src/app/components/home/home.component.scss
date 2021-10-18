@@ -1,3 +1,20 @@
+.desktop {
+    display: none;
+}
+
+@media screen and (min-width: 800px) {
+    .mobile {
+        display: none;
+    }
+    header.desktop {
+        display: block;
+    }
+    td.desktop, 
+    th.desktop {
+        display: table-cell;
+    }
+}
+
 .buttons-container {
     display: flex;
     justify-content: stretch;
@@ -73,6 +90,10 @@
     .save-buttons {
         display: flex;
         align-items: center;
+        flex-flow: column;
+        button {
+            width: 90%;
+        }
     }
 }
 
@@ -234,18 +255,24 @@
 }
 
 .formation {
-    font-size: 1.75rem;
-    line-height: normal;
+    text-align: center;
+    font-size: 1rem;
+    background-color: #424242;
     padding: 10px;
-    background: #353535;
+    border-radius: 5px;
+    line-height: normal;
     color: #ebebeb;
-    width: 16rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-10%, 27.5%);
 }
 
 .tactics-container {
     display: flex;
     flex-flow: column;
     width: 100%;
+    margin-top: 2rem;
     @media screen and (min-width: 800px) {
         flex-flow: row;
     }   
@@ -300,9 +327,8 @@
             justify-content: center;
             line-height: 10px;
             padding: 5px;
-            top: 5%;
-            right: 5%;
-            transform: translate(10%, -10%);
+            top: 10%;
+            right: 2.15%;
             z-index: 4;
             max-width: 100px;
             font-size: 0.75rem;

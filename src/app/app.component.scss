@@ -48,17 +48,22 @@ button {
     header.desktop {
         display: block;
     }
-    td.desktop, 
-    th.desktop {
-        display: table-cell;
-    }
 }
 
 header.desktop a{
     padding: 0 1rem;
+}
+
+header a {
     color: white;
 }
 
+header button {
+    background: none;
+    border: none;
+    color: white;
+    font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
+}
 header {
     .nav-spacer {
         flex: 1 1 auto;
@@ -83,7 +88,6 @@ h3 {
 }
 .mat-list-base.list .mat-list-item {
     display: flex;
-    justify-content: center;
     border-top: 1px solid rgba(242, 242, 242, 0.25);
     color: white;
 }

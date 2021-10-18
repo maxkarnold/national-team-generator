@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit} from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service'
 
@@ -9,26 +9,26 @@ import { LastName } from 'src/app/models/last-name';
 import { FirstName } from 'src/app/models/first-name';
 import { PositionBox } from 'src/app/models/positionBox';
 import { positionBoxes } from 'src/app/data/positionBoxes';
+import { SubmittedRoster } from 'src/app/models/submittedRoster';
 
 import * as nationsModule from '../../data/nations/nations.json';
 import * as clubsModule from '../../data/clubs/clubs.json';
 import * as positionsModule from '../../data/positions.json';
 import * as pitchPositionsModule from '../../data/pitchPositions.json';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
 import { Sort } from '@angular/material/sort';
 import{ CdkDragDrop, CdkDragRelease, CdkDragStart, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 
-export class HomeComponent implements OnInit {
-
-  @Input() isLoggedIn = false;
+export class HomeComponent implements OnInit, OnDestroy {
 
   playerCount = 0;
   players: Player[];
@@ -51,10 +51,14 @@ export class HomeComponent implements OnInit {
   nationsList: string[];
   clubs: any = (clubsModule as any).default;
 
+  isLoggedIn = false;
+  subscription: Subscription = new Subscription;
+
   saveDataOverlayOpen = false;
   loadDataOverlayOpen = false;
   instructionsOpen = false;
   nationName = "";
+  rosterId = "";
   nationSelectValue = "s tier"
   realisticNationalities = true;
   startersTotalRating = 0;
@@ -108,21 +112,69 @@ export class HomeComponent implements OnInit {
     this.savedData = [];
     this.nationsList = [];
   }
+  
 
   ngOnInit(): void {
-    if (localStorage.getItem('user') !== null) {
-      console.log('User is logged in.')
-      this.isLoggedIn = true;
-      this.loadPlayers('loadLocalStorage');
-    } else {
-      this.isLoggedIn = false;
-    }
     for (const tierObj of this.nations) {
       for (let i = 0; i < tierObj.nations.length; i++) {
         this.nationsList.push(tierObj.nations[i].name);
       }
     }
-    
+    this.subscription = this.auth.currentAuthState.subscribe(authState => this.isLoggedIn = authState);
+    if (this.isLoggedIn === true) {
+      this.loadPlayers('loadLocalStorage')
+    }
+  }
+
+  ngOnDestroy (): void {
+    this.subscription.unsubscribe();
+  }
+
+  async submitRoster() {
+    for (const rule of this.squadRules) {
+      if (rule.check === '❌') {
+        alert('Must pass all squad requirements to submit.')
+        return false
+      }
+    }
+    let submittedRoster: SubmittedRoster;
+    this.auth.getUser().subscribe((user) => {
+      if (user && user.email !== null) {
+        let nationName = '';
+        let tierName = '';
+        let id = this.rosterId;
+        if (this.nationName.includes(' tier')) {
+          nationName = 'random';
+          tierName = this.nationName.slice(0, 1);
+        } else {
+          nationName = this.nationName;
+          tierName = this.getNation("tier").tier || '';
+        }
+        submittedRoster = {
+          user: user.email,
+          id: id,
+          tier: tierName,
+          nation: nationName,
+          startersRating: this.startersTotalRating,
+          squadRating: this.squadTotalRating,
+          roster: {
+            benchReserves: this.players,
+            starters: this.pitchPlayers
+          }
+        }
+        // this.afs.getSubmittedRosters().subscribe((data) => {
+        //   for (const roster of data) {
+        //     if (roster.payload.doc.id === this.rosterId) {
+        //       alert("Already submitted roster");
+        //       return false
+        //     }
+        //   }
+          this.afs.submitRoster(submittedRoster);
+        // });  
+      } else {
+        throw new Error("User not signed in - login error");
+      }
+    });
   }
 
   infoOverlay() {
@@ -852,6 +904,7 @@ export class HomeComponent implements OnInit {
     this.sortedData = [];
     this.sortedPitchPlayers = [];
     this.pitchPlayers = [];
+    this.rosterId = "";
     this.nationName = this.nationSelectValue;
     for (let index in this.positions) {
       this.positions[index].amount = 0;
@@ -923,11 +976,11 @@ export class HomeComponent implements OnInit {
       player.clubLogo = clubObj.clubLogoUrl;
       player.age = this.getAge(player.rating);
 
-      let attrObj = this.getAttributes(player.position, player.altPositions,player.preferredRole, player.preferredDuty, player.rating, player.age);
-      player.height = attrObj.height;
-      player.displayHeight = `${player.height * 12}' ${player.height % 12}"`;
-      player.weight = attrObj.weight;
-      player.weakFoot = attrObj.weakFoot;
+      // let attrObj = this.getAttributes(player.position, player.altPositions,player.preferredRole, player.preferredDuty, player.rating, player.age);
+      // player.height = attrObj.height;
+      // player.displayHeight = `${player.height * 12}' ${player.height % 12}"`;
+      // player.weight = attrObj.weight;
+      // player.weakFoot = attrObj.weakFoot;
       // player.attributes = attrObj.attributes;
 
       let firstNameReq = this.afs.getFirstName(player.nationality)?.request$;
@@ -988,7 +1041,7 @@ export class HomeComponent implements OnInit {
   getNation(property: string, rating?: number) {
     
     if (property === "tier") {
-      let nationality: string = this.nationSelectValue;
+      let nationality: string = this.nationName;
       let tier: string = "";
       if (nationality.includes("tier")) {
         tier = nationality.slice(0, 1);
@@ -2102,7 +2155,7 @@ export class HomeComponent implements OnInit {
        break
     }
 
-    console.log(weight, height, weakFoot);
+    // console.log(weight, height, weakFoot);
     return {
       height,
       weight,
@@ -2309,53 +2362,27 @@ export class HomeComponent implements OnInit {
   }
 
   async savePlayers(saveLocation: string, saveName?: string) {
-    
-    if (saveLocation === 'firestore' && saveName !== undefined) {
-      if (!this.isLoggedIn) {
-        alert('You must be logged in to save roster to cloud');
-        return false
-      }
-      if (saveName.length < 4) {
-        alert('Must be 4-20 characters long.');
-        return false
-      }
-      if (this.savedData.length < 1) {
-        this.loadDataOverlay('save', saveName);
-      } else {
-        for (let i = 0; i < this.savedData.length; i++) {
-          // if it's a duplicate saveName
-          if (this.savedData[i].id === saveName) {
-            // ask the user if they want to overwrite
-            if (window.confirm(`${saveName} is already a roster name. Overwrite?`)) {
-              if (window.confirm("Are you sure you want to save?")) {
-                let user = JSON.parse(localStorage.getItem('user') || '');
-                this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName);
-                this.saveDataOverlayOpen = false;
-              } else {
-                return false
-              }
-            } else {
-              return false
-            }
-          }
-        }
-        if (window.confirm("Are you sure you want to save?")) {
-          let user = JSON.parse(localStorage.getItem('user') || '');
-          this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName);
-          this.saveDataOverlayOpen = false;
-        } else {
-          return false
-        }
-      }
-      
-      
-    } else if (saveLocation === 'localStorage') {
+    console.log(saveLocation);
+    if (saveLocation == 'localStorage') {
       if (localStorage.length > 1) {
         if (window.confirm("Are you sure you want to overwrite your current roster saved in Local Storage?")) {
           let user = localStorage.getItem('user');
+          let rosters = [];
+          for (let i = 0; i < 100; i++) {
+            let roster = localStorage.getItem(`Roster #${i}`) || null;
+            if (roster === null) {
+              break;
+            }
+            rosters.push(roster);
+          }
           localStorage.clear();
           if (user !== null) {
             localStorage.setItem('user', user);
+          }
+          if (rosters.length > 0) {
+            for (let i = 0; i < rosters.length; i++) {
+              localStorage.setItem(`Roster #${i}`, rosters[i]);
+            }
           }
         } else {
           return false
@@ -2368,11 +2395,63 @@ export class HomeComponent implements OnInit {
         localStorage.setItem(`TEAMGEN - Starting Player #${i + 1}`, JSON.stringify(this.pitchPlayers[i]));
       }
       localStorage.setItem(`TEAMGEN - Tier/Nationality`, JSON.stringify(this.nationName));
-      // console.log(localStorage);
-    } else {
-      throw new Error("Problem with saving!");
+      localStorage.setItem(`Firestore ID`, JSON.stringify(this.rosterId));
+      console.log(this.rosterId);
     }
-    
+    else if (saveLocation === 'firestore' && saveName !== undefined) {
+      if (!this.isLoggedIn) {
+        alert('You must be logged in to save roster to cloud');
+        return false
+      }
+      if (saveName.length < 4) {
+        alert('Must be 4-20 characters long.');
+        return false
+      }
+      let user = JSON.parse(localStorage.getItem('user') || '');
+      for (let i = 0; i < this.savedData.length; i++) {
+        console.log(this.rosterId, saveName)
+        // if it's a duplicate roster
+        if (this.savedData[i].id === this.rosterId) {
+          // duplicateId = true;
+          if (window.confirm(`This is already saved, would you like to update the save name and roster`)) {
+            this.afs.updateRoster(user.uid, saveName, this.players, this.pitchPlayers, this.rosterId);
+            this.saveDataOverlayOpen = false;
+          } else {
+            return false
+          }
+        }
+        // if it's a duplicate saveName
+        else if (this.savedData[i].saveName === saveName) {
+          // ask the user if they want to overwrite
+          if (window.confirm(`${saveName} is already a roster name. Overwrite?`)) {
+            this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName)
+              .then((docRef) => {
+                this.rosterId = docRef.id;
+                console.log("new roster id:\n", this.rosterId);
+              });
+            this.saveDataOverlayOpen = false;
+          } else {
+            return false
+          }
+        }
+        
+      } 
+      if (window.confirm("Are you sure you want to save?")) {
+        this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName)
+          .then((docRef) => {
+            this.rosterId = docRef.id;
+            console.log("new roster id:\n", this.rosterId);
+          });
+        this.saveDataOverlayOpen = false;
+      } else {
+        return false
+      }
+      
+    }
+    else {
+      throw new Error("Problem with savePlayers() function");
+    } 
+  
   }
 
   saveDataOverlay() {
@@ -2382,9 +2461,13 @@ export class HomeComponent implements OnInit {
     } else {
       this.saveDataOverlayOpen = false;
     }
+    if (this.savedData.length < 1) {
+      console.time('label');
+      this.loadDataOverlay('save');
+    }
   }
 
-  loadDataOverlay(loadMore?: string, saveName?: string) {
+  loadDataOverlay(loadMore?: string) {
     if (loadMore !== 'save') {
       this.loadDataOverlayOpen = true;
       this.saveDataOverlayOpen = false;
@@ -2402,44 +2485,21 @@ export class HomeComponent implements OnInit {
       console.log("Checking firestore for save data...\n")
       for (const roster of obj) {
         let id = roster.payload.doc.id;
+        let save = roster.payload.doc.data().saveName;
         let duplicateId = false;
         for (let i = 0; i < this.savedData.length; i++) {
+          // console.log(this.savedData[i].id, id);
           if (this.savedData[i].id === id) {
             duplicateId = true;
           }
         }
         if (!duplicateId) {
-          this.savedData.push({id: id});
+          // console.log("Not a duplicate id");
+          this.savedData.push({id: id, saveName: save});
         }
+        
       }
-
-      if (saveName !== undefined) {
-        for (let i = 0; i < this.savedData.length; i++) {
-          // if it's a duplicate saveName
-          if (this.savedData[i].id === saveName) {
-            // ask the user if they want to overwrite
-            if (window.confirm(`${saveName} is already a roster name. Overwrite?`)) {
-              if (window.confirm("Are you sure you want to save?")) {
-                let user = JSON.parse(localStorage.getItem('user') || '');
-                this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName);
-                this.saveDataOverlayOpen = false;
-              } else {
-                return false
-              }
-            } else {
-              return false
-            }
-          }
-        }
-        if (window.confirm("Are you sure you want to save?")) {
-          let user = JSON.parse(localStorage.getItem('user') || '');
-          this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName);
-          this.saveDataOverlayOpen = false;
-        } else {
-          return false
-        }
-      }
-
+      console.log(this.savedData);
       
     });
     
@@ -2459,6 +2519,8 @@ export class HomeComponent implements OnInit {
         this.pitchPlayers = [];
         this.nationName = localStorage.getItem(`TEAMGEN - Tier/Nationality`) || '';
         this.nationName = this.nationName.slice(1, -1);
+        this.rosterId = localStorage.getItem(`Firestore ID`) || '';
+        this.rosterId = this.rosterId.slice(1, -1);
         for (let index in this.positions) {
           this.positions[index].amount = 0;
         }
@@ -2481,6 +2543,8 @@ export class HomeComponent implements OnInit {
             this.sortedData.unshift(player);
           }
         }
+
+       
 
         this.startersTotalRating = 0;
         let ratingArr = [];
@@ -2560,14 +2624,15 @@ export class HomeComponent implements OnInit {
     } else {
         let user = JSON.parse(localStorage.getItem('user') || '');
         this.afs.getRoster(user.uid, saveLocation).subscribe((obj) => {
-          // console.log(obj);
-          if (obj !== undefined) {      
-            this.players = obj.benchReserves;
-            this.sortedData = obj.starters.concat(obj.benchReserves);
-            // console.log("GOT PLAYERS: \n", this.players);
-            this.pitchPlayers = obj.starters;
-            this.nationName = obj.nationOrTier;
-            // console.log("Got STARTERS:\n", this.pitchPlayers);
+          const data = obj.payload.data();
+          if (data !== undefined) {
+                 
+            this.players = data.benchReserves;
+            this.sortedData = data.starters.concat(data.benchReserves);
+            this.pitchPlayers = data.starters;
+            this.nationName = data.nationOrTier;
+            this.rosterId = obj.payload.id;
+            console.log("Firestore ID", this.rosterId);
           } else {
             console.log("Problem loading data from firestore");
           }
