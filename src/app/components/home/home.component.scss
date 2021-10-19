@@ -733,8 +733,8 @@
 }
 .info-paragraph li {
     display: flex;
-    justify-content: space-between;
-    span:last-child {
+    align-items: center;
+    div:last-child {
         flex: 1;
         display: inline-block;
     }
@@ -742,6 +742,7 @@
         display: inline-block;
         width: 1rem;
         height: 1rem;
+        margin-right: 1rem;
     }
 }
 
