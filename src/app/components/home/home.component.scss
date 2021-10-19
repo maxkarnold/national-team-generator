@@ -254,9 +254,11 @@
     }
 }
 
+
 .formation {
     text-align: center;
-    font-size: 1rem;
+    z-index: 5;
+    font-size: 0.7rem;
     background-color: #424242;
     padding: 10px;
     border-radius: 5px;
@@ -265,7 +267,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    transform: translate(-10%, 27.5%);
+    transform: translate(-2%, 10%);
 }
 
 .tactics-container {
@@ -729,6 +731,39 @@
     color: #353535;
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     border: 2px dashed white;
+}
+.info-paragraph li {
+    display: flex;
+    align-items: center;
+    div:last-child {
+        flex: 1;
+        display: inline-block;
+    }
+    .color-code {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1rem;
+    }
+}
+
+.natural {
+    background-color: #00ff00;
+}
+.accomplished {
+    background-color: #009700;
+}
+.competent {
+    background-color: #699424;
+}
+.unconvincing {
+    background-color: #888800;
+}
+.awkward {
+    background-color: #b36302;
+}
+.ineffectual {
+    background-color: #830000;
 }
 .natural-placeholder {
     border: ridge 2px #00ff00;

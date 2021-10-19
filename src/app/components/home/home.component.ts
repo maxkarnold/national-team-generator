@@ -2760,6 +2760,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           box.posBoxClass = 'active pos-box';
           box.pitchPlayer = undefined;
         }
+        for (let index in this.positions) {
+          this.positions[index].amount = 0;
+        }
         this.afs.getRoster(user.uid, saveLocation).subscribe((obj) => {
           const data = obj.payload.data();
           if (data !== undefined) {
