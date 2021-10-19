@@ -22,12 +22,15 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 import { HomeComponent } from './components/home/home.component';
 import { FirestoreService } from './services/firestore.service';
+import { AuthService } from './services/auth.service';
+import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,7 @@ import { FirestoreService } from './services/firestore.service';
     FormsModule,
     BrowserAnimationsModule
   ],
-  providers: [FirestoreService],
+  providers: [FirestoreService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

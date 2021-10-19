@@ -1,4 +1,34 @@
-
-<router-outlet>
-  <app-home></app-home>
-</router-outlet>
+  <header class="mobile">
+    <mat-toolbar color="primary">
+        <a routerLink="/"><span>National Team Generator</span></a>
+        <span class="nav-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="navToggle = !navToggle" >
+            <mat-icon>menu</mat-icon>
+        </button>
+    </mat-toolbar>
+    <mat-nav-list class="primaryColorBG list" role="list" *ngIf="navToggle">
+        <a mat-list-item routerLink="/leaderboard" class="nav-item full">Leaderboards</a>
+        <a mat-list-item href="#" class="nav-item full" (click)="loginOverlay()" *ngIf="!isLoggedIn" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Login</a>
+        <a mat-list-item href="#" class="nav-item full" (click)="logout()" *ngIf="isLoggedIn">Logout</a>
+    </mat-nav-list>
+  </header>
+  <header class="desktop">
+    <mat-toolbar color="primary">
+        <a routerLink="/"><span>National Team Generator</span></a>
+        <span class="nav-spacer"></span>
+        <a mat-list-item routerLink="/leaderboard" class="nav-item">Leaderboards</a>
+        <button (click)="loginOverlay()" *ngIf="!isLoggedIn"><span>Login</span></button>
+        <a href="#" (click)="logout()" *ngIf="isLoggedIn"><span>Logout</span></a>
+    </mat-toolbar>
+  </header>
+  <ng-container *ngIf="loginOverlayOpen">
+    <div class="login-overlay">
+        <div class="exit-container">
+            <button mat-button (click)="loginOverlay()" ><mat-icon>close</mat-icon></button>
+        </div>
+        <input type="text" #email placeholder="email">
+        <input type="password" #password placeholder="password">
+        <button mat-raised-button type="submit" (click)="login(email.value, password.value)" class="login-button">Login</button>
+    </div>
+  </ng-container>
+<router-outlet></router-outlet>

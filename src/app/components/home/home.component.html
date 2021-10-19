@@ -1,37 +1,3 @@
-<header class="mobile">
-    <mat-toolbar color="primary">
-        <span>National Team Generator</span> 
-        <span class="nav-spacer"></span>
-        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="navToggle = !navToggle" >
-            <mat-icon>menu</mat-icon>
-        </button>
-    </mat-toolbar>
-    <mat-nav-list class="primaryColorBG list" role="list" *ngIf="navToggle">
-        <a mat-list-item href="#" class="nav-item" (click)="loginOverlay()" *ngIf="!isLoggedIn" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Login</a>
-        <a mat-list-item href="#" class="nav-item" (click)="logout()" *ngIf="isLoggedIn">Logout</a>
-        <a mat-list-item href="#full_roster_heading" class="nav-item">Go to Full Roster</a>
-    </mat-nav-list>
-</header>
-<header class="desktop">
-    <mat-toolbar color="primary">
-        <span>National Team Generator</span> 
-        <span class="nav-spacer"></span>
-        <a href="#" (click)="loginOverlay()" *ngIf="!isLoggedIn"><span>Login</span></a>
-        <a href="#" (click)="logout()" *ngIf="isLoggedIn"><span>Logout</span></a>
-        <a href="#full_roster_heading"><span>Full Roster</span></a>
-    </mat-toolbar>
-</header>
-
-<ng-container *ngIf="loginOverlayOpen">
-    <div class="login-overlay">
-        <div class="exit-container">
-            <button mat-button (click)="loginOverlay()" ><mat-icon>close</mat-icon></button>
-        </div>
-        <input type="text" #email placeholder="email">
-        <input type="password" #password placeholder="password">
-        <button mat-raised-button type="submit" (click)="login(email.value, password.value)" class="login-button">Login</button>
-    </div>
-</ng-container>
 <div class="page-container">
     <div class="buttons-container">
         <mat-form-field class="team-generator-form">
@@ -50,21 +16,33 @@
         <div class="form-buttons">
             <button mat-raised-button color="primary" class="generate" type="button" (click)="getPlayers()">Generate</button>
             <div class="load-data-buttons">
-                <button mat-raised-button color="primary" class="load-button" type="button" (click)="saveDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Load</button>
-                <button mat-raised-button color="warn" *ngIf="saveDataOverlayOpen" type="button" (click)="closeSaveDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Close Overlay</button>
+                <button mat-raised-button color="primary" class="load-button" type="button" (click)="loadDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Load</button>
+                <button mat-raised-button color="warn" *ngIf="loadDataOverlayOpen" type="button" (click)="closeLoadDataOverlay()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Close Overlay</button>
             </div>
         </div>
         <div class="save-buttons" *ngIf="players.length > 0">
-            <button class="save-button" type="button" (click)="savePlayers('firestore')" mat-raised-button color="primary">Save to Cloud</button>
+            <button class="save-button" type="button" (click)="saveDataOverlay()" mat-raised-button color="primary" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Save to Cloud</button>
             <button class="save-button" type="button" (click)="savePlayers('localStorage')" mat-raised-button color="primary">Save to Local Storage</button>
+            <button class="save-button" type="button" (click)="submitRoster()" mat-raised-button color="primary">Submit to Leaderboards</button>
         </div>
-        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="saveDataOverlayOpen">
+        <ng-container *ngIf="saveDataOverlayOpen">
+            <div class="save-data-overlay">
+                <div class="exit-container">
+                    <button mat-button (click)="saveDataOverlay()"><mat-icon>close</mat-icon></button>
+                </div>
+                
+                <input type="text" #saveFile placeholder="Roster Name" required minlength="4" maxlength="20">
+                <label>* name must be 4-20 characters long</label>
+                <button mat-raised-button type="submit" (click)="savePlayers('firestore', saveFile.value)" class="save-button">Save</button>
+            </div>
+        </ng-container>
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="loadDataOverlayOpen">
             <ul class="load-roster-overlay">
                 <li>
                     <button type="button" (click)="loadPlayers('loadLocalStorage')">Load from local storage</button>
                 </li>
                 <li>
-                    <button type="button" (click)="saveDataOverlay('check')">Check cloud saved data</button>
+                    <button type="button" (click)="loadDataOverlay('check')">Check cloud saved data</button>
                 </li>
                 <ul>Save Data Ids:
                     <li *ngFor="let data of savedData">
@@ -91,7 +69,7 @@
                 </ng-template>
             </div>
             <div class="rules">
-                <h4 class="rules-heading">Squad Rules</h4>
+                <h4 class="rules-heading">Squad Requirements</h4>
                 <hr>
                 <ul>
                     <li *ngFor="let rule of squadRules"><span>{{rule.check}}</span> {{rule.text}}</li>
@@ -99,9 +77,10 @@
             </div>
         </div>
     </div>
-    <div class="formation" *ngIf="this.pitchPlayers.length > 0">Formation: {{formation}}</div>
+    
     <div class="tactics-container" cdkDropListGroup>
         <div class="pitch-container">   
+            <div class="formation" *ngIf="this.pitchPlayers.length > 0">Formation: {{formation}}</div>
             <div class="starters-total-rating" *ngIf="this.pitchPlayers.length > 0">Avg Rating {{startersTotalRating}}</div>
             <div class="squad-total-rating" *ngIf="checkFormation()">Squad Rating {{squadTotalRating}}</div>
             <button mat-raised-button color="primary" type="button" (click)="resetStarters()" class="reset-button">Reset XI</button>
@@ -289,6 +268,8 @@
                 <th mat-sort-header="altPositions" class="desktop">Other Positions</th>
                 <th mat-sort-header="foot" class="desktop">Preferred Foot</th>
                 <th mat-sort-header="rating">Rating</th>
+                <!-- <th mat-sort-header="displayHeight" class="desktop">Height</th>
+                <th mat-sort-header="weight" class="desktop">Weight</th> -->
                 <th mat-sort-header="age">Age</th> 
             </tr> 
             <tbody> 
@@ -315,6 +296,8 @@
                     </td>
                     <td class="desktop">{{player.foot}}</td>
                     <td>{{player.rating}}</td>
+                    <!-- <td class="desktop">{{player.displayHeight}}</td>
+                    <td class="desktop">{{player.weight}}</td> -->
                     <td>{{player.age}}</td>
                 </tr>
             </tbody>

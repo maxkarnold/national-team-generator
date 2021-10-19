@@ -35,3 +35,8 @@ body {
 .mat-expansion-indicator::after {
   color: #c8c8c887;
 }
+
+.mat-list-base.list .mat-list-item .mat-list-item-content {
+  justify-content: center;
+  width: 100%;
+}

@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentChangeAction, DocumentData, DocumentReference } from '@angular/fire/firestore';
 import { FirstName } from '../models/first-name';
 import { LastName } from '../models/last-name';
 import { Observable } from 'rxjs';
 import { Player } from '../models/player';
-
-export interface Roster {
-  starters: Player[];
-  benchReserves: Player[];
-  nationOrTier: string;
-}
+import { SubmittedRoster } from '../models/submittedRoster';
 
 @Injectable({
   providedIn: 'root'
@@ -29,20 +24,22 @@ export class FirestoreService {
     // this.roster = this.rosterDoc.valueChanges();
   }
 
-  getRandomInt(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-    //The maximum is inclusive and the minimum is inclusive
-  }
+  
 
   getFirstName(nation: string){
-    let randomIndex = this.getRandomInt(1, 5);
-    let randomQuery = this.getRandomInt(0, 50000);
+    let randomIndex = getRandomInt(1, 5);
+    let randomQuery = getRandomInt(0, 50000);
     let nameOrigin: string[];
     switch (nation) {
       case "france":
-        nameOrigin = ["French", "Arabic", "Western African", "Occitan", "Breton", "Basque", "Corsican"];
+        let num = getRandomInt(1, 10);
+        if (num > 7) {
+          nameOrigin = ["Arabic"];
+        } else if (num > 9) {
+          nameOrigin = ["Western African", "Basque"];
+        } else {
+          nameOrigin = ["French", "Occitan", "Breton", "Corsican"];
+        }
         break;
       case "brazil":
       case "cape verde":
@@ -85,7 +82,7 @@ export class FirestoreService {
         nameOrigin = ["Spanish"];
         break;
       case "england":
-        nameOrigin = ["English", "Cornish", "Arabic"];
+        nameOrigin = ["English", "Cornish"];
         break;
       case "wales": 
         nameOrigin = ["English", "Welsh"];
@@ -308,12 +305,19 @@ export class FirestoreService {
 
   getLastName(nation: string){
     let nameOrigin: string[];
-    let randomIndex = this.getRandomInt(1, 5);
-    let randomQuery = this.getRandomInt(0, 50000);
+    let randomIndex = getRandomInt(1, 5);
+    let randomQuery = getRandomInt(0, 50000);
     
     switch (nation) {
       case "france":
-        nameOrigin = ["French", "Arabic", "Western African"];
+        let num = getRandomInt(1, 10);
+        if (num > 6) {
+          nameOrigin = ["Arabic"];
+        } else if (num > 8) {
+          nameOrigin = ["Western African"];
+        } else {
+          nameOrigin = ["French"];
+        }
         break;
       case "brazil":
       case "cape verde":
@@ -356,7 +360,7 @@ export class FirestoreService {
         nameOrigin = ["Spanish"];
         break;
       case "england":
-        nameOrigin = ["English", "Arabic"];
+        nameOrigin = ["English"];
         break;
       case "wales": 
         nameOrigin = ["English", "Welsh"];
@@ -580,28 +584,73 @@ export class FirestoreService {
     
   }
 
-  saveRoster(benchReserves: Player[], starters: Player[], nation: string) {
-    let docRef = this.afs.collection("savedRosters").doc();
-
-    docRef.set({
+  saveRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], nation: string): Promise<DocumentReference<DocumentData>>{
+    return this.afs.collection("users").doc(uid).collection("savedRosters").add({
       benchReserves: benchReserves,
       starters: starters,
-      nationOrTier: nation
+      nationOrTier: nation,
+      saveName: saveName
     })
-      .then(() => {
-        console.log("Document successfully written!");
-        alert("Successfully Saved Roster");
+
+  }
+
+  updateRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], firestoreId: string) {
+    let docRef = this.afs.collection("users").doc(uid).collection("savedRosters").doc(firestoreId);
+    docRef.update({
+      saveName: saveName,
+      benchReserves: benchReserves,
+      starters: starters
+    })
+    .then(() => {
+      console.log("Document Updated");
+    });
+  }
+
+  submitRoster(roster: SubmittedRoster) {
+    if (roster.id === '') {
+      this.afs.collection("submittedRosters").doc().set({
+        user: roster.user,
+        roster: roster.roster,
+        tier: roster.tier,
+        nation: roster.nation,
+        squadRating: roster.squadRating,
+        startersRating: roster.startersRating,
+        formation: roster.formation
       });
-
+    } else {
+      this.afs.collection("submittedRosters").doc(roster.id).set({
+        user: roster.user,
+        roster: roster.roster,
+        tier: roster.tier,
+        nation: roster.nation,
+        squadRating: roster.squadRating,
+        startersRating: roster.startersRating,
+        formation: roster.formation
+      });
+    }
+    
+    alert("Check leaderboards page to see your roster");
   }
 
-  getRosterId() {
-    return this.afs.collection("savedRosters").snapshotChanges()
+  getSubmittedRosters(): Observable<DocumentChangeAction<SubmittedRoster>[]> {
+    let rostersCollection = this.afs.collection("submittedRosters", ref => ref.orderBy('squadRating', 'desc'));
+    return rostersCollection.snapshotChanges() as Observable<DocumentChangeAction<SubmittedRoster>[]>;
   }
 
-  getRoster(firestoreId: string) {
-    return this.afs.doc<Roster>(`savedRosters/${firestoreId}`).valueChanges();
+  getRosterId(uid: string) {
+    return this.afs.collection("users").doc(uid).collection("savedRosters").snapshotChanges();
+  }
+
+  getRoster(uid: string, rosterId: string) {
+    return this.afs.collection("users").doc(uid).collection("savedRosters").doc(rosterId).snapshotChanges();
   }
 
 }
+
+function getRandomInt(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+    //The maximum is inclusive and the minimum is inclusive
+  }
 
