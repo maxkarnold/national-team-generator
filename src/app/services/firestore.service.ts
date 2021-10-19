@@ -614,7 +614,8 @@ export class FirestoreService {
         tier: roster.tier,
         nation: roster.nation,
         squadRating: roster.squadRating,
-        startersRating: roster.startersRating
+        startersRating: roster.startersRating,
+        formation: roster.formation
       });
     } else {
       this.afs.collection("submittedRosters").doc(roster.id).set({
@@ -623,7 +624,8 @@ export class FirestoreService {
         tier: roster.tier,
         nation: roster.nation,
         squadRating: roster.squadRating,
-        startersRating: roster.startersRating
+        startersRating: roster.startersRating,
+        formation: roster.formation
       });
     }
     
@@ -643,16 +645,6 @@ export class FirestoreService {
     return this.afs.collection("users").doc(uid).collection("savedRosters").doc(rosterId).snapshotChanges();
   }
 
-}
-
-function makeId(length: number) {
-  var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
 }
 
 function getRandomInt(min: number, max: number) {

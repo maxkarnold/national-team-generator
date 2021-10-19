@@ -9,8 +9,10 @@ export interface SubmittedRoster {
     nation: string;
     startersRating: number;
     squadRating: number;
+    formation: string;
     roster: {
-        starters: Player[];
-        benchReserves: Player[];  
+        starters?: Player[];
+        benchReserves?: Player[]; 
+        sortedRoster: Player[]; 
     }
 }

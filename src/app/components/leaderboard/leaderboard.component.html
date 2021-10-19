@@ -1,13 +1,72 @@
-<h1>Leaderboards</h1>
-<p *ngIf="!isLoggedIn">You must login to see leaderboard</p>
+<div class="page-container">
+    <h1>Leaderboards</h1>
+    <p *ngIf="!isLoggedIn">You must login to see leaderboard</p>
 
-<button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button>
-<ul>
-    <li *ngFor="let roster of rosters" class="roster">
-        <span>{{roster.id}}</span>
-        <span>{{roster.user}}</span>
-        <span>{{roster.squadRating}}</span>
-        <span>{{roster.startersRating}}</span>
-        <span>{{roster.nation}}</span>
-    </li>
-</ul>
+    <button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button>
+    <div *ngIf="isLoggedIn" class="leaderboard-container">
+        <ul *ngFor="let tierGroup of organizedRosters; let i = index" class="tier">
+            <h2 *ngIf="tierGroup[i]" class="tier-name">{{tierGroup[i].tier}} Tier</h2>
+            <li *ngIf="tierGroup[i]" class="collection-container">
+                <div class="headings item">
+                    <div class="attribute" >#</div>
+                    <div class="attribute" >User</div>
+                    <div class="attribute" >Squad Rating</div>
+                    <div class="attribute" >Starters Rating</div>
+                    <div class="attribute" >Nation</div>
+                    <div class="attribute" >Formation</div>
+                    <div class="attribute best-player">
+                        <div class="main">Best Player</div>
+                        <div class="secondary">
+                            <div>Name</div>
+                            <div>Rating</div>
+                            <div>Position</div>
+                            <div>Nationality</div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="attribute-container best-player">
+                        <div class="attribute-container name-rating">
+                            <div class="attribute">Name</div>
+                            <div class="attribute">Rating</div>
+                        </div>
+                        <div class="attribute-container pos-nation">
+                            <div class="attribute">Position</div>
+                            <div class="attribute">Nationality</div>
+                        </div>                 
+                    </div> -->
+                </div>
+                <div *ngFor="let roster of tierGroup; let j = index; trackBy: trackByItems" class="roster item" >
+                    <div class="attribute" [attr.data-name]="headers[0]">{{j + 1}}</div>
+                    <div class="attribute" [attr.data-name]="headers[1]">{{roster.user}}</div>
+                    <div class="attribute" [attr.data-name]="headers[2]">{{roster.squadRating}}</div>
+                    <div class="attribute" [attr.data-name]="headers[3]">{{roster.startersRating}}</div>
+                    <div class="attribute" [attr.data-name]="headers[4]">{{roster.nation}}</div>
+                    <div class="attribute" [attr.data-name]="headers[5]">{{roster.formation}}</div>
+                    <div class="attribute" [attr.data-name]="headers[6]">
+                        <div class="secondary">
+                            <div>{{roster.roster.sortedRoster[0].firstName}} {{roster.roster.sortedRoster[0].lastName}}</div>
+                            <div>{{roster.roster.sortedRoster[0].rating}}</div>
+                            <div>{{roster.roster.sortedRoster[0].position}}</div>
+                            <div><span class="capitalize">{{roster.roster.sortedRoster[0].nationality}} </span><img [src]="roster.roster.sortedRoster[0].nationalityLogo" [alt]="roster.roster.sortedRoster[0].nationality" class="nation-flag"></div>  
+                        </div>
+                        
+                    </div>
+                    <!-- <div class="attribute-container capitalize best-player" [attr.data-name]="headers[6]">
+                        <div class="attribute-container name-rating">
+                            <div class="attribute" [attr.data-name]="headers[7]"></div>
+                            <div class="attribute" [attr.data-name]="headers[8]"></div>
+                        </div>
+                        <div class="attribute-container pos-nation">
+                            <div class="attribute" [attr.data-name]="headers[9]"></div>
+                            <div class="attribute" [attr.data-name]="headers[10]">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+    
+</div>

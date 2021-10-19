@@ -150,6 +150,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           nationName = this.nationName;
           tierName = this.getNation("tier").tier || '';
         }
+        let sortedRoster = this.pitchPlayers.concat(this.players);
+        sortedRoster = sortedRoster.sort((a, b) => {
+          let isAsc = false;
+          return compare(a.rating, b.rating, isAsc);
+        });
         submittedRoster = {
           user: user.email,
           id: id,
@@ -157,9 +162,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           nation: nationName,
           startersRating: this.startersTotalRating,
           squadRating: this.squadTotalRating,
+          formation: this.formation,
           roster: {
-            benchReserves: this.players,
-            starters: this.pitchPlayers
+            sortedRoster: sortedRoster
           }
         }
         this.afs.getSubmittedRosters().subscribe((data) => {
