@@ -257,7 +257,8 @@
 
 .formation {
     text-align: center;
-    font-size: 1rem;
+    z-index: 5;
+    font-size: 0.7rem;
     background-color: #424242;
     padding: 10px;
     border-radius: 5px;
@@ -266,7 +267,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    transform: translate(-10%, 27.5%);
+    transform: translate(-2%, 10%);
 }
 
 .tactics-container {
