@@ -60,10 +60,17 @@
                             <div class="exit-container">
                                 <button mat-button (click)="infoOverlay()" ><mat-icon>close</mat-icon></button>
                             </div>
-                            <p>
-                                Drag and drop players from the bench to the pitch. Players have ratings based on their positions. The box that highlights in green is the best position for a player. The box that highlights yellow is an alternate position (-5 rating). 
-                                The box that highlights red is not a viable position (-20 rating).
-                            </p>
+                            <div class="info-paragraph">
+                                Drag and drop players from the bench to the pitch. Players' ratings are adjusted based on their position on the pitch and their familiarity. The box that highlights in green is the best position for a player.  
+                                <ul>
+                                    <li><span class="color-code natural"></span><span></span></li>
+                                    <li><span class="color-code accomplished"></span><span>The box that highlights yellow is an alternate position (-3 rating).</span></li>
+                                    <li><span class="color-code competent"></span><span></span></li>
+                                    <li><span class="color-code unconvincing"></span><span></span></li>
+                                    <li><span class="color-code awkward"></span><span>The box that highlights red is not a viable position (-20 rating).</span></li>
+                                    <li><span class="color-code ineffectual"></span><span></span></li>
+                                </ul>   
+                            </div>
                             
                         </div>
                 </ng-template>
