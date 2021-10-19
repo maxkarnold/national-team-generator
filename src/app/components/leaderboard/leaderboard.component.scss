@@ -33,6 +33,7 @@ li {
         border: 1px solid gray;
         border-radius: 2px;
         padding: 0.75rem;
+        margin-bottom: 1rem;
     }
 }
 
@@ -93,6 +94,7 @@ li {
             grid-template-columns: 2rem 15rem 7rem 7rem 8rem 6rem 1fr;
             border: none;
             padding: 0;
+            margin: 0;
         }
         .attribute-container {
             display: grid;

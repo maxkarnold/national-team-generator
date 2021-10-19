@@ -228,20 +228,24 @@ export class HomeComponent implements OnInit, OnDestroy {
     let startDefCount = 0;
     let startGkCount = 0;
     let startFwCount = 0;
+    let defMidFormCount = 0;
     let midFormCount = 0;
     let attMidFormCount = 0;
 
     for (const player of this.pitchPlayers) {
-      if (player.pitchPosition?.slice(0, 1) !== "A" && player.pitchPosition?.includes("M")) {
+      if (player.pitchPosition?.slice(0, 1) === "M") {
         midFormCount++;
         startMidCount++;
-      } else if (player.pitchPosition?.includes("D") || player.pitchPosition?.includes("W")) {
-        startDefCount++;
+      } else if (player.pitchPosition?.includes("DM") || player.pitchPosition?.includes("W")) {
+        startMidCount++;
+        defMidFormCount++;
       } else if (player.pitchPosition?.includes("AM")) {
         attMidFormCount++;
         startMidCount++;
       } else if (player.pitchPosition?.includes("STC")) {
         startFwCount++;
+      } else if (!player.pitchPosition?.includes("GK")) {
+        startDefCount++;
       } else {
         startGkCount++;
       }
@@ -258,12 +262,25 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     } 
     // Formation
-    if (attMidFormCount === 0 && startFwCount > 0) {
+    if (attMidFormCount < 1 && startFwCount > 0 && defMidFormCount < 1) {
       this.formation = `${startDefCount}-${midFormCount}-${startFwCount}`;
-    } else if (startFwCount === 0) {
+    } else if (startFwCount < 1 && defMidFormCount < 1) {
       this.formation = `${startDefCount}-${midFormCount}-${attMidFormCount}`;
-    } else {
+    } else if (startFwCount < 1 && midFormCount < 1) {
+      this.formation = `${startDefCount}-${defMidFormCount}-${attMidFormCount}`;
+    } else if (attMidFormCount < 1 && midFormCount < 1) {
+      this.formation = `${startDefCount}-${defMidFormCount}-${startFwCount}`;
+    } else if (startFwCount < 1) {
+      this.formation = `${startDefCount}-${defMidFormCount}-${midFormCount}-${attMidFormCount}`;
+    } else if (attMidFormCount < 1) {
+      this.formation = `${startDefCount}-${defMidFormCount}-${midFormCount}-${startFwCount}`;
+    } else if (midFormCount < 1) {
+      this.formation = `${startDefCount}-${defMidFormCount}-${attMidFormCount}-${startFwCount}`;
+    } else if (defMidFormCount < 1) {
       this.formation = `${startDefCount}-${midFormCount}-${attMidFormCount}-${startFwCount}`;
+    }
+    else {
+      this.formation = `${startDefCount}-${defMidFormCount}-${midFormCount}-${attMidFormCount}-${startFwCount}`;
     } 
     
     // rules for squadRating/submission
@@ -2529,6 +2546,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         for (let index in this.positions) {
           this.positions[index].amount = 0;
         }
+        for (const box of this.positionBoxes) {
+          box.playerClass = 'inactive player-box';
+          box.posBoxClass = 'active pos-box';
+          box.pitchPlayer = undefined;
+        }
 
         for (let i = 0; i < 60; i++) {
           let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
@@ -2628,6 +2650,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     } else {
         let user = JSON.parse(localStorage.getItem('user') || '');
+        for (const box of this.positionBoxes) {
+          box.playerClass = 'inactive player-box';
+          box.posBoxClass = 'active pos-box';
+          box.pitchPlayer = undefined;
+        }
         this.afs.getRoster(user.uid, saveLocation).subscribe((obj) => {
           const data = obj.payload.data();
           if (data !== undefined) {
@@ -2641,6 +2668,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           } else {
             console.log("Problem loading data from firestore");
           }
+          
 
           this.startersTotalRating = 0;
           let ratingArr = [];

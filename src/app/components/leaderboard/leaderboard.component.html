@@ -4,9 +4,9 @@
 
     <button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button>
     <div *ngIf="isLoggedIn" class="leaderboard-container">
-        <ul *ngFor="let tierGroup of organizedRosters; let i = index" class="tier">
-            <h2 *ngIf="tierGroup[i]" class="tier-name">{{tierGroup[i].tier}} Tier</h2>
-            <li *ngIf="tierGroup[i]" class="collection-container">
+        <ul *ngFor="let tierGroup of organizedRosters" class="tier">
+            <h2 *ngIf="tierGroup[0]" class="tier-name">{{tierGroup[0]?.tier || ''}} Tier</h2>
+            <li *ngIf="tierGroup[0]" class="collection-container">
                 <div class="headings item">
                     <div class="attribute" >#</div>
                     <div class="attribute" >User</div>
@@ -23,24 +23,13 @@
                             <div>Nationality</div>
                         </div>
                     </div>
-                    
-                    <!-- <div class="attribute-container best-player">
-                        <div class="attribute-container name-rating">
-                            <div class="attribute">Name</div>
-                            <div class="attribute">Rating</div>
-                        </div>
-                        <div class="attribute-container pos-nation">
-                            <div class="attribute">Position</div>
-                            <div class="attribute">Nationality</div>
-                        </div>                 
-                    </div> -->
                 </div>
                 <div *ngFor="let roster of tierGroup; let j = index; trackBy: trackByItems" class="roster item" >
                     <div class="attribute" [attr.data-name]="headers[0]">{{j + 1}}</div>
                     <div class="attribute" [attr.data-name]="headers[1]">{{roster.user}}</div>
                     <div class="attribute" [attr.data-name]="headers[2]">{{roster.squadRating}}</div>
                     <div class="attribute" [attr.data-name]="headers[3]">{{roster.startersRating}}</div>
-                    <div class="attribute" [attr.data-name]="headers[4]">{{roster.nation}}</div>
+                    <div class="attribute capitalize" [attr.data-name]="headers[4]">{{roster.nation}}</div>
                     <div class="attribute" [attr.data-name]="headers[5]">{{roster.formation}}</div>
                     <div class="attribute" [attr.data-name]="headers[6]">
                         <div class="secondary">
@@ -51,18 +40,6 @@
                         </div>
                         
                     </div>
-                    <!-- <div class="attribute-container capitalize best-player" [attr.data-name]="headers[6]">
-                        <div class="attribute-container name-rating">
-                            <div class="attribute" [attr.data-name]="headers[7]"></div>
-                            <div class="attribute" [attr.data-name]="headers[8]"></div>
-                        </div>
-                        <div class="attribute-container pos-nation">
-                            <div class="attribute" [attr.data-name]="headers[9]"></div>
-                            <div class="attribute" [attr.data-name]="headers[10]">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </li>
             

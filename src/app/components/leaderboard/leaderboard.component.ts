@@ -53,18 +53,26 @@ export class LeaderboardComponent implements OnInit {
   updateLeaderboards() {
     
     this.db.getSubmittedRosters().subscribe((snapshot) => {
+      // this.allRosters = [];
       
-      for (const data of snapshot) {
+      snapshot: for (const data of snapshot) {
+        if (this.allRosters.length === 0) {
+          this.allRosters.push({
+            ...data.payload.doc.data(),
+            id: data.payload.doc.id
+          });
+          continue snapshot;
+        }
         for (const roster of this.allRosters) {
-          if (roster.id !== data.payload.doc.id) {
-            this.allRosters.push({
-              ...data.payload.doc.data(),
-              id: data.payload.doc.id
-            });
-          } else {
-            console.log("found duplicate");
+          if (roster.id === data.payload.doc.id) {
+            continue snapshot;
           }
         }
+        // console.log(data.payload.doc.id);
+        this.allRosters.push({
+          ...data.payload.doc.data(),
+          id: data.payload.doc.id
+        });
       } 
       let user = localStorage.getItem('user');
       let players = [];
@@ -120,7 +128,7 @@ export class LeaderboardComponent implements OnInit {
       switch (roster.tier) {
         case "s":
           this.sTierRosters.push(roster);
-          console.log(this.sTierRosters);
+          // console.log(this.sTierRosters);
           break;
         case "a":
           this.aTierRosters.push(roster);
