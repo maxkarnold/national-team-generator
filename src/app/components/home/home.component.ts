@@ -228,24 +228,35 @@ export class HomeComponent implements OnInit, OnDestroy {
     let startDefCount = 0;
     let startGkCount = 0;
     let startFwCount = 0;
-    let defMidFormCount = 0;
-    let midFormCount = 0;
-    let attMidFormCount = 0;
+
+    let DMCount = 0;
+    let WBCount = 0;
+    let AMCCount = 0;
+    let AMRLCount = 0;
+    let MCCount = 0;
+    let MRLCount = 0;
 
     for (const player of this.pitchPlayers) {
-      if (player.pitchPosition?.slice(0, 1) === "M") {
-        midFormCount++;
+      
+      if (player.pitchPosition?.includes("DM")) {
+        DMCount++;
         startMidCount++;
-      } else if (player.pitchPosition?.includes("DM") || player.pitchPosition?.includes("W")) {
-        startMidCount++;
-        defMidFormCount++;
-      } else if (player.pitchPosition?.includes("AM")) {
-        attMidFormCount++;
+      } else if (player.pitchPosition?.slice(0, 1) === "D") {
+        startDefCount++;
+      } else if (player.pitchPosition?.includes("WB")) {
+        WBCount++;
+        startDefCount++;
+      } else if (player.pitchPosition?.includes("AMC")) {
+        AMCCount++;
         startMidCount++;
       } else if (player.pitchPosition?.includes("STC")) {
         startFwCount++;
-      } else if (!player.pitchPosition?.includes("GK")) {
-        startDefCount++;
+      } else if (player.pitchPosition?.includes("AM")) {
+        AMRLCount++;
+      } else if (player.pitchPosition?.includes("MC")) {  
+        MCCount++;
+      } else if (player.pitchPosition?.includes("M")) {
+        MRLCount++;
       } else {
         startGkCount++;
       }
@@ -262,28 +273,122 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     } 
     // Formation
-    if (attMidFormCount < 1 && startFwCount > 0 && defMidFormCount < 1) {
-      this.formation = `${startDefCount}-${midFormCount}-${startFwCount}`;
-    } else if (startFwCount < 1 && defMidFormCount < 1) {
-      this.formation = `${startDefCount}-${midFormCount}-${attMidFormCount}`;
-    } else if (startFwCount < 1 && midFormCount < 1) {
-      this.formation = `${startDefCount}-${defMidFormCount}-${attMidFormCount}`;
-    } else if (attMidFormCount < 1 && midFormCount < 1) {
-      this.formation = `${startDefCount}-${defMidFormCount}-${startFwCount}`;
-    } else if (startFwCount < 1) {
-      this.formation = `${startDefCount}-${defMidFormCount}-${midFormCount}-${attMidFormCount}`;
-    } else if (attMidFormCount < 1) {
-      this.formation = `${startDefCount}-${defMidFormCount}-${midFormCount}-${startFwCount}`;
-    } else if (midFormCount < 1) {
-      this.formation = `${startDefCount}-${defMidFormCount}-${attMidFormCount}-${startFwCount}`;
-    } else if (defMidFormCount < 1) {
-      this.formation = `${startDefCount}-${midFormCount}-${attMidFormCount}-${startFwCount}`;
+    if (startDefCount === 4) {
+      if (DMCount === 1) {
+        if (MCCount === 1) {
+          this.formation = "4-1-4-1 DM Asymmetric AM (R/L)";
+        } else if (MCCount === 2) {
+          if (AMCCount === 1) {
+            this.formation = "4-4-2 Diamond Narrow";
+          } else if (AMCCount === 2) {
+            this.formation = "4-1-2-3 DM AM Narrow";
+          } else if (AMCCount === 0) {
+            this.formation = "4-1-4-1 DM Wide";
+          }
+        } else if (MCCount === 3) {
+          if (AMCCount > 0) {
+            this.formation = "4-1-3-1-1 DM AM Narrow";
+          } else if (startFwCount === 2) {
+            this.formation = "4-1-3-2 DM Narrow";
+          }
+        } else if (MCCount + MRLCount === 4) {
+          this.formation = "4-1-4-1 DM";
+        }
+      } else if (DMCount === 2) {
+        if (MCCount > 0) {
+          if (MCCount === 1) {
+            this.formation = "4-2-1-3 DM Wide";
+          } else if (MCCount === 3) {
+            this.formation = "4-2-3-1 DM";
+          } else if (AMCCount === 1) {
+            this.formation = "4-2-2-1-1 DM AM Narrow";
+          } else if (startFwCount === 2) {
+            this.formation = "4-2-2-2 DM Narrow";
+          }
+        } else if (AMRLCount > 0) {
+          if (AMCCount === 1) {
+            this.formation = "4-2-3-1 DM AM Wide";
+          } else if (AMRLCount === 2 && startFwCount === 2) {
+            this.formation = "4-2-4 DM Wide";
+          }        
+        } else if (AMCCount > 0) {
+          if (AMCCount === 3) {
+            this.formation = "4-2-3-1 DM AM Narrow";
+          } else if (MRLCount === 2) {
+            this.formation = "4-4-1-1 2DM";
+          } else if (AMCCount === 2 && startFwCount === 2) {
+            this.formation = "4-2-2-2 DM AM Narrow";
+          }
+        } else if (MRLCount === 2 && startFwCount === 2) {
+          this.formation = "4-2-2-2 DM";
+          
+        }
+      } else if (MCCount === 2) {
+        if (AMRLCount > 0) {
+          if (startFwCount === 2) {
+            this.formation = "4-2-4 Wide"
+          } else if (AMCCount === 1) {
+            this.formation = "4-2-3-1 Wide"
+          }
+        } else if (AMCCount > 0) {
+          if (startFwCount === 2) {
+            this.formation = "4-2-2-2 Narrow";
+          } else if (startFwCount === 1) {
+            this.formation = "4-2-3-1 Narrow";
+          }
+        }
+      } else if (MCCount === 3) {
+        if (AMRLCount === 2 && startFwCount === 1) {
+          this.formation = "4-3-3 Wide";
+        } else if (AMCCount === 1) {
+          this.formation = "4-3-1-2 Narrow";
+        } else if (AMCCount === 2) {
+          this.formation = "4-3-2-1 Narrow";
+        }
+      } else if (MRLCount === 2) {
+        if (MCCount === 3 && startFwCount === 1) {
+          this.formation = "4-5-1";
+        } else if (MCCount === 2 && AMCCount === 1) {
+          this.formation = "4-4-1-1";
+        } else if (MCCount === 2 && startFwCount === 2) {
+          this.formation = "4-4-2";
+        }
+      }
+    } else if (startDefCount === 3) {
+      if (WBCount === 2) {
+        if (DMCount === 1) {
+          if (MCCount === 3 && startFwCount === 1) {
+            this.formation = "5-1-3-1 DM WB";
+          } else if (startFwCount === 2) {
+            this.formation = "5-1-2-2 DM WB";
+          } else if (AMCCount === 1) {
+            this.formation = "5-4-1 Diamond WB";
+          }
+        } else if (DMCount === 2) {
+          if (MCCount === 2) {
+            this.formation = "3-4-2-1 DM";
+          } else if (AMRLCount === 2) {
+            this.formation = "3-4-3 DM Wide";
+          } else if (AMCCount === 2) {
+            this.formation = "3-4-2-1 DM AM";
+          }
+        } else if (MCCount === 2) {
+          if (AMRLCount === 2) {
+            this.formation = "5-4-1 WB Wide";
+          } else if (AMCCount === 2) {
+            this.formation = "5-2-2-1 WB";
+          }
+        } else if (MCCount === 3) {
+          if (startFwCount === 2) {
+            this.formation = "5-3-2 WB";
+          } else if (AMCCount === 1 && startFwCount === 1) {
+            this.formation = "5-3-1-1 WB";
+          }
+        }
+      }
+    } else {
+      this.formation = "N/A";
     }
-    else {
-      this.formation = `${startDefCount}-${defMidFormCount}-${midFormCount}-${attMidFormCount}-${startFwCount}`;
-    } 
-    
-    // rules for squadRating/submission
     let count = [gkCount, defCount, midCount, fwCount, startGkCount, startDefCount, startMidCount, startFwCount];
     return this.checkSquadRules(count);
   }
