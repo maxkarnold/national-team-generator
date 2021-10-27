@@ -306,6 +306,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else if (DMCount === 2) {
         if (MCCount === 1 && AMRLCount === 2 && STCount === 1) {
           this.formation = "4-2-1-3 DM Wide";
+        } else if (MCCount === 1 && MRLCount === 2 && STCount === 1) {
+          this.formation = "4-2-3-1 DM MC Wide";
         } else if (MCCount === 3 && STCount === 1) {
           this.formation = "4-2-3-1 DM";
         } else if (MCCount === 2 && AMCCount === 1 && STCount === 1) {
