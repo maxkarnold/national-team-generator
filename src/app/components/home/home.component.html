@@ -61,7 +61,7 @@
                                 <button mat-button (click)="infoOverlay()" ><mat-icon>close</mat-icon></button>
                             </div>
                             <div class="info-paragraph">
-                                Drag and drop players from the bench to the pitch. Players' ratings are adjusted based on their position on the pitch and their familiarity.   
+                                Drag and drop players from the bench to the pitch. Players' ratings are adjusted based on their position on the pitch and their familiarity. The overall rating of the first eleven is an average of the player ratings with certain positions weighted more than others. Full backs are weigted the lowest, while central midfielders and strikers are weighted the highest.
                                 <ul>
                                     <li><div class="color-code natural"></div><div>Highlighted in light green is the best position for a player.</div></li>
                                     <li><div class="color-code accomplished"></div><div>Highlighted in dark green is an alternate position (-3 rating).</div></li>
@@ -88,8 +88,18 @@
     <div class="tactics-container" cdkDropListGroup>
         <div class="pitch-container">   
             <div class="formation" *ngIf="this.pitchPlayers.length > 0">Formation: {{formation}}</div>
-            <div class="starters-total-rating" *ngIf="this.pitchPlayers.length > 0">Avg Rating {{startersTotalRating}}</div>
-            <div class="squad-total-rating" *ngIf="checkFormation()">Squad Rating {{squadTotalRating}}</div>
+            <div class="starters-total-rating" *ngIf="this.pitchPlayers.length > 0">
+                <div>Rating - {{startersTotalRating}}</div>
+                <div class="stars"></div>
+            </div>
+            <div class="squad-total-rating" *ngIf="checkFormation()">
+                <div>Squad Rating - {{squadTotalRating}}</div>
+                <div class="stars"></div>
+            </div>
+            <!-- <div class="squad-total-rating">
+                <div *ngIf="chemistry > 0; else chemContainer">Chemistry: <span style="color: lime;">+{{chemistry}}</span></div>
+                <ng-template #chemContainer>Chemistry: {{chemistry}}</ng-template>
+            </div> -->
             <button mat-raised-button color="primary" type="button" (click)="resetStarters()" class="reset-button">Reset XI</button>
             <div class="pitch-borders">
                 <div class="goal-box-top pitch-divs"></div>
@@ -102,9 +112,9 @@
                 <div class="pitch-grid">
                     <div *ngFor="let box of positionBoxes" [class]="getPositionBoxes(box)" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="pitchPlayers">
                         <div [class]="getPlayerClass(box)" cdkDrag [cdkDragData]="box" (cdkDragStarted)="getPositionOutline($event)" (cdkDragReleased)="removeOutlineRelease($event)" (cdkDragDropped)="removeOutlineDrop($event)">
-                            <div *ngIf="box.pitchPlayer !== undefined">
+                            <div *ngIf="box.pitchPlayer !== undefined" >
                                 <img [src]="box.pitchPlayer.playerFace" alt="" class="player-face">
-                                <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchRating}}</span>
+                                <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info" >{{box.pitchPlayer.pitchRating}}</span>
                                 <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchPosition}}</span>
                                 <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.nationalityLogo">
                                 <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.clubLogo">

@@ -7,6 +7,7 @@
 ## Tech Stack
 * [Angular](https://angular.io/)
   * [Angular-Material](https://material.angular.io/)
+  * [Angular-Material-CDK](https://material.angular.io/cdk/categories)
 * [Firebase](https://firebase.google.com/docs)
 * [Express](https://expressjs.com/)
 * [Nodejs](https://nodejs.org/en/)
@@ -109,3 +110,14 @@ Then deploy to the website with firebase in the terminal.
 ```
 firebase deploy
 ```
+
+## CSS Styling Guide
+
+We use BEM methodology for all CSS files. Please refer to this [reference site](https://en.bem.info/methodology/key-concepts/) for help. For this project, we have some specific rules to follow over the BEM standards.
+
+* Blocks can be contained within other blocks.
+* Blocks can be modified just like elements using a class like: `block--modifier`.
+* The class name of elements within elements should be added on. `element__element__element`.
+* Some styles will have to be overwritten with `mat` or `cdk` classes.
+* Global styles should only be implemented in `styles.scss`.
+* Don't add class names to `ng-container`, `ng-template` and other specialized html tags unless necessary.

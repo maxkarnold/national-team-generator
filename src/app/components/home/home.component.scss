@@ -274,7 +274,6 @@
     display: flex;
     flex-flow: column;
     width: 100%;
-    margin-top: 2rem;
     @media screen and (min-width: 800px) {
         flex-flow: row;
     }   
@@ -341,6 +340,8 @@
         }
         .starters-total-rating, 
         .squad-total-rating {
+            display: flex;
+            flex-flow: column;
             color: white;
             background-color: #424242;
             padding: 3px 6px;
@@ -355,15 +356,46 @@
             @media screen and (min-width: 800px) {
                 font-size: 0.9rem;
                 padding: 10px;
-                width: 10.5vw;
+                max-width: 20%;
                 left: 2.5%;
+            }
+            .stars {
+                display: inline-block;
+                font-size: 1rem;
+                font-family: Times;
+                line-height: 1;
+                @media screen and (max-width: 800px) {font-size: 0.8rem;}
+                &::before {
+                    content: '★★★★★';
+                    letter-spacing: 3px;
+                    color: transparent;
+                }
             }
         }
         .starters-total-rating {
             top: 2.5%;
+            .stars {
+                &::before {
+                    background: linear-gradient(90deg,
+                        var(--star-background) var(--starter-rating),
+                        var(--star-color) var(--starter-rating)
+                    );
+                    background-clip: text;
+                }
+                
+            }
         }
         .squad-total-rating {
-            top: 10%;
+            top: 12.5%;
+            .stars {
+                &::before {
+                    background: linear-gradient(90deg,
+                        var(--star-background) var(--squad-rating),
+                        var(--star-color) var(--squad-rating)
+                    );
+                    background-clip: text;
+                }
+            }
         }
         .pitch-borders {
             position: relative;
@@ -552,7 +584,7 @@
             grid-column: 2;
             grid-row: 1 / 3;
             width: 70%;
-            
+            border-radius: 50%;
         }
     @media screen and (max-width: 800px) {
         font-size: 0.6rem;
@@ -561,7 +593,6 @@
         gap: 1px;
         .player-face {
             display: none;
-            width: 25px;
         }
         .pitch-player-info:first-of-type {
             font-size: 0.7rem;

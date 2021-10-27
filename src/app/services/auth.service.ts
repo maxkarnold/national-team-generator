@@ -12,35 +12,22 @@ export class AuthService {
   currentAuthState = this.authStateSource.asObservable();
   
   
-  constructor(public auth: AngularFireAuth, private db: AngularFirestore) { }
+  constructor(public afAuth: AngularFireAuth, private afs: AngularFirestore) { }
 
-  async login(email: string, password: string) {
-    await this.auth.signInWithEmailAndPassword(email, password)
-      .then(res => {
-        this.changeAuthState(true);
-        localStorage.setItem('user', JSON.stringify(res.user));
-      })
-      .catch(err => {
-        var errorCode = err.code;
-        var errorMessage = err.message;
-        if (errorCode === 'auth/wrong-password') {
-          alert('Wrong password.');
-        } else {
-          alert(errorMessage);
-        }
-        console.log(err);
-      }); 
+  login(email: string, password: string) {
+    return this.afAuth.signInWithEmailAndPassword(email, password)
+      
   }
 
   async signUp(email: string, password: string) {
-    await this.auth.createUserWithEmailAndPassword(email, password)
+    await this.afAuth.createUserWithEmailAndPassword(email, password)
       .then(res => {
         this.changeAuthState(true);
         localStorage.setItem('user', JSON.stringify(res.user));
       });
     this.getUser().subscribe((user) => {
       if (user) {
-        this.db.collection('users').doc(user.uid).set({
+        this.afs.collection('users').doc(user.uid).set({
           email: email,
           userId: user.uid
         });
@@ -52,13 +39,13 @@ export class AuthService {
   }
 
   logout() {
-    this.auth.signOut();
+    this.afAuth.signOut();
     this.changeAuthState(true);
     localStorage.removeItem('user');
   }
 
   getUser() {
-    const user = this.auth.user;
+    const user = this.afAuth.user;
     return user
   }
 
