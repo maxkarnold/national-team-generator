@@ -633,7 +633,7 @@ export class FirestoreService {
   }
 
   getSubmittedRosters(): Observable<DocumentChangeAction<SubmittedRoster>[]> {
-    let rostersCollection = this.afs.collection("submittedRosters", ref => ref.orderBy('squadRating', 'desc'));
+    let rostersCollection = this.afs.collection("submittedRosters", ref => ref.orderBy('startersRating', 'desc'));
     return rostersCollection.snapshotChanges() as Observable<DocumentChangeAction<SubmittedRoster>[]>;
   }
 
