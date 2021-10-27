@@ -27,8 +27,14 @@
                 <div *ngFor="let roster of tierGroup; let j = index; trackBy: trackByItems" class="roster item" >
                     <div class="attribute" [attr.data-name]="headers[0]">{{j + 1}}</div>
                     <div class="attribute" [attr.data-name]="headers[1]">{{roster.user}}</div>
-                    <div class="attribute" [attr.data-name]="headers[2]">{{roster.squadRating}}</div>
-                    <div class="attribute" [attr.data-name]="headers[3]">{{roster.startersRating}}</div>
+                    <div class="attribute squad-rating" [attr.data-name]="headers[2]">
+                        {{roster.squadRating}}
+                        <!--<span class="stars"></span>-->
+                    </div>
+                    <div class="attribute starter-rating" [attr.data-name]="headers[3]">
+                        {{roster.startersRating}}
+                        <!-- <span class="stars"></span> -->
+                    </div>
                     <div class="attribute capitalize" [attr.data-name]="headers[4]">{{roster.nation}}</div>
                     <div class="attribute" [attr.data-name]="headers[5]">{{roster.formation}}</div>
                     <div class="attribute" [attr.data-name]="headers[6]">

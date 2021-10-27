@@ -36,11 +36,24 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async login(email: string, password: string) {
-    await this.auth.login(email, password);
-    this.auth.changeAuthState(true);
-    this.loginOverlayOpen = false;
-    console.log('Logged in');
+  login(email: string, password: string) {
+    this.auth.login(email, password)
+      .then(res => {
+        this.auth.changeAuthState(true);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        this.loginOverlayOpen = false;
+        console.log('Logged in');
+      })
+      .catch(err => {
+        var errorCode = err.code;
+        var errorMessage = err.message;
+        if (errorCode === 'auth/wrong-password') {
+          alert('Wrong password.');
+        } else {
+          alert(errorMessage);
+        }
+        console.log(err);
+      }); 
   }
   
   logout() {
@@ -48,4 +61,5 @@ export class AppComponent implements OnInit {
     console.log('logged out');
     this.auth.changeAuthState(false);
   }
+
 }
