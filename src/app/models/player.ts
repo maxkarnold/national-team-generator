@@ -36,7 +36,7 @@ export interface Player {
     pitchPosition?: string;
     pitchPositionIndex?: number;
     pitchRating?: number;
-    dragDisabled?: boolean;
+    chemistryNum: number;
     // *** Above are properties we've already added ***
     // *** Below are properties we've yet to add ***
     firstNameUsage?: string;

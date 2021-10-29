@@ -23,14 +23,40 @@
 
 // GLOBAL STYLES
 
+:root {
+  --star-size: 1rem;
+  --star-color: #fff;
+  --star-background:#fc0;
+  --starter-rating: 0%;
+  --squad-rating: 0%;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
 html, body { 
   height: 100%;
 }
 
 body { 
   margin: 0; 
+  padding: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
+
+button {
+  cursor: pointer;
+}
+
+// CLASS OVERRIDES
+
+input.login-overlay__input.login-overlay__input--override {
+  margin: 0.5rem 1.5rem;
+  width: auto;
+}
+
+// ANGULAR MATERIAL CLASSES *DO NOT TOUCH*
 
 .mat-expansion-indicator::after {
   color: #c8c8c887;
@@ -39,4 +65,8 @@ body {
 .mat-list-base.list .mat-list-item .mat-list-item-content {
   justify-content: center;
   width: 100%;
+}
+
+.mat-list-base {
+  background-color: #3F51B5;
 }

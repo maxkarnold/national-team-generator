@@ -16,7 +16,8 @@ import * as clubsModule from '../../data/clubs/clubs.json';
 import * as positionsModule from '../../data/positions.json';
 import * as pitchPositionsModule from '../../data/pitchPositions.json';
 
-import { Observable, Subscription, timer } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
 import{ CdkDragDrop, CdkDragRelease, CdkDragStart, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
@@ -57,24 +58,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   saveDataOverlayOpen = false;
   loadDataOverlayOpen = false;
   instructionsOpen = false;
-  nationName = "";
+  nationOrTier = "";
   rosterId = "";
   nationSelectValue = "s tier"
   realisticNationalities = true;
   startersTotalRating = 0;
   squadTotalRating = 0;
   formation = "";
+  chemistry = 0;
   squadRules = [
     {
       text: '1 starting goalkeeper', 
       check: '❌'
     },
     {
-      text: '3 goalkeepers in squad', 
+      text: 'EXACTLY 3 goalkeepers in squad', 
       check: '❌'
     },
     {
-      text: '3-5 starting defenders', 
+      text: '3-4 starting defenders', 
       check: '❌'
     },
     {
@@ -90,6 +92,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       check: '❌'
     },
     {
+      text: 'Valid formation',
+      check: '❌'
+    },
+    {
       text: 'Backup player in each position', 
       check: '❌'
     },
@@ -100,8 +106,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ]
 
   positionBoxes = positionBoxes;
-
-  
 
 
   constructor(private afs: FirestoreService, private auth: AuthService) {
@@ -130,6 +134,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  goToRoster(el: any) {
+    if (el === 'topPage') {
+      window.scroll(
+        {
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        }
+      );
+    } else {
+      el.scrollIntoView({behavior: 'smooth'});
+    }
+  }
+
   async submitRoster() {
     for (const rule of this.squadRules) {
       if (rule.check === '❌') {
@@ -138,48 +156,53 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
     let submittedRoster: SubmittedRoster;
-    this.auth.getUser().subscribe((user) => {
-      if (user && user.email !== null) {
-        let nationName = '';
-        let tierName = '';
-        let id = this.rosterId;
-        if (this.nationName.includes(' tier')) {
-          nationName = 'random';
-          tierName = this.nationName.slice(0, 1);
-        } else {
-          nationName = this.nationName;
-          tierName = this.getNation("tier").tier || '';
-        }
-        let sortedRoster = this.pitchPlayers.concat(this.players);
-        sortedRoster = sortedRoster.sort((a, b) => {
-          let isAsc = false;
-          return compare(a.rating, b.rating, isAsc);
-        });
-        submittedRoster = {
-          user: user.email,
-          id: id,
-          tier: tierName,
-          nation: nationName,
-          startersRating: this.startersTotalRating,
-          squadRating: this.squadTotalRating,
-          formation: this.formation,
-          roster: {
-            sortedRoster: sortedRoster
-          }
-        }
-        this.afs.getSubmittedRosters().subscribe((data) => {
-          for (const roster of data) {
-            if (roster.payload.doc.id === this.rosterId) {
-              alert("Already submitted roster");
-              return false
-            }
-          }
-          this.afs.submitRoster(submittedRoster);
-        });  
-      } else {
-        throw new Error("User not signed in - login error");
-      }
-    });
+    let user$ = this.auth.getUser();
+    // let user = await user$.first().toPromise();
+    alert("Leaderboards are currently unavailable. Please try again later.");
+    // .subscribe((user) => {
+    //   if (user && user.email !== null) {
+    //     let nationName = '';
+    //     let tierName = '';
+    //     let id = this.rosterId;
+    //     if (this.nationOrTier.includes(' tier')) {
+    //       nationName = 'random';
+    //       tierName = this.nationOrTier.slice(0, 1);
+    //     } else {
+    //       nationName = this.nationOrTier;
+    //       tierName = this.getNation("tier").tier || '';
+    //     }
+    //     let sortedRoster = this.pitchPlayers.concat(this.players);
+    //     sortedRoster = sortedRoster.sort((a, b) => {
+    //       let isAsc = false;
+    //       return compare(a.rating, b.rating, isAsc);
+    //     });
+    //     submittedRoster = {
+    //       user: user.email,
+    //       id: id,
+    //       tier: tierName,
+    //       nation: nationName,
+    //       startersRating: this.startersTotalRating,
+    //       squadRating: this.squadTotalRating,
+    //       formation: this.formation,
+    //       roster: {
+    //         sortedRoster: sortedRoster
+    //       }
+    //     }
+    //     this.afs.getSubmittedRosters().subscribe((data) => {
+    //       for (const roster of data) {
+    //         if (roster.payload.doc.id === this.rosterId) {
+    //           alert("Already submitted roster");
+    //           return false
+    //         }
+    //       }
+    //       console.log("submitted roster");
+    //       console.log(this.afs.submitRoster(submittedRoster));
+    //       alert("Check leaderboards page to see your roster");
+    //     });  
+    //   } else {
+    //     throw new Error("User not signed in - login error");
+    //   }
+    // });
   }
 
   infoOverlay() {
@@ -207,7 +230,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       for (const rule of this.squadRules) {
         rule.check = '❌';
       }
-      this.squadRules[7].check = '→';
+      this.squadRules[8].check = '→';
       for (const box of this.positionBoxes) {
         box.playerClass = 'inactive player-box';
         box.posBoxClass = 'active pos-box';
@@ -225,9 +248,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     let midCount = 0;
     let fwCount = 0;
     let startMidCount = 0;
-    let startDefCount = 0;
     let startGkCount = 0;
-    let startFwCount = 0;
 
     let DMCount = 0;
     let WBCount = 0;
@@ -235,6 +256,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     let AMRLCount = 0;
     let MCCount = 0;
     let MRLCount = 0;
+    let DFCount = 0;
+    let STCount = 0;
 
     for (const player of this.pitchPlayers) {
       
@@ -242,15 +265,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         DMCount++;
         startMidCount++;
       } else if (player.pitchPosition?.slice(0, 1) === "D") {
-        startDefCount++;
+        DFCount++;
       } else if (player.pitchPosition?.includes("WB")) {
         WBCount++;
-        startDefCount++;
       } else if (player.pitchPosition?.includes("AMC")) {
         AMCCount++;
         startMidCount++;
       } else if (player.pitchPosition?.includes("STC")) {
-        startFwCount++;
+        STCount++;
       } else if (player.pitchPosition?.includes("AM")) {
         AMRLCount++;
       } else if (player.pitchPosition?.includes("MC")) {  
@@ -273,123 +295,177 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     } 
     // Formation
-    if (startDefCount === 4) {
+    
+    if (DFCount === 4) {
       if (DMCount === 1) {
-        if (MCCount === 1) {
+        if (MCCount === 1 && MRLCount === 1 && AMCCount === 1 && AMRLCount === 1 && STCount === 1) {
           this.formation = "4-1-4-1 DM Asymmetric AM (R/L)";
         } else if (MCCount === 2) {
-          if (AMCCount === 1) {
+          if (AMCCount === 1 && STCount === 2) {
             this.formation = "4-4-2 Diamond Narrow";
-          } else if (AMCCount === 2) {
+          } else if (AMCCount === 2 && STCount === 1) {
             this.formation = "4-1-2-3 DM AM Narrow";
-          } else if (AMCCount === 0) {
+          } else if (AMRLCount === 2 && STCount === 1) {
             this.formation = "4-1-4-1 DM Wide";
+          } else if (MRLCount === 2 && STCount === 1) {
+            this.formation = "4-1-4-1 DM";
+          } else if (STCount === 3) {
+            this.formation = "4-1-2-3 DM Narrow";
+          } else {
+            this.formation = "N/A";
           }
         } else if (MCCount === 3) {
-          if (AMCCount > 0) {
+          if (AMCCount === 1 && STCount === 1) {
             this.formation = "4-1-3-1-1 DM AM Narrow";
-          } else if (startFwCount === 2) {
+          } else if (STCount === 2) {
             this.formation = "4-1-3-2 DM Narrow";
+          } else {
+            this.formation = "N/A";
           }
-        } else if (MCCount + MRLCount === 4) {
-          this.formation = "4-1-4-1 DM";
+        } else {
+          this.formation = "N/A";
         }
       } else if (DMCount === 2) {
-        if (MCCount > 0) {
-          if (MCCount === 1) {
-            this.formation = "4-2-1-3 DM Wide";
-          } else if (MCCount === 3) {
-            this.formation = "4-2-3-1 DM";
-          } else if (AMCCount === 1) {
-            this.formation = "4-2-2-1-1 DM AM Narrow";
-          } else if (startFwCount === 2) {
-            this.formation = "4-2-2-2 DM Narrow";
-          }
-        } else if (AMRLCount > 0) {
-          if (AMCCount === 1) {
-            this.formation = "4-2-3-1 DM AM Wide";
-          } else if (AMRLCount === 2 && startFwCount === 2) {
-            this.formation = "4-2-4 DM Wide";
-          }        
-        } else if (AMCCount > 0) {
-          if (AMCCount === 3) {
-            this.formation = "4-2-3-1 DM AM Narrow";
-          } else if (MRLCount === 2) {
-            this.formation = "4-4-1-1 2DM";
-          } else if (AMCCount === 2 && startFwCount === 2) {
-            this.formation = "4-2-2-2 DM AM Narrow";
-          }
-        } else if (MRLCount === 2 && startFwCount === 2) {
-          this.formation = "4-2-2-2 DM";
-          
+        if (MCCount === 1 && AMRLCount === 2 && STCount === 1) {
+          this.formation = "4-2-1-3 DM Wide";
+        } else if (MCCount === 1 && MRLCount === 2 && STCount === 1) {
+          this.formation = "4-2-3-1 DM MC Wide";
+        } else if (MCCount === 3 && STCount === 1) {
+          this.formation = "4-2-3-1 DM";
+        } else if (MCCount === 2 && AMCCount === 1 && STCount === 1) {
+          this.formation = "4-2-2-1-1 DM AM Narrow";
+        } else if (MCCount === 2 && STCount === 2) {
+          this.formation = "4-2-2-2 DM Narrow";
+        } else if (AMCCount === 1 && AMRLCount === 2 && STCount === 1) {
+          this.formation = "4-2-3-1 DM AM Wide";
+        } else if (AMRLCount === 2 && STCount === 2) {
+          this.formation = "4-2-4 DM Wide";
+        } else if (AMCCount === 3 && STCount === 1) {
+          this.formation = "4-2-3-1 DM AM Narrow";
+        } else if (MRLCount === 2 && AMCCount === 1 && STCount === 1) {
+          this.formation = "4-4-1-1 2DM";
+        } else if (AMCCount === 2 && STCount === 2) {
+          this.formation = "4-2-2-2 DM AM Narrow";
+        } else if (MRLCount === 2 && STCount === 2) {
+          this.formation = "4-2-2-2 DM"; 
+        } else {
+          this.formation = "N/A";
         }
       } else if (MCCount === 2) {
         if (AMRLCount > 0) {
-          if (startFwCount === 2) {
-            this.formation = "4-2-4 Wide"
-          } else if (AMCCount === 1) {
-            this.formation = "4-2-3-1 Wide"
+          if (STCount === 2 && AMRLCount === 2) {
+            this.formation = "4-2-4 Wide";
+          } else if (AMCCount === 1 && AMRLCount === 2 && STCount === 1) {
+            this.formation = "4-2-3-1 Wide";
+          } else {
+            this.formation = "N/A";
           }
         } else if (AMCCount > 0) {
-          if (startFwCount === 2) {
+          if (STCount === 2 && AMCCount === 2) {
             this.formation = "4-2-2-2 Narrow";
-          } else if (startFwCount === 1) {
+          } else if (STCount === 1 && AMCCount === 3) {
             this.formation = "4-2-3-1 Narrow";
+          } else {
+            this.formation = "N/A";
           }
+        } else {
+          this.formation = "N/A";
         }
       } else if (MCCount === 3) {
-        if (AMRLCount === 2 && startFwCount === 1) {
+        if (AMRLCount === 2 && STCount === 1) {
           this.formation = "4-3-3 Wide";
-        } else if (AMCCount === 1) {
+        } else if (AMCCount === 1 && STCount === 2) {
           this.formation = "4-3-1-2 Narrow";
-        } else if (AMCCount === 2) {
+        } else if (AMCCount === 2 && STCount === 1) {
           this.formation = "4-3-2-1 Narrow";
+        } else if (STCount === 3) {
+          this.formation = "4-3-3 Narrow";
+        } else {
+          this.formation = "N/A";
         }
       } else if (MRLCount === 2) {
-        if (MCCount === 3 && startFwCount === 1) {
+        if (MCCount === 3 && STCount === 1) {
           this.formation = "4-5-1";
         } else if (MCCount === 2 && AMCCount === 1) {
           this.formation = "4-4-1-1";
-        } else if (MCCount === 2 && startFwCount === 2) {
+        } else if (MCCount === 2 && STCount === 2) {
           this.formation = "4-4-2";
+        } else {
+          this.formation = "N/A";
         }
+      } else {
+        this.formation = "N/A";
       }
-    } else if (startDefCount === 3) {
+    } else if (DFCount === 3) {
       if (WBCount === 2) {
         if (DMCount === 1) {
-          if (MCCount === 3 && startFwCount === 1) {
+          if (MCCount === 3 && STCount === 1) {
             this.formation = "5-1-3-1 DM WB";
-          } else if (startFwCount === 2) {
+          } else if (STCount === 2 && MCCount === 2) {
             this.formation = "5-1-2-2 DM WB";
-          } else if (AMCCount === 1) {
+          } else if (MCCount === 2 && AMCCount === 1 && STCount === 1) {
             this.formation = "5-4-1 Diamond WB";
+          } else {
+            this.formation = "N/A";
           }
         } else if (DMCount === 2) {
-          if (MCCount === 2) {
+          if (MCCount === 2 && STCount === 1) {
             this.formation = "3-4-2-1 DM";
-          } else if (AMRLCount === 2) {
+          } else if (AMRLCount === 2 && STCount === 1) {
             this.formation = "3-4-3 DM Wide";
-          } else if (AMCCount === 2) {
+          } else if (AMCCount === 2 && STCount === 1) {
             this.formation = "3-4-2-1 DM AM";
+          } else if (MCCount === 1 && STCount === 2) {
+            this.formation = "5-2-1-2 DM WB";
+          } else if (AMCCount === 1 && STCount === 2) {
+            this.formation = "5-2-1-2 DM AM WB";
+          } else {
+            this.formation = "N/A";
           }
         } else if (MCCount === 2) {
-          if (AMRLCount === 2) {
+          if (AMRLCount === 2 && STCount === 1) {
             this.formation = "5-4-1 WB Wide";
-          } else if (AMCCount === 2) {
+          } else if (AMCCount === 2 && STCount === 1) {
             this.formation = "5-2-2-1 WB";
+          } else if (AMCCount === 1 && STCount === 2) {
+            this.formation = "5-2-1-2 WB";
+          } else {
+            this.formation = "N/A";
           }
         } else if (MCCount === 3) {
-          if (startFwCount === 2) {
+          if (STCount === 2) {
             this.formation = "5-3-2 WB";
-          } else if (AMCCount === 1 && startFwCount === 1) {
+          } else if (AMCCount === 1 && STCount === 1) {
             this.formation = "5-3-1-1 WB";
+          } else {
+            this.formation = "N/A";
           }
+        } else {
+          this.formation = "N/A";
         }
+      } else if (MRLCount === 2) {
+        if (DMCount === 2 && AMCCount === 2 && STCount === 1) {
+          this.formation = "3-4-2-1 DM AM MRL";
+        }
+      } else {
+        this.formation = "N/A";
       }
     } else {
       this.formation = "N/A";
     }
-    let count = [gkCount, defCount, midCount, fwCount, startGkCount, startDefCount, startMidCount, startFwCount];
+
+    let formObj = {
+      def: DFCount,
+      dm: DMCount,
+      wb: WBCount,
+      mc: MCCount,
+      mrl: MRLCount,
+      amc: AMCCount,
+      amrl: AMRLCount,
+      st: STCount
+    };
+    // this.calcChemistry(formObj);
+    let count = [gkCount, defCount, midCount, fwCount, startGkCount, DFCount, startMidCount, STCount];
     return this.checkSquadRules(count);
   }
 
@@ -397,22 +473,41 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (countArr[4] > 0) {
       this.squadRules[0].check = '✅';
+    } else {
+      this.squadRules[0].check = '❌';
     }
     if (countArr[0] === 3) {
       this.squadRules[1].check = '✅';
+    } else {
+      this.squadRules[1].check = '❌';
     }
-    if (countArr[5] > 2 && countArr[5] < 6) {
+    if (countArr[5] > 2 && countArr[5] < 5) {
       this.squadRules[2].check = '✅';
+    } else {
+      this.squadRules[2].check = '❌';
     }
     if (countArr[1] > 5) {
       this.squadRules[3].check = '✅';
+    } else {
+      this.squadRules[3].check = '❌';
     }
     if (countArr[6] > 1 && countArr[6] < 7) {
       this.squadRules[4].check = '✅';
+    } else {
+      this.squadRules[4].check = '❌';
     }
     if (countArr[2] > 4) {
       this.squadRules[5].check = '✅';
+    } else {
+      this.squadRules[5].check = '❌';
     }
+    if (this.formation !== 'N/A') {
+      this.squadRules[6].check = '✅'
+    } else {
+      this.squadRules[6].check = '❌';
+    }
+
+    
 
     for (const rule of this.squadRules) {
       if (rule.check === '❌') {
@@ -420,6 +515,164 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
     return true
+  }
+
+  checkStars(starterRating: number, squadRating: number) {
+    document.documentElement.style.setProperty('--starter-rating', `${starterRating}%`);
+    document.documentElement.style.setProperty('--squad-rating', `${squadRating}%`);
+  }
+
+  calcChemistry(obj: any) {
+    // chemistry reset
+    for (const player of this.pitchPlayers) {
+      player.chemistryNum = 0;
+    }
+    this.chemistry = 0;
+
+    let chemArr = [];
+    if (this.formation !== 'N/A') {
+      if (obj.def === 4) {
+        chemArr.push(
+          ['GK', 'DCL'],
+          ['GK', 'DCR'],
+          ['DCR', 'DCL'],
+          ['DCL', 'DL'],
+          ['DCR', 'DR']
+        );
+        if (this.formation === "4-1-4-1 DM Asymmetric AM (R/L)") {
+          chemArr.push(
+            ['STC', 'multi', 'AMC', 'AMCR', 'AMCL'],
+            ['DR', 'multi', 'AMR', 'MR'],
+            ['DL', 'multi', 'AML', 'ML'],
+            ['AMC', 'MC'],
+            ['STC', 'AMC'],
+            ['MC', 'DMC'],
+            ['DMC', 'DCL'],
+            ['DMC', 'DCR']
+          );
+        }
+      } else if (obj.def === 3) {
+        chemArr.push(
+          ['GK', 'DCL'],
+          ['GK', 'DCR'],
+          ['GK', 'DC'],
+          ['DCL', 'DC'],
+          ['DCR', 'DC'],
+          ['DCR', 'WBR'],
+          ['DCL', 'WBL']
+        )
+        
+      }
+    }
+    for (const arr of chemArr) {
+      let first;
+      let second;
+      for (const player of this.pitchPlayers) {      
+        // check for multiple possible positions for player1
+        if (arr[0] === 'multi') {
+          for (let i = 1; i < arr.length; i++) {
+            if (player.pitchPosition === arr[i]) {
+              first = player;
+              break;
+            }
+          }
+        }
+        // Check for first player in chem pair
+        else if (player.pitchPosition === arr[0]) { 
+          first = player;
+        }
+        // check for multiple possible positions for player2
+        else if (arr[1] === 'multi') {
+          for (let i = 2; i < arr.length; i++) {
+            if (player.pitchPosition === arr[i]) {
+              second = player;
+              break;
+            }
+          }
+        } else if (player.pitchPosition === arr[1]) { // Check for second player in chem pair
+          second = player;
+        }
+        if (first && second) {
+          if (first.nationality === second.nationality) {
+            this.chemistry++;
+            first.chemistryNum++;
+            second.chemistryNum++;
+          }
+          if (first.club === second.club) {
+            this.chemistry++;
+            first.chemistryNum++;
+            second.chemistryNum++;
+          }
+          break;
+        }
+      }
+      
+    }
+  }
+
+  getChemColor(player: Player) {
+    if (player.chemistryNum === 1) {
+      return '1px dashed yellow'
+    } else if (player.chemistryNum === 2) {
+      return '1px dashed lime'
+    } else if (player.chemistryNum > 2) {
+      return '1px dashed pink'
+    } else {
+      return '1px solid #353535'
+    }
+  }
+
+  calcStartersRating() {
+    let startersArr: number[] = [];
+    for (const player of this.pitchPlayers) {
+      if (player.pitchRating !== undefined) {
+        switch (player.pitchPosition) {
+          case "DR":
+          case "DL":
+            startersArr.push(player.pitchRating * 0.88);
+            break;
+          case "WBL":
+          case "WBR":
+          case "MR":
+          case "ML":
+            startersArr.push(player.pitchRating * 0.97);
+            break;
+          case "GK":
+          case "DCR":
+          case "DCL":
+          case "DC":
+          case "AMR":
+          case "AML":
+            startersArr.push(player.pitchRating * 0.99);
+            break;
+          case "AMCR":
+          case "AMC":
+          case "AMCL":
+          case "DMC":
+          case "DMR":
+          case "DML":
+            startersArr.push(player.pitchRating * 1.01);
+            break;
+          case "STC":
+          case "STCL":
+          case "STCR":
+          case "MC":
+          case "MCR":
+          case "MCL":
+            startersArr.push(player.pitchRating * 1.03);
+            break;
+          default:
+            console.log("error");
+            break;
+        }
+      } else {
+        console.log("Error: check home component");
+      }
+      
+    }
+    let sum = startersArr.reduce((partial_sum, a) => partial_sum + a,0); 
+    let avg = sum / startersArr.length;
+    this.startersTotalRating = Math.round(avg * 10) / 10;
   }
 
   getBackupPositions() {
@@ -463,16 +716,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.squadRules[7].text = '';
+    this.squadRules[8].text = '';
     for (let i = 0; i < startingPositions.length; i++) {
       if (startingPositions[i] !== '') {
-        this.squadRules[7].text += ` ${startingPositions[i]}`;
+        this.squadRules[8].text += ` ${startingPositions[i]}`;
       }
     }
-    if (this.squadRules[7].text === '') {
-      this.squadRules[6].check = '✅';
+    if (this.squadRules[8].text === '') {
+      this.squadRules[7].check = '✅';
     } else {
-      this.squadRules[6].check = '❌';
+      this.squadRules[7].check = '❌';
     }
   }
 
@@ -587,10 +840,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     let positionIndex = parseInt(event.container.element.nativeElement.classList[1]);
 
     if (event.previousContainer === event.container) {
+      // if moving within same container
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      // console.log('moving within array');
     } 
     else if (event.previousContainer.id === "bench-players") {
+      // if moving from bench container and to the pitch
       // Check for 11 players in starting lineup and no player swap
       if (this.pitchPlayers.length === 11 && event.container.element.nativeElement.innerText === "") {
         alert("You can only have 11 players starting.");
@@ -681,8 +935,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this.pitchPlayers.length; i++) {
           if (this.pitchPlayers[i].pitchPosition === newPlayer.pitchPosition) { 
             let oldPlayer = this.pitchPlayers[i];
-            oldPlayer.pitchPosition = "";
-            oldPlayer.pitchPositionIndex = NaN;
+            oldPlayer.pitchPosition = undefined;
+            oldPlayer.pitchPositionIndex = undefined;
             this.pitchPlayers.splice(i, 1);
             this.players.splice(newPlayerIndex, 1, oldPlayer);
             // console.log(this.positionBoxes);
@@ -824,19 +1078,18 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log("error");
         }
       }
-      let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0); 
-      let avg = sum / ratingArr.length;
-      this.startersTotalRating = Math.round(avg * 10) / 10;
-      // console.log(sum, this.startersTotalRating);
+
+      this.calcStartersRating();
 
       this.squadTotalRating = 0;
       for (let i = 0; i < 12; i++) {
         ratingArr.push(this.players[i].rating);
       }
-      sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0);
-      avg = sum / ratingArr.length;
+      let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0);
+      let avg = sum / ratingArr.length;
       this.squadTotalRating = Math.round(avg * 10) / 10;
       // console.log(sum, this.squadTotalRating);
+      this.checkStars(this.startersTotalRating, this.squadTotalRating);
 
       // sortedData
       this.sortedData = this.pitchPlayers.concat(this.players);
@@ -860,7 +1113,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (this.pitchPlayers.length === 11) {
         this.getBackupPositions();
       } else {
-        this.squadRules[6].check = '❌';
+        this.squadRules[7].check = '❌';
       }
       
       
@@ -1032,7 +1285,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.sortedPitchPlayers = [];
     this.pitchPlayers = [];
     this.rosterId = "";
-    this.nationName = this.nationSelectValue;
+    this.nationOrTier = this.nationSelectValue;
     for (let index in this.positions) {
       this.positions[index].amount = 0;
     }
@@ -1040,7 +1293,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (rule.check === '✅') {
         rule.check = '❌';
       }
-      this.squadRules[7].text = '';
+      this.squadRules[8].text = '';
     }
 
     let tier = this.getNation("tier").tier || '';
@@ -1072,6 +1325,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         age: 0,
         height: 0,
         weight: 0,
+        chemistryNum: 0,
         attributes: {} as GkAttributes | OutfieldAttributes,
         weakFoot: 0,
         club: '',
@@ -1109,9 +1363,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       // player.weight = attrObj.weight;
       // player.weakFoot = attrObj.weakFoot;
       // player.attributes = attrObj.attributes;
-
-      let firstNameReq = this.afs.getFirstName(player.nationality)?.request$;
-      let firstNameRetry = this.afs.getFirstName(player.nationality)?.retryRequest$;
+      let randomNum = getRandomInt(1, 20);
+      let firstNameReq = this.afs.getFirstName(player.nationality, randomNum)?.request$;
+      let firstNameRetry = this.afs.getFirstName(player.nationality, randomNum)?.retryRequest$;
 
       firstNameReq.subscribe((firstNameArr) => {
         if (firstNameArr[0] !== undefined) {
@@ -1138,8 +1392,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         // About 50% chance: Brazil, Spain, Portugal, Angola, Equatorial Guinea, Guinea-Bissau
       });
 
-      let lastNameReq = this.afs.getLastName(player.nationality)?.request$;
-      let lastNameRetry = this.afs.getLastName(player.nationality)?.retryRequest$;
+      let lastNameReq = this.afs.getLastName(player.nationality, randomNum)?.request$;
+      let lastNameRetry = this.afs.getLastName(player.nationality, randomNum)?.retryRequest$;
 
       lastNameReq.subscribe((lastNameArr) => {
         if (lastNameArr[0] !== undefined) {
@@ -1162,13 +1416,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.playerCount++;
 
     }
+    this.players = this.players.sort((a, b) => {
+      let isAsc = false;
+      return compare(a.rating, b.rating, isAsc);
+    });
+    this.sortedData = this.players;
     console.log(this.players);
   }
 
   getNation(property: string, rating?: number) {
     
     if (property === "tier") {
-      let nationality: string = this.nationName;
+      let nationality: string = this.nationOrTier;
       let tier: string = "";
       if (nationality.includes("tier")) {
         tier = nationality.slice(0, 1);
@@ -2133,7 +2392,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     let clubRep = "";
 
     if (i < first) {
-      rating = Math.min(getRandomInt(82,99), getRandomInt(82, 99), getRandomInt(82, 99));
+      let arr = [getRandomInt(82, 86), getRandomInt(82, 90), getRandomInt(82, 90), getRandomInt(82, 94), getRandomInt(82, 94), getRandomInt(82, 99)];
+      rating = arr[getRandomInt(0, 5)];
       clubRep = "top50";
     } else if(i < first + second) {
       rating = getRandomInt(76, 81);
@@ -2521,7 +2781,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       for (let i = 0; i < this.pitchPlayers.length; i++) {
         localStorage.setItem(`TEAMGEN - Starting Player #${i + 1}`, JSON.stringify(this.pitchPlayers[i]));
       }
-      localStorage.setItem(`TEAMGEN - Tier/Nationality`, JSON.stringify(this.nationName));
+      localStorage.setItem(`TEAMGEN - Tier/Nationality`, JSON.stringify(this.nationOrTier));
       localStorage.setItem(`Firestore ID`, JSON.stringify(this.rosterId));
       console.log(this.rosterId);
     }
@@ -2551,7 +2811,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         else if (this.savedData[i].saveName === saveName) {
           // ask the user if they want to overwrite
           if (window.confirm(`${saveName} is already a roster name. Overwrite?`)) {
-            this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName)
+            this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationOrTier)
               .then((docRef) => {
                 this.rosterId = docRef.id;
                 console.log("new roster id:\n", this.rosterId);
@@ -2564,7 +2824,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         
       } 
       if (window.confirm("Are you sure you want to save?")) {
-        this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName)
+        this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationOrTier)
           .then((docRef) => {
             this.rosterId = docRef.id;
             console.log("new roster id:\n", this.rosterId);
@@ -2644,8 +2904,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.players = [];
         this.sortedData = [];
         this.pitchPlayers = [];
-        this.nationName = localStorage.getItem(`TEAMGEN - Tier/Nationality`) || '';
-        this.nationName = this.nationName.slice(1, -1);
+        this.nationOrTier = localStorage.getItem(`TEAMGEN - Tier/Nationality`) || '';
+        this.nationOrTier = this.nationOrTier.slice(1, -1);
         this.rosterId = localStorage.getItem(`Firestore ID`) || '';
         this.rosterId = this.rosterId.slice(1, -1);
         for (let index in this.positions) {
@@ -2698,19 +2958,17 @@ export class HomeComponent implements OnInit, OnDestroy {
             
           }
         }
-        let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0); 
-        let avg = sum / ratingArr.length;
-        this.startersTotalRating = Math.round(avg * 10) / 10;
 
+        this.calcStartersRating();
         this.squadTotalRating = 0;
         for (let i = 0; i < 12; i++) {
           ratingArr.push(this.players[i].rating);
         }
-        sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0);
-        avg = sum / ratingArr.length;
+        let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0);
+        let avg = sum / ratingArr.length;
         this.squadTotalRating = Math.round(avg * 10) / 10;
 
-
+        this.checkStars(this.startersTotalRating, this.squadTotalRating);
 
         let combinedPlayers = this.pitchPlayers.concat(this.players);
         for (const player of combinedPlayers) {      
@@ -2742,12 +3000,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           if (rule.check === '✅') {
             rule.check = '❌';
           }
-          this.squadRules[7].text = '';
+          this.squadRules[8].text = '';
         }
         if (this.pitchPlayers.length === 11) {
           this.getBackupPositions();
         } else {
-          this.squadRules[6].check = '❌';
+          this.squadRules[7].check = '❌';
         }
         console.log("Successfully loaded", this.players, this.pitchPlayers);
       } else {
@@ -2763,6 +3021,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         for (let index in this.positions) {
           this.positions[index].amount = 0;
         }
+        this.players = [];
+        this.sortedData = [];
+        this.pitchPlayers = [];
         this.afs.getRoster(user.uid, saveLocation).subscribe((obj) => {
           const data = obj.payload.data();
           if (data !== undefined) {
@@ -2770,7 +3031,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.players = data.benchReserves;
             this.sortedData = data.starters.concat(data.benchReserves);
             this.pitchPlayers = data.starters;
-            this.nationName = data.nationOrTier;
+            this.nationOrTier = data.nationOrTier;
             this.rosterId = obj.payload.id;
             console.log("Firestore ID", this.rosterId);
           } else {
@@ -2798,18 +3059,19 @@ export class HomeComponent implements OnInit, OnDestroy {
               
             }
           }
-          let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0); 
-          let avg = sum / ratingArr.length;
-          this.startersTotalRating = Math.round(avg * 10) / 10;
+
+          this.calcStartersRating();
 
           this.squadTotalRating = 0;
           for (let i = 0; i < 12; i++) {
             ratingArr.push(this.players[i].rating);
           }
-          sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0);
-          avg = sum / ratingArr.length;
+          let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a,0);
+          let avg = sum / ratingArr.length;
           this.squadTotalRating = Math.round(avg * 10) / 10;
 
+          this.checkStars(this.startersTotalRating, this.squadTotalRating);
+          
           let combinedPlayers = this.pitchPlayers.concat(this.players);
           for (const player of combinedPlayers) {      
             for (const pos of this.positions) {
@@ -2839,12 +3101,12 @@ export class HomeComponent implements OnInit, OnDestroy {
             if (rule.check === '✅') {
               rule.check = '❌';
             }
-            this.squadRules[7].text = '';
+            this.squadRules[8].text = '';
           }
           if (this.pitchPlayers.length === 11) {
             this.getBackupPositions();
           } else {
-            this.squadRules[6].check = '❌';
+            this.squadRules[7].check = '❌';
           }
         });
     }
@@ -2872,8 +3134,30 @@ function median(values: number[]){
 }
 
 function getRandomInt(min: number, max: number) {
+    let seed = xmur3("string-seed");
+    let rand = mulberry32(seed());
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
+    
+    return Math.floor(rand() * (max - min + 1) + min);
     //The maximum is inclusive and the minimum is inclusive
+}
+
+function xmur3(str: string) {
+  for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
+    h = h << 13 | h >>> 19;
+  return function() {
+    h = Math.imul(h ^ h >>> 16, 2246822507);
+    h = Math.imul(h ^ h >>> 13, 3266489909);
+    return (h ^= h >>> 16) >>> 0;
+  }
+}
+function mulberry32(a: number) {
+  return function() {
+    var t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
 }

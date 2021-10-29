@@ -13,20 +13,16 @@ export class FirestoreService {
   
   firstNames: Observable<FirstName[]>;
   lastNames: Observable<LastName[]>;
-  // private rosterDoc: AngularFirestoreDocument<Roster>
-  // roster: Observable<Roster>
   
 
   constructor(public afs: AngularFirestore) {
     this.firstNames = new Observable;
     this.lastNames = new Observable;
-    // this.rosterDoc = afs.doc<Roster>()
-    // this.roster = this.rosterDoc.valueChanges();
   }
 
   
 
-  getFirstName(nation: string){
+  getFirstName(nation: string, originNum: number){
     let randomIndex = getRandomInt(1, 5);
     let randomQuery = getRandomInt(0, 50000);
     let nameOrigin: string[];
@@ -289,6 +285,7 @@ export class FirestoreService {
         nameOrigin = ["English"];
         break;
     }
+
     let request$ = this.afs.collection("firstNames_male", ref => ref
       .where(`randomNum.${randomIndex}`, ">=", randomQuery)
       .where('usages', 'array-contains-any', nameOrigin)
@@ -303,7 +300,7 @@ export class FirestoreService {
     }
   }
 
-  getLastName(nation: string){
+  getLastName(nation: string, originNum: number){
     let nameOrigin: string[];
     let randomIndex = getRandomInt(1, 5);
     let randomQuery = getRandomInt(0, 50000);
@@ -584,11 +581,11 @@ export class FirestoreService {
     
   }
 
-  saveRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], nation: string): Promise<DocumentReference<DocumentData>>{
+  saveRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], nationOrTier: string): Promise<DocumentReference<DocumentData>>{
     return this.afs.collection("users").doc(uid).collection("savedRosters").add({
       benchReserves: benchReserves,
       starters: starters,
-      nationOrTier: nation,
+      nationOrTier: nationOrTier,
       saveName: saveName
     })
 
@@ -608,7 +605,7 @@ export class FirestoreService {
 
   submitRoster(roster: SubmittedRoster) {
     if (roster.id === '') {
-      this.afs.collection("submittedRosters").doc().set({
+      this.afs.collection("submittedRosters").add({
         user: roster.user,
         roster: roster.roster,
         tier: roster.tier,
@@ -616,6 +613,10 @@ export class FirestoreService {
         squadRating: roster.squadRating,
         startersRating: roster.startersRating,
         formation: roster.formation
+      })
+      .then((docRef) => {
+        console.log("New firestore id", docRef.id);
+        return docRef.id
       });
     } else {
       this.afs.collection("submittedRosters").doc(roster.id).set({
@@ -628,12 +629,12 @@ export class FirestoreService {
         formation: roster.formation
       });
     }
+    console.log("Function is still working");
     
-    alert("Check leaderboards page to see your roster");
   }
 
   getSubmittedRosters(): Observable<DocumentChangeAction<SubmittedRoster>[]> {
-    let rostersCollection = this.afs.collection("submittedRosters", ref => ref.orderBy('squadRating', 'desc'));
+    let rostersCollection = this.afs.collection("submittedRosters", ref => ref.orderBy('startersRating', 'desc').limit(50));
     return rostersCollection.snapshotChanges() as Observable<DocumentChangeAction<SubmittedRoster>[]>;
   }
 
@@ -648,9 +649,31 @@ export class FirestoreService {
 }
 
 function getRandomInt(min: number, max: number) {
+    let seed = xmur3("string-seed");
+    let rand = mulberry32(seed());
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
+    
+    return Math.floor(rand() * (max - min + 1) + min);
     //The maximum is inclusive and the minimum is inclusive
+}
+
+function xmur3(str: string) {
+  for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
+    h = h << 13 | h >>> 19;
+  return function() {
+    h = Math.imul(h ^ h >>> 16, 2246822507);
+    h = Math.imul(h ^ h >>> 13, 3266489909);
+    return (h ^= h >>> 16) >>> 0;
   }
+}
+function mulberry32(a: number) {
+  return function() {
+    var t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
 
