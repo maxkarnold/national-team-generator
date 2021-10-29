@@ -16,7 +16,8 @@ import * as clubsModule from '../../data/clubs/clubs.json';
 import * as positionsModule from '../../data/positions.json';
 import * as pitchPositionsModule from '../../data/pitchPositions.json';
 
-import { Observable, Subscription} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
 import{ CdkDragDrop, CdkDragRelease, CdkDragStart, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
@@ -57,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   saveDataOverlayOpen = false;
   loadDataOverlayOpen = false;
   instructionsOpen = false;
-  nationName = "";
+  nationOrTier = "";
   rosterId = "";
   nationSelectValue = "s tier"
   realisticNationalities = true;
@@ -133,6 +134,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  goToRoster(el: any) {
+    if (el === 'topPage') {
+      window.scroll(
+        {
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        }
+      );
+    } else {
+      el.scrollIntoView({behavior: 'smooth'});
+    }
+  }
+
   async submitRoster() {
     for (const rule of this.squadRules) {
       if (rule.check === '❌') {
@@ -141,48 +156,53 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
     let submittedRoster: SubmittedRoster;
-    this.auth.getUser().subscribe((user) => {
-      if (user && user.email !== null) {
-        let nationName = '';
-        let tierName = '';
-        let id = this.rosterId;
-        if (this.nationName.includes(' tier')) {
-          nationName = 'random';
-          tierName = this.nationName.slice(0, 1);
-        } else {
-          nationName = this.nationName;
-          tierName = this.getNation("tier").tier || '';
-        }
-        let sortedRoster = this.pitchPlayers.concat(this.players);
-        sortedRoster = sortedRoster.sort((a, b) => {
-          let isAsc = false;
-          return compare(a.rating, b.rating, isAsc);
-        });
-        submittedRoster = {
-          user: user.email,
-          id: id,
-          tier: tierName,
-          nation: nationName,
-          startersRating: this.startersTotalRating,
-          squadRating: this.squadTotalRating,
-          formation: this.formation,
-          roster: {
-            sortedRoster: sortedRoster
-          }
-        }
-        this.afs.getSubmittedRosters().subscribe((data) => {
-          for (const roster of data) {
-            if (roster.payload.doc.id === this.rosterId) {
-              alert("Already submitted roster");
-              return false
-            }
-          }
-          this.afs.submitRoster(submittedRoster);
-        });  
-      } else {
-        throw new Error("User not signed in - login error");
-      }
-    });
+    let user$ = this.auth.getUser();
+    // let user = await user$.first().toPromise();
+    alert("Leaderboards are currently unavailable. Please try again later.");
+    // .subscribe((user) => {
+    //   if (user && user.email !== null) {
+    //     let nationName = '';
+    //     let tierName = '';
+    //     let id = this.rosterId;
+    //     if (this.nationOrTier.includes(' tier')) {
+    //       nationName = 'random';
+    //       tierName = this.nationOrTier.slice(0, 1);
+    //     } else {
+    //       nationName = this.nationOrTier;
+    //       tierName = this.getNation("tier").tier || '';
+    //     }
+    //     let sortedRoster = this.pitchPlayers.concat(this.players);
+    //     sortedRoster = sortedRoster.sort((a, b) => {
+    //       let isAsc = false;
+    //       return compare(a.rating, b.rating, isAsc);
+    //     });
+    //     submittedRoster = {
+    //       user: user.email,
+    //       id: id,
+    //       tier: tierName,
+    //       nation: nationName,
+    //       startersRating: this.startersTotalRating,
+    //       squadRating: this.squadTotalRating,
+    //       formation: this.formation,
+    //       roster: {
+    //         sortedRoster: sortedRoster
+    //       }
+    //     }
+    //     this.afs.getSubmittedRosters().subscribe((data) => {
+    //       for (const roster of data) {
+    //         if (roster.payload.doc.id === this.rosterId) {
+    //           alert("Already submitted roster");
+    //           return false
+    //         }
+    //       }
+    //       console.log("submitted roster");
+    //       console.log(this.afs.submitRoster(submittedRoster));
+    //       alert("Check leaderboards page to see your roster");
+    //     });  
+    //   } else {
+    //     throw new Error("User not signed in - login error");
+    //   }
+    // });
   }
 
   infoOverlay() {
@@ -289,6 +309,8 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.formation = "4-1-4-1 DM Wide";
           } else if (MRLCount === 2 && STCount === 1) {
             this.formation = "4-1-4-1 DM";
+          } else if (STCount === 3) {
+            this.formation = "4-1-2-3 DM Narrow";
           } else {
             this.formation = "N/A";
           }
@@ -356,6 +378,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.formation = "4-3-1-2 Narrow";
         } else if (AMCCount === 2 && STCount === 1) {
           this.formation = "4-3-2-1 Narrow";
+        } else if (STCount === 3) {
+          this.formation = "4-3-3 Narrow";
         } else {
           this.formation = "N/A";
         }
@@ -418,6 +442,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         } else {
           this.formation = "N/A";
+        }
+      } else if (MRLCount === 2) {
+        if (DMCount === 2 && AMCCount === 2 && STCount === 1) {
+          this.formation = "3-4-2-1 DM AM MRL";
         }
       } else {
         this.formation = "N/A";
@@ -1257,7 +1285,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.sortedPitchPlayers = [];
     this.pitchPlayers = [];
     this.rosterId = "";
-    this.nationName = this.nationSelectValue;
+    this.nationOrTier = this.nationSelectValue;
     for (let index in this.positions) {
       this.positions[index].amount = 0;
     }
@@ -1335,9 +1363,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       // player.weight = attrObj.weight;
       // player.weakFoot = attrObj.weakFoot;
       // player.attributes = attrObj.attributes;
-
-      let firstNameReq = this.afs.getFirstName(player.nationality)?.request$;
-      let firstNameRetry = this.afs.getFirstName(player.nationality)?.retryRequest$;
+      let randomNum = getRandomInt(1, 20);
+      let firstNameReq = this.afs.getFirstName(player.nationality, randomNum)?.request$;
+      let firstNameRetry = this.afs.getFirstName(player.nationality, randomNum)?.retryRequest$;
 
       firstNameReq.subscribe((firstNameArr) => {
         if (firstNameArr[0] !== undefined) {
@@ -1364,8 +1392,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         // About 50% chance: Brazil, Spain, Portugal, Angola, Equatorial Guinea, Guinea-Bissau
       });
 
-      let lastNameReq = this.afs.getLastName(player.nationality)?.request$;
-      let lastNameRetry = this.afs.getLastName(player.nationality)?.retryRequest$;
+      let lastNameReq = this.afs.getLastName(player.nationality, randomNum)?.request$;
+      let lastNameRetry = this.afs.getLastName(player.nationality, randomNum)?.retryRequest$;
 
       lastNameReq.subscribe((lastNameArr) => {
         if (lastNameArr[0] !== undefined) {
@@ -1388,13 +1416,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.playerCount++;
 
     }
+    this.players = this.players.sort((a, b) => {
+      let isAsc = false;
+      return compare(a.rating, b.rating, isAsc);
+    });
+    this.sortedData = this.players;
     console.log(this.players);
   }
 
   getNation(property: string, rating?: number) {
     
     if (property === "tier") {
-      let nationality: string = this.nationName;
+      let nationality: string = this.nationOrTier;
       let tier: string = "";
       if (nationality.includes("tier")) {
         tier = nationality.slice(0, 1);
@@ -2359,7 +2392,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     let clubRep = "";
 
     if (i < first) {
-      rating = Math.min(getRandomInt(82,99), getRandomInt(82, 99), getRandomInt(82, 99));
+      let arr = [getRandomInt(82, 86), getRandomInt(82, 90), getRandomInt(82, 90), getRandomInt(82, 94), getRandomInt(82, 94), getRandomInt(82, 99)];
+      rating = arr[getRandomInt(0, 5)];
       clubRep = "top50";
     } else if(i < first + second) {
       rating = getRandomInt(76, 81);
@@ -2747,7 +2781,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       for (let i = 0; i < this.pitchPlayers.length; i++) {
         localStorage.setItem(`TEAMGEN - Starting Player #${i + 1}`, JSON.stringify(this.pitchPlayers[i]));
       }
-      localStorage.setItem(`TEAMGEN - Tier/Nationality`, JSON.stringify(this.nationName));
+      localStorage.setItem(`TEAMGEN - Tier/Nationality`, JSON.stringify(this.nationOrTier));
       localStorage.setItem(`Firestore ID`, JSON.stringify(this.rosterId));
       console.log(this.rosterId);
     }
@@ -2777,7 +2811,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         else if (this.savedData[i].saveName === saveName) {
           // ask the user if they want to overwrite
           if (window.confirm(`${saveName} is already a roster name. Overwrite?`)) {
-            this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName)
+            this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationOrTier)
               .then((docRef) => {
                 this.rosterId = docRef.id;
                 console.log("new roster id:\n", this.rosterId);
@@ -2790,7 +2824,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         
       } 
       if (window.confirm("Are you sure you want to save?")) {
-        this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationName)
+        this.afs.saveRoster(user.uid, saveName, this.players, this.pitchPlayers, this.nationOrTier)
           .then((docRef) => {
             this.rosterId = docRef.id;
             console.log("new roster id:\n", this.rosterId);
@@ -2870,8 +2904,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.players = [];
         this.sortedData = [];
         this.pitchPlayers = [];
-        this.nationName = localStorage.getItem(`TEAMGEN - Tier/Nationality`) || '';
-        this.nationName = this.nationName.slice(1, -1);
+        this.nationOrTier = localStorage.getItem(`TEAMGEN - Tier/Nationality`) || '';
+        this.nationOrTier = this.nationOrTier.slice(1, -1);
         this.rosterId = localStorage.getItem(`Firestore ID`) || '';
         this.rosterId = this.rosterId.slice(1, -1);
         for (let index in this.positions) {
@@ -2997,7 +3031,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.players = data.benchReserves;
             this.sortedData = data.starters.concat(data.benchReserves);
             this.pitchPlayers = data.starters;
-            this.nationName = data.nationOrTier;
+            this.nationOrTier = data.nationOrTier;
             this.rosterId = obj.payload.id;
             console.log("Firestore ID", this.rosterId);
           } else {
@@ -3100,8 +3134,30 @@ function median(values: number[]){
 }
 
 function getRandomInt(min: number, max: number) {
+    let seed = xmur3("string-seed");
+    let rand = mulberry32(seed());
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
+    
+    return Math.floor(rand() * (max - min + 1) + min);
     //The maximum is inclusive and the minimum is inclusive
+}
+
+function xmur3(str: string) {
+  for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
+    h = h << 13 | h >>> 19;
+  return function() {
+    h = Math.imul(h ^ h >>> 16, 2246822507);
+    h = Math.imul(h ^ h >>> 13, 3266489909);
+    return (h ^= h >>> 16) >>> 0;
+  }
+}
+function mulberry32(a: number) {
+  return function() {
+    var t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
 }

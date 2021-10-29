@@ -15,6 +15,10 @@
     }
 }
 
+.table-heading {
+    text-align: center;
+}
+
 .buttons-container {
     display: flex;
     justify-content: stretch;
@@ -188,6 +192,7 @@
 
 
 .page-container {
+    position: relative;
     width: 90%;
     margin: 0 auto;
     display: flex;
@@ -197,6 +202,7 @@
 
 
 .display-container {
+    position: relative;
     h2 {
         text-align: center;
     }
@@ -728,7 +734,15 @@
 }  
 .nation-name-heading {
     text-transform: capitalize;
-    // font-weight: bold;
+}
+
+.arrow-nav {
+    position: absolute;
+    cursor: pointer;  
+    right: 2.5%;
+    &--top {
+        top: 12%;
+    }
 }
 // *** ANGULAR CDK DRAG & DROP classes ***
 // Do not move cdk drag classes inside other classes

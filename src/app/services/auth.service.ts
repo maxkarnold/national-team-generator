@@ -45,8 +45,8 @@ export class AuthService {
   }
 
   getUser() {
-    const user = this.afAuth.user;
-    return user
+    const user$ = this.afAuth.user;
+    return user$
   }
 
   changeAuthState(authState: boolean) {

@@ -1,3 +1,8 @@
+
+<button mat-icon-button (click)="goToRoster(fullRosterTarget)" class="arrow-nav arrow-nav--top">
+    <mat-icon>arrow_downward</mat-icon>
+</button>
+
 <div class="page-container">
     <div class="buttons-container">
         <mat-form-field class="team-generator-form">
@@ -264,16 +269,20 @@
             </div>
         </div>
     </div>
+    <div #fullRosterTarget></div>
     <div class="display-container" *ngIf="players.length > 0"> 
-        <h2 id="full_roster_heading">Full Roster</h2>
+        <h2>Full Roster</h2>
+        <button mat-icon-button (click)="goToRoster('topPage')" class="arrow-nav arrow-nav--bottom">
+            <mat-icon>arrow_upward</mat-icon>
+        </button>
         <div class="position-table">
-            <h3>Position Breakdown</h3>
+            <h3 class="table-heading">Position Breakdown</h3>
             <ul class="positions">
                 <li *ngFor="let pos of positions"><span>{{pos.position}}</span><span>{{pos.amount}}</span></li>
             </ul>
         </div>
-        <h2 class="nation-name-heading">{{nationName}} Team</h2> 
-        <h3>Player Table</h3>
+        <h2 class="nation-name-heading">{{nationOrTier}} Team</h2> 
+        <h3 class="table-heading">Player Table</h3>
         <table class="player-table" matSort (matSortChange)="sortData($event)">     
             <tr class="table-headings">
                 <!-- <th>Index</th> -->
