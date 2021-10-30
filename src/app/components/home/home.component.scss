@@ -737,12 +737,7 @@
 }
 
 .arrow-nav {
-    position: absolute;
     cursor: pointer;  
-    right: 2.5%;
-    &--top {
-        top: 12%;
-    }
 }
 // *** ANGULAR CDK DRAG & DROP classes ***
 // Do not move cdk drag classes inside other classes

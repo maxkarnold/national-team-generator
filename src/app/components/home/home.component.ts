@@ -119,6 +119,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   
 
   ngOnInit(): void {
+    console.log(getRandomInt(0, 5), getRandomInt(0, 5), getRandomInt(0, 5));  
     for (const tierObj of this.nations) {
       for (let i = 0; i < tierObj.nations.length; i++) {
         this.nationsList.push(tierObj.nations[i].name);
@@ -1261,7 +1262,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   
 
-  getPlayers() {
+  async getPlayers() {
     if (!this.isLoggedIn) {
       alert("You must login to generate a team.");
       return false
@@ -1270,6 +1271,20 @@ export class HomeComponent implements OnInit, OnDestroy {
       alert("You must select a nation or random nationalities before generating a team");
       return false
     }
+    // let lastTime: any = localStorage.getItem('Last request time');
+    // if (lastTime !== null) {
+    //   lastTime = parseInt(lastTime);
+    //   let currentTime = new Date().getTime();
+    //   if (lastTime + 300000 > currentTime) {
+    //     let timeLeft = (lastTime + 300000) - currentTime;
+    //     let min = Math.floor(timeLeft / 60000);
+    //     let seconds = Math.round((timeLeft % 60000) / 1000)
+    //     let str = seconds == 60 ? (min+1) + ":00" : min + ":" + (seconds < 10 ? "0" : "") + seconds;
+        
+    //     console.log(`Please wait for ${str} to generate a new team.`);
+    //     return false;
+    //   }
+    // }
     if (this.players.length > 0) {
       if (window.confirm("Are you sure? Any unsaved data will be deleted.")) {
         this.resetStarters(true);
@@ -1277,6 +1292,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         return false
       }
     }
+    let timestamp = new Date().getTime().toString();
+    localStorage.setItem('Last request time', timestamp);
     // RESETS
     console.log("New set of players!")
     this.playerCount = 0;
@@ -1309,6 +1326,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     // Loops 60 times for 60 players
     while (this.playerCount < 60) {
+
       let player: Player = {
         firstName: '',
         lastName: '',
@@ -1366,7 +1384,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       let randomNum = getRandomInt(1, 20);
       let firstNameReq = this.afs.getFirstName(player.nationality, randomNum)?.request$;
       let firstNameRetry = this.afs.getFirstName(player.nationality, randomNum)?.retryRequest$;
-
       firstNameReq.subscribe((firstNameArr) => {
         if (firstNameArr[0] !== undefined) {
           let firstNameObj: any = firstNameArr[0];
@@ -1409,19 +1426,21 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       });
       // getMiddleName function
-
-
+      console.log(player, this.playerCount);
       this.players.push(player);
       this.sortedData.push(player);
       this.playerCount++;
-
     }
-    this.players = this.players.sort((a, b) => {
-      let isAsc = false;
-      return compare(a.rating, b.rating, isAsc);
-    });
-    this.sortedData = this.players;
-    console.log(this.players);
+    
+    window.setTimeout(() => {
+      this.players = this.players.sort((a, b) => {
+        let isAsc = false;
+        return compare(a.rating, b.rating, isAsc);
+      });
+      this.sortedData = this.players;
+      console.log(this.players);
+    }, 5000, this.players);
+
   }
 
   getNation(property: string, rating?: number) {
@@ -3134,30 +3153,30 @@ function median(values: number[]){
 }
 
 function getRandomInt(min: number, max: number) {
-    let seed = xmur3("string-seed");
-    let rand = mulberry32(seed());
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    
-    return Math.floor(rand() * (max - min + 1) + min);
-    //The maximum is inclusive and the minimum is inclusive
+  // let seed = xmur3("string-seed");
+  // let rand = mulberry32(seed());
+  min = Math.ceil(min);
+  max = Math.floor(max);
+
+  return Math.floor(Math.random() * (max - min + 1) + min);
+  //The maximum is inclusive and the minimum is inclusive
 }
 
-function xmur3(str: string) {
-  for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
-    h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
-    h = h << 13 | h >>> 19;
-  return function() {
-    h = Math.imul(h ^ h >>> 16, 2246822507);
-    h = Math.imul(h ^ h >>> 13, 3266489909);
-    return (h ^= h >>> 16) >>> 0;
-  }
-}
-function mulberry32(a: number) {
-  return function() {
-    var t = a += 0x6D2B79F5;
-    t = Math.imul(t ^ t >>> 15, t | 1);
-    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  }
-}
+// function xmur3(str: string) {
+//   for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
+//     h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
+//     h = h << 13 | h >>> 19;
+//   return function() {
+//     h = Math.imul(h ^ h >>> 16, 2246822507);
+//     h = Math.imul(h ^ h >>> 13, 3266489909);
+//     return (h ^= h >>> 16) >>> 0;
+//   }
+// }
+// function mulberry32(a: number) {
+//   return function() {
+//     var t = a += 0x6D2B79F5;
+//     t = Math.imul(t ^ t >>> 15, t | 1);
+//     t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+//     return ((t ^ t >>> 14) >>> 0) / 4294967296;
+//   }
+// }

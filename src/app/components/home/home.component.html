@@ -1,10 +1,11 @@
 
-<button mat-icon-button (click)="goToRoster(fullRosterTarget)" class="arrow-nav arrow-nav--top">
-    <mat-icon>arrow_downward</mat-icon>
-</button>
+
 
 <div class="page-container">
     <div class="buttons-container">
+        <button mat-icon-button (click)="goToRoster(fullRosterTarget)" class="arrow-nav arrow-nav--top">
+            <mat-icon>arrow_downward</mat-icon>
+        </button>
         <mat-form-field class="team-generator-form">
             <mat-label>-- Choose a Nation --</mat-label>  
             <mat-select #nationSelect appearance="fill" [(value)]="nationSelectValue" class="select-nations" (click)="consoleLog(nationSelectValue)">
