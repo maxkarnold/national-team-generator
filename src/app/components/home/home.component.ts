@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   pitchPositions: any = (pitchPositionsModule as any).default;
 
   nations: any = (nationsModule as any).default;
-  nationsList: string[];
+  nationsList: any[];
   clubs: any = (clubsModule as any).default;
 
   isLoggedIn = false;
@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     for (const tierObj of this.nations) {
       for (let i = 0; i < tierObj.nations.length; i++) {
-        this.nationsList.push(tierObj.nations[i].name);
+        this.nationsList.push(tierObj.nations[i]);
       }
     }
     this.subscription = this.auth.currentAuthState.subscribe(authState => this.isLoggedIn = authState);
@@ -567,7 +567,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     for (const arr of chemArr) {
       let first;
       let second;
-      for (const player of this.pitchPlayers) {      
+      for (const player of this.pitchPlayers) {   
         // check for multiple possible positions for player1
         if (arr[0] === 'multi') {
           for (let i = 1; i < arr.length; i++) {
@@ -592,7 +592,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         } else if (player.pitchPosition === arr[1]) { // Check for second player in chem pair
           second = player;
         }
-        if (first && second) {
+        if (first && second && first.chemistryNum && second.chemistryNum) {
           if (first.nationality === second.nationality) {
             this.chemistry++;
             first.chemistryNum++;
@@ -611,15 +611,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getChemColor(player: Player) {
-    if (player.chemistryNum === 1) {
-      return '1px dashed yellow'
-    } else if (player.chemistryNum === 2) {
-      return '1px dashed lime'
-    } else if (player.chemistryNum > 2) {
-      return '1px dashed pink'
-    } else {
-      return '1px solid #353535'
+    if (player.chemistryNum) {
+      if (player.chemistryNum === 1) {
+        return '1px dashed yellow'
+      } else if (player.chemistryNum === 2) {
+        return '1px dashed lime'
+      } else if (player.chemistryNum > 2) {
+        return '1px dashed pink'
+      } else {
+        return '1px solid #353535'
+      }
     }
+    
   }
 
   calcStartersRating() {
@@ -1329,7 +1332,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       let player: Player = {
         firstName: '',
         lastName: '',
-        position: '',
+        mainPositions: [],
         altPositions: [],
         competentPositions: [],
         unconvincingPositions: [],
@@ -1350,15 +1353,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         playerFace: this.blankPlayerPic
       };
       
-      player.position = this.getPosition();
+      player.mainPositions = this.getPosition();
 
-      player.foot = this.getFoot(player.position);
-      let positionsObj = this.getAltPositions(player.position, player.foot);
+      player.foot = this.getFoot(player.mainPositions);
+      let positionsObj = this.getAltPositions(player.mainPositions, player.foot);
       player.altPositions = positionsObj.altPos;
       player.competentPositions = positionsObj.compPos;
       player.unconvincingPositions = positionsObj.unconvincingPos;
 
-      let roleObj = this.getPositionRole(player.position, player.altPositions, player.foot);
+      let roleObj = this.getPositionRole(player.mainPositions, player.altPositions, player.foot);
       player.preferredRole = roleObj.role;
       player.preferredDuty = roleObj.duty;
 
@@ -1488,7 +1491,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         } else {
           // realistic nationalities turned off
           let randomNum = getRandomInt(0, this.nationsList.length - 1);
-          nationality = this.nationsList[randomNum];
+          nationality = this.nationsList[randomNum].name;
         }
         
       }
@@ -2377,33 +2380,33 @@ export class HomeComponent implements OnInit, OnDestroy {
   getRatingBreakdown(tier: string): number[] {
     switch (tier) {
       case "s":
-        return [3, 9, 10, 30, 40, 70, 180, 200, 0, 0, 0, 0];
+        return [3, 9, 10, 30, 40, 70, 150, 200, 0, 0, 0, 0, 0, 0];
       case "a":
-        return [2, 5, 4, 12, 16, 45, 90, 130, 0, 0, 0, 0];
+        return [2, 5, 4, 12, 16, 45, 45, 70, 0, 0, 0, 0, 0, 0];
       case "b":
-        return [0, 4, 1, 5, 4, 15, 25, 150, 85, 200, 0, 0];
+        return [0, 4, 2, 5, 4, 15, 15, 60, 45, 100, 0, 0, 0, 0];
       case "c":
-        return [0, 2, 0, 3, 3, 12, 20, 50, 70, 180, 0 ,0];
+        return [0, 2, 0, 3, 3, 12, 10, 25, 30, 70, 60 , 160, 0, 0];
       case "d":
-        return [0, 1, 0, 3, 1, 7, 15, 45, 70, 160, 0 ,0];
+        return [0, 2, 0, 3, 1, 7, 5, 25, 30, 65, 100 , 200, 0, 0];
       case "e":
-        return [0, 1, 0, 2, 0, 6, 15, 25, 40, 70, 50, 50];
+        return [0, 1, 0, 3, 0, 6, 6, 18, 12, 40, 38, 75, 10, 10];
       case "f":
-        return [0, 1, 0, 2, 0, 4, 3, 20, 30, 80, 50, 50];
+        return [0, 1, 0, 2, 0, 4, 0, 8, 8, 22, 30, 100, 25, 25];
       case "g":
-        return [0, 1, 0, 1, 0, 4, 3, 13, 25, 45, 50, 50];
+        return [0, 1, 0, 1, 0, 4, 0, 6, 8, 18, 25, 45, 30, 30];
       case "h":
-        return [0, 0, 0, 1, 0, 2, 2, 10, 10, 25, 50, 50];
+        return [0, 0, 0, 1, 0, 2, 0, 5, 2, 10, 12, 35, 50, 50];
       case "i":
-        return [0, 0, 0, 1, 0, 1, 0, 8, 2, 16, 100, 100];
+        return [0, 0, 0, 1, 0, 1, 0, 4, 1, 7, 2, 18, 60, 60];
       case "j":
-        return [0, 0, 0, 0, 0, 1, 0, 1, 0, 10, 100, 100];
+        return [0, 0, 0, 0, 0, 1, 0, 1, 0, 3, 60, 60];
       default:
         throw new Error("getRatingBreakdown() had an error");
     }
   }
 
-  getRatingAndClubRep(i: number, first: number, second: number, third: number, fourth: number, fifth: number, sixth: number) {
+  getRatingAndClubRep(i: number, first: number, second: number, third: number, fourth: number, fifth: number, sixth: number, seventh: number) {
 
     let rating: number = 0;
     let clubRep = "";
@@ -2419,12 +2422,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       rating = getRandomInt(70, 75);
       clubRep = "regularInternational";
     } else if (i < first + second + third + fourth) {
-      rating = getRandomInt(62, 69);
+      rating = getRandomInt(65, 69);
       clubRep = "averagePlayer"
     } else if (i < first + second + third + fourth + fifth) {
-      rating = getRandomInt(55, 61);
-      clubRep = "average2ndDivPlayer";
+      rating = getRandomInt(60, 65);
+      clubRep = "championshipPlayer";
     } else if (i < first + second + third + fourth + fifth + sixth) {
+      rating = getRandomInt(55, 61);
+      clubRep = "leagueOnePlayer";
+    } else if (i < first + second + third + fourth + fifth + sixth + seventh) {
       rating = getRandomInt(40, 54);
       clubRep = "fillerPlayer";
     }
@@ -2570,77 +2576,76 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getClub(clubRep: string, playerNation: string) {
     let clubArr: any[] =  this.clubs[clubRep];
+    let nationObj;
+    for (const nation of this.nationsList) {
+      if (nation.name === playerNation) {
+        nationObj = nation;
+      }
+    }
     let clubName: string = "";
     let clubLogoUrl: string = "";
-    let randomIndexArr = [];
+    shuffle(clubArr);
 
-    for (let i = 0; i < clubArr.length; i++) {
-      let randIndex = getRandomInt(0, clubArr.length - 1);
-      randomIndexArr.push(randIndex);
+    // 50% chance for mainLeague
+    let main = getRandomInt(1, 2);
+
+    if (main < 2) {
+      for (let i = 0; i < clubArr.length; i++) {
+        if (nationObj.mainLeagues.includes(clubArr[i].league)) {
+          clubName = clubArr[i].club;
+          clubLogoUrl = clubArr[i].logo;
+        }
+      }
+    } 
+    // 30% chance for secondLeague
+    let secondary = getRandomInt(1, 10);
+    
+    if (secondary < 4 && clubName === "") {
+      for (let i = 0; i < clubArr.length; i++) {
+        if (nationObj.secondLeagues.includes(clubArr[i].league)) {
+          clubName = clubArr[i].club;
+          clubLogoUrl = clubArr[i].logo;
+        }
+      }
     }
-    // console.log(randomIndexArr, clubArr);
+    // 15% chance for thirdLeague
+    let tertiary = getRandomInt(1, 100);
 
-    // About a 60% chance to play for team with same mainNation
-    let mainNationChance = getRandomInt(1, 10);
-    // About a 40% (45%-5%) chance to play for team with same altNation
-    let altNationChance = getRandomInt(1, 20);
-    // Maybe should add a third chance `thirdNationChance`. This would be 25%.
-
-    if (mainNationChance < 7) {
-      // for each club in the random indexed array
-      for (let i = 0; i < randomIndexArr.length; i++) {
-        let club = clubArr[randomIndexArr[i]];
-        for (let j = 0; j < club.mainNations.length; j++) {
-          if (club.mainNations[j] === playerNation) {
-            clubName = club.club;
-            clubLogoUrl = club.logo;
-            return {
-              clubName,
-              clubLogoUrl
-            };
-          }
+    if (tertiary < 16 && clubName === "") {
+      for (let i = 0; i < clubArr.length; i++) {
+        if (nationObj.thirdLeagues.includes(clubArr[i].league)) {
+          clubName = clubArr[i].club;
+          clubLogoUrl = clubArr[i].logo;
         }
       }
-      let randIndex = getRandomInt(0, randomIndexArr.length - 1);
-      let club = clubArr[randIndex];
-      clubName = club.club;
-      clubLogoUrl = club.logo;
-      return {
-        clubName,
-        clubLogoUrl
-      };
-    } else if (altNationChance < 10) {
-      // for each club in the random indexed array
-      for (let i = 0; i < randomIndexArr.length; i++) {
-        let club = clubArr[randomIndexArr[i]];
-        for (let j = 0; j < club.altNations.length; j++) {
-          if (club.altNations[j] === playerNation) {
-            clubName = club.club;
-            clubLogoUrl = club.logo;
-            return {
-              clubName,
-              clubLogoUrl
-            };
-          }
+    }
+
+    // 5% chance for thirdLeague
+    let rare = getRandomInt(1, 100);
+
+    if (rare < 6 && clubName === "") {
+      for (let i = 0; i < clubArr.length; i++) {
+        if (nationObj.rareLeagues.includes(clubArr[i].league)) {
+          clubName = clubArr[i].club;
+          clubLogoUrl = clubArr[i].logo;
         }
       }
-      let randIndex = getRandomInt(0, randomIndexArr.length - 1);
-      let club = clubArr[randIndex];
-      clubName = club.club;
-      clubLogoUrl = club.logo;
-      return {
-        clubName,
-        clubLogoUrl
-      };
-    } else {
-      let randIndex = getRandomInt(0, randomIndexArr.length - 1);
-      let club = clubArr[randIndex];
-      clubName = club.club;
-      clubLogoUrl = club.logo;
-      return {
-        clubName,
-        clubLogoUrl
-      };
+    }
+
+    // if still no club, choose a random club
+
+    if (clubName === "") {
+      for (let i = 0; i < clubArr.length; i++) {
+        if (!(clubArr[i].league === nationObj.excludeLeagues)) { // check for excluded league
+          clubName = clubArr[i].club;
+          clubLogoUrl = clubArr[i].logo;
+        }
+      }
+    }
+
+    return {
+      clubName,
+      clubLogoUrl
     }
   }
 
@@ -3148,6 +3153,23 @@ function median(values: number[]){
     return values[half];
   
   return (values[half - 1] + values[half]) / 2.0;
+}
+
+function shuffle(array: any[]) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
 }
 
 function getRandomInt(min: number, max: number) {

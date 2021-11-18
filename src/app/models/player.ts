@@ -4,7 +4,7 @@ import { GkAttributes } from './gkAttributes';
 export interface Player {
     firstName: string;
     lastName: string;
-    position: string;
+    mainPositions: string[];
     altPositions: string[];
     competentPositions: string[];
     unconvincingPositions: string[];
@@ -36,7 +36,7 @@ export interface Player {
     pitchPosition?: string;
     pitchPositionIndex?: number;
     pitchRating?: number;
-    chemistryNum: number;
+    chemistryNum?: number;
     // *** Above are properties we've already added ***
     // *** Below are properties we've yet to add ***
     firstNameUsage?: string;

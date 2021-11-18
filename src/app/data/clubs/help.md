@@ -4,20 +4,22 @@ The `clubs.json` file has a large amount of club information and is more complex
 
 ## Basic Setup
 
-The club info is stored in a json file. It has five main properties.
+The club info is stored in a json file. It has seven main properties.
 ### Properties
 * top50
 * top200
 * regularInternational
 * averagePlayer
-* average2ndDivPlayer
+* championshipPlayer
+* leagueOnePlayer
 * fillerPlayer
 Each property represents a rating bracket that every player falls under. The players within these brackets are in these rating ranges, which can be found in the `home.component.ts` file.
 ### Rating Brackets
 * 82-99
 * 76-81
 * 70-75
-* 62-69
+* 65-69
+* 60-65
 * 55-61
 * 40-54
 
@@ -33,6 +35,7 @@ The `mainNations` and `altNations` arrays for each club are decided based on the
 > This is a rolling list that will change as more clubs are added.
 * Wolves: Portugal added as `altNation`
 * Athletic Bilbao: all nations are removed from both arrays except for Spain
+* Chivas: all nations are removed from both arrays except for Mexico
 * Some english clubs are championship and some are premier league. Championship clubs have more altNations.
 
 
