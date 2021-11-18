@@ -13,6 +13,7 @@ The club info is stored in a json file. It has seven main properties.
 * championshipPlayer
 * leagueOnePlayer
 * fillerPlayer
+
 Each property represents a rating bracket that every player falls under. The players within these brackets are in these rating ranges, which can be found in the `home.component.ts` file.
 ### Rating Brackets
 * 82-99
