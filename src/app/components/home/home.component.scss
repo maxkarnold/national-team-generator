@@ -15,6 +15,21 @@
     }
 }
 
+.positions-span:not(:last-child)::after {
+    content: ", ";
+}
+
+.main-heading {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    h2 {
+        font-size: 2rem;
+        margin: 0.83rem 0 0.83rem
+    }
+}
+
 .table-heading {
     text-align: center;
 }
@@ -211,7 +226,7 @@
         margin-bottom: 5rem;
     }
     .position-table {
-        margin: 2rem auto;
+        margin: 1.5rem auto;
         .positions {
             display: flex;
             flex-flow: row wrap;

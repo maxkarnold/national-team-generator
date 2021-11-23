@@ -8,7 +8,7 @@
         </button>
         <mat-form-field class="team-generator-form">
             <mat-label>-- Choose a Nation --</mat-label>  
-            <mat-select #nationSelect appearance="fill" [(value)]="nationSelectValue" class="select-nations" (click)="consoleLog(nationSelectValue)">
+            <mat-select #nationSelect appearance="fill" [(value)]="nationSelectValue" class="select-nations">
                 <mat-optgroup *ngFor="let tierGroup of this.nations" [label]="tierGroup.tier">
                     <mat-option [value]="tierGroup.tier" class="nation-option">
                         Random Nationalities
@@ -183,7 +183,7 @@
                                 <mat-expansion-panel-header>
                                     <ul class="player-row">
                                         <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
-                                        <li>{{player.position}}</li>
+                                        <li><span *ngFor="let pos of player.mainPositions" class="positions-span">{{pos}}</span></li>
                                         <li>{{player.age}}</li>
                                         <li>{{player.rating}}</li>
                                         <!-- <li *cdkDragPreview>
@@ -199,7 +199,10 @@
                                     <span>Preferred Role/Duty:</span><span>{{player.preferredRole}} - {{player.preferredDuty}}</span>
                                 </p>
                                 <p class="expanded-info">
-                                    <span>Other Positions:</span><span *ngFor="let pos of player.altPositions">{{pos}}</span>
+                                    <span>Other Positions:</span>
+                                    <span>
+                                        <span *ngFor="let pos of player.altPositions" class="positions-span">{{pos}}</span>
+                                    </span>
                                 </p>
                                 <p class="expanded-info">
                                     <span>Club:</span>
@@ -227,12 +230,12 @@
                                 <mat-expansion-panel-header>
                                     <ul class="player-row">
                                         <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
-                                        <li>{{player.position}}</li>
+                                        <li><span *ngFor="let pos of player.mainPositions" class="positions-span">{{pos}}</span></li>
                                         <li>{{player.age}}</li>
                                         <li>{{player.rating}}</li>
                                         <li *cdkDragPreview>
                                             <!-- <img class="shirtIcon-img" [src]="shirtIcon" [alt]=""> -->
-                                            <div class="player-preview">{{player.lastName}} {{player.position}} {{player.rating}}</div>
+                                            <div class="player-preview">{{player.lastName}} {{player.mainPositions[0]}} {{player.rating}}</div>
                                         </li>
                                     </ul>
                                 </mat-expansion-panel-header>
@@ -243,7 +246,10 @@
                                         <span>Preferred Role/Duty:</span><span>{{player.preferredRole}} - {{player.preferredDuty}}</span>
                                     </p>
                                     <p class="expanded-info">
-                                        <span>Other Positions:</span><span *ngFor="let pos of player.altPositions">{{pos}}</span>
+                                        <span>Other Positions:</span>
+                                        <span>
+                                            <span *ngFor="let pos of player.altPositions" class="positions-span">{{pos}}</span>
+                                        </span>
                                     </p>
                                     <p class="expanded-info">
                                         <span>Club:</span>
@@ -262,7 +268,7 @@
                                     <p class="expanded-info">
                                         <span>Preferred Foot:</span><span>{{player.foot}}</span>
                                     </p> 
-                                    <div class="lineup-drag-placeholder" *cdkDragPlaceholder>{{player.firstInitial}}. {{player.lastName}} {{player.rating}} {{player.position}}</div>
+                                    <div class="lineup-drag-placeholder" *cdkDragPlaceholder>{{player.firstInitial}}. {{player.lastName}} {{player.rating}} {{player.mainPositions[0]}}</div>
                             </mat-expansion-panel>
                         </div>
                     </mat-accordion>       
@@ -272,10 +278,13 @@
     </div>
     <div #fullRosterTarget></div>
     <div class="display-container" *ngIf="players.length > 0"> 
-        <h2>Full Roster</h2>
-        <button mat-icon-button (click)="goToRoster('topPage')" class="arrow-nav arrow-nav--bottom">
-            <mat-icon>arrow_upward</mat-icon>
-        </button>
+        <div class="main-heading">
+            <button mat-icon-button (click)="goToRoster('topPage')" class="arrow-nav arrow-nav--bottom">
+                <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <h2>Full Roster</h2>
+        </div>
+        
         <div class="position-table">
             <h3 class="table-heading">Position Breakdown</h3>
             <ul class="positions">
@@ -291,7 +300,7 @@
                 <th mat-sort-header="club">Club</th>
                 <th mat-sort-header="nationality" class="desktop">Nationality</th>
                 <th mat-sort-header="roleDuty" class="desktop">Preferred Role/Duty</th>
-                <th mat-sort-header="pos">Position</th>
+                <th mat-sort-header="mainPositions">Position</th>
                 <th mat-sort-header="altPositions" class="desktop">Other Positions</th>
                 <th mat-sort-header="foot" class="desktop">Preferred Foot</th>
                 <th mat-sort-header="rating">Rating</th>
@@ -315,10 +324,12 @@
                         </div>  
                     </td>
                     <td class="desktop">{{player.preferredRole}} - {{player.preferredDuty}}</td>
-                    <td>{{player.position}}</td> 
+                    <td>
+                        <span *ngFor="let pos of player.mainPositions" class="positions-span">{{pos}}</span>
+                    </td> 
                     <td class="alt-positions desktop">
                         <div>
-                            <span *ngFor="let pos of player.altPositions">{{pos}}</span>
+                            <span *ngFor="let pos of player.altPositions" class="positions-span">{{pos}}</span>
                         </div>
                     </td>
                     <td class="desktop">{{player.foot}}</td>

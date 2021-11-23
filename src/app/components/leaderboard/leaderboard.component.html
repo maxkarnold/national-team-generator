@@ -41,7 +41,7 @@
                         <div class="secondary">
                             <div>{{roster.roster.sortedRoster[0].firstName}} {{roster.roster.sortedRoster[0].lastName}}</div>
                             <div>{{roster.roster.sortedRoster[0].rating}}</div>
-                            <div>{{roster.roster.sortedRoster[0].position}}</div>
+                            <div> <span *ngFor="let pos of roster.roster.sortedRoster[0].mainPositions">{{pos}} </span></div>
                             <div><span class="capitalize">{{roster.roster.sortedRoster[0].nationality}} </span><img [src]="roster.roster.sortedRoster[0].nationalityLogo" [alt]="roster.roster.sortedRoster[0].nationality" class="nation-flag"></div>  
                         </div>
                         
