@@ -121,7 +121,8 @@
                             <div *ngIf="box.pitchPlayer !== undefined" >
                                 <img [src]="box.pitchPlayer.playerFace" alt="" class="player-face">
                                 <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info" >{{box.pitchPlayer.pitchRating}}</span>
-                                <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchPosition}}</span>
+                                <!-- <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchPosition}}</span> -->
+                                <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.preferredRole}}-{{box.pitchPlayer.preferredDuty}}</span>
                                 <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.nationalityLogo">
                                 <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.clubLogo">
                                 <span *ngIf="box.pitchPlayer !== undefined" class="player-name">{{box.pitchPlayer.displayName}}</span>
