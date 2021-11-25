@@ -1263,20 +1263,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       alert("You must select a nation or random nationalities before generating a team");
       return false
     }
-    let lastTime: any = localStorage.getItem('Last request time');
-    if (lastTime !== null) {
-      lastTime = parseInt(lastTime);
-      let currentTime = new Date().getTime();
-      if (lastTime + 300000 > currentTime) { // if 5 minutes haven't passed since last request
-        let timeLeft = (lastTime + 300000) - currentTime;
-        let min = Math.floor(timeLeft / 60000);
-        let seconds = Math.round((timeLeft % 60000) / 1000)
-        let str = seconds == 60 ? (min+1) + ":00" : min + ":" + (seconds < 10 ? "0" : "") + seconds;
+    // *** KEEP THIS COMMENTED FOR DEV BRANCH ***
+    // let lastTime: any = localStorage.getItem('Last request time');
+    // if (lastTime !== null) {
+    //   lastTime = parseInt(lastTime);
+    //   let currentTime = new Date().getTime();
+    //   if (lastTime + 300000 > currentTime) { // if 5 minutes haven't passed since last request
+    //     let timeLeft = (lastTime + 300000) - currentTime;
+    //     let min = Math.floor(timeLeft / 60000);
+    //     let seconds = Math.round((timeLeft % 60000) / 1000)
+    //     let str = seconds == 60 ? (min+1) + ":00" : min + ":" + (seconds < 10 ? "0" : "") + seconds;
         
-        alert(`Please wait ${str} to generate a new team.`);
-        return false;
-      }
-    }
+    //     alert(`Please wait ${str} to generate a new team.`);
+    //     return false;
+    //   }
+    // }
     if (this.players.length > 0) {
       if (window.confirm("Are you sure? Any unsaved data will be deleted.")) {
         this.resetStarters(true);
