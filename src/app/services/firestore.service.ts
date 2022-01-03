@@ -34,16 +34,16 @@ export class FirestoreService {
         } else if (num > 9) {
           nameOrigin = ["Western African", "Basque"];
         } else {
-          nameOrigin = ["French", "Occitan", "Breton", "Corsican"];
+          nameOrigin = ["French"];
         }
         break;
       case "brazil":
-      case "cape verde":
+      case "cabo verde":
       case "portugal":
         nameOrigin = ["Portuguese"];
         break;
       case "germany":
-        nameOrigin = ["German", "Frisian", "Limburgish", "Turkish"];
+        nameOrigin = ["German", "Turkish"];
         break;
       case "austria":
         nameOrigin = ["German"];
@@ -55,10 +55,10 @@ export class FirestoreService {
         nameOrigin = ["Polish"];
         break;
       case "italy":
-        nameOrigin = ["Italian", "Sardinian", "Occitan"];
+        nameOrigin = ["Italian", "Portuguese"];
         break;
       case "spain":
-        nameOrigin = ["Spanish", "Occitan", "Basque", "Galician", "Catalan"];
+        nameOrigin = ["Spanish", "Basque", "Galician", "Catalan"];
         break;
       case "argentina":
       case "honduras":
@@ -75,10 +75,8 @@ export class FirestoreService {
       case "mexico":
       case "colombia":
       case "uruguay":
+      case "guatemala":
         nameOrigin = ["Spanish"];
-        break;
-      case "england":
-        nameOrigin = ["English", "Cornish"];
         break;
       case "wales": 
         nameOrigin = ["English", "Welsh"];
@@ -92,7 +90,13 @@ export class FirestoreService {
       case "grenada":
       case "new zealand":
       case "australia":
-      nameOrigin = ["English"];
+      case "barbados":
+      case "bermuda":
+      case "solomon islands": // no polynesian names from the database
+      case "st. kitts & nevis":
+      case "antigua & barbuda":
+      case "england":
+        nameOrigin = ["English"];
         break;
       case "northern ireland":
       case "ireland":
@@ -100,15 +104,18 @@ export class FirestoreService {
         nameOrigin = ["Scottish", "English", "Irish"];
         break;
       case "curaçao":
+        nameOrigin = ["English", "Spanish", "Dutch"];
+        break;
       case "el salvador":
       case "united states":
+      case "nicaragua":
         nameOrigin = ["English", "Spanish"];
         break;
       case "netherlands":
-        nameOrigin = ["Dutch", "Frisian", "Limburgish"];
+        nameOrigin = ["Dutch"];
         break;
       case "belgium":
-        nameOrigin = ["Dutch", "Limburgish", "Western African", "French"];
+        nameOrigin = ["Dutch", "Western African", "French"];
         break;
       case "luxembourg":
         nameOrigin = ["French", "German"];
@@ -127,6 +134,9 @@ export class FirestoreService {
         break;
       case "iceland":
         nameOrigin = ["Icelandic"];
+        break;
+      case "faroe islands":
+        nameOrigin = ["Faroese", "Danish"];
         break;
       case "croatia":
         nameOrigin = ["Croatian"];
@@ -163,23 +173,38 @@ export class FirestoreService {
       case "lithuania":
         nameOrigin = ["Lithuanian"];
         break;
+      case "latvia":
+        nameOrigin = ["Latvian"];
+        break;
       case "russia":
         nameOrigin = ["Russian"];
         break;
-      case "kyrgyzstan":
+      case "kyrgyz republic":
         nameOrigin = ["Russian", "Kyrgyz"];
         break;
       case "ukraine":
         nameOrigin = ["Ukrainian"];
         break;
       case "georgia":
-      nameOrigin = ["Georgian"];
+        nameOrigin = ["Georgian"];
         break;
       case "armenia":
-      nameOrigin = ["Armenian"];
+        nameOrigin = ["Armenian"];
+        break;
+      case "azerbaijan":
+        nameOrigin = ["Azerbaijani"];
         break;
       case "uzbekistan":
-      nameOrigin = ["Uzbek"];
+        nameOrigin = ["Uzbek"];
+        break;
+      case "kazakhstan":
+        nameOrigin = ["Kazakh"];
+        break;
+      case "tajikistan":
+        nameOrigin = ["Tajik"];
+        break;
+      case "turkmenistan":
+        nameOrigin = ["Turkmen"];
         break;
       case "turkey":
         nameOrigin = ["Turkish"];
@@ -191,8 +216,11 @@ export class FirestoreService {
       case "senegal":
         nameOrigin = ["Western African"];
         break;
+      case "sudan":
+        nameOrigin = ["Western African", "Arabic"];
+        break;
       case "ghana":
-      case "ivory coast":
+      case "Côte d'Ivoire":
       case "guinea":
       case "togo":
       case "benin":
@@ -201,6 +229,9 @@ export class FirestoreService {
       case "chad":
       case "central african republic":
         nameOrigin = ["Western African", "French"];
+        break;
+      case "niger":
+        nameOrigin = ["Western African", "French", "Arabic"];
         break;
       case "sierra leone":
         nameOrigin = ["Western African", "English"];
@@ -224,10 +255,18 @@ export class FirestoreService {
       case "uganda":
         nameOrigin = ["Arabic", "English"];
         break;
+      case "tanzania":
+        nameOrigin = ["Arabic", "English", "Eastern African"];
+        break;
       case "zimbabwe":
       case "zambia":
       case "south africa":
-        nameOrigin = ["Southern African"];
+      case "namibia":
+      case "malawi":
+        nameOrigin = ["Southern African", "English"];
+        break;
+      case "kenya":
+        nameOrigin = ["Eastern African"];
         break;
       case "suriname":
         nameOrigin = ["Dutch", "English"];
@@ -235,6 +274,8 @@ export class FirestoreService {
       case "tunisia":
       case "algeria":
       case "morocco":
+      case "libya":
+      case "mauritania":
         nameOrigin = ["Northern African", "Arabic"];
         break;
       case "UAE":
@@ -243,11 +284,14 @@ export class FirestoreService {
       case "jordan":
       case "bahrain":
       case "qatar":
-      case "saudi arabia": 
-      case "egypt": 
+      case "saudi arabia":
+      case "oman":
+      case "kuwait":
+      case "egypt":
         nameOrigin = ["Arabic"];
         break;
       case "israel":
+      case "palestine":
         nameOrigin = ["Hebrew", "Arabic"];
         break;
       case "iran":
@@ -273,34 +317,98 @@ export class FirestoreService {
         nameOrigin = ["Japanese"];
         break;
       case "south korea":
+      case "korea DPR":
         nameOrigin = ["Korean"];
         break;
       case "china PR":
+      case "chinese taipei":
         nameOrigin = ["Chinese"];
         break;
       case "philippines":
         nameOrigin = ["Filipino", "English"];
+        break;
+      case "thailand":
+        nameOrigin = ["Thai"];
+        break;
+      case "vietnam":
+        nameOrigin = ["Vietnamese"];
+        break;
+      case "india":
+        nameOrigin = ["Indian"];
+        break;
+      case "singapore":
+        nameOrigin = ["Chinese", "Malay", "Indian"];
         break;
       default:
         nameOrigin = ["English"];
         break;
     }
 
-    let request$ = this.afs.collection("firstNames_male", ref => ref
-      .where(`randomNum.${randomIndex}`, ">=", randomQuery)
-      .where('usages', 'array-contains-any', nameOrigin)
-      .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
-    let retryRequest$ = this.afs.collection("firstNames_male", ref => ref
-      .where(`randomNum.${randomIndex}`, "<=", randomQuery)
-      .where('usages', 'array-contains-any', nameOrigin)
-      .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+    let chance = getRandomInt(0, nameOrigin.length - 1);
+    let usage = [nameOrigin[chance]];
+    let request$: Observable<any[]>, retryRequest$: Observable<any[]>;
+
+    
+    if (usage.includes("French") || usage.includes("Dutch") || usage.includes("Arabic") || usage.includes("Persian") || usage.includes("Kurdish")) { // chance for multiple given first names
+      let names = getRandomInt(1, 4);
+      request$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(names)).valueChanges();
+      retryRequest$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(names)).valueChanges();
+    } else if (usage.includes("Russian") || usage.includes("Ukrainian")) { // first name and patronym
+      request$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(2)).valueChanges();
+      retryRequest$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(2)).valueChanges();
+      return {
+        request$,
+        retryRequest$,
+        patronym: usage
+      }
+    } else if (usage.includes("Belarusian") || usage.includes("Indian") || usage.includes("English") || usage.includes("Irish") || usage.includes("Scottish") || usage.includes("Vietnamese") || usage.includes("Western African") || usage.includes("German") || usage.includes("Polish") || usage.includes("Danish") || usage.includes("Norwegian") || usage.includes("Swedish") || usage.includes("Finnish") || usage.includes("Lithuanian") || usage.includes("Latvian") || usage.includes("Estonian")) { // one or two given names (two is not common for Estonians)
+      let names = getRandomInt(1, 2);
+      request$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(names)).valueChanges();
+      retryRequest$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(names)).valueChanges();
+      return {
+        request$,
+        retryRequest$,
+        patronym: usage
+      }
+    } else { // only first name (Czech, Slovak, Polish, Bosnian, Serbian, Croatian, Montenegrin, Albanian, Slovene, Macedonian (male-ending), Turkish, Chinese, Japanese, Korean, Icelandic, Faroese, Malay, Italian, Kyrgyz, Georgian, Armenian)
+      request$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+      retryRequest$ = this.afs.collection("firstNames_male", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', nameOrigin)
+        .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+    }
+
+    
     return {
       request$, 
-      retryRequest$
+      retryRequest$,
+      patronym: 'no'
     }
   }
 
   getLastName(nation: string, originNum: number){
+
     let nameOrigin: string[];
     let randomIndex = getRandomInt(1, 5);
     let randomQuery = getRandomInt(0, 50000);
@@ -317,7 +425,7 @@ export class FirestoreService {
         }
         break;
       case "brazil":
-      case "cape verde":
+      case "cabo verde":
       case "portugal":
         nameOrigin = ["Portuguese"];
         break;
@@ -334,7 +442,7 @@ export class FirestoreService {
         nameOrigin = ["Polish"];
         break;
       case "italy":
-        nameOrigin = ["Italian", "Occitan"];
+        nameOrigin = ["Italian", "Portuguese"];
         break;
       case "spain":
         nameOrigin = ["Spanish", "Basque", "Galician", "Catalan"];
@@ -354,10 +462,8 @@ export class FirestoreService {
       case "mexico":
       case "colombia":
       case "uruguay":
+      case "guatemala":
         nameOrigin = ["Spanish"];
-        break;
-      case "england":
-        nameOrigin = ["English"];
         break;
       case "wales": 
         nameOrigin = ["English", "Welsh"];
@@ -371,7 +477,13 @@ export class FirestoreService {
       case "grenada":
       case "new zealand":
       case "australia":
-      nameOrigin = ["English"];
+      case "barbados":
+      case "bermuda":
+      case "solomon islands": // no polynesian names from the database
+      case "st. kitts & nevis":
+      case "antigua & barbuda":
+      case "england":
+        nameOrigin = ["English"];
         break;
       case "northern ireland":
       case "ireland":
@@ -379,12 +491,15 @@ export class FirestoreService {
         nameOrigin = ["Scottish", "English", "Irish"];
         break;
       case "curaçao":
+        nameOrigin = ["Spanish", "Dutch"];
+        break;
       case "el salvador":
       case "united states":
+      case "nicaragua":
         nameOrigin = ["English", "Spanish"];
         break;
       case "netherlands":
-        nameOrigin = ["Dutch", "Frisian"];
+        nameOrigin = ["Dutch"];
         break;
       case "belgium":
         nameOrigin = ["Dutch", "Western African", "French"];
@@ -406,6 +521,9 @@ export class FirestoreService {
         break;
       case "iceland":
         nameOrigin = ["Icelandic"];
+        break;
+      case "faroe islands":
+        nameOrigin = ["Faroese", "Danish"];
         break;
       case "croatia":
         nameOrigin = ["Croatian"];
@@ -444,23 +562,38 @@ export class FirestoreService {
       case "lithuania":
         nameOrigin = ["Lithuanian"];
         break;
+      case "latvia":
+        nameOrigin = ["Latvian"];
+        break;
       case "russia":
         nameOrigin = ["Russian"];
         break;
-      case "kyrgyzstan":
+      case "kyrgyz republic":
         nameOrigin = ["Russian", "Kyrgyz"];
         break;
       case "ukraine":
         nameOrigin = ["Ukrainian"];
         break;
       case "georgia":
-      nameOrigin = ["Georgian"];
+        nameOrigin = ["Georgian"];
         break;
       case "armenia":
-      nameOrigin = ["Armenian"];
+        nameOrigin = ["Armenian"];
+        break;
+      case "azerbaijan":
+        nameOrigin = ["Azerbaijani"];
         break;
       case "uzbekistan":
       nameOrigin = ["Uzbek"];
+        break;
+      case "kazakhstan":
+        nameOrigin = ["Kazakh"];
+        break;
+      case "tajikistan":
+        nameOrigin = ["Tajik"];
+        break;
+      case "turkmenistan":
+        nameOrigin = ["Turkmen"];
         break;
       case "turkey":
         nameOrigin = ["Turkish"];
@@ -472,8 +605,12 @@ export class FirestoreService {
       case "senegal":
         nameOrigin = ["Western African"];
         break;
+      case "sudan":
+      case "niger":
+        nameOrigin = ["Western African", "Arabic"];
+        break;
       case "ghana":
-      case "ivory coast":
+      case "Côte d'Ivoire":
       case "guinea":
       case "togo":
       case "benin":
@@ -505,10 +642,23 @@ export class FirestoreService {
       case "uganda":
         nameOrigin = ["Arabic", "English"];
         break;
+      case "tanzania":
+        nameOrigin = ["Arabic", "English", "Eastern African"];
+        break;
+      case "malawi":
+        nameOrigin = ["English"];
+        break;
       case "zimbabwe":
       case "zambia":
       case "south africa":
-        nameOrigin = ["Southern African"];
+      case "namibia":
+        nameOrigin = ["Southern African", "English"];
+        break;
+      case "kenya":
+        nameOrigin = ["Eastern African"];
+        break;
+       case "tanzania":
+        nameOrigin = ["Eastern African", "Arabic"];
         break;
       case "suriname":
         nameOrigin = ["Dutch", "English"];
@@ -516,6 +666,8 @@ export class FirestoreService {
       case "tunisia":
       case "algeria":
       case "morocco":
+      case "libya":
+      case "mauritania":
         nameOrigin = ["Northern African", "Arabic"];
         break;
       case "UAE":
@@ -525,10 +677,13 @@ export class FirestoreService {
       case "bahrain":
       case "qatar":
       case "saudi arabia": 
-      case "egypt": 
+      case "oman":
+      case "kuwait":
+      case "egypt":
         nameOrigin = ["Arabic"];
         break;
       case "israel":
+      case "palestine":
         nameOrigin = ["Jewish", "Arabic"];
         break;
       case "iran":
@@ -554,29 +709,89 @@ export class FirestoreService {
         nameOrigin = ["Japanese"];
         break;
       case "south korea":
+      case "korea DPR":
         nameOrigin = ["Korean"];
         break;
       case "china PR":
+      case "chinese taipei":
         nameOrigin = ["Chinese"];
         break;
       case "philippines":
         nameOrigin = ["Filipino", "English", "Spanish (Philippines)"];
         break;
+      case "thailand":
+        nameOrigin = ["Thai"];
+        break;
+      case "vietnam":
+        nameOrigin = ["Vietnamese"];
+        break;
+      case "india":
+        nameOrigin = ["Indian"];
+        break;
+      case "singapore":
+        nameOrigin = ["Chinese", "Malay", "Indian"];
+        break;
       default:
         nameOrigin = ["English"];
         break;
     }
-    let request$ = this.afs.collection("lastNames", ref => ref
-      .where(`randomNum.${randomIndex}`, ">=", randomQuery)
-      .where('usages', 'array-contains-any', nameOrigin)
-      .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
-    let retryRequest$ = this.afs.collection("lastNames", ref => ref
-      .where(`randomNum.${randomIndex}`, "<=", randomQuery)
-      .where('usages', 'array-contains-any', nameOrigin)
-      .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+
+    let chance = getRandomInt(0, nameOrigin.length - 1);
+    let usage = [nameOrigin[chance]];
+    let request$: Observable<any[]>, retryRequest$: Observable<any[]>;
+
+    
+    if (nation === "Argentina") { // 1-2 surname countries
+      let names = getRandomInt(1, 2);
+      request$ = this.afs.collection("lastNames", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', usage)
+        .orderBy(`randomNum.${randomIndex}`).limit(names)).valueChanges();
+      retryRequest$ = this.afs.collection("lastNames", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', usage)
+        .orderBy(`randomNum.${randomIndex}`).limit(names)).valueChanges();
+    } else if (usage.includes("Spanish") || usage.includes("Basque") || usage.includes("Galician") || usage.includes("Catalan") || usage.includes("Bulgarian")) { // 2 surname countries
+      // need to fix bulgarian names to not include feminine surnames
+      request$ = this.afs.collection("lastNames", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', usage)
+        .orderBy(`randomNum.${randomIndex}`).limit(2)).valueChanges();
+      retryRequest$ = this.afs.collection("lastNames", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', usage)
+        .orderBy(`randomNum.${randomIndex}`).limit(2)).valueChanges();
+    } else if (usage.includes("Portuguese")) { // 1-4 surname countries e.g. Portuguese
+      let names = getRandomInt(1, 4);
+      request$ = this.afs.collection("lastNames", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', usage)
+        .orderBy(`randomNum.${randomIndex}`).limit(names)).valueChanges();
+      retryRequest$ = this.afs.collection("lastNames", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', usage)
+        .orderBy(`randomNum.${randomIndex}`).limit(names)).valueChanges();
+    } else if (usage.includes("Icelandic") || usage.includes("Faroese") || usage.includes("Malay") || usage.includes("Kyrgyz") || usage.includes("Azerbaijani")) { // nordic/scandinavian/malay/kyrgyz/azerbaijani patronym
+      let patronym = this.getFirstName(nation, originNum);
+      return {
+        ...patronym,
+        patronym: usage
+      }
+    } else { // just one last name (most countries)
+      request$ = this.afs.collection("lastNames", ref => ref
+        .where(`randomNum.${randomIndex}`, ">=", randomQuery)
+        .where('usages', 'array-contains-any', usage)
+        .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+      retryRequest$ = this.afs.collection("lastNames", ref => ref
+        .where(`randomNum.${randomIndex}`, "<=", randomQuery)
+        .where('usages', 'array-contains-any', usage)
+        .orderBy(`randomNum.${randomIndex}`).limit(1)).valueChanges();
+    }
+
     return {
       request$, 
-      retryRequest$
+      retryRequest$,
+      patronym: 'no'
     }
     
   }

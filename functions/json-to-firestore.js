@@ -1,6 +1,6 @@
 // const first_names = require('./first_name_update.json');
-const last_names = require('./submitted-last-names.json');
-const serviceAccount = require('../../secrets/ServiceAccountKey.json');
+const last_names = require('./thai-last-names.json');
+const serviceAccount = require('../src/secrets/ServiceAccountKey.json');
 const admin = require("firebase-admin");
 
 admin.initializeApp({
@@ -81,33 +81,33 @@ function getRandomInt(min, max) {
 
 // **** Check collection size **** 
 
-// lastNameRef.get().then(snap => {
-//     size = snap.size;
-//     console.log(size);
-// });
+lastNameRef.get().then(snap => {
+    size = snap.size;
+    console.log(size);
+});
 
 
-// last_names.forEach(function(obj) {
-//     lastNameRef.add({
-//         alphabeticalId: obj.id,
-//         name: obj.name,
-//         duplicate: false,
-//         usages: obj.usages,
-//         timestamp: fireTimestamp,
-//         randomNum: {
-//             1: getRandomInt(0, 50000),
-//             2: getRandomInt(0, 50000),
-//             3: getRandomInt(0, 50000),
-//             4: getRandomInt(0, 50000),
-//             5: getRandomInt(0, 50000)
-//         }
-//     }).then(function(docRef) {
-//         console.log("Document written with ID: ", docRef.id);
-//     })
-//     .catch(function(error) {
-//         console.error("Error adding document: ", error);
-//     });
-// });
+last_names.forEach(function(obj) {
+    lastNameRef.add({
+        alphabeticalId: obj.id,
+        name: obj.name,
+        duplicate: false,
+        usages: obj.usages,
+        timestamp: fireTimestamp,
+        randomNum: {
+            1: getRandomInt(0, 50000),
+            2: getRandomInt(0, 50000),
+            3: getRandomInt(0, 50000),
+            4: getRandomInt(0, 50000),
+            5: getRandomInt(0, 50000)
+        }
+    }).then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+});
 lastNameRef.get().then(snap => {
     size = snap.size;
     console.log(size);

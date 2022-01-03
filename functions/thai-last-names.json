@@ -1,0 +1,945 @@
+[
+    {
+        "name": "Anakha",
+        "id": 0,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Aromdee",
+        "id": 1,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Ayutthaya",
+        "id": 2,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Bongkhalong",
+        "id": 3,
+        "usages": [
+            "Thai (Rare)",
+            "Lao (Rare)"
+        ]
+    },
+    {
+        "name": "Chaichana",
+        "id": 4,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chaikham",
+        "id": 5,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chaiwong",
+        "id": 6,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chaiyasing",
+        "id": 7,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chantha",
+        "id": 8,
+        "usages": [
+            "Khmer",
+            "Thai",
+            "Lao"
+        ]
+    },
+    {
+        "name": "Charoensuk",
+        "id": 9,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chen",
+        "id": 10,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chevapravatdumrong",
+        "id": 11,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chuahirun",
+        "id": 12,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chuenchomying",
+        "id": 13,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Chuo",
+        "id": 14,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Dokbua",
+        "id": 15,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Hiranchai",
+        "id": 16,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Hiranwong",
+        "id": 17,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Indi",
+        "id": 18,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Jitmakusol",
+        "id": 19,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Jix",
+        "id": 20,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Kanha",
+        "id": 21,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Kham",
+        "id": 22,
+        "usages": [
+            "Thai",
+            "Lao"
+        ]
+    },
+    {
+        "name": "Khamkaeo",
+        "id": 23,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Khamwaen",
+        "id": 24,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Khemkhaeng",
+        "id": 25,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Khemson",
+        "id": 26,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Konkan",
+        "id": 27,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Kornnaimuang",
+        "id": 28,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Krasa",
+        "id": 29,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Krungthep",
+        "id": 30,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Kul",
+        "id": 31,
+        "usages": [
+            "Pakistani",
+            "Pashto",
+            "Punjabi",
+            "Bengali",
+            "Assamese",
+            "Sindhi",
+            "Balochi",
+            "Urdu",
+            "Persian",
+            "Kurdish",
+            "Odia",
+            "Thai",
+            "Khmer",
+            "Lao"
+        ]
+    },
+    {
+        "name": "Kulap",
+        "id": 32,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Lee",
+        "id": 33,
+        "usages": [
+            "Vietnamese",
+            "Hmong",
+            "Thai",
+            "Khmer",
+            "Lao",
+            "Burmese",
+            "Filipino",
+            "Tagalog",
+            "Malay",
+            "Indonesian",
+            "Hawaiian"
+        ]
+    },
+    {
+        "name": "Lormnaimuang",
+        "id": 34,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Lueangsuwan",
+        "id": 35,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Maduea",
+        "id": 36,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Mamuang",
+        "id": 37,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Mangkhut",
+        "id": 38,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Manoban",
+        "id": 39,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Mheenak",
+        "id": 40,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Narak",
+        "id": 41,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Ngamnaimuang",
+        "id": 42,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Nukhao",
+        "id": 43,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Omni",
+        "id": 44,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Ounsamai",
+        "id": 45,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Patanapongpibul",
+        "id": 46,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Phonlamai",
+        "id": 47,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Phutsa",
+        "id": 48,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Rakhang",
+        "id": 49,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Rattana",
+        "id": 50,
+        "usages": [
+            "Khmer",
+            "Thai"
+        ]
+    },
+    {
+        "name": "Ritachari",
+        "id": 51,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Rungvisai",
+        "id": 52,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saechao",
+        "id": 53,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saechueng",
+        "id": 54,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saelau",
+        "id": 55,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saelee",
+        "id": 56,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saeli",
+        "id": 57,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saeliew",
+        "id": 58,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saelim",
+        "id": 59,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saeng",
+        "id": 60,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saengarun",
+        "id": 61,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saengchan",
+        "id": 62,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saengkaeo",
+        "id": 63,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saengkaew",
+        "id": 64,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saengmai",
+        "id": 65,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Saengsawang",
+        "id": 66,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saengsuwan",
+        "id": 67,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saengthong",
+        "id": 68,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saenseemon",
+        "id": 69,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saetae",
+        "id": 70,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saetan",
+        "id": 71,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saetang",
+        "id": 72,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saetiao",
+        "id": 73,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saeueng",
+        "id": 74,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saeyang",
+        "id": 75,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Salae",
+        "id": 76,
+        "usages": [
+            "Thai (Muslim)"
+        ]
+    },
+    {
+        "name": "Salaeh",
+        "id": 77,
+        "usages": [
+            "Thai (Muslim)"
+        ]
+    },
+    {
+        "name": "Sathi",
+        "id": 78,
+        "usages": [
+            "Indian",
+            "Odia",
+            "Hindi",
+            "Marathi",
+            "Punjabi",
+            "Urdu",
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sayelau",
+        "id": 79,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sayetan",
+        "id": 80,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sayetang",
+        "id": 81,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sayetyao",
+        "id": 82,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sayeyang",
+        "id": 83,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Saylee",
+        "id": 84,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sensit",
+        "id": 85,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Seuyeng",
+        "id": 86,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Siam",
+        "id": 87,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sibunrueang",
+        "id": 88,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sihawong",
+        "id": 89,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Simasathien",
+        "id": 90,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Simasthien",
+        "id": 91,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Singkham",
+        "id": 92,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Singsanong",
+        "id": 93,
+        "usages": [
+            "Thai (Rare, ?)"
+        ]
+    },
+    {
+        "name": "Singtoroj",
+        "id": 94,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sitwat",
+        "id": 95,
+        "usages": [
+            "Thai",
+            "Lao",
+            "Shan",
+            "Zhuang",
+            "Chashan",
+            "Biao",
+            "Cun"
+        ]
+    },
+    {
+        "name": "Soikham",
+        "id": 96,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Somsri",
+        "id": 97,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Somwan",
+        "id": 98,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Srisuvan",
+        "id": 99,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Srisuwan",
+        "id": 100,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sueadao",
+        "id": 101,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Suealueang",
+        "id": 102,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Sukkasem",
+        "id": 103,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Suksamran",
+        "id": 104,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Suriyawong",
+        "id": 105,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Suwan",
+        "id": 106,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Suwannarat",
+        "id": 107,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Suwanrat",
+        "id": 108,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Taechaubol",
+        "id": 109,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Taitum",
+        "id": 110,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Taomi",
+        "id": 111,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Tayen",
+        "id": 112,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Thahan",
+        "id": 113,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Tharin",
+        "id": 114,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Thongsuk",
+        "id": 115,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Tiannaimuang",
+        "id": 116,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Tipput",
+        "id": 117,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Tiput",
+        "id": 118,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Trachang",
+        "id": 119,
+        "usages": [
+            "Thai (Rare)"
+        ]
+    },
+    {
+        "name": "Voraritskul",
+        "id": 120,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Wichayanee",
+        "id": 121,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Wongchai",
+        "id": 122,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Wongkaeo",
+        "id": 123,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Wongkham",
+        "id": 124,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Wongphakdi",
+        "id": 125,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Wongsawat",
+        "id": 126,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Wongsuwan",
+        "id": 127,
+        "usages": [
+            "Thai"
+        ]
+    },
+    {
+        "name": "Wongyai",
+        "id": 128,
+        "usages": [
+            "Thai"
+        ]
+    }
+]

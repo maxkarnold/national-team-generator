@@ -8,133 +8,137 @@ function hasNumber(myString) {
 
 let totalPages = [
     {
-        url: "https://surnames.behindthename.com/submit/names/usage/african",
-        pages: 4
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/albanian",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/arabic",
-        pages: 4
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/portuguese",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/turkish",
+        url: "https://surnames.behindthename.com/submit/names/usage/thai",
         pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/basque",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/galician",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/catalan",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/welsh",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/frisian",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/finnish",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/serbian",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/bosnian",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/slovak",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/slovene",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/belarusian",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/macedonian",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/montenegrin",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/estonian",
-        pages: 8
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/lithuanian",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/russian",
-        pages: 4
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/kyrgyz",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/ukrainian",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/georgian",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/armenian",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/uzbek",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/iranian",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/romanian",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/greek",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/korean",
-        pages: 1
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/chinese",
-        pages: 2
-    },
-    {
-        url: "https://surnames.behindthename.com/submit/names/usage/filipino",
-        pages: 3
     }
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/african",
+    //     pages: 4
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/albanian",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/arabic",
+    //     pages: 4
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/portuguese",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/turkish",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/basque",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/galician",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/catalan",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/welsh",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/frisian",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/finnish",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/serbian",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/bosnian",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/slovak",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/slovene",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/belarusian",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/macedonian",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/montenegrin",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/estonian",
+    //     pages: 8
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/lithuanian",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/russian",
+    //     pages: 4
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/kyrgyz",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/ukrainian",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/georgian",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/armenian",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/uzbek",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/iranian",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/romanian",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/greek",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/korean",
+    //     pages: 1
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/chinese",
+    //     pages: 2
+    // },
+    // {
+    //     url: "https://surnames.behindthename.com/submit/names/usage/filipino",
+    //     pages: 3
+    // }
 ];
 
 async function fetchSubmittedNames() {
@@ -186,7 +190,7 @@ async function fetchSubmittedNames() {
     
 
     let namesJson = JSON.stringify(namesArr);
-    fs.writeFile("./src/app/data/submitted-last-names.json", namesJson, function (err, result) {
+    fs.writeFile("./functions/thai-last-names.json", namesJson, function (err, result) {
         if (err) console.log('error', err);
         // console.log("Added Name:", result);
     });

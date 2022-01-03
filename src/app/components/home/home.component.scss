@@ -270,6 +270,7 @@
             }
             img {
                 max-width: 1.75rem;
+                // border: 1px solid black;
             }
         }
     }
@@ -576,58 +577,59 @@
     &.brown {
         background: linear-gradient(45deg #967260, #533729);
     }
+
     & > div {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr fit-content(50%);
-        gap: 3.5px 1.5px;
-        align-items: center;
-        justify-items: center;
-        .pitch-player-info {  
-            grid-column: 1;
-            font-size: 0.75rem;
-            line-height: normal; 
-            &:first-of-type {
-                font-size: 1.25rem;
-            }
-        }
-        .pitch-player-img {
-            width: clamp(15px, 1.7vw, 30px);
-            grid-column: 1;
-        }
-        .player-name {
-            // font-size: 0.6rem;
-            grid-column: 2;
-            grid-row: 3 / 5;
+        // width: 100%;
+        // display: grid;
+        // grid-template-columns: 1fr fit-content(50%);
+        // gap: 3.5px 1.5px;
+        // align-items: center;
+        // justify-items: center;
+        // .pitch-player-info {  
+        //     grid-column: 1;
+        //     font-size: 0.75rem;
+        //     line-height: normal; 
+        //     &:first-of-type {
+        //         font-size: 1.25rem;
+        //     }
+        // }
+        // .pitch-player-img {
+        //     width: clamp(15px, 1.7vw, 30px);
+        //     grid-column: 1;
+        // }
+        // .player-name {
+        //     // font-size: 0.6rem;
+        //     grid-column: 2;
+        //     grid-row: 3 / 5;
             
-        }
-        .player-face {
-            grid-column: 2;
-            grid-row: 1 / 3;
-            width: 70%;
-            border-radius: 50%;
-        }
-    @media screen and (max-width: 800px) {
-        font-size: 0.6rem;
-        display: flex;
-        flex-flow: column;
-        gap: 1px;
-        .player-face {
-            display: none;
-        }
-        .pitch-player-info:first-of-type {
-            font-size: 0.7rem;
-        }
-        .pitch-player-info {
-            font-size: 0.45rem;
-        }
-        .player-name {
-            line-height: normal;
-        }
-        .pitch-player-img {
-            width: 1rem;
-        }
-    }
+        // }
+        // .player-face {
+        //     grid-column: 2;
+        //     grid-row: 1 / 3;
+        //     width: 70%;
+        //     border-radius: 50%;
+        // }
+    // @media screen and (max-width: 800px) {
+    //     font-size: 0.6rem;
+    //     display: flex;
+    //     flex-flow: column;
+    //     gap: 1px;
+    //     .player-face {
+    //         display: none;
+    //     }
+    //     .pitch-player-info:first-of-type {
+    //         font-size: 0.7rem;
+    //     }
+    //     .pitch-player-info {
+    //         font-size: 0.45rem;
+    //     }
+    //     .player-name {
+    //         line-height: normal;
+    //     }
+    //     .pitch-player-img {
+    //         width: 1rem;
+    //     }
+    // }
     }   
     
 }
@@ -741,6 +743,7 @@
         align-items: center;
     img {
         max-width: 2rem;
+        // border: 1px solid black;
     }
         span {
             margin-left: 1rem;
@@ -929,6 +932,7 @@
     text-transform: capitalize;
     img {
         width: 2rem;
+        border: 1px solid black;
     }
 }
 
