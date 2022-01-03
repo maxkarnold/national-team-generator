@@ -10,7 +10,8 @@ export interface Player {
     unconvincingPositions: string[];
     rating: number;
     foot: string;
-    firstInitial?: string;
+    firstInitial: string;
+    singleLastName: string;
     nationality: string;
     nationalityLogo: string;
     age: number;

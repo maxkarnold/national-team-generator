@@ -1116,10 +1116,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     // Add a placeholder element in origin
     
     // Get the displayName for the current player
-    if (player.lastName.length < 8) {
-      player.displayName = player.lastName;
+    
+    if (player.singleLastName.length < 8) {
+      player.displayName = player.singleLastName;
     } else {
-      player.displayName = player.firstName;
+      let firstName = player.firstName.split(" ");
+      player.displayName = firstName[0];
     }
     
     // // Grab the current positions for the dragged player
@@ -1325,6 +1327,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       let player: Player = {
         firstName: '',
         lastName: '',
+        firstInitial: '',
+        singleLastName: '',
         mainPositions: [],
         altPositions: [],
         competentPositions: [],
@@ -1383,8 +1387,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       firstNameReq.subscribe((firstNameArr) => {
         if (firstNameArr[0] !== undefined) {
-          let firstNameObj: any = firstNameArr[0];
-          player.firstName = firstNameObj.name;
+          for (let i = 0; i < firstNameArr.length; i++) {
+            if (i === 0) {
+              player.firstName = firstNameArr[i].name
+            } else {
+              player.firstName = player.firstName + " " + firstNameArr[i].name;
+            }
+            
+          }
+          
           player.firstInitial = player.firstName.charAt(0);
           if (player.firstInitial === "'") {
             player.firstInitial = player.firstName.charAt(1);
@@ -1413,8 +1424,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         } 
         else {
           firstNameRetry.subscribe((firstNameArr) => { 
-            let firstNameObj: any = firstNameArr[0];
-            player.firstName = firstNameObj.name;
+            for (let i = 0; i < firstNameArr.length; i++) {
+              if (i === 0) {
+                player.firstName = firstNameArr[i].name
+              } else {
+                player.firstName = player.firstName + " " + firstNameArr[i].name;
+              }
+            }
             player.firstInitial = player.firstName.charAt(0);
             if (player.firstInitial === "'") {
               player.firstInitial = player.firstName.charAt(1);
@@ -1450,8 +1466,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       lastNameReq.subscribe((lastNameArr) => {
         if (lastNameArr[0] !== undefined) {
-          let lastNameObj: any = lastNameArr[0];
-          player.lastName = lastNameObj.name;
+          for (let i = 0; i < lastNameArr.length; i++) {
+            if (i === 0) {
+              player.lastName = lastNameArr[i].name;
+            } else {
+              player.lastName = player.lastName + " " + lastNameArr[i].name;
+            }
+          }
+          
           if (lastPatronym === 'Icelandic' || lastPatronym === 'Faroese') {
             player.lastName += 'sson';
           } else if (lastPatronym === 'Malay') {
@@ -1482,8 +1504,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         } 
         else {
           lastNameRetry.subscribe((lastNameArr) => { 
-            let lastNameObj: any = lastNameArr[0];
-            player.lastName = lastNameObj.name;
+            for (let i = 0; i < lastNameArr.length; i++) {
+              if (i === 0) {
+                player.lastName = lastNameArr[i].name;
+              } else {
+                player.lastName = player.lastName + " " + lastNameArr[i].name;
+              }
+            }
             if (lastPatronym === 'Icelandic' || lastPatronym === 'Faroese') {
               player.lastName += 'sson';
             } else if (lastPatronym === 'Malay') {
@@ -1513,7 +1540,11 @@ export class HomeComponent implements OnInit, OnDestroy {
             }
           });
         }
+        // singleLastName
+        let arr = player.lastName.split(' ');
+        player.singleLastName = arr[0];
       });
+      
       // getMiddleName function
       this.players.push(player);
       this.sortedData.push(player);
@@ -3075,6 +3106,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     let clubName: string = "";
     let clubLogoUrl: string = "";
     shuffle(clubArr);
+    // console.log(clubArr);
     
     // 50% chance for mainLeague
     let main = getRandomInt(1, 2);

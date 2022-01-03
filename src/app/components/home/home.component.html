@@ -188,7 +188,7 @@
                             <mat-expansion-panel *ngFor="let player of sortedPitchPlayers">
                                 <mat-expansion-panel-header>
                                     <ul class="player-row">
-                                        <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
+                                        <li class="name-cell">{{player.firstInitial}}. {{player.singleLastName}}</li>
                                         <li><span *ngFor="let pos of player.mainPositions" class="positions-span">{{pos}}</span></li>
                                         <li>{{player.age}}</li>
                                         <li>{{player.rating}}</li>
@@ -235,7 +235,7 @@
                             <mat-expansion-panel *ngFor="let player of players" cdkDrag [cdkDragData]="player" (cdkDragStarted)="getPositionOutline($event)" (cdkDragReleased)="removeOutlineRelease($event)" (cdkDragDropped)="removeOutlineDrop($event)">
                                 <mat-expansion-panel-header>
                                     <ul class="player-row">
-                                        <li class="name-cell">{{player.firstInitial}}. {{player.lastName}}</li>
+                                        <li class="name-cell">{{player.firstInitial}}. {{player.singleLastName}}</li>
                                         <li><span *ngFor="let pos of player.mainPositions" class="positions-span">{{pos}}</span></li>
                                         <li>{{player.age}}</li>
                                         <li>{{player.rating}}</li>
@@ -274,7 +274,7 @@
                                     <p class="expanded-info">
                                         <span>Preferred Foot:</span><span>{{player.foot}}</span>
                                     </p> 
-                                    <div class="lineup-drag-placeholder" *cdkDragPlaceholder>{{player.firstInitial}}. {{player.lastName}} {{player.rating}} {{player.mainPositions[0]}}</div>
+                                    <div class="lineup-drag-placeholder" *cdkDragPlaceholder>{{player.firstInitial}}. {{player.singleLastName}} {{player.rating}} {{player.mainPositions[0]}}</div>
                             </mat-expansion-panel>
                         </div>
                     </mat-accordion>       

@@ -396,7 +396,7 @@ export class FirestoreService {
         patronym: usage[0],
         names: 2
       }
-    } else if (usage.includes("Belarusian") || usage.includes("Indian") || usage.includes("English") || usage.includes("Irish") || usage.includes("Scottish") || usage.includes("Welsh") || usage.includes("Vietnamese") || usage.includes("Western African") || usage.includes("German") || usage.includes("Polish") || usage.includes("Danish") || usage.includes("Norwegian") || usage.includes("Swedish") || usage.includes("Finnish") || usage.includes("Lithuanian") || usage.includes("Latvian") || usage.includes("Estonian") || usage.includes("Azerbaijani") || usage.includes("Turkish") || usage.includes("Eastern African") || usage.includes("Southern African") || usage.includes("Hebrew") || usage.includes("Turkmen") || usage.includes("Tajik") || usage.includes("Romanian") || usage.includes("Filipino")) { // one or two given names (two is not common for Estonians, Turkish)
+    } else if (usage.includes("Belarusian") || usage.includes("Indian") || usage.includes("English") || usage.includes("Irish") || usage.includes("Scottish") || usage.includes("Welsh") || usage.includes("Vietnamese") || usage.includes("Western African") || usage.includes("German") || usage.includes("Polish") || usage.includes("Danish") || usage.includes("Norwegian") || usage.includes("Swedish") || usage.includes("Finnish") || usage.includes("Lithuanian") || usage.includes("Latvian") || usage.includes("Estonian") || usage.includes("Azerbaijani") || usage.includes("Turkish") || usage.includes("Eastern African") || usage.includes("Southern African") || usage.includes("Hebrew") || usage.includes("Turkmen") || usage.includes("Tajik") || usage.includes("Romanian") || usage.includes("Filipino") || usage.includes("Portuguese") || usage.includes("Spanish")) { // one or two given names (two is not common for Estonians, Turkish)
       let names = getRandomInt(1, 2);
       request$ = this.afs.collection("firstNames_male", ref => ref
         .where(`randomNum.${randomIndex}`, ">=", randomQuery)
@@ -412,7 +412,7 @@ export class FirestoreService {
         patronym: usage[0],
         names: names
       }
-    } else { // only first name (Czech, Slovak, Polish, Bosnian, Serbian, Croatian, Montenegrin, Albanian, Slovene, Macedonian (male-ending), Chinese, Japanese, Korean, Icelandic, Faroese, Malay, Italian, Kyrgyz, Georgian, Armenian, Spanish, Catalan, Galician, Bulgarian, Uzbek (if no patronym), Hungarian, Greek, Thai)
+    } else { // only first name (Czech, Slovak, Polish, Bosnian, Serbian, Croatian, Montenegrin, Albanian, Slovene, Macedonian (male-ending), Chinese, Japanese, Korean, Icelandic, Faroese, Malay, Italian, Kyrgyz, Georgian, Armenian, Catalan, Galician, Bulgarian, Uzbek (if no patronym), Hungarian, Greek, Thai)
       request$ = this.afs.collection("firstNames_male", ref => ref
         .where(`randomNum.${randomIndex}`, ">=", randomQuery)
         .where('usages', 'array-contains-any', nameOrigin)
