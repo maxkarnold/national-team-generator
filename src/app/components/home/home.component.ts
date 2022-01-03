@@ -1278,6 +1278,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     //     return false;
     //   }
     // }
+    // *** KEEP THIS COMMENTED FOR DEV BRANCH ***
     if (this.players.length > 0) {
       if (window.confirm("Are you sure? Any unsaved data will be deleted.")) {
         this.resetStarters(true);
@@ -1315,6 +1316,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     let fifth = getRandomInt(numArray[8], numArray[9]);
     let sixth = getRandomInt(numArray[10], numArray[11]);
     let seventh = getRandomInt(numArray[12], numArray[13]);
+    let eighth = getRandomInt(numArray[13], numArray[14]);
     
     
     // Loops 60 times for 60 players
@@ -1344,7 +1346,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         playerFace: this.blankPlayerPic
       };
       
-      let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth, sixth, seventh);
+      let ratingObj = this.getRatingAndClubRep(this.playerCount, first, second, third, fourth, fifth, sixth, seventh, eighth);
       player.rating = ratingObj.rating;
 
       player.mainPositions = this.getMainPositions(player.rating);
@@ -1379,6 +1381,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       let randomNum = getRandomInt(1, 20);
       let firstNameReq = this.afs.getFirstName(player.nationality, randomNum)?.request$;
       let firstNameRetry = this.afs.getFirstName(player.nationality, randomNum)?.retryRequest$;
+      let firstPatronym = this.afs.getFirstName(player.nationality,randomNum)?.patronym;
+
       firstNameReq.subscribe((firstNameArr) => {
         if (firstNameArr[0] !== undefined) {
           let firstNameObj: any = firstNameArr[0];
@@ -1386,6 +1390,17 @@ export class HomeComponent implements OnInit, OnDestroy {
           player.firstInitial = player.firstName.charAt(0);
           if (player.firstInitial === "'") {
             player.firstInitial = player.firstName.charAt(1);
+          }
+          if (firstPatronym === 'Russian') { // russian patronym
+            let nameLength = player.firstName.length;
+            let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+            if (vowels.includes(player.firstName.charAt(nameLength - 1))) {
+              player.firstName += 'evich';
+            } else {
+              player.firstName += 'ovich';
+            }
+          } else if (firstPatronym === 'Ukrainian') { // ukrainian patronym
+            player.firstName += 'vych';
           }
         } 
         else {
@@ -1396,6 +1411,19 @@ export class HomeComponent implements OnInit, OnDestroy {
             if (player.firstInitial === "'") {
               player.firstInitial = player.firstName.charAt(1);
             }
+            if (firstPatronym === 'Russian') { // russian patronym
+              let nameLength = player.firstName.length;
+              let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+              if (vowels.includes(player.firstName.charAt(nameLength - 1))) {
+                player.firstName += 'evich';
+              } else {
+                player.firstName += 'ovich';
+              }
+            } else if ((firstPatronym === 'Ukrainian') || (firstPatronym === 'Belarusian' && player.firstName.includes(' '))) { // ukrainian patronym
+              player.firstName += 'vych';
+            } else if (firstPatronym === 'Azerbaijani') {
+              player.firstName += ' oğlu';
+            }
           });
         }
         // add nickname based on nationality
@@ -1405,16 +1433,71 @@ export class HomeComponent implements OnInit, OnDestroy {
       
       let lastNameReq = this.afs.getLastName(player.nationality, randomNum)?.request$;
       let lastNameRetry = this.afs.getLastName(player.nationality, randomNum)?.retryRequest$;
-      
+      let lastPatronym = this.afs.getLastName(player.nationality, randomNum)?.patronym;
+
       lastNameReq.subscribe((lastNameArr) => {
         if (lastNameArr[0] !== undefined) {
           let lastNameObj: any = lastNameArr[0];
           player.lastName = lastNameObj.name;
+          if (lastPatronym === 'Icelandic' || lastPatronym === 'Faroese') {
+            player.lastName += 'sson';
+          } else if (lastPatronym === 'Malay') {
+            player.lastName = 'bin ' + player.lastName;
+          } else if (lastPatronym === 'Kyrgyz') {
+            let chance = getRandomInt(0, 1);
+            let patronymArticle = ['uulu', 'tegin'];
+            player.lastName = player.lastName + ' ' + patronymArticle[chance];
+          } else if (lastPatronym === 'Azerbaijani') {
+            let nameLength = player.lastName.length;
+            let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+            let chance = getRandomInt(0, 2);
+            if (chance > 1) {
+              player.lastName += 'lı';
+            } else if (chance > 0) {
+              player.lastName += 'zade';
+            } else {
+              if (vowels.includes(player.lastName.charAt(nameLength - 1))) {
+                let chance = getRandomInt(0, 1);
+                let patronymArticle = ['ev', 'yev'];
+                player.lastName += patronymArticle[chance];
+              } else {
+                player.lastName += 'ov';
+              }
+            }
+            
+          }
         } 
         else {
           lastNameRetry.subscribe((lastNameArr) => { 
             let lastNameObj: any = lastNameArr[0];
             player.lastName = lastNameObj.name;
+            if (lastPatronym === 'Icelandic' || lastPatronym === 'Faroese') {
+              player.lastName += 'sson';
+            } else if (lastPatronym === 'Malay') {
+              player.lastName = 'bin ' + player.lastName;
+            } else if (lastPatronym === 'Kyrgyz') {
+              let chance = getRandomInt(0, 1);
+              let patronymArticle = ['uulu', 'tegin'];
+              player.lastName = player.lastName + ' ' + patronymArticle[chance];
+            } else if (lastPatronym === 'Azerbaijani') {
+              let nameLength = player.lastName.length;
+              let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+              let chance = getRandomInt(0, 2);
+              if (chance > 1) {
+                player.lastName += 'lı';
+              } else if (chance > 0) {
+                player.lastName += 'zade';
+              } else {
+                if (vowels.includes(player.lastName.charAt(nameLength - 1))) {
+                  let chance = getRandomInt(0, 1);
+                  let patronymArticle = ['ev', 'yev'];
+                  player.lastName += patronymArticle[chance];
+                } else {
+                  player.lastName += 'ov';
+                }
+              }
+              
+            }
           });
         }
       });
@@ -2765,33 +2848,37 @@ export class HomeComponent implements OnInit, OnDestroy {
   getRatingBreakdown(tier: string): number[] {
     switch (tier) {
       case "s":
-      return [3, 9, 10, 30, 40, 70, 150, 200, 0, 0, 0, 0, 0, 0];
+        return [3, 9, 10, 30, 40, 70, 150, 200, 0, 0, 0, 0, 0, 0, 0, 0];
       case "a":
-      return [2, 5, 4, 12, 16, 45, 45, 70, 0, 0, 0, 0, 0, 0];
+        return [2, 5, 4, 12, 16, 45, 45, 70, 0, 0, 0, 0, 0, 0, 0, 0];
       case "b":
-      return [0, 4, 2, 5, 4, 15, 15, 60, 45, 100, 0, 0, 0, 0];
+        return [0, 4, 2, 5, 4, 15, 15, 60, 45, 100, 0, 0, 0, 0, 0, 0];
       case "c":
-      return [0, 2, 0, 3, 3, 12, 10, 25, 30, 70, 60 , 160, 0, 0];
+        return [0, 2, 0, 3, 3, 12, 10, 25, 30, 70, 60 , 160, 0, 0, 0, 0];
       case "d":
-      return [0, 2, 0, 3, 1, 7, 5, 25, 30, 65, 100 , 200, 0, 0];
+        return [0, 2, 0, 3, 1, 7, 5, 25, 30, 65, 100 , 200, 0, 0, 0, 0];
       case "e":
-      return [0, 1, 0, 3, 0, 6, 6, 18, 12, 40, 38, 75, 10, 10];
+        return [0, 1, 0, 3, 0, 6, 6, 18, 12, 40, 38, 75, 10, 10, 0, 0];
       case "f":
-      return [0, 1, 0, 2, 0, 4, 0, 8, 8, 22, 30, 100, 25, 25];
+        return [0, 1, 0, 2, 0, 4, 0, 8, 8, 22, 30, 100, 25, 25, 0, 0];
       case "g":
-      return [0, 1, 0, 1, 0, 4, 0, 6, 8, 18, 25, 45, 30, 30];
+        return [0, 1, 0, 1, 0, 4, 0, 6, 8, 18, 25, 45, 30, 30, 0, 0];
       case "h":
-      return [0, 0, 0, 1, 0, 2, 0, 5, 2, 10, 12, 35, 50, 50];
+        return [0, 0, 0, 1, 0, 2, 0, 5, 2, 10, 12, 35, 25, 115, 25, 25];
       case "i":
-      return [0, 0, 0, 1, 0, 1, 0, 4, 1, 7, 2, 18, 60, 60];
+        return [0, 0, 0, 1, 0, 1, 0, 4, 1, 7, 2, 18, 20, 90, 40, 40];
       case "j":
-      return [0, 0, 0, 0, 0, 1, 0, 1, 0, 3, 60, 60];
+        return [0, 0, 0, 1, 0, 1, 0, 4, 0, 5, 1, 12, 4, 50, 55, 55];
+      case "k":
+        return [0, 0, 0, 0, 0, 1, 0, 1, 0, 2, 0, 4, 5, 25, 60, 60]; 
+      case "l":
+        return [0, 0, 0, 0, 0, 1, 0, 1, 0, 2, 0, 3, 0, 10, 60, 60];
       default:
-      throw new Error("getRatingBreakdown() had an error");
+        throw new Error("getRatingBreakdown() had an error");
     }
   }
             
-  getRatingAndClubRep(i: number, first: number, second: number, third: number, fourth: number, fifth: number, sixth: number, seventh: number) {
+  getRatingAndClubRep(i: number, first: number, second: number, third: number, fourth: number, fifth: number, sixth: number, seventh: number, eighth: number) {
     
     let rating: number = 0;
     let clubRep = "";
@@ -2819,7 +2906,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       rating = getRandomInt(55, 61);
       clubRep = "leagueOnePlayer";
     } else if (i < first + second + third + fourth + fifth + sixth + seventh) {
-      rating = getRandomInt(40, 54);
+      rating = getRandomInt(48, 54);
+      clubRep = "leagueTwoPlayer";
+    } else if (i < first + second + third + fourth + fifth + sixth + seventh + eighth) {
+      rating = getRandomInt(30, 47);
       clubRep = "fillerPlayer";
     }
     
@@ -3193,37 +3283,37 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (randomNum > 50) {
         switch (quarter) {
           case 0:
-          tier = "a";
+          tier = "s";
           break;
           case 1:
-          tier = "b";
+          tier = "a";
           break;
           case 2:
-          tier = "c";
+          tier = "b";
           break;
           case 3:
-          tier = "d";
+          tier = "c";
           break;
           default:
-          tier = "a";
+          tier = "s";
           break;
         }
       } else if (randomNum > 20) {
         switch (quarter) {
           case 0:
-          tier = "e";
+          tier = "d";
           break;
           case 1:
-          tier = "f";
+          tier = "e";
           break;
           case 2:
-          tier = "g";
+          tier = "f";
           break;
           case 3:
-          tier = "e";
+          tier = "g";
           break;
           default:
-          tier = "e";
+          tier = "d";
           break;
         } 
       } else {
@@ -3238,7 +3328,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           tier = "j";
           break;
           case 3:
-          tier = "h";
+          tier = "k";
           break;
           default:
           tier = "h";
@@ -3246,7 +3336,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       }
     } else {
-      let arr = ["s", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+      let arr = ["s", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"];
       let i = Math.min(getRandomInt(0, arr.length - 1), getRandomInt(0, arr.length - 1));
       tier = arr[i];
     }
