@@ -1318,7 +1318,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     let fifth = getRandomInt(numArray[8], numArray[9]);
     let sixth = getRandomInt(numArray[10], numArray[11]);
     let seventh = getRandomInt(numArray[12], numArray[13]);
-    let eighth = getRandomInt(numArray[13], numArray[14]);
+    let eighth = getRandomInt(numArray[14], numArray[15]);
     
     
     // Loops 60 times for 60 players
@@ -1370,7 +1370,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       let nationObj = this.getNation("nationality", player.rating) || '';
       player.nationality = nationObj.nationality || '';
       player.nationalityLogo = nationObj.logo || '';
-      
+      console.log("Player#: ", this.playerCount);
       let clubObj = this.getClub(ratingObj.clubRep, player.nationality);
       player.club = clubObj.clubName;
       player.clubLogo = clubObj.clubLogoUrl;
@@ -3105,8 +3105,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     let clubName: string = "";
     let clubLogoUrl: string = "";
+    
     shuffle(clubArr);
-    // console.log(clubArr);
+    console.log(clubRep, "ClubArr after shuffle: ", clubArr);
     
     // 50% chance for mainLeague
     let main = getRandomInt(1, 2);
@@ -3116,6 +3117,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (nationObj.mainLeagues.includes(clubArr[i].league)) {
           clubName = clubArr[i].club;
           clubLogoUrl = clubArr[i].logo;
+          return {
+            clubName,
+            clubLogoUrl
+          }
         }
       }
     } 
@@ -3127,6 +3132,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (nationObj.secondLeagues.includes(clubArr[i].league)) {
           clubName = clubArr[i].club;
           clubLogoUrl = clubArr[i].logo;
+          return {
+            clubName,
+            clubLogoUrl
+          }
         }
       }
     }
@@ -3138,6 +3147,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (nationObj.thirdLeagues.includes(clubArr[i].league)) {
           clubName = clubArr[i].club;
           clubLogoUrl = clubArr[i].logo;
+          return {
+            clubName,
+            clubLogoUrl
+          }
         }
       }
     }
@@ -3150,17 +3163,22 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (nationObj.rareLeagues.includes(clubArr[i].league)) {
           clubName = clubArr[i].club;
           clubLogoUrl = clubArr[i].logo;
+          return {
+            clubName,
+            clubLogoUrl
+          }
         }
       }
     }
     
     // if still no club, choose a random club
-    
-    if (clubName === "") {
-      for (let i = 0; i < clubArr.length; i++) {
-        if (!(clubArr[i].league === nationObj.excludeLeagues)) { // check for excluded league
-          clubName = clubArr[i].club;
-          clubLogoUrl = clubArr[i].logo;
+    for (let i = 0; i < clubArr.length; i++) {
+      if (!(clubArr[i].league === nationObj.excludeLeagues)) { // check for excluded league
+        clubName = clubArr[i].club;
+        clubLogoUrl = clubArr[i].logo;
+        return {
+          clubName,
+          clubLogoUrl
         }
       }
     }
