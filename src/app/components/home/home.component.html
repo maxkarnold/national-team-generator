@@ -318,13 +318,13 @@
                 <tr *ngFor="let player of sortedData" class="player-row">
                     <td>{{player.firstName}} {{player.lastName}}</td>
                     <td>
-                        <div>
+                        <div class="capitalize">
                             <img [src]="player.clubLogo" [alt]="player.club" class="club-logo">
                             <span>{{player.club}}</span>
                         </div>              
                     </td>
-                    <td class="desktop">
-                        <div>
+                    <td>
+                        <div class="capitalize">
                             <img [src]="player.nationalityLogo" alt="">
                             <span>{{player.nationality}}</span>
                         </div>  
@@ -338,11 +338,11 @@
                             <span *ngFor="let pos of player.altPositions" class="positions-span">{{pos}}</span>
                         </div>
                     </td>
-                    <td class="desktop">{{player.foot}}</td>
+                    <td class="desktop capitalize">{{player.foot}}</td>
                     <td>{{player.rating}}</td>
                     <!-- <td class="desktop">{{player.displayHeight}}</td>
                     <td class="desktop">{{player.weight}}</td> -->
-                    <td>{{player.age}}</td>
+                    <td class="desktop">{{player.age}}</td>
                 </tr>
             </tbody>
         </table> 

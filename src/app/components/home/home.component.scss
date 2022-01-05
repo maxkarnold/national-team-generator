@@ -259,7 +259,9 @@
     width: 100%;
     .player-row {
         td {
-            text-transform: capitalize;
+            .capitalize {
+                text-transform: capitalize;
+            }
             padding: 0.2rem;
             div {
                 display: inline-flex;

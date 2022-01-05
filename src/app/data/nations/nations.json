@@ -2385,18 +2385,6 @@
         ]
       },
       {
-        "name": "nicaragua",
-        "logo": "https://fmdataba.com/images/n/NCA.svg",
-        "region": "concacaf",
-        "mainLeagues": [],
-        "secondLeagues": [],
-        "thirdLeagues": [],
-        "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
-      },
-      {
         "name": "thailand",
         "logo": "https://fmdataba.com/images/n/THA.svg",
         "region": "afc",

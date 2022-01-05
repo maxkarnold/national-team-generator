@@ -1329,6 +1329,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         lastName: '',
         firstInitial: '',
         singleLastName: '',
+        firstNameUsage: '',
+        lastNameUsage: '',
         mainPositions: [],
         altPositions: [],
         competentPositions: [],
@@ -1382,11 +1384,24 @@ export class HomeComponent implements OnInit, OnDestroy {
       // player.weight = attrObj.weight;
       // player.weakFoot = attrObj.weakFoot;
       // player.attributes = attrObj.attributes;
-      let randomNum = getRandomInt(1, 20);
-      let {request$: firstNameReq, retryRequest$: firstNameRetry, patronym: firstPatronym, names} = this.afs.getFirstName(player.nationality, randomNum);
+      let randomNum = getRandomInt(1, 100);
+      if (randomNum > 25) {
+        randomNum = 0;
+      } else if (randomNum > 10) {
+        randomNum = 1;
+      } else if (randomNum > 5) {
+        randomNum = 2;
+      } else if (randomNum > 2) {
+        randomNum = 3;
+      } else if (randomNum > 0) {
+        randomNum = 4;
+      }
+      let {request$: firstNameReq, retryRequest$: firstNameRetry, patronym: firstNameUsage, names} = this.afs.getFirstName(player.nationality, randomNum);
 
       firstNameReq.subscribe((firstNameArr) => {
         if (firstNameArr[0] !== undefined) {
+          console.log("First Name Usage within home component: ", firstNameUsage, firstNameArr);
+          player.firstNameUsage = firstNameUsage;
           for (let i = 0; i < firstNameArr.length; i++) {
             if (i === 0) {
               player.firstName = firstNameArr[i].name
@@ -1401,22 +1416,22 @@ export class HomeComponent implements OnInit, OnDestroy {
             player.firstInitial = player.firstName.charAt(1);
           }
           if (names > 1) {
-            if (firstPatronym === 'Russian' || firstPatronym === 'Kazakh' || firstPatronym === 'Tajik') { 
+            if (firstNameUsage === 'Russian' || firstNameUsage === 'Kazakh' || firstNameUsage === 'Tajik') { 
               let nameLength = player.firstName.length;
               let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
               let chance = getRandomInt(0, 2);
-              if (chance > 0 && firstPatronym === 'Kazakh') {
+              if (chance > 0 && firstNameUsage === 'Kazakh') {
                 player.firstName += 'uly';
               } else if (vowels.includes(player.firstName.charAt(nameLength - 1))) {
                 player.firstName += 'evich';
               } else {
                 player.firstName += 'ovich';
               }
-            } else if (firstPatronym === 'Ukrainian' || (firstPatronym === 'Belarusian' &&  player.firstName.includes(' '))) {
+            } else if (firstNameUsage === 'Ukrainian' || (firstNameUsage === 'Belarusian' &&  player.firstName.includes(' '))) {
               player.firstName += 'vych';
-            } else if (firstPatronym === 'Azerbaijani') {
+            } else if (firstNameUsage === 'Azerbaijani') {
               player.firstName += ' oğlu';
-            } else if (firstPatronym === 'Turkmen') {
+            } else if (firstNameUsage === 'Turkmen') {
               player.firstName += 'owiç';
             }
           }
@@ -1424,6 +1439,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         } 
         else {
           firstNameRetry.subscribe((firstNameArr) => { 
+            player.firstNameUsage = firstNameUsage;
             for (let i = 0; i < firstNameArr.length; i++) {
               if (i === 0) {
                 player.firstName = firstNameArr[i].name
@@ -1436,22 +1452,22 @@ export class HomeComponent implements OnInit, OnDestroy {
               player.firstInitial = player.firstName.charAt(1);
             }
             if (names > 1) {
-              if (firstPatronym === 'Russian' || firstPatronym === 'Kazakh' || firstPatronym === 'Tajik') { 
+              if (firstNameUsage === 'Russian' || firstNameUsage === 'Kazakh' || firstNameUsage === 'Tajik') { 
                 let nameLength = player.firstName.length;
                 let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
                 let chance = getRandomInt(0, 2);
-                if (chance > 0 && firstPatronym === 'Kazakh') {
+                if (chance > 0 && firstNameUsage === 'Kazakh') {
                   player.firstName += 'uly';
                 } else if (vowels.includes(player.firstName.charAt(nameLength - 1))) {
                   player.firstName += 'evich';
                 } else {
                   player.firstName += 'ovich';
                 }
-              } else if (firstPatronym === 'Ukrainian' || (firstPatronym === 'Belarusian' &&  player.firstName.includes(' '))) {
+              } else if (firstNameUsage === 'Ukrainian' || (firstNameUsage === 'Belarusian' &&  player.firstName.includes(' '))) {
                 player.firstName += 'vych';
-              } else if (firstPatronym === 'Azerbaijani') {
+              } else if (firstNameUsage === 'Azerbaijani') {
                 player.firstName += ' oğlu';
-              } else if (firstPatronym === 'Turkmen') {
+              } else if (firstNameUsage === 'Turkmen') {
                 player.firstName += 'owiç';
               }
             }
@@ -1462,27 +1478,51 @@ export class HomeComponent implements OnInit, OnDestroy {
         // About 50% chance: Brazil, Spain, Portugal, Angola, Equatorial Guinea, Guinea-Bissau
       });
       
-      let {request$: lastNameReq, retryRequest$: lastNameRetry, patronym: lastPatronym, names: lastNames} = this.afs.getLastName(player.nationality, randomNum);
+      let {request$: lastNameReq, retryRequest$: lastNameRetry, patronym: lastNameUsage, names: lastNames} = this.afs.getLastName(player.nationality, randomNum);
 
       lastNameReq.subscribe((lastNameArr) => {
         if (lastNameArr[0] !== undefined) {
+          player.lastNameUsage = lastNameUsage;
+          let articleUsed = false;
           for (let i = 0; i < lastNameArr.length; i++) {
+            let chance = getRandomInt(1, 4);
+            let surname: string = lastNameArr[i].name;
+            if (lastNameUsage === 'Portuguese' && chance > 3 && articleUsed === false && lastNameArr[i].name.slice(0) !== 'D') {
+              
+              let articles = [];
+              if (surname.slice(-1) === 's') {
+                if (surname.slice(-2) !== 'as') {
+                  articles = ['dos', 'de'];
+                } else {
+                  articles = ['das', 'de'];
+                }
+              } else if (surname.slice(-1) !== 'o') {
+                articles = ['da', 'de'];
+              } else {
+                articles = ['do', 'de'];
+              }
+              let chance = getRandomInt(0, 1);
+              let chosenArticle = articles[chance];
+              surname = chosenArticle + ' ' + surname;
+              articleUsed = true;
+              
+            }
             if (i === 0) {
-              player.lastName = lastNameArr[i].name;
+              player.lastName = surname;
             } else {
-              player.lastName = player.lastName + " " + lastNameArr[i].name;
+              player.lastName = player.lastName + " " + surname;
             }
           }
           
-          if (lastPatronym === 'Icelandic' || lastPatronym === 'Faroese') {
+          if (lastNameUsage === 'Icelandic' || lastNameUsage === 'Faroese') {
             player.lastName += 'sson';
-          } else if (lastPatronym === 'Malay') {
+          } else if (lastNameUsage === 'Malay') {
             player.lastName = 'bin ' + player.lastName;
-          } else if (lastPatronym === 'Kyrgyz') {
+          } else if (lastNameUsage === 'Kyrgyz') {
             let chance = getRandomInt(0, 1);
             let patronymArticle = ['uulu', 'tegin'];
             player.lastName = player.lastName + ' ' + patronymArticle[chance];
-          } else if (lastPatronym === 'Azerbaijani') {
+          } else if (lastNameUsage === 'Azerbaijani') {
             let nameLength = player.lastName.length;
             let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
             let chance = getRandomInt(0, 2);
@@ -1504,22 +1544,46 @@ export class HomeComponent implements OnInit, OnDestroy {
         } 
         else {
           lastNameRetry.subscribe((lastNameArr) => { 
+            player.lastNameUsage = lastNameUsage;
+            let articleUsed = false;
             for (let i = 0; i < lastNameArr.length; i++) {
+              let chance = getRandomInt(1, 4);
+              let surname: string = lastNameArr[i].name;
+              if (lastNameUsage === 'Portuguese' && chance > 3 && articleUsed === false && lastNameArr[i].name.slice(0) !== 'D') {
+                
+                let articles = [];
+                if (surname.slice(-1) === 's') {
+                  if (surname.slice(-2) !== 'as') {
+                    articles = ['dos', 'de'];
+                  } else {
+                    articles = ['das', 'de'];
+                  }
+                } else if (surname.slice(-1) !== 'o') {
+                  articles = ['da', 'de'];
+                } else {
+                  articles = ['do', 'de'];
+                }
+                let chance = getRandomInt(0, 1);
+                let chosenArticle = articles[chance];
+                surname = chosenArticle + ' ' + surname;
+                articleUsed = true;
+                
+              }
               if (i === 0) {
-                player.lastName = lastNameArr[i].name;
+                player.lastName = surname;
               } else {
-                player.lastName = player.lastName + " " + lastNameArr[i].name;
+                player.lastName = player.lastName + " " + surname;
               }
             }
-            if (lastPatronym === 'Icelandic' || lastPatronym === 'Faroese') {
+            if (lastNameUsage === 'Icelandic' || lastNameUsage === 'Faroese') {
               player.lastName += 'sson';
-            } else if (lastPatronym === 'Malay') {
+            } else if (lastNameUsage === 'Malay') {
               player.lastName = 'bin ' + player.lastName;
-            } else if (lastPatronym === 'Kyrgyz') {
+            } else if (lastNameUsage === 'Kyrgyz') {
               let chance = getRandomInt(0, 1);
               let patronymArticle = ['uulu', 'tegin'];
               player.lastName = player.lastName + ' ' + patronymArticle[chance];
-            } else if (lastPatronym === 'Azerbaijani') {
+            } else if (lastNameUsage === 'Azerbaijani') {
               let nameLength = player.lastName.length;
               let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
               let chance = getRandomInt(0, 2);
@@ -3107,7 +3171,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     let clubLogoUrl: string = "";
     
     shuffle(clubArr);
-    console.log(clubRep, "ClubArr after shuffle: ", clubArr);
+    // console.log(clubRep, "ClubArr after shuffle: ", clubArr);
     
     // 50% chance for mainLeague
     let main = getRandomInt(1, 2);

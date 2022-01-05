@@ -12,6 +12,8 @@ export interface Player {
     foot: string;
     firstInitial: string;
     singleLastName: string;
+    firstNameUsage: string;
+    lastNameUsage: string;
     nationality: string;
     nationalityLogo: string;
     age: number;
@@ -40,8 +42,7 @@ export interface Player {
     chemistryNum?: number;
     // *** Above are properties we've already added ***
     // *** Below are properties we've yet to add ***
-    firstNameUsage?: string;
-    lastNameUsage?: string;
+    
     middleName?: string;
     nickname?: string;
     
