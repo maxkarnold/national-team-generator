@@ -2,8 +2,8 @@ import { OutfieldAttributes } from './outfieldAttributes';
 import { GkAttributes } from './gkAttributes';
 
 export interface Player {
-    firstName: string;
-    lastName: string;
+    firstNames: string[];
+    lastNames: string[];
     mainPositions: string[];
     altPositions: string[];
     competentPositions: string[];

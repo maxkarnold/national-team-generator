@@ -346,7 +346,6 @@ export class FirestoreService {
     } else {
       usage = [nameOrigin[originNum]];
     }
-    console.log("First Name Usage within firestore service: ", usage);
 
     let request$: Observable<any[]>, retryRequest$: Observable<any[]>;
 

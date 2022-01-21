@@ -13,6 +13,9 @@
     th.desktop {
         display: table-cell;
     }
+    span.desktop {
+        display: block;
+    }
 }
 
 .positions-span:not(:last-child)::after {
@@ -38,56 +41,18 @@
     display: flex;
     justify-content: stretch;
     align-items: center;
-    @media screen and (max-width: 800px) {
-        flex-flow: column;
-        align-items: stretch;
-        justify-content: stretch;
-        button {
-            width: 90%;
-        }
-        .load-data-buttons {
-            width: 90%;
-            button {
-                flex: 1;
-            }
-        }
-        .form-buttons,
-        .save-buttons {
-            flex-flow: column;
-        }
-    }
     padding: 20px 0;
-    .instructions {
-        display: flex;
-        flex: 1;
-        justify-content: space-around;
-        align-items: center;
-        @media screen and (max-width: 800px) {
-            flex-flow: column;
-        }
-        & > div.info {
-            display: flex;
-            flex-flow: column;
-            align-items: center;
-            // width: 50%;
-        }
-        .rules {
-            h4.rules-heading  {
-                margin: 0;
-            }
-            ul {
-                margin: 0;
-            }
-            hr {
-                border: 1px solid #8080807c;
-                margin: 5px 0;
-            }
-        }
-    }
     button {
         height: 40px;
-        margin: 5px;
+        margin: 5px auto;
         border-radius: 10px;
+        width: 95%; 
+    }
+    & > button:first-child {
+        width: 90%;
+        @media screen and (min-width: 800px) {
+            width: 40px;
+        }
     }
     .team-generator-form {
         text-transform: capitalize;
@@ -110,10 +75,62 @@
         display: flex;
         align-items: center;
         flex-flow: column;
+    }
+
+    .instructions {
+        display: flex;
+        flex: 1;
+        justify-content: space-around;
+        align-items: center;
+        @media screen and (max-width: 800px) {
+            flex-flow: column;
+            div.info {
+                width: 90%;
+                button {
+                    width: 100%;
+                }
+            }
+        }
+        & > div.info {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            
+        }
+        .rules {
+            h4.rules-heading  {
+                margin: 0;
+            }
+            ul {
+                margin: 0;
+            }
+            hr {
+                border: 1px solid #8080807c;
+                margin: 5px 0;
+            }
+        }
+    }
+    
+    @media screen and (max-width: 800px) {
+        flex-flow: column;
+        align-items: stretch;
+        justify-content: stretch;
+        margin: 0 0.5rem;
+        .load-data-buttons {
+            width: 90%;
+            button {
+                flex: 1;
+            }
+        }
         button {
             width: 90%;
         }
+        .form-buttons,
+        .save-buttons {
+            flex-flow: column;
+        }
     }
+    
 }
 
 .info-overlay {
@@ -208,8 +225,6 @@
 
 .page-container {
     position: relative;
-    width: 90%;
-    margin: 0 auto;
     display: flex;
     flex-flow: column;
 }
@@ -217,6 +232,7 @@
 
 
 .display-container {
+    margin: 0 1rem;
     position: relative;
     h2 {
         text-align: center;
@@ -272,6 +288,9 @@
             }
             img {
                 max-width: 1.75rem;
+                @media screen and (max-width: 800px) {
+                    max-width: 2rem;
+                }
                 // border: 1px solid black;
             }
         }
@@ -693,16 +712,12 @@
                 justify-content: center;
                 align-items: center;
                 flex: 1;
-                width: 25%;
                 padding: 0.25rem;
                 // border-right: 1px solid black;
                 // border-bottom: 1px solid black;
             }
             :last-child {
                 border-right: none;
-            }
-            .name-cell {
-                width: 10vw;
             }
             .alt-positions {
                 flex-flow: wrap;
@@ -739,19 +754,32 @@
 .expanded-info {
     display: flex;
     justify-content: space-between;
+    max-width: 80vw;
+    flex-flow: wrap ;
     span {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-    img {
-        max-width: 2rem;
-        // border: 1px solid black;
     }
-        span {
-            margin-left: 1rem;
+    span:last-child{
+        color: #f8f2cf;
+    }
+    span.expanded-names {
+        flex-flow: wrap;
+        span{
+            
+            text-transform: none;
+        }
+        span:not(:last-child) {
+            margin-right: 0.5rem;
         }
     }
-}  
+
+    img {
+        max-width: 2rem;
+        margin: 1rem;
+    }
+}
+
 .nation-name-heading {
     text-transform: capitalize;
 }
@@ -759,6 +787,34 @@
 .arrow-nav {
     cursor: pointer;  
 }
+
+.scroll-bar, 
+.scroll-button {
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    .scroll-button {
+        display: block;
+        background-color: #2ab7a9;
+        z-index: 11;
+        position: sticky;
+        top: 0;
+    }
+
+    .scroll-bar {
+        display: block;
+        position: sticky;
+        z-index: 10;
+        top: 0;
+        left: 18px;
+        height: 100vh;
+        width: 5px;
+        background-color: #00ff00;
+    }
+}
+
+
 // *** ANGULAR CDK DRAG & DROP classes ***
 // Do not move cdk drag classes inside other classes
 .cdk-drag-preview {
@@ -944,6 +1000,9 @@
     box-sizing: border-box;
     // cursor: grab;
     // pointer-events: none;
+}
+.mat-expansion-panel-body {
+    padding: 0 1rem 1rem;
 }
 .mat-expansion-panel-header {
     border-top: 1px solid rgba(242, 242, 242, 0.25);
