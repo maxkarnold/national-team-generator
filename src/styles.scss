@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 // ANGULAR MATERIAL THEME
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 
 // Define a custom mixin that takes in the current theme
 @mixin theme-color-grabber($theme) {
@@ -26,23 +26,26 @@
 :root {
   --star-size: 1rem;
   --star-color: #fff;
-  --star-background:#fc0;
+  --star-background: #fc0;
   --starter-rating: 0%;
   --squad-rating: 0%;
 }
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   box-sizing: border-box;
 }
 
-html, body { 
+html,
+body {
   height: 100%;
 }
 
-body { 
-  margin: 0; 
+body {
+  margin: 0;
   padding: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 button {
@@ -51,7 +54,8 @@ button {
 
 // CLASS OVERRIDES
 
-input.login-overlay__input.login-overlay__input--override {
+input.login-overlay__input.login-overlay__input--override,
+input.register-overlay__input.register-overlay__input--override {
   margin: 0.5rem 1.5rem;
   width: auto;
 }
@@ -68,5 +72,5 @@ input.login-overlay__input.login-overlay__input--override {
 }
 
 .mat-list-base {
-  background-color: #3F51B5;
+  background-color: #3f51b5;
 }

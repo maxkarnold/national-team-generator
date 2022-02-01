@@ -1,148 +1,167 @@
 .header {
-    color: white;
-    background-color: #3F51B5;
-    &--desktop{
-        display: block;
-        @media screen and (max-width: 800px) { display: none; }
+  color: white;
+  background-color: #3f51b5;
+  &--desktop {
+    display: block;
+    @media screen and (max-width: 800px) {
+      display: none;
     }
-    &--mobile {
-        display: none;
-        @media screen and (max-width: 800px) { display: block; }
-    } 
+  }
+  &--mobile {
+    display: none;
+    @media screen and (max-width: 800px) {
+      display: block;
+    }
+  }
 }
 .logo {
-    color: white;
+  color: white;
+  display: flex;
+  align-items: center;
+  min-height: 100%;
+  padding: 0 1rem;
+  &--ripple {
+    background-position: center;
+    transition: background 0.8s;
+    &:hover {
+      background: rgb(70, 90, 183)
+        radial-gradient(circle, transparent 1%, rgb(70, 90, 183) 1%)
+        center/15000%;
+    }
+    &:active {
+      background-color: rgb(75, 100, 200);
+      background-size: 100%;
+      transition: background 0s;
+    }
+  }
+}
+.nav-bar {
+  &__menu-button {
+    &--ripple {
+      background-position: center;
+      transition: background 0.8s;
+      &:hover {
+        background: rgb(80, 110, 210)
+          radial-gradient(circle, transparent 1%, rgb(80, 110, 210) 1%)
+          center/15000%;
+      }
+      &:focus {
+        background-color: rgb(80, 110, 210);
+        background-size: 100%;
+        transition: background 0s;
+      }
+    }
+  }
+  &__nav-spacer {
+    flex: 1 1 auto;
+  }
+  &__link {
     display: flex;
     align-items: center;
     min-height: 100%;
+    color: white;
     padding: 0 1rem;
+    cursor: pointer;
     &--ripple {
-        background-position: center;
-        transition: background 0.8s;
-        &:hover {
-            background: rgb(70, 90, 183) radial-gradient(circle, transparent 1%, rgb(70, 90, 183) 1%) center/15000%;
-        }
-        &:active {
-            background-color: rgb(75, 100, 200);
-            background-size: 100%;
-            transition: background 0s;
-        }
+      background-position: center;
+      transition: background 0.8s;
+      &:hover {
+        background: rgb(70, 90, 183)
+          radial-gradient(circle, transparent 1%, rgb(70, 90, 183) 1%)
+          center/15000%;
+      }
+      &:active {
+        background-color: rgb(75, 100, 200);
+        background-size: 100%;
+        transition: background 0s;
+      }
     }
-}
-.nav-bar {
-    &__menu-button {
-        &--ripple {
-            background-position: center;
-            transition: background 0.8s;
-            &:hover {
-                background: rgb(80, 110, 210) radial-gradient(circle, transparent 1%, rgb(80, 110, 210) 1%) center/15000%;
-            }
-            &:focus {
-                background-color: rgb(80, 110, 210);
-                background-size: 100%;
-                transition: background 0s;
-            }
-        }   
-    }
-    &__nav-spacer {
-        flex: 1 1 auto;
-    }
-    &__link {
-        display: flex;
-        align-items: center;
-        min-height: 100%;
-        color: white;
-        padding: 0 1rem;
-        cursor: pointer;
-        &--ripple {
-            background-position: center;
-            transition: background 0.8s;
-            &:hover {
-                background: rgb(70, 90, 183) radial-gradient(circle, transparent 1%, rgb(70, 90, 183) 1%) center/15000%;
-            }
-            &:active {
-                background-color: rgb(75, 100, 200);
-                background-size: 100%;
-                transition: background 0s;
-            }
-        }
-    }
+  }
 }
 .nav-list {
+  display: flex;
+  flex-flow: column;
+  padding: 0;
+  &__link {
     display: flex;
-    flex-flow: column;
-    padding: 0;
-    &__link {
-        display: flex;
-        justify-content: center;
-        color: white;
-        border-top: 1px solid rgb(242, 242, 242, 0.25);
-        padding: 1rem 0;
-        transition: background-color 400ms;
-        background-color: rgb(63, 81, 181);
-        cursor: pointer;
-        &--ripple {
-            background-position: center;
-            transition: background 0.8s;
-            &:hover {
-                background: rgb(70, 90, 183) radial-gradient(circle, transparent 1%, rgb(70, 90, 183) 1%) center/15000%;
-            }
-            &:active {
-                background-color: rgb(75, 100, 200);
-                background-size: 100%;
-                transition: background 0s;
-            }
-        }
+    justify-content: center;
+    color: white;
+    border-top: 1px solid rgb(242, 242, 242, 0.25);
+    padding: 1rem 0;
+    transition: background-color 400ms;
+    background-color: rgb(63, 81, 181);
+    cursor: pointer;
+    &--ripple {
+      background-position: center;
+      transition: background 0.8s;
+      &:hover {
+        background: rgb(70, 90, 183)
+          radial-gradient(circle, transparent 1%, rgb(70, 90, 183) 1%)
+          center/15000%;
+      }
+      &:active {
+        background-color: rgb(75, 100, 200);
+        background-size: 100%;
+        transition: background 0s;
+      }
     }
+  }
 }
 
 .ng-container {
-    &__login-overlay {
-        z-index: 2;
-        border-top: 1px solid whitesmoke;
-        margin: 0 auto;
-        position: absolute;
-        right: 0;
-    }
+  &__login-overlay,
+  &__register-overlay {
+    z-index: 2;
+    border-top: 1px solid whitesmoke;
+    margin: 0 auto;
+    position: absolute;
+    right: 0;
+  }
 }
 
-.login-overlay {
-    background-color: #3F51B5;
-    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-    color: white;
+.login-overlay,
+.register-overlay {
+  background-color: #3f51b5;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  color: white;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  width: 26rem;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+  &__exit {
     display: flex;
-    flex-flow: column;
-    justify-content: center;
-    width: 26rem;
-    @media screen and (max-width: 800px) { width: 100%; }
-    &__exit {
-        display: flex;
-        justify-content: flex-end;
-        &__button {
-            display: flex;
-            justify-content: center;
-            min-width: 2.5rem;
-            width: auto;
-            padding: 0;
-        }
-    }
+    justify-content: flex-end;
     &__button {
-        background-color: white;
-        margin: 1rem;
-        &--ripple {
-            background-position: center;
-            transition: background 0.8s;
-            &:hover {
-                background: rgb(235,235,235) radial-gradient(circle, transparent 1%, rgb(235,235,235) 1%) center/15000%;
-            }
-            &:active {
-                background-color: rgb(235,235,235);
-                background-size: 100%;
-                transition: background 0s;
-            }
-        }
+      display: flex;
+      justify-content: center;
+      min-width: 2.5rem;
+      width: auto;
+      padding: 0;
     }
-    &__input {
-        color: white;
+  }
+  &__button {
+    background-color: white;
+    margin: 1rem;
+    &--ripple {
+      background-position: center;
+      transition: background 0.8s;
+      &:hover {
+        background: rgb(235, 235, 235)
+          radial-gradient(circle, transparent 1%, rgb(235, 235, 235) 1%)
+          center/15000%;
+      }
+      &:active {
+        background-color: rgb(235, 235, 235);
+        background-size: 100%;
+        transition: background 0s;
+      }
     }
+  }
+  &__input {
+    color: white;
+  }
 }
