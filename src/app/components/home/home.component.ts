@@ -1480,7 +1480,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       } = this.afs.getFirstName(player.nationality, randomNum);
 
       firstNameReq.subscribe((firstNameArr) => {
-        if (firstNameArr[0] !== undefined && player.firstNames.length < 1) {
+        if (firstNameArr[0] !== undefined) {
           //   console.log('FirstNameReq1', player.firstNames.length, player);
           player.firstNameUsage = firstNameUsage;
           for (let i = 0; i < names; i++) {
@@ -1522,45 +1522,43 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         } else {
           firstNameRetry.subscribe((firstNameArr) => {
-            if (player.firstNames.length < 1) {
-              //   console.log(
-              //     'FirstNameReqRetry',
-              //     player.firstNames.length,
-              //     player
-              //   );
-              player.firstNameUsage = firstNameUsage;
-              for (let i = 0; i < names; i++) {
-                player.firstNames.push(firstNameArr[i].name);
-              }
+            //   console.log(
+            //     'FirstNameReqRetry',
+            //     player.firstNames.length,
+            //     player
+            //   );
+            player.firstNameUsage = firstNameUsage;
+            for (let i = 0; i < names; i++) {
+              player.firstNames.push(firstNameArr[i].name);
+            }
 
-              if (names > 1) {
-                if (
-                  firstNameUsage === 'Russian' ||
-                  firstNameUsage === 'Kazakh' ||
-                  firstNameUsage === 'Tajik'
-                ) {
-                  let nameLength = player.firstNames[1].length;
-                  let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
-                  let chance = getRandomInt(0, 2);
-                  if (chance > 0 && firstNameUsage === 'Kazakh') {
-                    player.firstNames[1] += 'uly';
-                  } else if (
-                    vowels.includes(player.firstNames[1].charAt(nameLength - 1))
-                  ) {
-                    player.firstNames[1] += 'evich';
-                  } else {
-                    player.firstNames[1] += 'ovich';
-                  }
+            if (names > 1) {
+              if (
+                firstNameUsage === 'Russian' ||
+                firstNameUsage === 'Kazakh' ||
+                firstNameUsage === 'Tajik'
+              ) {
+                let nameLength = player.firstNames[1].length;
+                let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+                let chance = getRandomInt(0, 2);
+                if (chance > 0 && firstNameUsage === 'Kazakh') {
+                  player.firstNames[1] += 'uly';
                 } else if (
-                  firstNameUsage === 'Ukrainian' ||
-                  firstNameUsage === 'Belarusian'
+                  vowels.includes(player.firstNames[1].charAt(nameLength - 1))
                 ) {
-                  player.firstNames[1] += 'vych';
-                } else if (firstNameUsage === 'Azerbaijani') {
-                  player.firstNames[1] += ' oğlu';
-                } else if (firstNameUsage === 'Turkmen') {
-                  player.firstNames[1] += 'owiç';
+                  player.firstNames[1] += 'evich';
+                } else {
+                  player.firstNames[1] += 'ovich';
                 }
+              } else if (
+                firstNameUsage === 'Ukrainian' ||
+                firstNameUsage === 'Belarusian'
+              ) {
+                player.firstNames[1] += 'vych';
+              } else if (firstNameUsage === 'Azerbaijani') {
+                player.firstNames[1] += ' oğlu';
+              } else if (firstNameUsage === 'Turkmen') {
+                player.firstNames[1] += 'owiç';
               }
             }
           });
@@ -1578,8 +1576,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       } = this.afs.getLastName(player.nationality, randomNum);
 
       lastNameReq.subscribe((lastNameArr) => {
-        if (lastNameArr[0] !== undefined && player.lastNames.length < 1) {
-          console.log('LastNameReq1', player.lastNames.length, player);
+        console.log(`Player#: ${this.playerCount}`, lastNameArr);
+        if (lastNameArr[0] !== undefined) {
+          //   console.log('LastNameReq1', player.lastNames.length, player);
           player.lastNameUsage = lastNameUsage;
           let articleUsed = false;
           for (let i = 0; i < lastNames; i++) {
@@ -1613,7 +1612,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 player.lastNames.push(chosenArticle);
                 articleUsed = true;
               }
-              console.log(surname);
+              //   console.log(surname);
               player.lastNames.push(surname);
             }
           }
@@ -1646,75 +1645,69 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         } else {
           lastNameRetry.subscribe((lastNameArr) => {
-            if (player.lastNames.length < 1) {
-              //   console.log('LastNameReqRetry', player.lastNames.length, player);
-              player.lastNameUsage = lastNameUsage;
-              let articleUsed = false;
-              for (let i = 0; i < lastNames; i++) {
-                if (
-                  (articleUsed === true &&
-                    player.lastNames.length <= lastNames + 1) ||
-                  (articleUsed === false &&
-                    player.lastNames.length <= lastNames)
-                ) {
-                  let chance = getRandomInt(1, 4);
-                  let surname: string = lastNameArr[i].name;
-                  if (
-                    lastNameUsage === 'Portuguese' &&
-                    chance > 3 &&
-                    articleUsed === false &&
-                    lastNameArr[i].name.slice(0) !== 'D'
-                  ) {
-                    let articles = [];
-                    if (surname.slice(-1) === 's') {
-                      if (surname.slice(-2) !== 'as') {
-                        articles = ['dos', 'de'];
-                      } else {
-                        articles = ['das', 'de'];
-                      }
-                    } else if (surname.slice(-1) !== 'o') {
-                      articles = ['da', 'de'];
-                    } else {
-                      articles = ['do', 'de'];
-                    }
-                    let chance = getRandomInt(0, 1);
-                    let chosenArticle = articles[chance];
-                    player.lastNames.push(chosenArticle);
-                    articleUsed = true;
-                  }
-                  player.lastNames.push(surname);
-                }
-              }
-
+            //   console.log('LastNameReqRetry', player.lastNames.length, player);
+            player.lastNameUsage = lastNameUsage;
+            let articleUsed = false;
+            for (let i = 0; i < lastNames; i++) {
               if (
-                lastNameUsage === 'Icelandic' ||
-                lastNameUsage === 'Faroese'
+                (articleUsed === true &&
+                  player.lastNames.length <= lastNames + 1) ||
+                (articleUsed === false && player.lastNames.length <= lastNames)
               ) {
-                player.lastNames[0] += 'sson';
-              } else if (lastNameUsage === 'Malay') {
-                player.lastNames.unshift('bin');
-              } else if (lastNameUsage === 'Kyrgyz') {
-                let chance = getRandomInt(0, 1);
-                let patronymArticle = ['uulu', 'tegin'];
-                player.lastNames.push(patronymArticle[chance]);
-              } else if (lastNameUsage === 'Azerbaijani') {
-                let nameLength = player.lastNames[0].length;
-                let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
-                let chance = getRandomInt(0, 2);
-                if (chance > 1) {
-                  player.lastNames[0] += 'lı';
-                } else if (chance > 0) {
-                  player.lastNames[0] += 'zade';
-                } else {
-                  if (
-                    vowels.includes(player.lastNames[0].charAt(nameLength - 1))
-                  ) {
-                    let chance = getRandomInt(0, 1);
-                    let patronymArticle = ['ev', 'yev'];
-                    player.lastNames[0] += patronymArticle[chance];
+                let chance = getRandomInt(1, 4);
+                let surname: string = lastNameArr[i].name;
+                if (
+                  lastNameUsage === 'Portuguese' &&
+                  chance > 3 &&
+                  articleUsed === false &&
+                  lastNameArr[i].name.slice(0) !== 'D'
+                ) {
+                  let articles = [];
+                  if (surname.slice(-1) === 's') {
+                    if (surname.slice(-2) !== 'as') {
+                      articles = ['dos', 'de'];
+                    } else {
+                      articles = ['das', 'de'];
+                    }
+                  } else if (surname.slice(-1) !== 'o') {
+                    articles = ['da', 'de'];
                   } else {
-                    player.lastNames[0] += 'ov';
+                    articles = ['do', 'de'];
                   }
+                  let chance = getRandomInt(0, 1);
+                  let chosenArticle = articles[chance];
+                  player.lastNames.push(chosenArticle);
+                  articleUsed = true;
+                }
+                player.lastNames.push(surname);
+              }
+            }
+
+            if (lastNameUsage === 'Icelandic' || lastNameUsage === 'Faroese') {
+              player.lastNames[0] += 'sson';
+            } else if (lastNameUsage === 'Malay') {
+              player.lastNames.unshift('bin');
+            } else if (lastNameUsage === 'Kyrgyz') {
+              let chance = getRandomInt(0, 1);
+              let patronymArticle = ['uulu', 'tegin'];
+              player.lastNames.push(patronymArticle[chance]);
+            } else if (lastNameUsage === 'Azerbaijani') {
+              let nameLength = player.lastNames[0].length;
+              let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+              let chance = getRandomInt(0, 2);
+              if (chance > 1) {
+                player.lastNames[0] += 'lı';
+              } else if (chance > 0) {
+                player.lastNames[0] += 'zade';
+              } else {
+                if (
+                  vowels.includes(player.lastNames[0].charAt(nameLength - 1))
+                ) {
+                  let chance = getRandomInt(0, 1);
+                  let patronymArticle = ['ev', 'yev'];
+                  player.lastNames[0] += patronymArticle[chance];
+                } else {
+                  player.lastNames[0] += 'ov';
                 }
               }
             }
