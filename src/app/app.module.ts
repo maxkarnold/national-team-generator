@@ -21,17 +21,28 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { FirestoreService } from './services/firestore.service';
 import { AuthService } from './services/auth.service';
-import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
-
+import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
+import { LineupComponent } from './pages/lineup/lineup.component';
+import { RosterComponent } from './pages/roster/roster.component';
+import { PitchViewComponent } from './shared/components/pitch-view/pitch-view.component';
+import { LineupAccordionComponent } from './shared/components/lineup-accordion/lineup-accordion.component';
+import { PositionBreakdownComponent } from './shared/components/position-breakdown/position-breakdown.component';
+import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    LineupComponent,
+    RosterComponent,
+    PitchViewComponent,
+    LineupAccordionComponent,
+    PositionBreakdownComponent,
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,9 +61,9 @@ import { LeaderboardComponent } from './components/leaderboard/leaderboard.compo
     MatExpansionModule,
     MatTooltipModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [FirestoreService, AuthService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

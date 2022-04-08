@@ -2,19 +2,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service';
 
-import { Player } from 'src/app/models/player';
-import { OutfieldAttributes } from 'src/app/models/outfieldAttributes';
-import { GkAttributes } from 'src/app/models/gkAttributes';
-import { LastName } from 'src/app/models/last-name';
-import { FirstName } from 'src/app/models/first-name';
-import { PositionBox } from 'src/app/models/positionBox';
-import { positionBoxes } from 'src/app/data/positionBoxes';
-import { SubmittedRoster } from 'src/app/models/submittedRoster';
+import { Player } from 'src/app/models/player.model';
+import {
+  OutfieldAttributes,
+  GkAttributes,
+} from 'src/app/models/player-attributes.model';
+import { LastName, FirstName } from 'src/app/models/names.model';
+import { PositionBox } from 'src/app/models/position-box.model';
+import { SubmittedRoster } from 'src/app/models/roster.model';
 
-import * as nationsModule from '../../data/nations/nations.json';
-import * as clubsModule from '../../data/clubs/clubs.json';
-import * as positionsModule from '../../data/positions.json';
-import * as pitchPositionsModule from '../../data/pitchPositions.json';
+import * as nationsModule from '../../../assets/json/nations.json';
+import * as clubsModule from '../../../assets/json/clubs.json';
+import * as positionsModule from '../../../assets/json/positions.json';
+import * as pitchPositionsModule from '../../../assets/json/pitchPositions.json';
+import { SQUAD_RULES } from '../../shared/constants/squad-rules';
+import { POSITION_BOXES } from 'src/app/shared/constants/position-boxes';
 
 import { Observable, Subscription } from 'rxjs';
 import { Sort } from '@angular/material/sort';
@@ -67,46 +69,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   squadTotalRating = 0;
   formation = '';
   chemistry = 0;
-  squadRules = [
-    {
-      text: '1 starting goalkeeper',
-      check: '❌',
-    },
-    {
-      text: 'EXACTLY 3 goalkeepers in squad',
-      check: '❌',
-    },
-    {
-      text: '3-4 starting defenders',
-      check: '❌',
-    },
-    {
-      text: 'min. 6 defenders in squad',
-      check: '❌',
-    },
-    {
-      text: '2-6 starting midfielders',
-      check: '❌',
-    },
-    {
-      text: 'min. 5 midfielders in squad',
-      check: '❌',
-    },
-    {
-      text: 'Valid formation',
-      check: '❌',
-    },
-    {
-      text: 'Backup player in each position',
-      check: '❌',
-    },
-    {
-      text: '',
-      check: '→',
-    },
-  ];
-
-  positionBoxes = positionBoxes;
+  squadRules = SQUAD_RULES;
+  positionBoxes = POSITION_BOXES;
 
   constructor(private afs: FirestoreService, private auth: AuthService) {
     this.players = [];
