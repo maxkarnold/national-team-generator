@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  DocumentChangeAction,
-  DocumentData,
-  DocumentReference,
-} from '@angular/fire/firestore';
-import { LastName, FirstName } from '../models/names.model';
+import { LastName, FirstName } from '../../models/names.model';
 import { Observable } from 'rxjs';
-import { Player } from '../models/player.model';
-import { SubmittedRoster } from '../models/roster.model';
+import { Player } from '../../models/player.model';
+import { SubmittedRoster } from '../../models/roster.model';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -1061,7 +1056,7 @@ export class FirestoreService {
     benchReserves: Player[],
     starters: Player[],
     nationOrTier: string
-  ): Promise<DocumentReference<DocumentData>> {
+  ) {
     return this.afs
       .collection('users')
       .doc(uid)
@@ -1110,7 +1105,7 @@ export class FirestoreService {
           startersRating: roster.startersRating,
           formation: roster.formation,
         })
-        .then((docRef) => {
+        .then((docRef: any) => {
           console.log('New firestore id', docRef.id);
           return docRef.id;
         });
@@ -1128,13 +1123,11 @@ export class FirestoreService {
     console.log('Function is still working');
   }
 
-  getSubmittedRosters(): Observable<DocumentChangeAction<SubmittedRoster>[]> {
+  getSubmittedRosters() {
     let rostersCollection = this.afs.collection('submittedRosters', (ref) =>
       ref.orderBy('startersRating', 'desc').limit(50)
     );
-    return rostersCollection.snapshotChanges() as Observable<
-      DocumentChangeAction<SubmittedRoster>[]
-    >;
+    return rostersCollection.snapshotChanges();
   }
 
   getRosterId(uid: string) {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,48 +17,48 @@ export class NavBarComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
-    this.subscription = this.auth.currentAuthState.subscribe(
-      (authState) => (this.isLoggedIn = authState)
-    );
-    if (localStorage.getItem('user') !== null) {
-      this.auth.changeAuthState(true);
-    } else {
-      this.auth.changeAuthState(false);
-    }
+    // this.subscription = this.auth.currentAuthState.subscribe(
+    //   (authState) => (this.isLoggedIn = authState)
+    // );
+    // if (localStorage.getItem('user') !== null) {
+    //   this.auth.changeAuthState(true);
+    // } else {
+    //   this.auth.changeAuthState(false);
+    // }
   }
 
-  loginOverlay() {
-    if (!this.loginOverlayOpen) {
-      this.loginOverlayOpen = true;
-    } else {
-      this.loginOverlayOpen = false;
-    }
-  }
+  // loginOverlay() {
+  //   if (!this.loginOverlayOpen) {
+  //     this.loginOverlayOpen = true;
+  //   } else {
+  //     this.loginOverlayOpen = false;
+  //   }
+  // }
 
-  login(email: string, password: string) {
-    this.auth
-      .login(email, password)
-      .then((res) => {
-        this.auth.changeAuthState(true);
-        localStorage.setItem('user', JSON.stringify(res.user));
-        this.loginOverlayOpen = false;
-        console.log('Logged in');
-      })
-      .catch((err) => {
-        var errorCode = err.code;
-        var errorMessage = err.message;
-        if (errorCode === 'auth/wrong-password') {
-          alert('Wrong password.');
-        } else {
-          alert(errorMessage);
-        }
-        console.log(err);
-      });
-  }
+  // login(email: string, password: string) {
+  //   this.auth
+  //     .login(email, password)
+  //     .then((res) => {
+  //       this.auth.changeAuthState(true);
+  //       localStorage.setItem('user', JSON.stringify(res.user));
+  //       this.loginOverlayOpen = false;
+  //       console.log('Logged in');
+  //     })
+  //     .catch((err) => {
+  //       var errorCode = err.code;
+  //       var errorMessage = err.message;
+  //       if (errorCode === 'auth/wrong-password') {
+  //         alert('Wrong password.');
+  //       } else {
+  //         alert(errorMessage);
+  //       }
+  //       console.log(err);
+  //     });
+  // }
 
-  logout() {
-    this.auth.logout();
-    console.log('logged out');
-    this.auth.changeAuthState(false);
-  }
+  // logout() {
+  //   this.auth.logout();
+  //   console.log('logged out');
+  //   this.auth.changeAuthState(false);
+  // }
 }

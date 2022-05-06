@@ -1,22 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FirestoreService } from '../../services/firestore.service';
-import { AuthService } from '../../services/auth.service';
+import { FirestoreService } from '../../core/services/firestore.service';
+import { AuthService } from '../../core/services/auth.service';
 
-import { Player } from 'src/app/models/player.model';
+import { Player } from 'app/models/player.model';
 import {
   OutfieldAttributes,
   GkAttributes,
-} from 'src/app/models/player-attributes.model';
-import { LastName, FirstName } from 'src/app/models/names.model';
-import { PositionBox } from 'src/app/models/position-box.model';
-import { SubmittedRoster } from 'src/app/models/roster.model';
+} from 'app/models/player-attributes.model';
+import { LastName, FirstName } from 'app/models/names.model';
+import { PositionBox } from 'app/models/position-box.model';
+import { SubmittedRoster } from 'app/models/roster.model';
 
 import * as nationsModule from '../../../assets/json/nations.json';
 import * as clubsModule from '../../../assets/json/clubs.json';
 import * as positionsModule from '../../../assets/json/positions.json';
 import * as pitchPositionsModule from '../../../assets/json/pitchPositions.json';
-import { SQUAD_RULES } from '../../shared/constants/squad-rules';
-import { POSITION_BOXES } from 'src/app/shared/constants/position-boxes';
+import { SQUAD_RULES } from '@shared/constants/squad-rules';
+import { POSITION_BOXES } from '@shared/constants/position-boxes';
 
 import { Observable, Subscription } from 'rxjs';
 import { Sort } from '@angular/material/sort';
@@ -87,9 +87,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.nationsList.push(tierObj.nations[i]);
       }
     }
-    this.subscription = this.auth.currentAuthState.subscribe(
-      (authState) => (this.isLoggedIn = authState)
-    );
+    // this.subscription = this.auth.currentAuthState.subscribe(
+    //   (authState) => (this.isLoggedIn = authState)
+    // );
     if (
       this.isLoggedIn === true &&
       localStorage.getItem('TEAMGEN - Player #0')
@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
     let submittedRoster: SubmittedRoster;
-    let user$ = this.auth.getUser();
+    // let user$ = this.auth.getUser();
     // let user = await user$.first().toPromise();
     alert('Leaderboards are currently unavailable. Please try again later.');
     // .subscribe((user) => {
@@ -3934,7 +3934,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       return false;
     }
     let user = JSON.parse(localStorage.getItem('user') || '');
-    this.afs.getRosterId(user.uid).subscribe((obj) => {
+    this.afs.getRosterId(user.uid).subscribe((obj: any) => {
       console.log('Checking firestore for save data...\n');
       for (const roster of obj) {
         let id = roster.payload.doc.id;
@@ -4086,7 +4086,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.players = [];
       this.sortedData = [];
       this.pitchPlayers = [];
-      this.afs.getRoster(user.uid, saveLocation).subscribe((obj) => {
+      this.afs.getRoster(user.uid, saveLocation).subscribe((obj: any) => {
         const data = obj.payload.data();
         if (data !== undefined) {
           this.players = data.benchReserves;

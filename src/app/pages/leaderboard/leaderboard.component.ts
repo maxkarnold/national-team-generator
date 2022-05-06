@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Player } from 'src/app/models/player.model';
-import { SubmittedRoster } from 'src/app/models/roster.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { FirestoreService } from 'src/app/services/firestore.service';
+import { SubmittedRoster } from 'app/models/roster.model';
+import { AuthService } from '@core/services/auth.service';
+import { FirestoreService } from '@core/services/firestore.service';
 
 @Component({
   selector: 'app-leaderboard',
@@ -45,9 +44,9 @@ export class LeaderboardComponent implements OnInit {
   constructor(private db: FirestoreService, private auth: AuthService) {}
 
   ngOnInit(): void {
-    this.subscription = this.auth.currentAuthState.subscribe(
-      (authState) => (this.isLoggedIn = authState)
-    );
+    // this.subscription = this.auth.currentAuthState.subscribe(
+    //   (authState) => (this.isLoggedIn = authState)
+    // );
     for (let i = 0; i < 100; i++) {
       let roster = localStorage.getItem(`Roster #${i}`) || null;
       if (roster === null) {
@@ -56,79 +55,77 @@ export class LeaderboardComponent implements OnInit {
       this.allRosters.push(JSON.parse(roster));
     }
     this.organizeLeaderboards();
-    // console.log(this.allRosters, this.organizedRosters);
   }
 
   trackByItems(index: number, item: SubmittedRoster) {
     return item.id;
   }
 
-  updateLeaderboards() {
-    this.db.getSubmittedRosters().subscribe((snapshot) => {
-      // this.allRosters = [];
+  // updateLeaderboards() {
+  //   this.db.getSubmittedRosters().subscribe((snapshot) => {
 
-      snapshot: for (const data of snapshot) {
-        if (this.allRosters.length === 0) {
-          this.allRosters.push({
-            ...data.payload.doc.data(),
-            id: data.payload.doc.id,
-          });
-          continue snapshot;
-        }
-        for (const roster of this.allRosters) {
-          if (roster.id === data.payload.doc.id) {
-            continue snapshot;
-          }
-        }
-        // console.log(data.payload.doc.id);
-        this.allRosters.push({
-          ...data.payload.doc.data(),
-          id: data.payload.doc.id,
-        });
-      }
-      let user = localStorage.getItem('user');
-      let players = [];
-      let pitchPlayers = [];
+  //     snapshot: for (const data of snapshot) {
+  //       if (this.allRosters.length === 0) {
+  //         this.allRosters.push({
+  //           ...data.payload.doc.data(),
+  //           id: data.payload.doc.id,
+  //         });
+  //         continue snapshot;
+  //       }
+  //       for (const roster of this.allRosters) {
+  //         if (roster.id === data.payload.doc.id) {
+  //           continue snapshot;
+  //         }
+  //       }
+  //       // console.log(data.payload.doc.id);
+  //       this.allRosters.push({
+  //         ...data.payload.doc.data(),
+  //         id: data.payload.doc.id,
+  //       });
+  //     }
+  //     let user = localStorage.getItem('user');
+  //     let players = [];
+  //     let pitchPlayers = [];
 
-      for (let i = 0; i < 60; i++) {
-        let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
-        if (playerString !== null) {
-          players.push(playerString);
-        } else {
-          break;
-        }
-      }
-      for (let i = 0; i < 11; i++) {
-        let playerString = localStorage.getItem(
-          `TEAMGEN - Starting Player #${i + 1}`
-        );
-        if (playerString !== null) {
-          pitchPlayers.push(playerString);
-        }
-      }
-      localStorage.clear();
-      if (user !== null) {
-        localStorage.setItem('user', user);
-      }
-      for (let i = 0; i < players.length; i++) {
-        localStorage.setItem(`TEAMGEN - Player #${i}`, players[i]);
-      }
-      for (let i = 0; i < pitchPlayers.length; i++) {
-        localStorage.setItem(
-          `TEAMGEN - Starting Player #${i + 1}`,
-          pitchPlayers[i]
-        );
-      }
-      for (let i = 0; i < this.allRosters.length; i++) {
-        localStorage.setItem(
-          `Roster #${i}`,
-          JSON.stringify(this.allRosters[i])
-        );
-      }
-      console.log(this.allRosters, this.organizedRosters);
-      this.organizeLeaderboards();
-    });
-  }
+  //     for (let i = 0; i < 60; i++) {
+  //       let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
+  //       if (playerString !== null) {
+  //         players.push(playerString);
+  //       } else {
+  //         break;
+  //       }
+  //     }
+  //     for (let i = 0; i < 11; i++) {
+  //       let playerString = localStorage.getItem(
+  //         `TEAMGEN - Starting Player #${i + 1}`
+  //       );
+  //       if (playerString !== null) {
+  //         pitchPlayers.push(playerString);
+  //       }
+  //     }
+  //     localStorage.clear();
+  //     if (user !== null) {
+  //       localStorage.setItem('user', user);
+  //     }
+  //     for (let i = 0; i < players.length; i++) {
+  //       localStorage.setItem(`TEAMGEN - Player #${i}`, players[i]);
+  //     }
+  //     for (let i = 0; i < pitchPlayers.length; i++) {
+  //       localStorage.setItem(
+  //         `TEAMGEN - Starting Player #${i + 1}`,
+  //         pitchPlayers[i]
+  //       );
+  //     }
+  //     for (let i = 0; i < this.allRosters.length; i++) {
+  //       localStorage.setItem(
+  //         `Roster #${i}`,
+  //         JSON.stringify(this.allRosters[i])
+  //       );
+  //     }
+  //     console.log(this.allRosters, this.organizedRosters);
+  //     this.organizeLeaderboards();
+  //   });
+  // }
 
   organizeLeaderboards() {
     this.organizedRosters = [];

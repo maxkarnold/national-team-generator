@@ -1,0 +1,11 @@
+<h1>National Team Generator</h1>
+
+<div *ngIf="auth.user$ | async as user; else login">
+  {{ user | json }}
+  <hr />
+  <button (click)="auth.signOut()">Sign Out</button>
+</div>
+
+<ng-template #login>
+  <button (click)="auth.googleSignin()">Sign In With Google</button>
+</ng-template>

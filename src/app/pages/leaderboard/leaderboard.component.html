@@ -2,7 +2,7 @@
     <h1>Leaderboards</h1>
     <p *ngIf="!isLoggedIn">You must login to see leaderboard</p>
 
-    <button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button>
+    <!-- <button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button> -->
     <div *ngIf="isLoggedIn" class="leaderboard-container">
         <ul *ngFor="let tierGroup of organizedRosters" class="tier">
             <h2 *ngIf="tierGroup[0]" class="tier-name">{{tierGroup[0]?.tier || ''}} Tier</h2>
