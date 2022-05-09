@@ -16,11 +16,7 @@
 Initiate NodeJS environment and install node modules
 <br>
 ```
-npm install firebase --save
-```
-Angular Dependencies
-```
-ng add @angular/material
+npm install
 ```
 ### Create or edit the environments folder in src/
 <p>Firebase information can be found in your firebase console.</p>
