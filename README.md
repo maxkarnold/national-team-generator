@@ -68,7 +68,7 @@ export const environment = {
 
 ```
 
-### Create the secrets folder src/
+<!-- ### Create the secrets folder src/
 <p>Go to your Firebase Console -> Project Settings -> Service Accounts -> Click "Generate new private key" -> Click "Generate key" -> Rename the new file `ServiceAccountKey.json`.</p>
 <p>You should add that file to this folder and it should look something like this:</p>
 
@@ -85,7 +85,7 @@ export const environment = {
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "CLIENT_X509_CERT_URL"
 }
-```
+``` -->
 
 ### Build/Deploy the app
 Delete anything in the `dist/` directory (especially the `index.html`) and build the app with:
