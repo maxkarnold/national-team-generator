@@ -14,7 +14,7 @@ export class NavBarComponent implements OnInit {
 
   subscription: Subscription = new Subscription();
 
-  constructor(private auth: AuthService) {}
+  constructor(public auth: AuthService) {}
 
   ngOnInit(): void {
     // this.subscription = this.auth.currentAuthState.subscribe(
@@ -26,39 +26,4 @@ export class NavBarComponent implements OnInit {
     //   this.auth.changeAuthState(false);
     // }
   }
-
-  // loginOverlay() {
-  //   if (!this.loginOverlayOpen) {
-  //     this.loginOverlayOpen = true;
-  //   } else {
-  //     this.loginOverlayOpen = false;
-  //   }
-  // }
-
-  // login(email: string, password: string) {
-  //   this.auth
-  //     .login(email, password)
-  //     .then((res) => {
-  //       this.auth.changeAuthState(true);
-  //       localStorage.setItem('user', JSON.stringify(res.user));
-  //       this.loginOverlayOpen = false;
-  //       console.log('Logged in');
-  //     })
-  //     .catch((err) => {
-  //       var errorCode = err.code;
-  //       var errorMessage = err.message;
-  //       if (errorCode === 'auth/wrong-password') {
-  //         alert('Wrong password.');
-  //       } else {
-  //         alert(errorMessage);
-  //       }
-  //       console.log(err);
-  //     });
-  // }
-
-  // logout() {
-  //   this.auth.logout();
-  //   console.log('logged out');
-  //   this.auth.changeAuthState(false);
-  // }
 }

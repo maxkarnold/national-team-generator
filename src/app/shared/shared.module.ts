@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatSortModule } from '@angular/material/sort';
@@ -18,8 +18,8 @@ import * as fromComponents from './components';
 @NgModule({
   declarations: [...fromComponents.components],
   imports: [
-    CommonModule,
     FormsModule,
+    BrowserAnimationsModule,
     DragDropModule,
     OverlayModule,
     MatSortModule,

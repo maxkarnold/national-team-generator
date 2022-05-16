@@ -1,5 +1,3 @@
-<h1>National Team Generator</h1>
-
 <div *ngIf="auth.user$ | async as user; else login">
   {{ user | json }}
   <hr />
@@ -7,5 +5,10 @@
 </div>
 
 <ng-template #login>
+  <form class="basic-login">
+    <input type="email" [(ngModel)]="email" />
+    <input type="password" [(ngModel)]="password" />
+    <button (click)="auth.login(email, password)">Login</button>
+  </form>
   <button (click)="auth.googleSignin()">Sign In With Google</button>
 </ng-template>

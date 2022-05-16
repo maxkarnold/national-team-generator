@@ -1,4 +1,4 @@
-<!-- <header class="header header--mobile">
+<header class="header header--mobile">
   <mat-toolbar color="primary" class="nav-bar">
     <a routerLink="/" class="logo logo--ripple">
       <span class="logo__title">National Team Generator</span>
@@ -17,18 +17,15 @@
     <a routerLink="/leaderboard" class="nav-list__link nav-list__link--ripple"
       >Leaderboards</a
     >
+    <ng-template #login>
+      <a routerLink="/login" class="nav-bar__link nav-bar__link--ripple"
+        >Login</a
+      >
+    </ng-template>
     <a
-      class="nav-list__link nav-list__link--ripple"
-      (click)="loginOverlay()"
-      *ngIf="!isLoggedIn"
-      cdkOverlayOrigin
-      #trigger="cdkOverlayOrigin"
-      >Login</a
-    >
-    <a
-      class="nav-list__link nav-list__link--ripple"
-      (click)="logout()"
-      *ngIf="isLoggedIn"
+      (click)="auth.signOut()"
+      *ngIf="auth.user$ | async as user; else login"
+      class="nav-bar__link nav-bar__link--ripple"
       >Logout</a
     >
   </mat-nav-list>
@@ -42,21 +39,20 @@
     <a routerLink="/leaderboard" class="nav-bar__link nav-bar__link--ripple"
       >Leaderboards</a
     >
+    <ng-template #login>
+      <a routerLink="/login" class="nav-bar__link nav-bar__link--ripple"
+        >Login</a
+      >
+    </ng-template>
     <a
-      (click)="loginOverlay()"
-      *ngIf="!isLoggedIn"
-      class="nav-bar__link nav-bar__link--ripple"
-      >Login</a
-    >
-    <a
-      (click)="logout()"
-      *ngIf="isLoggedIn"
+      (click)="auth.signOut()"
+      *ngIf="auth.user$ | async as user; else login"
       class="nav-bar__link nav-bar__link--ripple"
       >Logout</a
     >
   </mat-toolbar>
 </header>
-<ng-container *ngIf="loginOverlayOpen" class="ng-container">
+<!-- <ng-container *ngIf="loginOverlayOpen" class="ng-container">
   <div class="login-overlay ng-container__login-overlay">
     <div class="login-overlay__exit">
       <button
