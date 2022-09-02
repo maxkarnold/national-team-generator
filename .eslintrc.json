@@ -19,7 +19,16 @@
   "plugins": ["@typescript-eslint", "prettier", "import"],
   "rules": {
     "import/prefer-default-export": "off",
-    "lines-between-class-members": "off"
+    "lines-between-class-members": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   },
   "settings": {
     "import/resolver": { "typescript": {} }
