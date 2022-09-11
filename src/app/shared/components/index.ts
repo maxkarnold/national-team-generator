@@ -3,7 +3,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PitchViewComponent } from './pitch-view/pitch-view.component';
 import { PositionBreakdownComponent } from './position-breakdown/position-breakdown.component';
 
-export const components: any[] = [
+export const components = [
   LineupAccordionComponent,
   NavBarComponent,
   PitchViewComponent,

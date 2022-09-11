@@ -295,7 +295,7 @@
         <div class="pitch-grid">
           <div
             *ngFor="let box of positionBoxes"
-            [class]="getPositionBoxes(box)"
+            [class]="getPositionBox(box)"
             cdkDropList
             (cdkDropListDropped)="drop($event)"
             [cdkDropListData]="pitchPlayers"

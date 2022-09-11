@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-lineup-accordion',
   templateUrl: './lineup-accordion.component.html',
-  styleUrls: ['./lineup-accordion.component.scss']
+  styleUrls: ['./lineup-accordion.component.scss'],
 })
-export class LineupAccordionComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class LineupAccordionComponent {
+  constructor() {}
 }

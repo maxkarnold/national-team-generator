@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '@core/services/auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from '@core/services/auth.service';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent {
   loginOverlayOpen = false;
   navToggle = false;
   isLoggedIn = false;
@@ -15,15 +15,4 @@ export class NavBarComponent implements OnInit {
   subscription: Subscription = new Subscription();
 
   constructor(public auth: AuthService) {}
-
-  ngOnInit(): void {
-    // this.subscription = this.auth.currentAuthState.subscribe(
-    //   (authState) => (this.isLoggedIn = authState)
-    // );
-    // if (localStorage.getItem('user') !== null) {
-    //   this.auth.changeAuthState(true);
-    // } else {
-    //   this.auth.changeAuthState(false);
-    // }
-  }
 }

@@ -1,6 +1,6 @@
 import { PositionBox } from '../../models/position-box.model';
 
-let defaultPosBox = {
+const defaultPosBox = {
   playerClass: 'inactive player-box',
   posBoxClass: 'active pos-box',
   html: '',

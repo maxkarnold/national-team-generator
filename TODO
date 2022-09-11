@@ -18,6 +18,7 @@
 - Fix loading leaderboard bug
 - Fix alt positions so that they aren't undefined and duplicate positions
 - Fix first name and last name creation so that the right number of names is created
+- Create tooltip modal for players to better view their stats/attributes
 
 ## TERTIARY (NEED TO VERIFY IF NECESSARY)
 

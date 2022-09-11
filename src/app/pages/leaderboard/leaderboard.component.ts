@@ -48,7 +48,7 @@ export class LeaderboardComponent implements OnInit {
     //   (authState) => (this.isLoggedIn = authState)
     // );
     for (let i = 0; i < 100; i++) {
-      let roster = localStorage.getItem(`Roster #${i}`) || null;
+      const roster = localStorage.getItem(`Roster #${i}`) || null;
       if (roster === null) {
         break;
       }
@@ -140,11 +140,11 @@ export class LeaderboardComponent implements OnInit {
     this.hTierRosters = [];
     this.iTierRosters = [];
     this.jTierRosters = [];
-    for (const roster of this.allRosters) {
+
+    this.allRosters.forEach((roster) => {
       switch (roster.tier) {
         case 's':
           this.sTierRosters.push(roster);
-          // console.log(this.sTierRosters);
           break;
         case 'a':
           this.aTierRosters.push(roster);
@@ -179,7 +179,7 @@ export class LeaderboardComponent implements OnInit {
         default:
           throw new Error('No tier found on roster');
       }
-    }
+    });
     this.organizedRosters = [
       this.sTierRosters,
       this.aTierRosters,

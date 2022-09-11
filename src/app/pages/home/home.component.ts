@@ -1,7 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FirestoreService } from '../../core/services/firestore.service';
-import { AuthService } from '../../core/services/auth.service';
-
 import { Player } from 'app/models/player.model';
 import {
   OutfieldAttributes,
@@ -11,10 +8,6 @@ import { LastName, FirstName } from 'app/models/names.model';
 import { PositionBox } from 'app/models/position-box.model';
 import { SubmittedRoster } from 'app/models/roster.model';
 
-import * as nationsModule from '../../../assets/json/nations.json';
-import * as clubsModule from '../../../assets/json/clubs.json';
-import * as positionsModule from '../../../assets/json/positions.json';
-import * as pitchPositionsModule from '../../../assets/json/pitchPositions.json';
 import { SQUAD_RULES } from '@shared/constants/squad-rules';
 import { POSITION_BOXES } from '@shared/constants/position-boxes';
 
@@ -27,6 +20,22 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { Nation } from 'app/models/nation.model';
+import {
+  calcSumRating,
+  compare,
+  getRandomInt,
+  median,
+  shuffle,
+} from '@shared/utils';
+import { checkStars } from './home.utils';
+import * as pitchPositionsModule from '../../../assets/json/pitchPositions.json';
+import * as positionsModule from '../../../assets/json/positions.json';
+import * as clubsModule from '../../../assets/json/clubs.json';
+import * as nationsModule from '../../../assets/json/nations.json';
+import { AuthService } from '../../core/services/auth.service';
+import { FirestoreService } from '../../core/services/firestore.service';
+import { Club, Clubs } from 'app/models/club.model';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +48,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   sortedData: Player[];
   pitchPlayers: Player[];
   sortedPitchPlayers: Player[];
-  savedData: any[];
+  savedData: {
+    id: string;
+    saveName: string;
+  }[];
 
   shirtIcon = '../../../assets/img/shirt-icon.jpg';
   blankCrest = '../../../assets/img/blank-crest.jpg';
@@ -48,12 +60,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   lastName$!: Observable<LastName[]>;
   firstName$!: Observable<FirstName[]>;
 
-  positions: any = (positionsModule as any).default;
-  pitchPositions: any = (pitchPositionsModule as any).default;
+  positions = positionsModule;
+  pitchPositions = pitchPositionsModule;
 
-  nations: any = (nationsModule as any).default;
-  nationsList: any[];
-  clubs: any = (clubsModule as any).default;
+  nations = nationsModule;
+  nationsList: Nation[];
+  clubs: Clubs = clubsModule;
 
   isLoggedIn = false;
   subscription: Subscription = new Subscription();
@@ -82,11 +94,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    for (const tierObj of this.nations) {
+    this.nations.forEach((tierObj) => {
       for (let i = 0; i < tierObj.nations.length; i++) {
-        this.nationsList.push(tierObj.nations[i]);
+        this.nationsList.push(tierObj.nations[i] as Nation);
       }
-    }
+    });
     // this.subscription = this.auth.currentAuthState.subscribe(
     //   (authState) => (this.isLoggedIn = authState)
     // );
@@ -114,17 +126,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  async submitRoster() {
-    for (const rule of this.squadRules) {
-      if (rule.check === '❌') {
-        alert('Must pass all squad requirements to submit.');
-        return false;
-      }
+  submitRoster() {
+    if (this.squadRules.find((rule) => rule.check === '❌')) {
+      alert('Leaderboards are currently unavailable. Please try again later.');
+      return false;
     }
-    let submittedRoster: SubmittedRoster;
+    return true;
+    // let submittedRoster: SubmittedRoster;
     // let user$ = this.auth.getUser();
     // let user = await user$.first().toPromise();
-    alert('Leaderboards are currently unavailable. Please try again later.');
     // .subscribe((user) => {
     //   if (user && user.email !== null) {
     //     let nationName = '';
@@ -179,30 +189,36 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   resetStarters(bypass?: boolean) {
-    if (bypass === true) {
-      for (const player of this.pitchPlayers) {
-        player.pitchPosition = undefined;
-        player.pitchPositionIndex = undefined;
-      }
+    if (bypass) {
+      this.pitchPlayers.map((player) => ({
+        ...player,
+        pitchPosition: undefined,
+        pitchPositionIndex: undefined,
+      }));
+
       this.players = this.pitchPlayers.concat(this.players);
       this.pitchPlayers = [];
       this.sortedPitchPlayers = [];
-      for (const rule of this.squadRules) {
-        rule.check = '❌';
-      }
+      this.squadRules.map((rule) => ({
+        ...rule,
+        check: '❌',
+      }));
+
       this.squadRules[8].check = '→';
-      for (const box of this.positionBoxes) {
-        box.playerClass = 'inactive player-box';
-        box.posBoxClass = 'active pos-box';
-        box.pitchPlayer = undefined;
-      }
+
+      this.positionBoxes.map((box) => ({
+        ...box,
+        playerClass: 'inactive player-box',
+        posBoxClass: 'active pos-box',
+        pitchPlayer: undefined,
+      }));
     } else if (window.confirm('Remove starting players?')) {
       this.resetStarters(true);
     }
   }
 
   checkFormation() {
-    let squad = this.pitchPlayers.concat(this.players.slice(0, 12));
+    const squad = this.pitchPlayers.concat(this.players.slice(0, 12));
     let gkCount = 0;
     let defCount = 0;
     let midCount = 0;
@@ -219,7 +235,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     let DFCount = 0;
     let STCount = 0;
 
-    for (const player of this.pitchPlayers) {
+    this.pitchPlayers.forEach((player) => {
       if (player.pitchPosition?.includes('DM')) {
         DMCount++;
         startMidCount++;
@@ -241,8 +257,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         startGkCount++;
       }
-    }
-    for (const player of squad) {
+    });
+
+    squad.forEach((player) => {
       if (player.mainPositions.includes('GK')) {
         gkCount++;
       } else if (player.mainPositions.includes('B')) {
@@ -252,7 +269,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         fwCount++;
       }
-    }
+    });
     // Formation
 
     if (DFCount === 4) {
@@ -419,18 +436,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.formation = 'N/A';
     }
 
-    let formObj = {
-      def: DFCount,
-      dm: DMCount,
-      wb: WBCount,
-      mc: MCCount,
-      mrl: MRLCount,
-      amc: AMCCount,
-      amrl: AMRLCount,
-      st: STCount,
-    };
+    // const formObj = {
+    //   def: DFCount,
+    //   dm: DMCount,
+    //   wb: WBCount,
+    //   mc: MCCount,
+    //   mrl: MRLCount,
+    //   amc: AMCCount,
+    //   amrl: AMRLCount,
+    //   st: STCount,
+    // };
     // this.calcChemistry(formObj);
-    let count = [
+    const count = [
       gkCount,
       defCount,
       midCount,
@@ -480,33 +497,19 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.squadRules[6].check = '❌';
     }
 
-    for (const rule of this.squadRules) {
-      if (rule.check === '❌') {
-        return false;
-      }
-    }
-    return true;
+    return !this.squadRules.find((rule) => rule.check === '❌');
   }
 
-  checkStars(starterRating: number, squadRating: number) {
-    document.documentElement.style.setProperty(
-      '--starter-rating',
-      `${starterRating}%`
-    );
-    document.documentElement.style.setProperty(
-      '--squad-rating',
-      `${squadRating}%`
-    );
-  }
-
-  calcChemistry(obj: any) {
+  calcChemistry(obj: { def: number }) {
     // chemistry reset
-    for (const player of this.pitchPlayers) {
-      player.chemistryNum = 0;
-    }
+
+    this.pitchPlayers.map((player) => ({
+      ...player,
+      chemistryNum: 0,
+    }));
     this.chemistry = 0;
 
-    let chemArr = [];
+    const chemArr = [];
     if (this.formation !== 'N/A') {
       if (obj.def === 4) {
         chemArr.push(
@@ -540,10 +543,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         );
       }
     }
-    for (const arr of chemArr) {
-      let first;
-      let second;
-      for (const player of this.pitchPlayers) {
+    chemArr.forEach((arr) => {
+      let first: Player;
+      let second: Player;
+      this.pitchPlayers.forEach((player) => {
         // check for multiple possible positions for player1
         if (arr[0] === 'multi') {
           for (let i = 1; i < arr.length; i++) {
@@ -582,27 +585,29 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           break;
         }
-      }
-    }
+      });
+    });
   }
 
-  getChemColor(player: Player) {
-    if (player.chemistryNum) {
-      if (player.chemistryNum === 1) {
-        return '1px dashed yellow';
-      } else if (player.chemistryNum === 2) {
-        return '1px dashed lime';
-      } else if (player.chemistryNum > 2) {
-        return '1px dashed pink';
-      } else {
-        return '1px solid #353535';
-      }
-    }
-  }
+  // getChemColor(player: Player) {
+  //   if (player.chemistryNum) {
+  //     if (player.chemistryNum === 1) {
+  //       return '1px dashed yellow';
+  //     }
+  //     if (player.chemistryNum === 2) {
+  //       return '1px dashed lime';
+  //     }
+  //     if (player.chemistryNum > 2) {
+  //       return '1px dashed pink';
+  //     }
+  //     return '1px solid #353535';
+  //   }
+  //   return false
+  // }
 
   calcStartersRating() {
-    let startersArr: number[] = [];
-    for (const player of this.pitchPlayers) {
+    const startersArr: number[] = [];
+    this.pitchPlayers.forEach((player) => {
       if (player.pitchRating !== undefined) {
         switch (player.pitchPosition) {
           case 'DR':
@@ -646,53 +651,55 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         console.log('Error: check home component');
       }
-    }
-    let sum = startersArr.reduce((partial_sum, a) => partial_sum + a, 0);
-    let avg = sum / startersArr.length;
-    this.startersTotalRating = Math.round(avg * 10) / 10;
+    });
+    this.startersTotalRating = calcSumRating(startersArr);
   }
 
   getBackupPositions() {
-    let startingPositions: string[] = [];
-    for (const player of this.pitchPlayers) {
-      for (const pos of this.pitchPositions) {
+    const startingPositions: string[] = [];
+    this.pitchPlayers.forEach((player) => {
+      this.pitchPositions.forEach((pos) => {
         if (player.pitchPosition === pos.position) {
           startingPositions.push(pos.playerPosition);
         }
-      }
-    }
-    let playersLeft = this.players.slice(0, 12);
+      });
+    });
+
+    const playersLeft = this.players.slice(0, 12);
     for (let j = 0; j < this.players.slice(0, 12).length; j++) {
       // for each player on the bench
 
       let used = false;
-      let duplicates: string[] = [];
+      const duplicates: string[] = [];
 
       for (let i = 0; i < startingPositions.length; i++) {
+        const player = playersLeft[j];
         // for each position in the starting lineup
         if (
           !duplicates.includes(startingPositions[i]) &&
           startingPositions[i] !== ''
         ) {
           // if position hasn't already been used by same player
-          for (const mainPos of playersLeft[j].mainPositions) {
-            if (startingPositions[i] === mainPos) {
-              // if main pos mathces
-              used = true;
-              duplicates.push(startingPositions[i]);
-              startingPositions[i] = '';
-              break;
-            }
+          if (
+            player.mainPositions.find(
+              (mainPos) => mainPos === startingPositions[i]
+            )
+          ) {
+            // if main pos mathces
+            used = true;
+            duplicates.push(startingPositions[i]);
+            startingPositions[i] = '';
           }
-          for (const altPos of playersLeft[j].altPositions) {
-            if (startingPositions[i] === altPos) {
-              // if altPos matches
 
-              used = true;
-              duplicates.push(startingPositions[i]);
-              startingPositions[i] = '';
-              break;
-            }
+          if (
+            player.altPositions.find(
+              (altPos) => altPos === startingPositions[i]
+            )
+          ) {
+            // if altPos matches
+            used = true;
+            duplicates.push(startingPositions[i]);
+            startingPositions[i] = '';
           }
         }
       }
@@ -714,89 +721,90 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPositionBoxes(box: PositionBox) {
+  getPositionBox(box: PositionBox) {
     return box.class;
   }
 
-  getPlayerClass(box: PositionBox) {
-    let pos = parseInt(box.class.slice(-2));
+  getPlayerClass(b: PositionBox) {
+    const box = b;
+    const posNum = parseInt(box.class.slice(-2), 10);
     // if posBox is a playable position
-    if (!isNaN(pos)) {
-      for (const player of this.pitchPlayers) {
-        for (const pos of this.pitchPositions) {
-          if (pos.position === player.pitchPosition) {
+    if (!Number.isNaN(posNum)) {
+      this.pitchPositions.forEach((pos) => {
+        const player = this.pitchPlayers.find(
+          (p) => p.pitchPosition === pos.position
+        );
+        if (player)
+          if (player.mainPositions.includes(pos.playerPosition)) {
             // if main position (natural ~ lightest green ~ 0 change)
-            if (player.mainPositions.includes(pos.playerPosition)) {
-              player.pitchRating = player.rating;
-            }
-            // else if alt position (accomplished ~ darker green)
-            else if (player.altPositions.includes(pos.playerPosition)) {
-              player.pitchRating = player.rating - 3;
-            }
-            // add another section for playable positions (new property: competent ~ dark yellow-green ~ -6 change)
-            else if (player.competentPositions.includes(pos.playerPosition)) {
-              player.pitchRating = player.rating - 6;
-            }
-            // add another section for playable positions (new property: unconvincing ~ dark yellow ~ -12 change)
-            else if (
-              player.unconvincingPositions.includes(pos.playerPosition)
-            ) {
-              player.pitchRating = player.rating - 12;
-            }
-            // else if gk position but not gk or else if outfield position but gk (ineffectual ~ red)
-            else if (
-              (pos.playerPosition === 'GK' &&
-                !player.mainPositions.includes('GK')) ||
-              (pos.playerPosition !== 'GK' &&
-                player.mainPositions.includes('GK'))
-            ) {
-              player.pitchRating = 20;
-            }
-            // any other position (awkward ~ dark orange ~ -25 change)
-            else {
-              player.pitchRating = player.rating - 25;
-            }
+            player.pitchRating = player.rating;
           }
-        }
-        if (
-          player.pitchPositionIndex === pos &&
-          player.pitchRating !== undefined
-        ) {
-          box.playerClass = 'active player-box';
-          if (player.pitchRating > 81) {
-            box.playerClass += ' diamond';
-          } else if (player.pitchRating > 75) {
-            box.playerClass += ' platinum';
-          } else if (player.pitchRating > 69) {
-            box.playerClass += ' gold';
-          } else if (player.pitchRating > 61) {
-            box.playerClass += ' silver';
-          } else if (player.pitchRating > 54) {
-            box.playerClass += ' bronze';
-          } else {
-            box.playerClass += ' brown';
+          // else if alt position (accomplished ~ darker green)
+          else if (player.altPositions.includes(pos.playerPosition)) {
+            player.pitchRating = player.rating - 3;
           }
-
-          box.pitchPlayer = player;
-          return box.playerClass;
+          // add another section for playable positions (new property: competent ~ dark yellow-green ~ -6 change)
+          else if (player.competentPositions.includes(pos.playerPosition)) {
+            player.pitchRating = player.rating - 6;
+          }
+          // add another section for playable positions (new property: unconvincing ~ dark yellow ~ -12 change)
+          else if (player.unconvincingPositions.includes(pos.playerPosition)) {
+            player.pitchRating = player.rating - 12;
+          }
+          // else if gk position but not gk or else if outfield position but gk (ineffectual ~ red)
+          else if (
+            (pos.playerPosition === 'GK' &&
+              !player.mainPositions.includes('GK')) ||
+            (pos.playerPosition !== 'GK' && player.mainPositions.includes('GK'))
+          ) {
+            player.pitchRating = 20;
+          }
+          // any other position (awkward ~ dark orange ~ -25 change)
+          else {
+            player.pitchRating = player.rating - 25;
+          }
+      });
+      const player = this.pitchPlayers.find((p) =>
+        this.pitchPositions.find(
+          (_pos, i) => p.pitchPositionIndex === i && p.pitchRating !== undefined
+        )
+      );
+      if (typeof player !== 'undefined' && player?.pitchRating) {
+        box.playerClass = 'active player-box';
+        if (player.pitchRating > 81) {
+          box.playerClass += ' diamond';
+        } else if (player.pitchRating > 75) {
+          box.playerClass += ' platinum';
+        } else if (player.pitchRating > 69) {
+          box.playerClass += ' gold';
+        } else if (player.pitchRating > 61) {
+          box.playerClass += ' silver';
+        } else if (player.pitchRating > 54) {
+          box.playerClass += ' bronze';
+        } else {
+          box.playerClass += ' brown';
         }
+        box.pitchPlayer = player;
+        return box.playerClass;
       }
+
       box.playerClass = 'inactive player-box';
       box.pitchPlayer = undefined;
       return box.playerClass;
     }
+    return box.playerClass;
   }
 
-  getPosBoxClass(box: PositionBox) {
-    let pos = parseInt(box.class.slice(-2));
+  getPosBoxClass(b: PositionBox) {
+    const box = b;
+    const pos = parseInt(box.class.slice(-2), 10);
     // if posBox is a playable position
-    if (!isNaN(pos)) {
+    if (!Number.isNaN(pos)) {
       // for each of the current pitch players
-      for (const player of this.pitchPlayers) {
-        // if the current player is located in this positionBox
-        if (player.pitchPositionIndex === pos) {
-          box.posBoxClass = 'inactive pos-box';
-        }
+      if (
+        this.pitchPlayers.find((player) => player.pitchPositionIndex === pos)
+      ) {
+        box.posBoxClass = 'inactive pos-box';
       }
     }
     return box.posBoxClass;
@@ -839,10 +847,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   drop(event: CdkDragDrop<Player[]>) {
-    let newPlayerIndex = event.previousIndex;
+    const newPlayerIndex = event.previousIndex;
     let newPlayer = event.previousContainer.data[newPlayerIndex];
-    let positionIndex = parseInt(
-      event.container.element.nativeElement.classList[1]
+    const positionIndex = parseInt(
+      event.container.element.nativeElement.classList[1],
+      10
     );
 
     if (event.previousContainer === event.container) {
@@ -945,7 +954,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (event.container.element.nativeElement.innerText !== '') {
         for (let i = 0; i < this.pitchPlayers.length; i++) {
           if (this.pitchPlayers[i].pitchPosition === newPlayer.pitchPosition) {
-            let oldPlayer = this.pitchPlayers[i];
+            const oldPlayer = this.pitchPlayers[i];
             oldPlayer.pitchPosition = undefined;
             oldPlayer.pitchPositionIndex = undefined;
             this.pitchPlayers.splice(i, 1);
@@ -956,26 +965,27 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.players.splice(newPlayerIndex, 1);
       }
       this.pitchPlayers.push(newPlayer);
-      let el = event.container.element.nativeElement;
+      const el = event.container.element.nativeElement;
       // el.children[0].className = "active player-box";
       el.children[1].className = 'inactive pos-box';
     }
     // Else if the player is moved to the bench
     else if (event.container.id === 'bench-players') {
-      let el = event.previousContainer.element.nativeElement;
+      const el = event.previousContainer.element.nativeElement;
 
       for (let i = 0; i < this.pitchPlayers.length; i++) {
         if (
-          parseInt(el.classList[1]) === this.pitchPlayers[i].pitchPositionIndex
+          parseInt(el.classList[1], 10) ===
+          this.pitchPlayers[i].pitchPositionIndex
         ) {
-          let prevIndex = i;
+          const prevIndex = i;
           transferArrayItem(
             event.previousContainer.data,
             event.container.data,
             prevIndex,
             event.currentIndex
           );
-          let movingPlayer: Player = event.container.data[event.currentIndex];
+          const movingPlayer: Player = event.container.data[event.currentIndex];
           movingPlayer.pitchPosition = undefined;
           movingPlayer.pitchPositionIndex = undefined;
         }
@@ -989,16 +999,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       event.container.id !== 'bench-players'
     ) {
       newPlayer = event.item.data.pitchPlayer;
-      let el = event.container.element.nativeElement;
-      let prevEl = event.previousContainer.element.nativeElement;
+      const el = event.container.element.nativeElement;
+      const prevEl = event.previousContainer.element.nativeElement;
       // if swapping a player
       if (event.container.element.nativeElement.innerText !== '') {
         for (let i = 0; i < this.pitchPlayers.length; i++) {
           if (
             this.pitchPlayers[i].pitchPositionIndex ===
-            parseInt(event.container.element.nativeElement.classList[1])
+            parseInt(event.container.element.nativeElement.classList[1], 10)
           ) {
-            let oldPlayer = this.pitchPlayers[i];
+            const oldPlayer = this.pitchPlayers[i];
             oldPlayer.pitchPosition = newPlayer.pitchPosition;
             oldPlayer.pitchPositionIndex = newPlayer.pitchPositionIndex;
           }
@@ -1089,12 +1099,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     window.setTimeout(() => {
       // starter/squad rating calculation
       this.startersTotalRating = 0;
-      let ratingArr = [];
-      for (const player of this.pitchPlayers) {
-        if (player.pitchRating !== undefined) {
-          ratingArr.push(player.pitchRating);
+      const ratingArr = [];
+      this.pitchPlayers.forEach((p) => {
+        if (p.pitchRating) {
+          ratingArr.push(p.pitchRating);
         }
-      }
+      });
 
       this.calcStartersRating();
 
@@ -1102,10 +1112,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       for (let i = 0; i < 12; i++) {
         ratingArr.push(this.players[i].rating);
       }
-      let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a, 0);
-      let avg = sum / ratingArr.length;
-      this.squadTotalRating = Math.round(avg * 10) / 10;
-      this.checkStars(this.startersTotalRating, this.squadTotalRating);
+
+      this.squadTotalRating = calcSumRating(ratingArr);
+      checkStars(this.startersTotalRating, this.squadTotalRating);
 
       // sortedData
       this.sortedData = this.pitchPlayers.concat(this.players);
@@ -1138,7 +1147,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getPositionOutline(event: CdkDragStart) {
-    let player: Player = event.source.data.pitchPlayer || event.source.data;
+    const player: Player = event.source.data.pitchPlayer || event.source.data;
     // Add a placeholder element in origin
 
     // Get the displayName for the current player
@@ -1146,19 +1155,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (player.singleLastName.length < 8) {
       player.displayName = player.singleLastName;
     } else {
-      player.displayName = player.firstNames[0];
+      [player.displayName] = player.firstNames;
     }
 
     // // Grab the current positions for the dragged player
 
-    let mainPosArr = player.mainPositions;
-    let altPosArr = player.altPositions;
-    let compPosArr = player.competentPositions;
-    let unPosArr = player.unconvincingPositions;
-    let limeArr = [];
-    let darkGreenArr = [];
-    let yellowGreenArr = [];
-    let orangeArr = [];
+    const mainPosArr = player.mainPositions;
+    const altPosArr = player.altPositions;
+    const compPosArr = player.competentPositions;
+    const unPosArr = player.unconvincingPositions;
+    const limeArr = [];
+    const darkGreenArr = [];
+    const yellowGreenArr = [];
+    const orangeArr = [];
 
     for (let i = 0; i < this.pitchPositions.length; i++) {
       if (mainPosArr.includes(this.pitchPositions[i].playerPosition)) {
@@ -1205,9 +1214,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       // and for each position box
       for (let j = 0; j < this.positionBoxes.length; j++) {
         // get the number from the position box class if possible
-        let boxNum = parseInt(this.positionBoxes[j].class.slice(-2));
+        const boxNum = parseInt(this.positionBoxes[j].class.slice(-2), 10);
         // if there is a number in the class, it must be a playable position
-        if (!isNaN(boxNum)) {
+        if (!Number.isNaN(boxNum)) {
           // If the pitchPosition index correlates with the box index, it's the same position
           if (this.pitchPositions[i].boxIndex === j) {
             // If this position correlates with the green array
@@ -1242,41 +1251,67 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   removeOutlineDrop(event: CdkDragDrop<Player>) {
-    for (const box of this.positionBoxes) {
-      let classArr = box.class.split(' ');
-      if (classArr[2] === 'natural-placeholder') {
-        box.class = box.class.slice(0, -20);
-      } else if (classArr[2] === 'accomplished-placeholder') {
-        box.class = box.class.slice(0, -25);
-      } else if (classArr[2] === 'competent-placeholder') {
-        box.class = box.class.slice(0, -22);
-      } else if (classArr[2] === 'unconvincing-placeholder') {
-        box.class = box.class.slice(0, -25);
-      } else if (classArr[2] === 'awkward-placeholder') {
-        box.class = box.class.slice(0, -20);
-      } else if (classArr[2] === 'ineffectual-placeholder') {
-        box.class = box.class.slice(0, -24);
+    this.positionBoxes.map((box) => {
+      const outlineClass = box.class.split(' ')[2];
+      switch (outlineClass) {
+        case 'natural-placeholder':
+        case 'awkward-placeholder':
+          return {
+            ...box,
+            class: box.class.slice(0, -20),
+          };
+        case 'accomplished-placeholder':
+        case 'unconvincing-placeholder':
+          return {
+            ...box,
+            class: box.class.slice(0, -25),
+          };
+        case 'competent-placeholder':
+          return {
+            ...box,
+            class: box.class.slice(0, -22),
+          };
+        case 'ineffectual-placeholder':
+          return {
+            ...box,
+            class: box.class.slice(0, -24),
+          };
+        default:
+          return box;
       }
-    }
+    });
   }
 
   removeOutlineRelease(event: CdkDragRelease) {
-    for (const box of this.positionBoxes) {
-      let classArr = box.class.split(' ');
-      if (classArr[2] === 'natural-placeholder') {
-        box.class = box.class.slice(0, -20);
-      } else if (classArr[2] === 'accomplished-placeholder') {
-        box.class = box.class.slice(0, -25);
-      } else if (classArr[2] === 'competent-placeholder') {
-        box.class = box.class.slice(0, -22);
-      } else if (classArr[2] === 'unconvincing-placeholder') {
-        box.class = box.class.slice(0, -25);
-      } else if (classArr[2] === 'awkward-placeholder') {
-        box.class = box.class.slice(0, -20);
-      } else if (classArr[2] === 'ineffectual-placeholder') {
-        box.class = box.class.slice(0, -24);
+    this.positionBoxes.map((box) => {
+      const outlineClass = box.class.split(' ')[2];
+      switch (outlineClass) {
+        case 'natural-placeholder':
+        case 'awkward-placeholder':
+          return {
+            ...box,
+            class: box.class.slice(0, -20),
+          };
+        case 'accomplished-placeholder':
+        case 'unconvincing-placeholder':
+          return {
+            ...box,
+            class: box.class.slice(0, -25),
+          };
+        case 'competent-placeholder':
+          return {
+            ...box,
+            class: box.class.slice(0, -22),
+          };
+        case 'ineffectual-placeholder':
+          return {
+            ...box,
+            class: box.class.slice(0, -24),
+          };
+        default:
+          return box;
       }
-    }
+    });
   }
 
   async getPlayers() {
@@ -1313,7 +1348,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         return false;
       }
     }
-    let timestamp = new Date().getTime().toString();
+    const timestamp = new Date().getTime().toString();
     localStorage.setItem('Last request time', timestamp);
     // RESETS
     this.playerCount = 0;
@@ -1323,31 +1358,34 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.pitchPlayers = [];
     this.rosterId = '';
     this.nationOrTier = this.nationSelectValue;
-    for (let index in this.positions) {
-      this.positions[index].amount = 0;
-    }
-    for (const rule of this.squadRules) {
+    this.positions.map((pos) => ({
+      ...pos,
+      amount: 0,
+    }));
+
+    this.squadRules.forEach((rule, i) => {
       if (rule.check === '✅') {
-        rule.check = '❌';
+        this.squadRules[i].check = '❌';
       }
-      this.squadRules[8].text = '';
-    }
+    });
 
-    let tier = this.getNation('tier').tier || '';
-    let numArray: number[] = this.getRatingBreakdown(tier);
+    this.squadRules[8].text = '';
 
-    let first = getRandomInt(numArray[0], numArray[1]);
-    let second = getRandomInt(numArray[2], numArray[3]);
-    let third = getRandomInt(numArray[4], numArray[5]);
-    let fourth = getRandomInt(numArray[6], numArray[7]);
-    let fifth = getRandomInt(numArray[8], numArray[9]);
-    let sixth = getRandomInt(numArray[10], numArray[11]);
-    let seventh = getRandomInt(numArray[12], numArray[13]);
-    let eighth = getRandomInt(numArray[14], numArray[15]);
+    const tier = this.getNation('tier').tier || '';
+    const numArray: number[] = this.getRatingBreakdown(tier);
+
+    const first = getRandomInt(numArray[0], numArray[1]);
+    const second = getRandomInt(numArray[2], numArray[3]);
+    const third = getRandomInt(numArray[4], numArray[5]);
+    const fourth = getRandomInt(numArray[6], numArray[7]);
+    const fifth = getRandomInt(numArray[8], numArray[9]);
+    const sixth = getRandomInt(numArray[10], numArray[11]);
+    const seventh = getRandomInt(numArray[12], numArray[13]);
+    const eighth = getRandomInt(numArray[14], numArray[15]);
 
     // Loops 60 times for 60 players
     while (this.playerCount < 60) {
-      let player: Player = {
+      const player: Player = {
         firstNames: [],
         lastNames: [],
         firstInitial: '',
@@ -1375,7 +1413,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         playerFace: this.blankPlayerPic,
       };
 
-      let ratingObj = this.getRatingAndClubRep(
+      const ratingObj = this.getRatingAndClubRep(
         this.playerCount,
         first,
         second,
@@ -1391,7 +1429,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       player.mainPositions = this.getMainPositions(player.rating);
 
       player.foot = this.getFoot(player.mainPositions[0]);
-      let positionsObj = this.getAltPositions(
+      const positionsObj = this.getAltPositions(
         player.mainPositions,
         player.foot
       );
@@ -1401,7 +1439,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       player.age = this.getAge(player.rating, player.mainPositions[0]);
 
-      let roleObj = this.getPositionRole(
+      const roleObj = this.getPositionRole(
         player.mainPositions,
         player.altPositions,
         player.foot,
@@ -1411,10 +1449,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       player.preferredRole = roleObj.role;
       player.preferredDuty = roleObj.duty;
 
-      let nationObj = this.getNation('nationality', player.rating) || '';
+      const nationObj = this.getNation('nationality', player.rating) || '';
       player.nationality = nationObj.nationality || '';
       player.nationalityLogo = nationObj.logo || '';
-      let clubObj = this.getClub(ratingObj.clubRep, player.nationality);
+      const clubObj = this.getClub(ratingObj.clubRep, player.nationality);
       player.club = clubObj.clubName;
       player.clubLogo = clubObj.clubLogoUrl;
 
@@ -1436,7 +1474,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else if (randomNum > 0) {
         randomNum = 4;
       }
-      let {
+      const {
         request$: firstNameReq,
         retryRequest$: firstNameRetry,
         patronym: firstNameUsage,
@@ -1457,9 +1495,9 @@ export class HomeComponent implements OnInit, OnDestroy {
               firstNameUsage === 'Kazakh' ||
               firstNameUsage === 'Tajik'
             ) {
-              let nameLength = player.firstNames[1].length;
-              let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
-              let chance = getRandomInt(0, 2);
+              const nameLength = player.firstNames[1].length;
+              const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+              const chance = getRandomInt(0, 2);
               if (chance > 0 && firstNameUsage === 'Kazakh') {
                 player.firstNames[1] += 'uly';
               } else if (
@@ -1502,9 +1540,9 @@ export class HomeComponent implements OnInit, OnDestroy {
                 firstNameUsage === 'Kazakh' ||
                 firstNameUsage === 'Tajik'
               ) {
-                let nameLength = player.firstNames[1].length;
-                let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
-                let chance = getRandomInt(0, 2);
+                const nameLength = player.firstNames[1].length;
+                const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+                const chance = getRandomInt(0, 2);
                 if (chance > 0 && firstNameUsage === 'Kazakh') {
                   player.firstNames[1] += 'uly';
                 } else if (
@@ -1532,7 +1570,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         // About 50% chance: Brazil, Spain, Portugal, Angola, Equatorial Guinea, Guinea-Bissau
       });
 
-      let {
+      const {
         request$: lastNameReq,
         retryRequest$: lastNameRetry,
         patronym: lastNameUsage,
@@ -1551,8 +1589,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                 player.lastNames.length <= lastNames + 1) ||
               (articleUsed === false && player.lastNames.length <= lastNames)
             ) {
-              let chance = getRandomInt(1, 4);
-              let surname: string = lastNameArr[i].name;
+              const chance = getRandomInt(1, 4);
+              const surname: string = lastNameArr[i].name;
               if (
                 lastNameUsage === 'Portuguese' &&
                 chance > 3 &&
@@ -1571,8 +1609,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                 } else {
                   articles = ['do', 'de'];
                 }
-                let chance = getRandomInt(0, 1);
-                let chosenArticle = articles[chance];
+                const chance = getRandomInt(0, 1);
+                const chosenArticle = articles[chance];
                 player.lastNames.push(chosenArticle);
                 articleUsed = true;
               }
@@ -1586,25 +1624,25 @@ export class HomeComponent implements OnInit, OnDestroy {
           } else if (lastNameUsage === 'Malay') {
             player.lastNames.unshift('bin');
           } else if (lastNameUsage === 'Kyrgyz') {
-            let chance = getRandomInt(0, 1);
-            let patronymArticle = ['uulu', 'tegin'];
+            const chance = getRandomInt(0, 1);
+            const patronymArticle = ['uulu', 'tegin'];
             player.lastNames.push(patronymArticle[chance]);
           } else if (lastNameUsage === 'Azerbaijani') {
-            let nameLength = player.lastNames[0].length;
-            let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
-            let chance = getRandomInt(0, 2);
+            const nameLength = player.lastNames[0].length;
+            const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+            const chance = getRandomInt(0, 2);
             if (chance > 1) {
               player.lastNames[0] += 'lı';
             } else if (chance > 0) {
               player.lastNames[0] += 'zade';
+            } else if (
+              vowels.includes(player.lastNames[0].charAt(nameLength - 1))
+            ) {
+              const chance = getRandomInt(0, 1);
+              const patronymArticle = ['ev', 'yev'];
+              player.lastNames[0] += patronymArticle[chance];
             } else {
-              if (vowels.includes(player.lastNames[0].charAt(nameLength - 1))) {
-                let chance = getRandomInt(0, 1);
-                let patronymArticle = ['ev', 'yev'];
-                player.lastNames[0] += patronymArticle[chance];
-              } else {
-                player.lastNames[0] += 'ov';
-              }
+              player.lastNames[0] += 'ov';
             }
           }
         } else {
@@ -1618,8 +1656,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                   player.lastNames.length <= lastNames + 1) ||
                 (articleUsed === false && player.lastNames.length <= lastNames)
               ) {
-                let chance = getRandomInt(1, 4);
-                let surname: string = lastNameArr[i].name;
+                const chance = getRandomInt(1, 4);
+                const surname: string = lastNameArr[i].name;
                 if (
                   lastNameUsage === 'Portuguese' &&
                   chance > 3 &&
@@ -1638,8 +1676,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                   } else {
                     articles = ['do', 'de'];
                   }
-                  let chance = getRandomInt(0, 1);
-                  let chosenArticle = articles[chance];
+                  const chance = getRandomInt(0, 1);
+                  const chosenArticle = articles[chance];
                   player.lastNames.push(chosenArticle);
                   articleUsed = true;
                 }
@@ -1652,27 +1690,25 @@ export class HomeComponent implements OnInit, OnDestroy {
             } else if (lastNameUsage === 'Malay') {
               player.lastNames.unshift('bin');
             } else if (lastNameUsage === 'Kyrgyz') {
-              let chance = getRandomInt(0, 1);
-              let patronymArticle = ['uulu', 'tegin'];
+              const chance = getRandomInt(0, 1);
+              const patronymArticle = ['uulu', 'tegin'];
               player.lastNames.push(patronymArticle[chance]);
             } else if (lastNameUsage === 'Azerbaijani') {
-              let nameLength = player.lastNames[0].length;
-              let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
-              let chance = getRandomInt(0, 2);
+              const nameLength = player.lastNames[0].length;
+              const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+              const chance = getRandomInt(0, 2);
               if (chance > 1) {
                 player.lastNames[0] += 'lı';
               } else if (chance > 0) {
                 player.lastNames[0] += 'zade';
+              } else if (
+                vowels.includes(player.lastNames[0].charAt(nameLength - 1))
+              ) {
+                const chance = getRandomInt(0, 1);
+                const patronymArticle = ['ev', 'yev'];
+                player.lastNames[0] += patronymArticle[chance];
               } else {
-                if (
-                  vowels.includes(player.lastNames[0].charAt(nameLength - 1))
-                ) {
-                  let chance = getRandomInt(0, 1);
-                  let patronymArticle = ['ev', 'yev'];
-                  player.lastNames[0] += patronymArticle[chance];
-                } else {
-                  player.lastNames[0] += 'ov';
-                }
+                player.lastNames[0] += 'ov';
               }
             }
           });
@@ -1688,11 +1724,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     window.setTimeout(
       () => {
         this.players = this.players.sort((a, b) => {
-          let isAsc = false;
+          const isAsc = false;
           return compare(a.rating, b.rating, isAsc);
         });
         for (const player of this.players) {
-          let firstLastName = player.lastNames[0];
+          const firstLastName = player.lastNames[0];
 
           if (
             firstLastName === 'da' ||
@@ -1722,8 +1758,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getNation(property: string, rating?: number) {
     if (property === 'tier') {
-      let nationality: string = this.nationOrTier;
-      let tier: string = '';
+      const nationality: string = this.nationOrTier;
+      let tier = '';
       if (nationality.includes('tier')) {
         tier = nationality.slice(0, 1);
       } else {
@@ -1739,63 +1775,62 @@ export class HomeComponent implements OnInit, OnDestroy {
       return {
         tier,
       };
-    } else {
-      let nationality: string = this.nationSelectValue;
-      let logo: string = '';
-
-      // If random nationalities
-      if (nationality.includes('tier')) {
-        // realistic nationalities turned on
-        if (this.realisticNationalities === true) {
-          let tierName = '';
-          if (rating !== undefined) {
-            tierName = this.getRandomNationTier(rating);
-          }
-
-          let nationList = [];
-          for (const tier of this.nations) {
-            if (tier.tier === tierName) {
-              for (const nation of tier.nations) {
-                nationList.push(nation.name);
-              }
-              let i = getRandomInt(0, nationList.length - 1);
-              nationality = nationList[i];
-            }
-          }
-        } else {
-          // realistic nationalities turned off
-          let randomNum = getRandomInt(0, this.nationsList.length - 1);
-          nationality = this.nationsList[randomNum].name;
-        }
-      }
-      for (const tier of this.nations) {
-        for (const nation of tier.nations) {
-          if (nationality === nation.name) {
-            logo = nation.logo;
-          }
-        }
-      }
-      return {
-        nationality,
-        logo,
-      };
     }
+    let nationality: string = this.nationSelectValue;
+    let logo = '';
+
+    // If random nationalities
+    if (nationality.includes('tier')) {
+      // realistic nationalities turned on
+      if (this.realisticNationalities === true) {
+        let tierName = '';
+        if (rating !== undefined) {
+          tierName = this.getRandomNationTier(rating);
+        }
+
+        const nationList = [];
+        for (const tier of this.nations) {
+          if (tier.tier === tierName) {
+            for (const nation of tier.nations) {
+              nationList.push(nation.name);
+            }
+            const i = getRandomInt(0, nationList.length - 1);
+            nationality = nationList[i];
+          }
+        }
+      } else {
+        // realistic nationalities turned off
+        const randomNum = getRandomInt(0, this.nationsList.length - 1);
+        nationality = this.nationsList[randomNum].name;
+      }
+    }
+    for (const tier of this.nations) {
+      for (const nation of tier.nations) {
+        if (nationality === nation.name) {
+          logo = nation.logo;
+        }
+      }
+    }
+    return {
+      nationality,
+      logo,
+    };
   }
 
   getMainPositions(rating: number) {
     // should return an array of positions
-    let chance = getRandomInt(1, 100);
+    const chance = getRandomInt(1, 100);
     let mainPos: number;
 
     if (chance > 25) {
       // 75% chance for CB, DM, MC, MR, ML, AMR, AML, ST
 
-      let arr = [3, 6, 7, 8, 9, 10, 11, 13];
+      const arr = [3, 6, 7, 8, 9, 10, 11, 13];
       shuffle(arr);
       mainPos = arr[getRandomInt(0, 7)];
     } else {
       // 25% chance for GK, RB, LB, LWB, RWB, AMC
-      let arr = [0, 1, 2, 4, 5, 12];
+      const arr = [0, 1, 2, 4, 5, 12];
       shuffle(arr);
       mainPos = arr[getRandomInt(0, 5)];
     }
@@ -1842,7 +1877,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     this.positions[mainPos].amount++;
 
-    let mainPositions = [];
+    const mainPositions = [];
     mainPositions.push(this.positions[mainPos].position);
 
     if (!(mainPos === 0 || mainPos === 3 || mainPos === 13)) {
@@ -1901,7 +1936,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
       shuffle(posArr);
       for (let i = 0; i < indexes; i++) {
-        let index = posArr[i];
+        const index = posArr[i];
         mainPositions.push(this.positions[index].position);
       }
     }
@@ -1909,17 +1944,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getAltPositions(mainPositions: string[], mainFoot: string) {
-    let altPosCount = Math.min(getRandomInt(1, 3), getRandomInt(0, 3));
-    let compPosCount = Math.min(getRandomInt(0, 2), getRandomInt(0, 2));
-    let unPosCount = Math.min(
+    const altPosCount = Math.min(getRandomInt(1, 3), getRandomInt(0, 3));
+    const compPosCount = Math.min(getRandomInt(0, 2), getRandomInt(0, 2));
+    const unPosCount = Math.min(
       getRandomInt(0, 2),
       getRandomInt(0, 2),
       getRandomInt(0, 2)
     );
 
     let altPos: string[] = [];
-    let compPos: string[] = [];
-    let unconvincingPos: string[] = [];
+    const compPos: string[] = [];
+    const unconvincingPos: string[] = [];
 
     let arr: string[];
 
@@ -1937,7 +1972,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           arr = ['DM', 'RB', 'LB'];
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -1948,12 +1983,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -1967,11 +2002,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -1985,7 +2020,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -1996,7 +2031,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           arr = ['CB', 'LWB', 'ML', 'RB', 'DM', 'MC'];
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2007,12 +2042,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2027,11 +2062,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2046,7 +2081,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2057,7 +2092,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           arr = ['CB', 'MR', 'RWB', 'LB', 'DM', 'MC'];
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2068,12 +2103,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2087,11 +2122,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2105,7 +2140,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2116,7 +2151,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           arr = ['RWB', 'ML', 'LB', 'AML', 'MC', 'DM'];
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2127,12 +2162,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2146,11 +2181,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2164,7 +2199,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2175,7 +2210,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           arr = ['RB', 'MR', 'LWB', 'AMR', 'MC', 'DM'];
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2186,12 +2221,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2205,11 +2240,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2223,7 +2258,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2234,7 +2269,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           arr = ['RB', 'RWB', 'ML', 'MC', 'AMR', 'AML'];
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2245,12 +2280,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2264,11 +2299,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2282,7 +2317,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2293,7 +2328,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           arr = ['LB', 'LWB', 'MR', 'MC', 'AML', 'AMR'];
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2305,12 +2340,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2324,11 +2359,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2342,7 +2377,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2361,7 +2396,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2372,12 +2407,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2398,11 +2433,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2416,7 +2451,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2435,7 +2470,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2446,12 +2481,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2472,11 +2507,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2490,7 +2525,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2509,7 +2544,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2520,12 +2555,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2547,11 +2582,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2565,7 +2600,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2584,7 +2619,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2595,12 +2630,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2622,11 +2657,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2639,7 +2674,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2658,7 +2693,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2670,12 +2705,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2686,7 +2721,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             arr.push('ML');
           } else if (mainFoot === 'left') {
             arr.push('MR');
-          } else {
           }
 
           // competent positions
@@ -2696,11 +2730,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2714,7 +2748,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2725,7 +2759,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           arr = ['AMC', 'AMR', 'AML', 'MC'];
           // alternate positions
           for (let i = 1; i < mainPositions.length; i++) {
-            let altIndex = arr.indexOf(mainPositions[i]);
+            const altIndex = arr.indexOf(mainPositions[i]);
             if (altIndex > -1) {
               arr.splice(altIndex, 1);
             }
@@ -2736,12 +2770,12 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
 
               altPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2755,11 +2789,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               compPos.push(arr[num]);
-              let index = arr.indexOf(arr[num]);
+              const index = arr.indexOf(arr[num]);
               if (index > -1) {
                 arr.splice(index, 1);
               }
@@ -2773,7 +2807,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               if (num - i < 0) {
                 num = arr.length - 1;
               } else {
-                num = num - i;
+                num -= i;
               }
               // str = arr[num - i].split(', ');
               unconvincingPos.push(arr[num]);
@@ -2799,20 +2833,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     rating: number,
     age: number
   ) {
-    let num1, num2, role, duty;
+    let num1;
+    let num2;
     let roles: string[];
     let duties: string[];
     let arr = [];
-    let pos = mainPosArr[0];
+    const pos = mainPosArr[0];
     let chance: number;
     switch (pos) {
       case 'GK': // roles = ['GK', 'SK'];
         chance = getRandomInt(1, 4);
         // better gk is more likely to be sweeper keeper
         if (rating > 69) {
-          chance > 1 ? (num1 = 1) : (num1 = 0);
+          num1 = chance > 1 ? 1 : 0;
         } else {
-          chance > 1 ? (num1 = 0) : (num1 = 1);
+          num1 = chance > 1 ? 0 : 1;
         }
         num2 = getRandomInt(0, 2);
         roles = ['GK', 'SK'];
@@ -2833,14 +2868,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           ) {
             num1 = 0;
           } else if (mainPosArr.includes('CB')) {
-            chance > 1 ? (num1 = 2) : (num1 = 1);
+            num1 = chance > 1 ? 2 : 1;
           } else {
-            chance > 1 ? (num1 = getRandomInt(1, 2)) : (num1 = 3);
+            num1 = chance > 1 ? getRandomInt(1, 2) : 3;
           }
         } else {
           chance = getRandomInt(1, 4);
           // 75% chance of full back and 25% for no nonsense full back
-          chance > 1 ? (num1 = 2) : (num1 = 4);
+          num1 = chance > 1 ? 2 : 4;
         }
 
         num2 = getRandomInt(0, 2);
@@ -2865,17 +2900,15 @@ export class HomeComponent implements OnInit, OnDestroy {
             num1 = 0;
           } else {
             chance = getRandomInt(1, 4);
-            chance > 1 ? (num1 = 1) : (num1 = 2);
+            num1 = chance > 1 ? 1 : 2;
           }
+        } else if (
+          (pos === 'RWB' && foot === 'left') ||
+          (pos === 'LWB' && foot === 'right')
+        ) {
+          num1 = 0;
         } else {
-          if (
-            (pos === 'RWB' && foot === 'left') ||
-            (pos === 'LWB' && foot === 'right')
-          ) {
-            num1 = 0;
-          } else {
-            num1 = 1;
-          }
+          num1 = 1;
         }
 
         num2 = getRandomInt(0, 2);
@@ -2896,14 +2929,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           } else {
             num1 = 2;
           }
+        } else if (chance > 38) {
+          num1 = 1;
+        } else if (chance > 34) {
+          num1 = 0;
         } else {
-          if (chance > 38) {
-            num1 = 1;
-          } else if (chance > 34) {
-            num1 = 0;
-          } else {
-            num1 = 2;
-          }
+          num1 = 2;
         }
 
         num2 = getRandomInt(0, 2);
@@ -3011,7 +3042,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           } else if (mainPosArr.includes('DM')) {
             num1 = getRandomInt(0, 1);
           } else {
-            chance > 1 ? (num1 = getRandomInt(0, 1)) : (num1 = 3);
+            num1 = chance > 1 ? getRandomInt(0, 1) : 3;
           }
         }
 
@@ -3039,7 +3070,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             num1 = 1;
           }
         } else {
-          chance > 1 ? (num1 = 0) : (num1 = 4);
+          num1 = chance > 1 ? 0 : 4;
           if (
             (foot === 'right' && pos === 'ML') ||
             (foot === 'left' && pos === 'MR')
@@ -3066,9 +3097,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           (pos === 'AMR' && foot === 'left') ||
           (pos === 'AML' && foot === 'right')
         ) {
-          chance > 1 ? (num1 = 1) : (num1 = 3);
+          num1 = chance > 1 ? 1 : 3;
         } else {
-          chance > 1 ? (num1 = 0) : (num1 = 2);
+          num1 = chance > 1 ? 0 : 2;
         }
         num2 = getRandomInt(0, 1);
         if (num1 > 4) {
@@ -3081,7 +3112,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         duties = ['Su', 'At'];
         chance = getRandomInt(1, 2);
         // 50% chance for Poacher / 50% for all other positions
-        chance > 1 ? (num1 = 0) : (num1 = getRandomInt(1, 4));
+        num1 = chance > 1 ? 0 : getRandomInt(1, 4);
         num2 = getRandomInt(0, 1);
 
         if (num1 < 2) {
@@ -3100,8 +3131,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         num2 = 0;
         break;
     }
-    role = roles[num1];
-    duty = duties[num2];
+    const role = roles[num1];
+    const duty = duties[num2];
     return {
       role,
       duty,
@@ -3109,7 +3140,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getFoot(mainPos: string) {
-    let num = getRandomInt(1, 100);
+    const num = getRandomInt(1, 100);
     switch (mainPos) {
       case 'GK':
       case 'CB':
@@ -3119,37 +3150,36 @@ export class HomeComponent implements OnInit, OnDestroy {
       case 'ST':
         if (num < 76.5) {
           return 'right';
-        } else {
-          return 'left';
         }
+        return 'left';
+
       case 'AML':
       case 'ML':
         if (num < 50) {
           return 'left';
-        } else {
-          return 'right';
         }
+        return 'right';
+
       case 'LB':
       case 'LWB':
         if (num < 75) {
           return 'left';
-        } else {
-          return 'right';
         }
+        return 'right';
+
       case 'AMR':
       case 'MR':
         if (num < 70) {
           return 'right';
-        } else {
-          return 'left';
         }
+        return 'left';
+
       case 'RB':
       case 'RWB':
         if (num < 98) {
           return 'right';
-        } else {
-          return 'left';
         }
+        return 'left';
 
       default:
         console.log('Error in the function getPlayerFoot()');
@@ -3201,9 +3231,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     seventh: number,
     eighth: number
   ) {
-    let rating: number = 0;
+    let rating = 0;
     let clubRep = '';
-    let chance = getRandomInt(1, 20);
+    const chance = getRandomInt(1, 20);
     if (i < first) {
       if (chance > 1) {
         rating = Math.min(getRandomInt(82, 89), getRandomInt(82, 89));
@@ -3257,9 +3287,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {
     let height = 0; // in inches
     let weight = 0; // in lbs
-    let weakFoot = 0; // 1-4 very weak, 5-8 weak, 8-11 reasonable, 12-14 fairly strong, 15-17 strong, 18-20 very strong
+    const weakFoot = 0; // 1-4 very weak, 5-8 weak, 8-11 reasonable, 12-14 fairly strong, 15-17 strong, 18-20 very strong
     // very weak and weak is right/left only, reasonable and fairly strong is right/left, and strong and very strong is either footed
-    let bmi = median([getRandomInt(19, 29), getRandomInt(19, 29)]);
+    const bmi = median([getRandomInt(19, 29), getRandomInt(19, 29)]);
 
     if (pos === 'GK') {
       height = median([getRandomInt(69, 78), getRandomInt(69, 78)]);
@@ -3267,20 +3297,27 @@ export class HomeComponent implements OnInit, OnDestroy {
       height = median([getRandomInt(62, 78), getRandomInt(62, 78)]);
     }
 
-    weight = Math.round((bmi * Math.pow(height, 2)) / 703);
+    weight = Math.round((bmi * height ** 2) / 703);
 
     // current ability / potential ability
-    let currentAbility = rating * 2;
+    const currentAbility = rating * 2;
     let potentialAbility;
-    let gkAttributes = {} as GkAttributes;
-    let outAttributes = {} as OutfieldAttributes;
+    const gkAttributes = {} as GkAttributes;
+    const outAttributes = {} as OutfieldAttributes;
     let attributes = {};
-
+    let attr25;
+    let attr17;
+    let attr09;
+    let attr06;
+    let attr04;
+    let attr01;
+    let attr0;
+    let ability;
     switch (pos) {
       case 'GK':
         // 2.5, 1.65, 0.92, 0.6, 0.35, 0.125, 0
-        let attr25 = ['handling', 'reflexes'];
-        let attr17 = [
+        attr25 = ['handling', 'reflexes'];
+        attr17 = [
           'aerialReach',
           'commandOfArea',
           'communication',
@@ -3292,9 +3329,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           'positioning',
           'agility',
         ];
-        let attr09 = ['throwing', 'acceleration', 'strength'];
-        let attr06 = ['weakFoot'];
-        let attr04 = [
+        attr09 = ['throwing', 'acceleration', 'strength'];
+        attr06 = ['weakFoot'];
+        attr04 = [
           'anticipation',
           'composure',
           'leadership',
@@ -3302,7 +3339,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           'balance',
           'pace',
         ];
-        let attr01 = [
+        attr01 = [
           'firstTouch',
           'vision',
           'workRate',
@@ -3310,7 +3347,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           'stamina',
           'technique',
         ];
-        let attr0 = [
+        attr0 = [
           'eccentricity',
           'freeKickTaking',
           'penalty taking',
@@ -3325,9 +3362,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         for (let i = 0; i < attr0.length; i++) {
           gkAttributes[attr0[i]] = getRandomInt(1, 20);
         }
-        let ability = 0;
+        ability = 0;
         while (ability < currentAbility) {
-          //green attributes
+          // green attributes
           gkAttributes.reflexes = Math.max(
             getRandomInt(5, 20),
             getRandomInt(5, 20)
@@ -3450,24 +3487,82 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getClub(clubRep: string, playerNation: string) {
-    let clubArr: any[] = this.clubs[clubRep];
-    let nationObj;
-    for (const nation of this.nationsList) {
-      if (nation.name === playerNation) {
-        nationObj = nation;
-      }
-    }
-    let clubName: string = '';
-    let clubLogoUrl: string = '';
+    const clubArr = this.clubs[clubRep];
+
+    const nationObj = this.nationsList.find(
+      (nation) => nation.name === playerNation
+    );
+    let clubName = '';
+    let clubLogoUrl = '';
 
     shuffle(clubArr);
+    if (nationObj) {
+      // 50% chance for mainLeague
+      const main = getRandomInt(1, 2);
 
-    // 50% chance for mainLeague
-    let main = getRandomInt(1, 2);
+      if (main < 2) {
+        for (let i = 0; i < clubArr.length; i++) {
+          if (nationObj.mainLeagues.includes(clubArr[i].league)) {
+            clubName = clubArr[i].club;
+            clubLogoUrl = clubArr[i].logo;
+            return {
+              clubName,
+              clubLogoUrl,
+            };
+          }
+        }
+      }
+      // 30% chance for secondLeague
+      const secondary = getRandomInt(1, 10);
 
-    if (main < 2) {
+      if (secondary < 4 && clubName === '') {
+        for (let i = 0; i < clubArr.length; i++) {
+          if (nationObj.secondLeagues.includes(clubArr[i].league)) {
+            clubName = clubArr[i].club;
+            clubLogoUrl = clubArr[i].logo;
+            return {
+              clubName,
+              clubLogoUrl,
+            };
+          }
+        }
+      }
+      // 15% chance for thirdLeague
+      const tertiary = getRandomInt(1, 100);
+
+      if (tertiary < 16 && clubName === '') {
+        for (let i = 0; i < clubArr.length; i++) {
+          if (nationObj.thirdLeagues.includes(clubArr[i].league)) {
+            clubName = clubArr[i].club;
+            clubLogoUrl = clubArr[i].logo;
+            return {
+              clubName,
+              clubLogoUrl,
+            };
+          }
+        }
+      }
+
+      // 5% chance for thirdLeague
+      const rare = getRandomInt(1, 100);
+
+      if (rare < 6 && clubName === '') {
+        for (let i = 0; i < clubArr.length; i++) {
+          if (nationObj.rareLeagues.includes(clubArr[i].league)) {
+            clubName = clubArr[i].club;
+            clubLogoUrl = clubArr[i].logo;
+            return {
+              clubName,
+              clubLogoUrl,
+            };
+          }
+        }
+      }
+
+      // if still no club, choose a random club
       for (let i = 0; i < clubArr.length; i++) {
-        if (nationObj.mainLeagues.includes(clubArr[i].league)) {
+        if (!nationObj.excludeLeagues.includes(clubArr[i].league)) {
+          // check for excluded league
           clubName = clubArr[i].club;
           clubLogoUrl = clubArr[i].logo;
           return {
@@ -3476,85 +3571,27 @@ export class HomeComponent implements OnInit, OnDestroy {
           };
         }
       }
+
+      return {
+        clubName,
+        clubLogoUrl,
+      };
     }
-    // 30% chance for secondLeague
-    let secondary = getRandomInt(1, 10);
-
-    if (secondary < 4 && clubName === '') {
-      for (let i = 0; i < clubArr.length; i++) {
-        if (nationObj.secondLeagues.includes(clubArr[i].league)) {
-          clubName = clubArr[i].club;
-          clubLogoUrl = clubArr[i].logo;
-          return {
-            clubName,
-            clubLogoUrl,
-          };
-        }
-      }
-    }
-    // 15% chance for thirdLeague
-    let tertiary = getRandomInt(1, 100);
-
-    if (tertiary < 16 && clubName === '') {
-      for (let i = 0; i < clubArr.length; i++) {
-        if (nationObj.thirdLeagues.includes(clubArr[i].league)) {
-          clubName = clubArr[i].club;
-          clubLogoUrl = clubArr[i].logo;
-          return {
-            clubName,
-            clubLogoUrl,
-          };
-        }
-      }
-    }
-
-    // 5% chance for thirdLeague
-    let rare = getRandomInt(1, 100);
-
-    if (rare < 6 && clubName === '') {
-      for (let i = 0; i < clubArr.length; i++) {
-        if (nationObj.rareLeagues.includes(clubArr[i].league)) {
-          clubName = clubArr[i].club;
-          clubLogoUrl = clubArr[i].logo;
-          return {
-            clubName,
-            clubLogoUrl,
-          };
-        }
-      }
-    }
-
-    // if still no club, choose a random club
-    for (let i = 0; i < clubArr.length; i++) {
-      if (!(clubArr[i].league === nationObj.excludeLeagues)) {
-        // check for excluded league
-        clubName = clubArr[i].club;
-        clubLogoUrl = clubArr[i].logo;
-        return {
-          clubName,
-          clubLogoUrl,
-        };
-      }
-    }
-
-    return {
-      clubName,
-      clubLogoUrl,
-    };
+    throw new Error('Club was not found');
   }
 
   getAge(rating: number, mainPos: string) {
     // Average ages are based on this website https://football-observatory.com/IMG/sites/mr/mr49/en/
     let ageIndex: number;
     if (rating > 84) {
-      let arr = [
+      const arr = [
         getRandomInt(0, 1000),
         getRandomInt(0, 1000),
         getRandomInt(0, 1000),
       ];
       ageIndex = median(arr);
     } else if (rating > 76) {
-      let sum = getRandomInt(0, 1000) + getRandomInt(0, 1000);
+      const sum = getRandomInt(0, 1000) + getRandomInt(0, 1000);
       ageIndex = sum / 2;
     } else {
       ageIndex = getRandomInt(0, 1000);
@@ -3563,109 +3600,149 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (mainPos === 'GK') {
       if (ageIndex < 1) {
         return 17;
-      } else if (ageIndex < 2) {
+      }
+      if (ageIndex < 2) {
         return 18;
-      } else if (ageIndex < 5) {
+      }
+      if (ageIndex < 5) {
         return 19;
-      } else if (ageIndex < 10) {
+      }
+      if (ageIndex < 10) {
         return 20;
-      } else if (ageIndex < 15) {
+      }
+      if (ageIndex < 15) {
         return 21;
-      } else if (ageIndex < 25) {
+      }
+      if (ageIndex < 25) {
         return 22;
-      } else if (ageIndex < 51) {
+      }
+      if (ageIndex < 51) {
         return 23;
-      } else if (ageIndex < 91) {
+      }
+      if (ageIndex < 91) {
         return 24;
-      } else if (ageIndex < 141) {
+      }
+      if (ageIndex < 141) {
         return 25;
-      } else if (ageIndex < 191) {
+      }
+      if (ageIndex < 191) {
         return 26;
-      } else if (ageIndex < 246) {
+      }
+      if (ageIndex < 246) {
         return 27;
-      } else if (ageIndex < 301) {
+      }
+      if (ageIndex < 301) {
         return 28;
-      } else if (ageIndex < 371) {
+      }
+      if (ageIndex < 371) {
         return 29;
-      } else if (ageIndex < 441) {
+      }
+      if (ageIndex < 441) {
         return 30;
-      } else if (ageIndex < 516) {
+      }
+      if (ageIndex < 516) {
         return 31;
-      } else if (ageIndex < 591) {
+      }
+      if (ageIndex < 591) {
         return 32;
-      } else if (ageIndex < 666) {
+      }
+      if (ageIndex < 666) {
         return 33;
-      } else if (ageIndex < 741) {
+      }
+      if (ageIndex < 741) {
         return 34;
-      } else if (ageIndex < 816) {
+      }
+      if (ageIndex < 816) {
         return 35;
-      } else if (ageIndex < 881) {
+      }
+      if (ageIndex < 881) {
         return 36;
-      } else if (ageIndex < 931) {
+      }
+      if (ageIndex < 931) {
         return 37;
-      } else if (ageIndex < 966) {
+      }
+      if (ageIndex < 966) {
         return 38;
-      } else if (995) {
+      }
+      if (995) {
         return 39;
-      } else {
-        return 40;
       }
-    } else {
-      if (ageIndex < 1) {
-        return 16;
-      } else if (ageIndex >= 1 && ageIndex <= 8) {
-        return 17;
-      } else if (ageIndex >= 9 && ageIndex <= 30) {
-        return 18;
-      } else if (ageIndex >= 31 && ageIndex <= 74) {
-        return 19;
-      } else if (ageIndex >= 75 && ageIndex <= 133) {
-        return 20;
-      } else if (ageIndex >= 134 && ageIndex <= 207) {
-        return 21;
-      } else if (ageIndex >= 208 && ageIndex <= 286) {
-        return 22;
-      } else if (ageIndex >= 287 && ageIndex <= 365) {
-        return 23;
-      } else if (ageIndex >= 365 && ageIndex <= 447) {
-        return 24;
-      } else if (ageIndex >= 448 && ageIndex <= 524) {
-        return 25;
-      } else if (ageIndex >= 525 && ageIndex <= 599) {
-        return 26;
-      } else if (ageIndex >= 600 && ageIndex <= 669) {
-        return 27;
-      } else if (ageIndex >= 670 && ageIndex <= 735) {
-        return 28;
-      } else if (ageIndex >= 736 && ageIndex <= 794) {
-        return 29;
-      } else if (ageIndex >= 795 && ageIndex <= 843) {
-        return 30;
-      } else if (ageIndex >= 844 && ageIndex <= 890) {
-        return 31;
-      } else if (ageIndex >= 891 && ageIndex <= 925) {
-        return 32;
-      } else if (ageIndex >= 926 && ageIndex <= 952) {
-        return 33;
-      } else if (ageIndex >= 953 && ageIndex <= 970) {
-        return 34;
-      } else if (ageIndex >= 971 && ageIndex <= 983) {
-        return 35;
-      } else if (ageIndex >= 984 && ageIndex <= 991) {
-        return 36;
-      } else if (ageIndex >= 992 && ageIndex <= 996) {
-        return 37;
-      } else {
-        return 38;
-      }
+      return 40;
     }
+    if (ageIndex < 1) {
+      return 16;
+    }
+    if (ageIndex >= 1 && ageIndex <= 8) {
+      return 17;
+    }
+    if (ageIndex >= 9 && ageIndex <= 30) {
+      return 18;
+    }
+    if (ageIndex >= 31 && ageIndex <= 74) {
+      return 19;
+    }
+    if (ageIndex >= 75 && ageIndex <= 133) {
+      return 20;
+    }
+    if (ageIndex >= 134 && ageIndex <= 207) {
+      return 21;
+    }
+    if (ageIndex >= 208 && ageIndex <= 286) {
+      return 22;
+    }
+    if (ageIndex >= 287 && ageIndex <= 365) {
+      return 23;
+    }
+    if (ageIndex >= 365 && ageIndex <= 447) {
+      return 24;
+    }
+    if (ageIndex >= 448 && ageIndex <= 524) {
+      return 25;
+    }
+    if (ageIndex >= 525 && ageIndex <= 599) {
+      return 26;
+    }
+    if (ageIndex >= 600 && ageIndex <= 669) {
+      return 27;
+    }
+    if (ageIndex >= 670 && ageIndex <= 735) {
+      return 28;
+    }
+    if (ageIndex >= 736 && ageIndex <= 794) {
+      return 29;
+    }
+    if (ageIndex >= 795 && ageIndex <= 843) {
+      return 30;
+    }
+    if (ageIndex >= 844 && ageIndex <= 890) {
+      return 31;
+    }
+    if (ageIndex >= 891 && ageIndex <= 925) {
+      return 32;
+    }
+    if (ageIndex >= 926 && ageIndex <= 952) {
+      return 33;
+    }
+    if (ageIndex >= 953 && ageIndex <= 970) {
+      return 34;
+    }
+    if (ageIndex >= 971 && ageIndex <= 983) {
+      return 35;
+    }
+    if (ageIndex >= 984 && ageIndex <= 991) {
+      return 36;
+    }
+    if (ageIndex >= 992 && ageIndex <= 996) {
+      return 37;
+    }
+    return 38;
   }
 
   getRandomNationTier(rating: number) {
-    let randomNum = getRandomInt(1, 100);
-    let half = getRandomInt(0, 1);
-    let third = getRandomInt(0, 2);
-    let quarter = Math.min(getRandomInt(0, 3), getRandomInt(0, 3));
+    const randomNum = getRandomInt(1, 100);
+    const half = getRandomInt(0, 1);
+    const third = getRandomInt(0, 2);
+    const quarter = Math.min(getRandomInt(0, 3), getRandomInt(0, 3));
     let tier = '';
     if (rating > 75) {
       if (randomNum > 50) {
@@ -3756,7 +3833,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       }
     } else {
-      let arr = [
+      const arr = [
         's',
         'a',
         'b',
@@ -3771,7 +3848,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         'k',
         'l',
       ];
-      let i = Math.min(
+      const i = Math.min(
         getRandomInt(0, arr.length - 1),
         getRandomInt(0, arr.length - 1)
       );
@@ -3782,17 +3859,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   async savePlayers(saveLocation: string, saveName?: string) {
-    if (saveLocation == 'localStorage') {
+    if (saveLocation === 'localStorage') {
       if (localStorage.length > 1) {
         if (
           window.confirm(
             'Are you sure you want to overwrite your current roster saved in Local Storage?'
           )
         ) {
-          let user = localStorage.getItem('user');
-          let rosters = [];
+          const user = localStorage.getItem('user');
+          const rosters = [];
           for (let i = 0; i < 100; i++) {
-            let roster = localStorage.getItem(`Roster #${i}`) || null;
+            const roster = localStorage.getItem(`Roster #${i}`) || null;
             if (roster === null) {
               break;
             }
@@ -3838,50 +3915,53 @@ export class HomeComponent implements OnInit, OnDestroy {
         alert('Must be 4-20 characters long.');
         return false;
       }
-      let user = JSON.parse(localStorage.getItem('user') || '');
-      for (let i = 0; i < this.savedData.length; i++) {
+      const user = JSON.parse(localStorage.getItem('user') || '');
+      if (this.savedData) {
+        const data = this.savedData.find((obj) => obj.id === this.rosterId);
         console.log(this.rosterId, saveName);
-        // if it's a duplicate roster
-        if (this.savedData[i].id === this.rosterId) {
-          // duplicateId = true;
-          if (
-            window.confirm(
-              `This is already saved, would you like to update the save name and roster`
-            )
-          ) {
-            this.afs.updateRoster(
-              user.uid,
-              saveName,
-              this.players,
-              this.pitchPlayers,
-              this.rosterId
-            );
-            this.saveDataOverlayOpen = false;
-          } else {
-            return false;
-          }
-        }
-        // if it's a duplicate saveName
-        else if (this.savedData[i].saveName === saveName) {
-          // ask the user if they want to overwrite
-          if (
-            window.confirm(`${saveName} is already a roster name. Overwrite?`)
-          ) {
-            this.afs
-              .saveRoster(
+        if (data) {
+          // if it's a duplicate roster
+          if (data.id === this.rosterId) {
+            // duplicateId = true;
+            if (
+              window.confirm(
+                `This is already saved, would you like to update the save name and roster`
+              )
+            ) {
+              this.afs.updateRoster(
                 user.uid,
                 saveName,
                 this.players,
                 this.pitchPlayers,
-                this.nationOrTier
-              )
-              .then((docRef) => {
-                this.rosterId = docRef.id;
-                console.log('new roster id:\n', this.rosterId);
-              });
-            this.saveDataOverlayOpen = false;
-          } else {
-            return false;
+                this.rosterId
+              );
+              this.saveDataOverlayOpen = false;
+            } else {
+              return false;
+            }
+          }
+          // if it's a duplicate saveName
+          else if (data.saveName === saveName) {
+            // ask the user if they want to overwrite
+            if (
+              window.confirm(`${saveName} is already a roster name. Overwrite?`)
+            ) {
+              this.afs
+                .saveRoster(
+                  user.uid,
+                  saveName,
+                  this.players,
+                  this.pitchPlayers,
+                  this.nationOrTier
+                )
+                .then((docRef) => {
+                  this.rosterId = docRef.id;
+                  console.log('new roster id:\n', this.rosterId);
+                });
+              this.saveDataOverlayOpen = false;
+            } else {
+              return false;
+            }
           }
         }
       }
@@ -3902,9 +3982,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         return false;
       }
-    } else {
-      throw new Error('Problem with savePlayers() function');
     }
+    throw new Error('Problem with savePlayers() function');
   }
 
   saveDataOverlay() {
@@ -3933,12 +4012,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       alert('You must be logged in to access cloud saved data');
       return false;
     }
-    let user = JSON.parse(localStorage.getItem('user') || '');
+    const user = JSON.parse(localStorage.getItem('user') || '');
     this.afs.getRosterId(user.uid).subscribe((obj: any) => {
       console.log('Checking firestore for save data...\n');
       for (const roster of obj) {
-        let id = roster.payload.doc.id;
-        let save = roster.payload.doc.data().saveName;
+        const { id } = roster.payload.doc;
+        const save = roster.payload.doc.data().saveName;
         let duplicateId = false;
         for (let i = 0; i < this.savedData.length; i++) {
           if (this.savedData[i].id === id) {
@@ -3946,7 +4025,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         }
         if (!duplicateId) {
-          this.savedData.push({ id: id, saveName: save });
+          this.savedData.push({ id, saveName: save });
         }
       }
       console.log(this.savedData);
@@ -3969,7 +4048,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.nationOrTier = this.nationOrTier.slice(1, -1);
         this.rosterId = localStorage.getItem(`Firestore ID`) || '';
         this.rosterId = this.rosterId.slice(1, -1);
-        for (let index in this.positions) {
+        for (const index in this.positions) {
           this.positions[index].amount = 0;
         }
         for (const box of this.positionBoxes) {
@@ -3979,7 +4058,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
 
         for (let i = 0; i < 60; i++) {
-          let playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
+          const playerString = localStorage.getItem(`TEAMGEN - Player #${i}`);
           let player: Player;
           if (playerString !== null) {
             player = JSON.parse(playerString);
@@ -3988,7 +4067,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         }
         for (let i = 0; i < 11; i++) {
-          let playerString = localStorage.getItem(
+          const playerString = localStorage.getItem(
             `TEAMGEN - Starting Player #${i + 1}`
           );
           let player: Player;
@@ -4000,15 +4079,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
 
         this.startersTotalRating = 0;
-        let ratingArr = [];
+        const ratingArr = [];
         for (const player of this.pitchPlayers) {
           if (player.pitchRating !== undefined) {
             ratingArr.push(player.pitchRating);
           }
           for (let i = 0; i < this.pitchPositions.length; i++) {
             if (player.pitchPositionIndex !== undefined) {
-              let boxIndex =
-                this.pitchPositions[player.pitchPositionIndex].boxIndex;
+              const { boxIndex } =
+                this.pitchPositions[player.pitchPositionIndex];
               for (let j = 0; j < this.positionBoxes.length; j++) {
                 if (this.positionBoxes[j] === this.positionBoxes[boxIndex]) {
                   this.positionBoxes[j].pitchPlayer = player;
@@ -4023,13 +4102,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         for (let i = 0; i < 12; i++) {
           ratingArr.push(this.players[i].rating);
         }
-        let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a, 0);
-        let avg = sum / ratingArr.length;
-        this.squadTotalRating = Math.round(avg * 10) / 10;
 
-        this.checkStars(this.startersTotalRating, this.squadTotalRating);
+        this.squadTotalRating = calcSumRating(ratingArr);
 
-        let combinedPlayers = this.pitchPlayers.concat(this.players);
+        checkStars(this.startersTotalRating, this.squadTotalRating);
+
+        const combinedPlayers = this.pitchPlayers.concat(this.players);
         for (const player of combinedPlayers) {
           for (const pos of this.positions) {
             if (player.mainPositions[0] === pos.position) {
@@ -4074,13 +4152,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         throw new Error('Local Storage Data not found');
       }
     } else {
-      let user = JSON.parse(localStorage.getItem('user') || '');
+      const user = JSON.parse(localStorage.getItem('user') || '');
       for (const box of this.positionBoxes) {
         box.playerClass = 'inactive player-box';
         box.posBoxClass = 'active pos-box';
         box.pitchPlayer = undefined;
       }
-      for (let index in this.positions) {
+      for (const index in this.positions) {
         this.positions[index].amount = 0;
       }
       this.players = [];
@@ -4100,15 +4178,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
 
         this.startersTotalRating = 0;
-        let ratingArr = [];
+        const ratingArr = [];
         for (const player of this.pitchPlayers) {
           if (player.pitchRating !== undefined) {
             ratingArr.push(player.pitchRating);
           }
           for (let i = 0; i < this.pitchPositions.length; i++) {
             if (player.pitchPositionIndex !== undefined) {
-              let boxIndex =
-                this.pitchPositions[player.pitchPositionIndex].boxIndex;
+              const { boxIndex } =
+                this.pitchPositions[player.pitchPositionIndex];
               for (let j = 0; j < this.positionBoxes.length; j++) {
                 if (this.positionBoxes[j] === this.positionBoxes[boxIndex]) {
                   this.positionBoxes[j].pitchPlayer = player;
@@ -4124,21 +4202,21 @@ export class HomeComponent implements OnInit, OnDestroy {
         for (let i = 0; i < 12; i++) {
           ratingArr.push(this.players[i].rating);
         }
-        let sum = ratingArr.reduce((partial_sum, a) => partial_sum + a, 0);
-        let avg = sum / ratingArr.length;
-        this.squadTotalRating = Math.round(avg * 10) / 10;
 
-        this.checkStars(this.startersTotalRating, this.squadTotalRating);
+        this.squadTotalRating = calcSumRating(ratingArr);
 
-        let combinedPlayers = this.pitchPlayers.concat(this.players);
-        for (const player of combinedPlayers) {
-          for (const pos of this.positions) {
-            if (player.mainPositions[0] === pos.position) {
-              pos.amount++;
-              break;
-            }
+        checkStars(this.startersTotalRating, this.squadTotalRating);
+
+        const combinedPlayers = this.pitchPlayers.concat(this.players);
+
+        combinedPlayers.forEach((player) => {
+          const position = this.positions.find(
+            (pos) => player.mainPositions[0] === pos.position
+          );
+          if (position) {
+            position.amount++;
           }
-        }
+        });
 
         if (this.pitchPlayers.length > 1) {
           this.sortedPitchPlayers = this.pitchPlayers.sort((a, b) => {
@@ -4158,12 +4236,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         } else if (this.pitchPlayers.length > 0) {
           this.sortedPitchPlayers = this.pitchPlayers;
         }
-        for (const rule of this.squadRules) {
+        this.squadRules.map((rule) => {
           if (rule.check === '✅') {
-            rule.check = '❌';
+            return { ...rule, check: '❌' };
           }
-          this.squadRules[8].text = '';
-        }
+          return rule;
+        });
+
+        this.squadRules[8].text = '';
+
         if (this.pitchPlayers.length === 11) {
           this.getBackupPositions();
         } else {
@@ -4172,52 +4253,4 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
     }
   }
-}
-
-function compare(a: number | string, b: number | string, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function median(values: number[]) {
-  if (values.length === 0) throw new Error('No inputs');
-
-  values.sort(function (a, b) {
-    return a - b;
-  });
-
-  var half = Math.floor(values.length / 2);
-
-  if (values.length % 2) return values[half];
-
-  return (values[half - 1] + values[half]) / 2.0;
-}
-
-function shuffle(array: any[]) {
-  let currentIndex = array.length,
-    randomIndex;
-
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-
-  return array;
-}
-
-function getRandomInt(min: number, max: number) {
-  // let seed = xmur3("string-seed");
-  // let rand = mulberry32(seed());
-  min = Math.ceil(min);
-  max = Math.floor(max);
-
-  return Math.floor(Math.random() * (max - min + 1) + min);
-  //The maximum is inclusive and the minimum is inclusive
 }

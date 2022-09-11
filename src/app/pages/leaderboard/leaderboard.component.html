@@ -1,55 +1,81 @@
 <div class="page-container">
-    <h1>Leaderboards</h1>
-    <p *ngIf="!isLoggedIn">You must login to see leaderboard</p>
+  <h1>Leaderboards</h1>
+  <p *ngIf="!isLoggedIn">You must login to see leaderboard</p>
 
-    <!-- <button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button> -->
-    <div *ngIf="isLoggedIn" class="leaderboard-container">
-        <ul *ngFor="let tierGroup of organizedRosters" class="tier">
-            <h2 *ngIf="tierGroup[0]" class="tier-name">{{tierGroup[0]?.tier || ''}} Tier</h2>
-            <li *ngIf="tierGroup[0]" class="collection-container">
-                <div class="headings item">
-                    <div class="attribute" >#</div>
-                    <div class="attribute" >User</div>
-                    <div class="attribute" >Squad Rating</div>
-                    <div class="attribute" >Starters Rating</div>
-                    <div class="attribute" >Nation</div>
-                    <div class="attribute" >Formation</div>
-                    <div class="attribute best-player">
-                        <div class="main">Best Player</div>
-                        <div class="secondary">
-                            <div>Name</div>
-                            <div>Rating</div>
-                            <div>Position</div>
-                            <div>Nationality</div>
-                        </div>
-                    </div>
-                </div>
-                <div *ngFor="let roster of tierGroup; let j = index; trackBy: trackByItems" class="roster item" >
-                    <div class="attribute" [attr.data-name]="headers[0]">{{j + 1}}</div>
-                    <div class="attribute" [attr.data-name]="headers[1]">{{roster.user}}</div>
-                    <div class="attribute squad-rating" [attr.data-name]="headers[2]">
-                        {{roster.squadRating}}
-                        <!--<span class="stars"></span>-->
-                    </div>
-                    <div class="attribute starter-rating" [attr.data-name]="headers[3]">
-                        {{roster.startersRating}}
-                        <!-- <span class="stars"></span> -->
-                    </div>
-                    <div class="attribute capitalize" [attr.data-name]="headers[4]">{{roster.nation}}</div>
-                    <div class="attribute" [attr.data-name]="headers[5]">{{roster.formation}}</div>
-                    <div class="attribute" [attr.data-name]="headers[6]">
-                        <div class="secondary">
-                            <div>{{roster.roster.sortedRoster[0].firstInitial}} {{roster.roster.sortedRoster[0].singleLastName}}</div>
-                            <div>{{roster.roster.sortedRoster[0].rating}}</div>
-                            <div> <span *ngFor="let pos of roster.roster.sortedRoster[0].mainPositions">{{pos}} </span></div>
-                            <div><span class="capitalize">{{roster.roster.sortedRoster[0].nationality}} </span><img [src]="roster.roster.sortedRoster[0].nationalityLogo" [alt]="roster.roster.sortedRoster[0].nationality" class="nation-flag"></div>  
-                        </div>
-                        
-                    </div>
-                </div>
-            </li>
-            
-        </ul>
-    </div>
-    
+  <!-- <button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button> -->
+  <div *ngIf="isLoggedIn" class="leaderboard-container">
+    <ul *ngFor="let tierGroup of organizedRosters" class="tier">
+      <h2 *ngIf="tierGroup[0]" class="tier-name">
+        {{ tierGroup[0].tier || "" }} Tier
+      </h2>
+      <li *ngIf="tierGroup[0]" class="collection-container">
+        <div class="headings item">
+          <div class="attribute">#</div>
+          <div class="attribute">User</div>
+          <div class="attribute">Squad Rating</div>
+          <div class="attribute">Starters Rating</div>
+          <div class="attribute">Nation</div>
+          <div class="attribute">Formation</div>
+          <div class="attribute best-player">
+            <div class="main">Best Player</div>
+            <div class="secondary">
+              <div>Name</div>
+              <div>Rating</div>
+              <div>Position</div>
+              <div>Nationality</div>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngFor="let roster of tierGroup; let j = index; trackBy: trackByItems"
+          class="roster item"
+        >
+          <div class="attribute" [attr.data-name]="headers[0]">{{ j + 1 }}</div>
+          <div class="attribute" [attr.data-name]="headers[1]">
+            {{ roster.user }}
+          </div>
+          <div class="attribute squad-rating" [attr.data-name]="headers[2]">
+            {{ roster.squadRating }}
+            <!--<span class="stars"></span>-->
+          </div>
+          <div class="attribute starter-rating" [attr.data-name]="headers[3]">
+            {{ roster.startersRating }}
+            <!-- <span class="stars"></span> -->
+          </div>
+          <div class="attribute capitalize" [attr.data-name]="headers[4]">
+            {{ roster.nation }}
+          </div>
+          <div class="attribute" [attr.data-name]="headers[5]">
+            {{ roster.formation }}
+          </div>
+          <div class="attribute" [attr.data-name]="headers[6]">
+            <div class="secondary">
+              <div>
+                {{ roster.roster.sortedRoster[0].firstInitial }}
+                {{ roster.roster.sortedRoster[0].singleLastName }}
+              </div>
+              <div>{{ roster.roster.sortedRoster[0].rating }}</div>
+              <div>
+                <span
+                  *ngFor="
+                    let pos of roster.roster.sortedRoster[0].mainPositions
+                  "
+                  >{{ pos }}
+                </span>
+              </div>
+              <div>
+                <span class="capitalize"
+                  >{{ roster.roster.sortedRoster[0].nationality }} </span
+                ><img
+                  [src]="roster.roster.sortedRoster[0].nationalityLogo"
+                  [alt]="roster.roster.sortedRoster[0].nationality"
+                  class="nation-flag"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>

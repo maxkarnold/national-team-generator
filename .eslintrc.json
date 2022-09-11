@@ -4,8 +4,8 @@
     "es2021": true
   },
   "extends": [
-    "airbnb-base",
     "plugin:@typescript-eslint/recommended",
+    "airbnb-base",
     "prettier"
   ],
   "overrides": [],
@@ -28,7 +28,14 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "no-useless-constructor": "off",
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": "warn",
+    "no-plusplus": "off",
+    "class-methods-use-this": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   },
   "settings": {
     "import/resolver": { "typescript": {} }
