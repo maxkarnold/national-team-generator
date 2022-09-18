@@ -1,1 +1,102 @@
-<p>pitch-view works!</p>
+<div class="pitch-container">
+  <div class="formation" *ngIf="this.pitchPlayers.length > 0">
+    Formation: {{ formation }}
+  </div>
+  <div class="starters-total-rating" *ngIf="this.pitchPlayers.length > 0">
+    <div>Rating - {{ startersTotalRating }}</div>
+    <div class="stars"></div>
+  </div>
+  <div class="squad-total-rating" *ngIf="checkFormation()">
+    <div>Squad Rating - {{ squadTotalRating }}</div>
+    <div class="stars"></div>
+  </div>
+  <!-- <div class="squad-total-rating">
+            <div *ngIf="chemistry > 0; else chemContainer">Chemistry: <span style="color: lime;">+{{chemistry}}</span></div>
+            <ng-template #chemContainer>Chemistry: {{chemistry}}</ng-template>
+        </div> -->
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="resetStarters()"
+    class="reset-button"
+  >
+    Reset XI
+  </button>
+  <div class="pitch-borders">
+    <div class="goal-box-top pitch-divs"></div>
+    <div class="goal-box-circle-top pitch-divs"></div>
+    <div class="pitch-dot pitch-divs"></div>
+    <div class="pitch-circle pitch-divs"></div>
+    <div class="half-line pitch-divs"></div>
+    <div class="goal-box-circle-bottom pitch-divs"></div>
+    <div class="goal-box-bottom pitch-divs"></div>
+    <div class="pitch-grid">
+      <div
+        *ngFor="let box of positionBoxes"
+        [class]="getPositionBox(box)"
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        [cdkDropListData]="pitchPlayers"
+      >
+        <div
+          [class]="getPlayerClass(box)"
+          cdkDrag
+          [cdkDragData]="box"
+          (cdkDragStarted)="getPositionOutline($event)"
+          (cdkDragReleased)="removeOutlineRelease($event)"
+          (cdkDragDropped)="removeOutlineDrop($event)"
+        >
+          <div *ngIf="box.pitchPlayer !== undefined">
+            <div>
+              <span
+                *ngIf="box.pitchPlayer !== undefined"
+                class="pitch-player-info"
+                >{{ box.pitchPlayer.pitchRating }}</span
+              >
+              <!-- <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchPosition}}</span> -->
+              <span
+                *ngIf="box.pitchPlayer !== undefined"
+                class="pitch-player-info"
+                >{{ box.pitchPlayer.preferredRole }}-{{
+                  box.pitchPlayer.preferredDuty
+                }}</span
+              >
+              <img
+                *ngIf="box.pitchPlayer !== undefined"
+                class="pitch-player-img"
+                [src]="box.pitchPlayer.nationalityLogo"
+              />
+              <img
+                *ngIf="box.pitchPlayer !== undefined"
+                class="pitch-player-img"
+                [src]="box.pitchPlayer.clubLogo"
+              />
+            </div>
+            <div>
+              <img
+                [src]="box.pitchPlayer.playerFace"
+                alt=""
+                class="player-face"
+              />
+              <span *ngIf="box.pitchPlayer !== undefined" class="player-name">{{
+                box.pitchPlayer.displayName
+              }}</span>
+            </div>
+          </div>
+
+          <!-- <div *cdkDragPreview  class="player-box active">
+                                <img [src]="box.pitchPlayer.playerFace" alt="" class="player-face" *ngIf="box.pitchPlayer !== undefined">
+                                <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchRating}}</span>
+                                <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchPosition}}</span>
+                                <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.nationalityLogo">
+                                <img *ngIf="box.pitchPlayer !== undefined" class="pitch-player-img" [src]="box.pitchPlayer.clubLogo">
+                                <span *ngIf="box.pitchPlayer !== undefined" class="player-name">{{box.pitchPlayer.displayName}}</span>
+                        </div>    -->
+          <!-- <div class="player-box active" *cdkDragPlaceholder>Placeholder</div> -->
+        </div>
+        <div [class]="getPosBoxClass(box)"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,42 +6,21 @@
         "name": "france",
         "logo": "https://fmdataba.com/images/n/FRA.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "eng1",
-          "fra1"
-        ],
-        "secondLeagues": [
-          "esp1",
-          "ita1",
-          "ger1",
-          "por1",
-          "bel1",
-          "sui1"
-        ],
-        "thirdLeagues": [
-          "usa1",
-          "sco1"
-        ],
-        "rareLeagues": [
-          "chn1"
-        ],
-        "excludeLeagues": [
-          "bilbao",
-          "rsa1"
-        ]
+        "firstNameUsages": ["French", "Western African", "Arabic", "Basque"],
+        "lastNameUsages": ["French", "Western African", "Arabic", "Basque"],
+        "mainLeagues": ["eng1", "fra1"],
+        "secondLeagues": ["esp1", "ita1", "ger1", "por1", "bel1", "sui1"],
+        "thirdLeagues": ["usa1", "sco1"],
+        "rareLeagues": ["chn1"],
+        "excludeLeagues": ["bilbao", "rsa1"]
       },
       {
         "name": "brazil",
         "logo": "https://fmdataba.com/images/n/BRA.svg",
         "region": "conmebol",
-        "mainLeagues": [
-          "por1",
-          "tur1",
-          "ukr1",
-          "bra1",
-          "ksa1",
-          "rou1"
-        ],
+        "firstNameUsages": ["Portuguese"],
+        "lastNameUsages": ["Portuguese"],
+        "mainLeagues": ["por1", "tur1", "ukr1", "bra1", "ksa1", "rou1"],
         "secondLeagues": [
           "esp1",
           "ita1",
@@ -72,91 +51,51 @@
           "fin1"
         ],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "germany",
         "logo": "https://fmdataba.com/images/n/GER.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "eng1",
-          "ger1",
-          "aut1"
-        ],
-        "secondLeagues": [
-          "ned1",
-          "tur1",
-          "sui1"
-        ],
-        "thirdLeagues": [
-          "esp1",
-          "den1",
-          "usa1",
-          "chn1"
-        ],
+        "firstNameUsages": ["German", "Turkish"],
+        "lastNameUsages": ["German", "Turkish"],
+        "mainLeagues": ["eng1", "ger1", "aut1"],
+        "secondLeagues": ["ned1", "tur1", "sui1"],
+        "thirdLeagues": ["esp1", "den1", "usa1", "chn1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "spain",
         "logo": "https://fmdataba.com/images/n/ESP.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "esp1"
-        ],
-        "secondLeagues": [
-          "eng1",
-          "ita1",
-          "ger1",
-          "por1",
-          "gre1",
-          "rou1"
-        ],
-        "thirdLeagues": [
-          "chn1",
-          "mex1",
-          "usa1",
-          "pol1",
-          "ind1"
-        ],
-        "rareLeagues": [
-          "bilbao"
-        ],
+        "firstNameUsages": ["Spanish", "Basque", "Galician", "Catalan"],
+        "lastNameUsages": ["Spanish", "Basque", "Galician", "Catalan"],
+        "mainLeagues": ["esp1"],
+        "secondLeagues": ["eng1", "ita1", "ger1", "por1", "gre1", "rou1"],
+        "thirdLeagues": ["chn1", "mex1", "usa1", "pol1", "ind1"],
+        "rareLeagues": ["bilbao"],
         "excludeLeagues": []
       },
       {
         "name": "england",
         "logo": "https://fmdataba.com/images/n/ENG.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "eng1",
-          "sco1"
-        ],
-        "secondLeagues": [
-          "esp1",
-          "ger1",
-          "usa1",
-          "aus1"
-        ],
-        "thirdLeagues": [
-          "chn1"
-        ],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
+        "mainLeagues": ["eng1", "sco1"],
+        "secondLeagues": ["esp1", "ger1", "usa1", "aus1"],
+        "thirdLeagues": ["chn1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "argentina",
         "logo": "https://fmdataba.com/images/n/ARG.svg",
         "region": "conmebol",
-        "mainLeagues": [
-          "arg1"
-        ],
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
+        "mainLeagues": ["arg1"],
         "secondLeagues": [
           "uae1",
           "qat1",
@@ -170,15 +109,9 @@
           "col1",
           "uru1"
         ],
-        "thirdLeagues": [
-          "chn1",
-          "uae1",
-          "per1"
-        ],
+        "thirdLeagues": ["chn1", "uae1", "per1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -189,71 +122,37 @@
         "name": "italy",
         "logo": "https://fmdataba.com/images/n/ITA.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "ita1"
-        ],
-        "secondLeagues": [
-          "eng1",
-          "esp1",
-          "ger1",
-          "cro1",
-          "sui1"
-        ],
-        "thirdLeagues": [
-          "usa1",
-          "mex1"
-        ],
+        "firstNameUsages": ["Italian", "Portuguese"],
+        "lastNameUsages": ["Italian", "Portuguese"],
+        "mainLeagues": ["ita1"],
+        "secondLeagues": ["eng1", "esp1", "ger1", "cro1", "sui1"],
+        "thirdLeagues": ["usa1", "mex1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "portugal",
         "logo": "https://fmdataba.com/images/n/POR.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "por1",
-          "cyp1"
-        ],
-        "secondLeagues": [
-          "eng1",
-          "esp1",
-          "fra1",
-          "gre1",
-          "rou1"
-        ],
-        "thirdLeagues": [
-          "chn1",
-          "pol1"
-        ],
-        "rareLeagues": [
-          "wolves"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "firstNameUsages": ["Portuguese"],
+        "lastNameUsages": ["Portuguese"],
+        "mainLeagues": ["por1", "cyp1"],
+        "secondLeagues": ["eng1", "esp1", "fra1", "gre1", "rou1"],
+        "thirdLeagues": ["chn1", "pol1"],
+        "rareLeagues": ["wolves"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "netherlands",
         "logo": "https://fmdataba.com/images/n/NED.svg",
         "region": "uefa",
+        "firstNameUsages": ["Dutch"],
+        "lastNameUsages": ["Dutch"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "eng1",
-          "ger1",
-          "ned1",
-          "bel1",
-          "aut1"
-        ],
-        "thirdLeagues": [
-          "esp1",
-          "usa1"
-        ],
+        "secondLeagues": ["eng1", "ger1", "ned1", "bel1", "aut1"],
+        "thirdLeagues": ["esp1", "usa1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -264,88 +163,49 @@
         "name": "belgium",
         "logo": "https://fmdataba.com/images/n/BEL.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "bel1"
-        ],
-        "secondLeagues": [
-          "ned1",
-          "fra1"
-        ],
-        "thirdLeagues": [
-          "eng1",
-          "ger1"
-        ],
+        "firstNameUsages": ["Dutch", "French", "Western African"],
+        "lastNameUsages": ["Dutch", "French", "Western African"],
+        "mainLeagues": ["bel1"],
+        "secondLeagues": ["ned1", "fra1"],
+        "thirdLeagues": ["eng1", "ger1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "uruguay",
         "logo": "https://fmdataba.com/images/n/URU.svg",
         "region": "conmebol",
-        "mainLeagues": [
-          "uru1"
-        ],
-        "secondLeagues": [
-          "col1",
-          "arg1",
-          "ita1",
-          "esp1"
-        ],
-        "thirdLeagues": [
-          "bra1",
-          "per1"
-        ],
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
+        "mainLeagues": ["uru1"],
+        "secondLeagues": ["col1", "arg1", "ita1", "esp1"],
+        "thirdLeagues": ["bra1", "per1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "mexico",
         "logo": "https://fmdataba.com/images/n/MEX.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "mex1"
-        ],
-        "secondLeagues": [
-          "col1",
-          "usa1",
-          "uru1",
-          "esp1"
-        ],
-        "thirdLeagues": [
-          "crc1"
-        ],
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
+        "mainLeagues": ["mex1"],
+        "secondLeagues": ["col1", "usa1", "uru1", "esp1"],
+        "thirdLeagues": ["crc1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "colombia",
         "logo": "https://fmdataba.com/images/n/COL.svg",
         "region": "conmebol",
-        "mainLeagues": [
-          "col1"
-        ],
-        "secondLeagues": [
-          "mex1",
-          "usa1"
-        ],
-        "thirdLeagues": [
-          "uru1",
-          "arg1",
-          "bra1",
-          "per1",
-          "chn1",
-          "por1"
-        ],
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
+        "mainLeagues": ["col1"],
+        "secondLeagues": ["mex1", "usa1"],
+        "thirdLeagues": ["uru1", "arg1", "bra1", "per1", "chn1", "por1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -356,106 +216,58 @@
         "name": "denmark",
         "logo": "https://fmdataba.com/images/n/DEN.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "den1"
-        ],
-        "secondLeagues": [
-          "ned1",
-          "nor1",
-          "swe1"
-        ],
-        "thirdLeagues": [
-          "eng1",
-          "ger1",
-          "usa1"
-        ],
+        "firstNameUsages": ["Danish"],
+        "lastNameUsages": ["Danish"],
+        "mainLeagues": ["den1"],
+        "secondLeagues": ["ned1", "nor1", "swe1"],
+        "thirdLeagues": ["eng1", "ger1", "usa1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "croatia",
         "logo": "https://fmdataba.com/images/n/CRO.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "cro1"
-        ],
-        "secondLeagues": [
-          "bel1",
-          "pol1",
-          "hun1"
-        ],
-        "thirdLeagues": [
-          "ukr1",
-          "ita1"
-        ],
+        "firstNameUsages": ["Croatian"],
+        "lastNameUsages": ["Croatian"],
+        "mainLeagues": ["cro1"],
+        "secondLeagues": ["bel1", "pol1", "hun1"],
+        "thirdLeagues": ["ukr1", "ita1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "sweden",
         "logo": "https://fmdataba.com/images/n/SWE.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "swe1"
-        ],
-        "secondLeagues": [
-          "den1",
-          "ned1",
-          "nor1"
-        ],
-        "thirdLeagues": [
-          "eng1",
-          "esp1",
-          "ita1",
-          "ger1",
-          "fra1",
-          "fin1"
-        ],
+        "firstNameUsages": ["Swedish"],
+        "lastNameUsages": ["Swedish"],
+        "mainLeagues": ["swe1"],
+        "secondLeagues": ["den1", "ned1", "nor1"],
+        "thirdLeagues": ["eng1", "esp1", "ita1", "ger1", "fra1", "fin1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "chile",
         "logo": "https://fmdataba.com/images/n/CHI.svg",
         "region": "conmebol",
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "arg1",
-          "col1",
-          "uru1"
-        ],
-        "thirdLeagues": [
-          "bra1",
-          "ksa1"
-        ],
-        "rareLeagues": [
-          "per1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "secondLeagues": ["arg1", "col1", "uru1"],
+        "thirdLeagues": ["bra1", "ksa1"],
+        "rareLeagues": ["per1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "serbia",
         "logo": "https://fmdataba.com/images/n/SRB.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "srb1"
-        ],
-        "secondLeagues": [
-          "hun1",
-          "pol1",
-          "rou1",
-          "gre1",
-          "bel1",
-          "rus1"
-        ],
+        "firstNameUsages": ["Serbian"],
+        "lastNameUsages": ["Serbian"],
+        "mainLeagues": ["srb1"],
+        "secondLeagues": ["hun1", "pol1", "rou1", "gre1", "bel1", "rus1"],
         "thirdLeagues": [
           "chn1",
           "kor1",
@@ -466,126 +278,79 @@
           "ita1"
         ],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "nigeria",
         "logo": "https://fmdataba.com/images/n/NGA.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African"],
+        "lastNameUsages": ["Western African"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "eng1",
-          "nor1",
-          "egy1",
-          "rsa1",
-          "por1",
-          "fin1"
-        ],
-        "thirdLeagues": [
-          "esp1",
-          "tun1"
-        ],
-        "rareLeagues": [
-          "ind1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "secondLeagues": ["eng1", "nor1", "egy1", "rsa1", "por1", "fin1"],
+        "thirdLeagues": ["esp1", "tun1"],
+        "rareLeagues": ["ind1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "russia",
         "logo": "https://fmdataba.com/images/n/RUS.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "rus1"
-        ],
+        "firstNameUsages": ["Russian"],
+        "lastNameUsages": ["Russian"],
+        "mainLeagues": ["rus1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "srb1"
-        ],
+        "thirdLeagues": ["srb1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao",
-          "ukr1"
-        ]
+        "excludeLeagues": ["bilbao", "ukr1"]
       },
       {
         "name": "ukraine",
         "logo": "https://fmdataba.com/images/n/UKR.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "ukr1"
-        ],
-        "secondLeagues": [
-          "hun1"
-        ],
-        "thirdLeagues": [
-          "pol1",
-          "rus1",
-          "bel1"
-        ],
+        "firstNameUsages": ["Ukrainian"],
+        "lastNameUsages": ["Ukrainian"],
+        "mainLeagues": ["ukr1"],
+        "secondLeagues": ["hun1"],
+        "thirdLeagues": ["pol1", "rus1", "bel1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "austria",
         "logo": "https://fmdataba.com/images/n/AUT.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "aut1"
-        ],
-        "secondLeagues": [
-          "cro1",
-          "sui1",
-          "ger1"
-        ],
+        "firstNameUsages": ["German"],
+        "lastNameUsages": ["German"],
+        "mainLeagues": ["aut1"],
+        "secondLeagues": ["cro1", "sui1", "ger1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "switzerland",
         "logo": "https://fmdataba.com/images/n/SUI.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "sui1"
-        ],
-        "secondLeagues": [
-          "aut1",
-          "ger1"
-        ],
-        "thirdLeagues": [
-          "usa1"
-        ],
+        "firstNameUsages": ["German", "Italian", "French", "Albanian"],
+        "lastNameUsages": ["German", "Italian", "French", "Albanian"],
+        "mainLeagues": ["sui1"],
+        "secondLeagues": ["aut1", "ger1"],
+        "thirdLeagues": ["usa1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "Côte d'Ivoire",
         "logo": "https://fmdataba.com/images/n/CIV.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "egy1",
-          "fra1"
-        ],
-        "thirdLeagues": [
-          "eng1",
-          "nor1",
-          "tun1"
-        ],
+        "secondLeagues": ["egy1", "fra1"],
+        "thirdLeagues": ["eng1", "nor1", "tun1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -596,160 +361,97 @@
         "name": "poland",
         "logo": "https://fmdataba.com/images/n/POL.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "pol1"
-        ],
-        "secondLeagues": [
-          "ger1"
-        ],
-        "thirdLeagues": [
-          "gre1"
-        ],
+        "firstNameUsages": ["Polish"],
+        "lastNameUsages": ["Polish"],
+        "mainLeagues": ["pol1"],
+        "secondLeagues": ["ger1"],
+        "thirdLeagues": ["gre1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "norway",
         "logo": "https://fmdataba.com/images/n/NOR.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "nor1"
-        ],
-        "secondLeagues": [
-          "swe1",
-          "den1"
-        ],
-        "thirdLeagues": [
-          "eng1",
-          "ger1"
-        ],
+        "firstNameUsages": ["Norwegian"],
+        "lastNameUsages": ["Norwegian"],
+        "mainLeagues": ["nor1"],
+        "secondLeagues": ["swe1", "den1"],
+        "thirdLeagues": ["eng1", "ger1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "peru",
         "logo": "https://fmdataba.com/images/n/PER.svg",
         "region": "conmebol",
-        "mainLeagues": [
-          "per1"
-        ],
-        "secondLeagues": [
-          "col1",
-          "uru1",
-          "usa1"
-        ],
-        "thirdLeagues": [
-          "esp1"
-        ],
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
+        "mainLeagues": ["per1"],
+        "secondLeagues": ["col1", "uru1", "usa1"],
+        "thirdLeagues": ["esp1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "paraguay",
         "logo": "https://fmdataba.com/images/n/PAR.svg",
         "region": "conmebol",
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "mex1",
-          "arg1"
-        ],
-        "thirdLeagues": [
-          "per1",
-          "bra1",
-          "usa1"
-        ],
+        "secondLeagues": ["mex1", "arg1"],
+        "thirdLeagues": ["per1", "bra1", "usa1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "united states",
         "logo": "https://fmdataba.com/images/n/USA.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "usa1"
-        ],
-        "secondLeagues": [
-          "ger1"
-        ],
-        "thirdLeagues": [
-          "nor1",
-          "fin1",
-          "mex1"
-        ],
+        "firstNameUsages": ["English", "Spanish"],
+        "lastNameUsages": ["English", "Spanish"],
+        "mainLeagues": ["usa1"],
+        "secondLeagues": ["ger1"],
+        "thirdLeagues": ["nor1", "fin1", "mex1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "ecuador",
         "logo": "https://fmdataba.com/images/n/ECU.svg",
         "region": "conmebol",
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "usa1",
-          "mex1"
-        ],
-        "thirdLeagues": [
-          "arg1",
-          "col1",
-          "uru1",
-          "bra1"
-        ],
-        "rareLeagues": [
-          "chn1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "secondLeagues": ["usa1", "mex1"],
+        "thirdLeagues": ["arg1", "col1", "uru1", "bra1"],
+        "rareLeagues": ["chn1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "turkey",
         "logo": "https://fmdataba.com/images/n/TUR.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "tur1"
-        ],
-        "secondLeagues": [
-          "ned1"
-        ],
-        "thirdLeagues": [
-          "ger1",
-          "ita1",
-          "fra1",
-          "eng1"
-        ],
-        "rareLeagues": [
-          "ksa1"
-        ],
-        "excludeLeagues": [
-          "bilbao",
-          "cyp1"
-        ]
+        "firstNameUsages": ["Turkish"],
+        "lastNameUsages": ["Turkish"],
+        "mainLeagues": ["tur1"],
+        "secondLeagues": ["ned1"],
+        "thirdLeagues": ["ger1", "ita1", "fra1", "eng1"],
+        "rareLeagues": ["ksa1"],
+        "excludeLeagues": ["bilbao", "cyp1"]
       },
       {
         "name": "czech republic",
         "logo": "https://fmdataba.com/images/n/CZE.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "cze1"
-        ],
-        "secondLeagues": [
-          "pol1"
-        ],
+        "firstNameUsages": ["Czech"],
+        "lastNameUsages": ["Czech"],
+        "mainLeagues": ["cze1"],
+        "secondLeagues": ["pol1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -760,244 +462,157 @@
         "name": "ghana",
         "logo": "https://fmdataba.com/images/n/GHA.svg",
         "region": "caf",
-        "mainLeagues": [
-          "ksa1"
-        ],
-        "secondLeagues": [
-          "egy1",
-          "rsa1",
-          "swe1"
-        ],
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
+        "mainLeagues": ["ksa1"],
+        "secondLeagues": ["egy1", "rsa1", "swe1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "scotland",
         "logo": "https://fmdataba.com/images/n/SCO.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "sco1",
-          "eng1"
-        ],
+        "firstNameUsages": ["Scottish", "English"],
+        "lastNameUsages": ["Scottish", "English"],
+        "mainLeagues": ["sco1", "eng1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "aus1"
-        ],
+        "thirdLeagues": ["aus1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "senegal",
         "logo": "https://fmdataba.com/images/n/SEN.svg",
         "region": "caf",
-        "mainLeagues": [
-          "fra1"
-        ],
-        "secondLeagues": [
-          "tur1",
-          "bel1"
-        ],
-        "thirdLeagues": [
-          "nor1",
-          "por1",
-          "usa1",
-          "tun1"
-        ],
+        "firstNameUsages": ["Western African"],
+        "lastNameUsages": ["Western African"],
+        "mainLeagues": ["fra1"],
+        "secondLeagues": ["tur1", "bel1"],
+        "thirdLeagues": ["nor1", "por1", "usa1", "tun1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "romania",
         "logo": "https://fmdataba.com/images/n/ROU.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "rou1"
-        ],
-        "secondLeagues": [
-          "ukr1",
-          "hun1"
-        ],
-        "thirdLeagues": [
-          "chn1"
-        ],
+        "firstNameUsages": ["Romanian"],
+        "lastNameUsages": ["Romanian"],
+        "mainLeagues": ["rou1"],
+        "secondLeagues": ["ukr1", "hun1"],
+        "thirdLeagues": ["chn1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "morocco",
         "logo": "https://fmdataba.com/images/n/MAR.svg",
         "region": "caf",
-        "mainLeagues": [
-          "ksa1"
-        ],
-        "secondLeagues": [
-          "ned1"
-        ],
-        "thirdLeagues": [
-          "qat1",
-          "uae1"
-        ],
+        "firstNameUsages": ["Northern African", "Arabic"],
+        "lastNameUsages": ["Northern African", "Arabic"],
+        "mainLeagues": ["ksa1"],
+        "secondLeagues": ["ned1"],
+        "thirdLeagues": ["qat1", "uae1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "ireland",
         "logo": "https://fmdataba.com/images/n/IRL.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "eng1"
-        ],
-        "secondLeagues": [
-          "sco1"
-        ],
+        "firstNameUsages": ["Irish", "English"],
+        "lastNameUsages": ["Irish", "English"],
+        "mainLeagues": ["eng1"],
+        "secondLeagues": ["sco1"],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "chn1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["chn1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "south korea",
         "logo": "https://fmdataba.com/images/n/KOR.svg",
         "region": "afc",
-        "mainLeagues": [
-          "kor1"
-        ],
-        "secondLeagues": [
-          "chn1",
-          "jpn1"
-        ],
-        "thirdLeagues": [
-          "qat1"
-        ],
+        "firstNameUsages": ["Korean"],
+        "lastNameUsages": ["Korean"],
+        "mainLeagues": ["kor1"],
+        "secondLeagues": ["chn1", "jpn1"],
+        "thirdLeagues": ["qat1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "japan",
         "logo": "https://fmdataba.com/images/n/JPN.svg",
         "region": "afc",
-        "mainLeagues": [
-          "jpn1"
-        ],
-        "secondLeagues": [
-          "kor1",
-          "ger1"
-        ],
-        "thirdLeagues": [
-          "chn1",
-          "aus1"
-        ],
+        "firstNameUsages": ["Japanese"],
+        "lastNameUsages": ["Japanese"],
+        "mainLeagues": ["jpn1"],
+        "secondLeagues": ["kor1", "ger1"],
+        "thirdLeagues": ["chn1", "aus1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "bosnia & herzegovina",
         "logo": "https://fmdataba.com/images/n/BIH.svg",
         "region": "uefa",
+        "firstNameUsages": ["Bosnian"],
+        "lastNameUsages": ["Bosnian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "srb1",
-          "cro1"
-        ],
-        "thirdLeagues": [
-          "pol1"
-        ],
+        "secondLeagues": ["srb1", "cro1"],
+        "thirdLeagues": ["pol1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "algeria",
         "logo": "https://fmdataba.com/images/n/ALG.svg",
         "region": "caf",
-        "mainLeagues": [
-          "tun1"
-        ],
-        "secondLeagues": [
-          "fra1"
-        ],
+        "firstNameUsages": ["Northern African", "Arabic"],
+        "lastNameUsages": ["Northern African", "Arabic"],
+        "mainLeagues": ["tun1"],
+        "secondLeagues": ["fra1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "greece",
         "logo": "https://fmdataba.com/images/n/GRE.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "gre1",
-          "cyp1"
-        ],
-        "secondLeagues": [
-          "ned1",
-          "tur1"
-        ],
+        "firstNameUsages": ["Greek"],
+        "lastNameUsages": ["Greek"],
+        "mainLeagues": ["gre1", "cyp1"],
+        "secondLeagues": ["ned1", "tur1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "venezuela",
         "logo": "https://fmdataba.com/images/n/VEN.svg",
         "region": "conmebol",
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "col1"
-        ],
-        "thirdLeagues": [
-          "arg1",
-          "uru1",
-          "usa1"
-        ],
-        "rareLeagues": [
-          "per1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "secondLeagues": ["col1"],
+        "thirdLeagues": ["arg1", "uru1", "usa1"],
+        "rareLeagues": ["per1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "cameroon",
         "logo": "https://fmdataba.com/images/n/CMR.svg",
         "region": "caf",
+        "firstNameUsages": ["French"],
+        "lastNameUsages": ["French"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "esp1",
-          "fra1",
-          "egy1"
-        ],
-        "thirdLeagues": [
-          "tun1",
-          "fin1",
-          "gre1"
-        ],
+        "secondLeagues": ["esp1", "fra1", "egy1"],
+        "thirdLeagues": ["tun1", "fin1", "gre1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -1008,180 +623,121 @@
         "name": "bolivia",
         "logo": "https://fmdataba.com/images/n/BOL.svg",
         "region": "conmebol",
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "esp1"
-        ],
-        "rareLeagues": [
-          "per1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "thirdLeagues": ["esp1"],
+        "rareLeagues": ["per1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "slovakia",
         "logo": "https://fmdataba.com/images/n/SVK.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "cze1"
-        ],
-        "secondLeagues": [
-          "pol1",
-          "hun1"
-        ],
+        "firstNameUsages": ["Slovak"],
+        "lastNameUsages": ["Slovak"],
+        "mainLeagues": ["cze1"],
+        "secondLeagues": ["pol1", "hun1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "iran",
         "logo": "https://fmdataba.com/images/n/IRN.svg",
         "region": "afc",
+        "firstNameUsages": ["Persian"],
+        "lastNameUsages": ["Iranian"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "qat1",
-          "por1"
-        ],
+        "thirdLeagues": ["qat1", "por1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao",
-          "ksa1"
-        ]
+        "excludeLeagues": ["bilbao", "ksa1"]
       },
       {
         "name": "tunisia",
         "logo": "https://fmdataba.com/images/n/TUN.svg",
         "region": "caf",
-        "mainLeagues": [
-          "tun1"
-        ],
-        "secondLeagues": [
-          "qat1",
-          "ksa1"
-        ],
-        "thirdLeagues": [
-          "uae1",
-          "fra1"
-        ],
+        "firstNameUsages": ["Northern African", "Arabic"],
+        "lastNameUsages": ["Northern African", "Arabic"],
+        "mainLeagues": ["tun1"],
+        "secondLeagues": ["qat1", "ksa1"],
+        "thirdLeagues": ["uae1", "fra1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "slovenia",
         "logo": "https://fmdataba.com/images/n/SVN.svg",
         "region": "uefa",
+        "firstNameUsages": ["Slovene"],
+        "lastNameUsages": ["Slovene"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "cro1"
-        ],
-        "thirdLeagues": [
-          "cze1",
-          "ita1",
-          "aut1",
-          "pol1",
-          "tur1"
-        ],
+        "secondLeagues": ["cro1"],
+        "thirdLeagues": ["cze1", "ita1", "aut1", "pol1", "tur1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "hungary",
         "logo": "https://fmdataba.com/images/n/HUN.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "hun1"
-        ],
-        "secondLeagues": [
-          "ger1"
-        ],
+        "firstNameUsages": ["Hungarian"],
+        "lastNameUsages": ["Hungarian"],
+        "mainLeagues": ["hun1"],
+        "secondLeagues": ["ger1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "mali",
         "logo": "https://fmdataba.com/images/n/MLI.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African"],
+        "lastNameUsages": ["Western African"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "fra1"
-        ],
-        "thirdLeagues": [
-          "egy1",
-          "tun1"
-        ],
+        "secondLeagues": ["fra1"],
+        "thirdLeagues": ["egy1", "tun1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "south africa",
         "logo": "https://fmdataba.com/images/n/RSA.svg",
         "region": "caf",
-        "mainLeagues": [
-          "rsa1"
-        ],
+        "firstNameUsages": ["Southern African", "English"],
+        "lastNameUsages": ["Southern African", "English"],
+        "mainLeagues": ["rsa1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "fra1"
-        ],
+        "thirdLeagues": ["fra1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "congo DR",
         "logo": "https://fmdataba.com/images/n/COD.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "bel1",
-          "tur1"
-        ],
-        "thirdLeagues": [
-          "tun1"
-        ],
+        "secondLeagues": ["bel1", "tur1"],
+        "thirdLeagues": ["tun1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "australia",
         "logo": "https://fmdataba.com/images/n/AUS.svg",
         "region": "afc",
-        "mainLeagues": [
-          "aus1",
-          "kor1"
-        ],
-        "secondLeagues": [
-          "jpn1",
-          "sco1",
-          "den1",
-          "gre1",
-          "eng1",
-          "ind1"
-        ],
-        "thirdLeagues": [
-          "chn1"
-        ],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
+        "mainLeagues": ["aus1", "kor1"],
+        "secondLeagues": ["jpn1", "sco1", "den1", "gre1", "eng1", "ind1"],
+        "thirdLeagues": ["chn1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -1192,185 +748,121 @@
         "name": "kosovo",
         "logo": "https://fmdataba.com/images/n/KVX.svg",
         "region": "uefa",
+        "firstNameUsages": ["Albanian"],
+        "lastNameUsages": ["Albanian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "cro1",
-          "sui1"
-        ],
-        "thirdLeagues": [
-          "tur1",
-          "ita1",
-          "swe1"
-        ],
+        "secondLeagues": ["cro1", "sui1"],
+        "thirdLeagues": ["tur1", "ita1", "swe1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "wales",
         "logo": "https://fmdataba.com/images/n/WAL.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "eng1",
-          "sco1"
-        ],
+        "firstNameUsages": ["English", "Welsh"],
+        "lastNameUsages": ["English", "Welsh"],
+        "mainLeagues": ["eng1", "sco1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "chn1",
-          "usa1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["chn1", "usa1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "iceland",
         "logo": "https://fmdataba.com/images/n/ISL.svg",
         "region": "uefa",
+        "firstNameUsages": ["Icelandic"],
+        "lastNameUsages": ["Icelandic"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "swe1",
-          "nor1",
-          "den1"
-        ],
+        "secondLeagues": ["swe1", "nor1", "den1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "egypt",
         "logo": "https://fmdataba.com/images/n/EGY.svg",
         "region": "caf",
-        "mainLeagues": [
-          "egy1"
-        ],
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
+        "mainLeagues": ["egy1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "chn1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["chn1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "costa rica",
         "logo": "https://fmdataba.com/images/n/CRC.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "crc1"
-        ],
-        "secondLeagues": [
-          "usa1"
-        ],
-        "thirdLeagues": [
-          "col1",
-          "esp1",
-          "mex1"
-        ],
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
+        "mainLeagues": ["crc1"],
+        "secondLeagues": ["usa1"],
+        "thirdLeagues": ["col1", "esp1", "mex1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "albania",
         "logo": "https://fmdataba.com/images/n/ALB.svg",
         "region": "uefa",
+        "firstNameUsages": ["Albanian"],
+        "lastNameUsages": ["Albanian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "ita1"
-        ],
-        "thirdLeagues": [
-          "cro1",
-          "gre1",
-          "hun1",
-          "rou1",
-          "swe1"
-        ],
+        "secondLeagues": ["ita1"],
+        "thirdLeagues": ["cro1", "gre1", "hun1", "rou1", "swe1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "finland",
         "logo": "https://fmdataba.com/images/n/FIN.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "fin1"
-        ],
-        "secondLeagues": [
-          "swe1"
-        ],
-        "thirdLeagues": [
-          "nor1",
-          "den1"
-        ],
-        "rareLeagues": [
-          "ned1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "firstNameUsages": ["Finnish"],
+        "lastNameUsages": ["Finnish"],
+        "mainLeagues": ["fin1"],
+        "secondLeagues": ["swe1"],
+        "thirdLeagues": ["nor1", "den1"],
+        "rareLeagues": ["ned1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "montenegro",
         "logo": "https://fmdataba.com/images/n/MNE.svg",
         "region": "uefa",
+        "firstNameUsages": ["Serbian"],
+        "lastNameUsages": ["Montenegrin"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "srb1"
-        ],
-        "thirdLeagues": [
-          "esp1"
-        ],
+        "secondLeagues": ["srb1"],
+        "thirdLeagues": ["esp1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "israel",
         "logo": "https://fmdataba.com/images/n/ISR.svg",
         "region": "uefa",
+        "firstNameUsages": ["Hebrew", "Arabic"],
+        "lastNameUsages": ["Jewish", "Arabic"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "rsa1"
-        ],
-        "thirdLeagues": [
-          "bel1"
-        ],
+        "secondLeagues": ["rsa1"],
+        "thirdLeagues": ["bel1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao",
-          "ksa1",
-          "qat1",
-          "uae1",
-          "egy1"
-        ]
+        "excludeLeagues": ["bilbao", "ksa1", "qat1", "uae1", "egy1"]
       },
       {
         "name": "bulgaria",
         "logo": "https://fmdataba.com/images/n/BUL.svg",
         "region": "uefa",
+        "firstNameUsages": ["Bulgarian"],
+        "lastNameUsages": ["Bulgarian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "rou1"
-        ],
-        "thirdLeagues": [
-          "chn1",
-          "cyp1",
-          "hun1"
-        ],
+        "secondLeagues": ["rou1"],
+        "thirdLeagues": ["chn1", "cyp1", "hun1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -1381,232 +873,157 @@
         "name": "kazakhstan",
         "logo": "https://fmdataba.com/images/n/KAZ.svg",
         "region": "uefa",
+        "firstNameUsages": ["Kazakh"],
+        "lastNameUsages": ["Kazakh"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "rus1"
-        ],
-        "thirdLeagues": [
-          "ger1"
-        ],
+        "secondLeagues": ["rus1"],
+        "thirdLeagues": ["ger1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "panama",
         "logo": "https://fmdataba.com/images/n/PAN.svg",
         "region": "concacaf",
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "per1",
-          "usa1",
-          "esp1",
-          "crc1"
-        ],
+        "thirdLeagues": ["per1", "usa1", "esp1", "crc1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "georgia",
         "logo": "https://fmdataba.com/images/n/GEO.svg",
         "region": "uefa",
+        "firstNameUsages": ["Georgian"],
+        "lastNameUsages": ["Georgian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "ukr1",
-          "rus1"
-        ],
+        "secondLeagues": ["ukr1", "rus1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "northern ireland",
         "logo": "https://fmdataba.com/images/n/NIR.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "eng1",
-          "sco1"
-        ],
+        "firstNameUsages": ["Irish", "English"],
+        "lastNameUsages": ["Irish", "English"],
+        "mainLeagues": ["eng1", "sco1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "chn1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["chn1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "guinea",
         "logo": "https://fmdataba.com/images/n/GUI.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "por1",
-          "gre1",
-          "bel1",
-          "fra1"
-        ],
+        "secondLeagues": ["por1", "gre1", "bel1", "fra1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "jamaica",
         "logo": "https://fmdataba.com/images/n/JAM.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "eng1",
-          "usa1"
-        ],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
+        "mainLeagues": ["eng1", "usa1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "cabo verde",
         "logo": "https://fmdataba.com/images/n/CPV.svg",
         "region": "caf",
-        "mainLeagues": [
-          "por1"
-        ],
-        "secondLeagues": [
-          "cyp1"
-        ],
+        "firstNameUsages": ["Portuguese"],
+        "lastNameUsages": ["Portuguese"],
+        "mainLeagues": ["por1"],
+        "secondLeagues": ["cyp1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "belarus",
         "logo": "https://fmdataba.com/images/n/BLR.svg",
         "region": "uefa",
+        "firstNameUsages": ["Belarusian"],
+        "lastNameUsages": ["Belarusian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "rus1",
-          "ukr1"
-        ],
+        "secondLeagues": ["rus1", "ukr1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "honduras",
         "logo": "https://fmdataba.com/images/n/HON.svg",
         "region": "concacaf",
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "usa1"
-        ],
-        "thirdLeagues": [
-          "crc1"
-        ],
-        "rareLeagues": [
-          "esp1",
-          "mex1",
-          "por1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "secondLeagues": ["usa1"],
+        "thirdLeagues": ["crc1"],
+        "rareLeagues": ["esp1", "mex1", "por1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "angola",
         "logo": "https://fmdataba.com/images/n/ANG.svg",
         "region": "caf",
-        "mainLeagues": [
-          "por1"
-        ],
-        "secondLeagues": [
-          "bel1"
-        ],
-        "thirdLeagues": [
-          "esp1",
-          "fra1",
-          "ger1",
-          "sui1",
-          "tur1",
-          "egy1"
-        ],
+        "firstNameUsages": ["Western African", "Portuguese"],
+        "lastNameUsages": ["Western African", "Portuguese"],
+        "mainLeagues": ["por1"],
+        "secondLeagues": ["bel1"],
+        "thirdLeagues": ["esp1", "fra1", "ger1", "sui1", "tur1", "egy1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "saudi arabia",
         "logo": "https://fmdataba.com/images/n/KSA.svg",
         "region": "afc",
-        "mainLeagues": [
-          "ksa1"
-        ],
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
+        "mainLeagues": ["ksa1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "qat1",
-          "tur1",
-          "esp1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["qat1", "tur1", "esp1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "canada",
         "logo": "https://fmdataba.com/images/n/CAN.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "usa1"
-        ],
+        "firstNameUsages": ["English", "French"],
+        "lastNameUsages": ["English", "French"],
+        "mainLeagues": ["usa1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "sco1"
-        ],
-        "rareLeagues": [
-          "ger1",
-          "por1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "thirdLeagues": ["sco1"],
+        "rareLeagues": ["ger1", "por1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "north macedonia",
         "logo": "https://fmdataba.com/images/n/MKD.svg",
         "region": "uefa",
+        "firstNameUsages": ["Macedonian"],
+        "lastNameUsages": ["Macedonian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "srb1",
-          "cro1",
-          "cyp1",
-          "hun1",
-          "rou1"
-        ],
-        "thirdLeagues": [
-          "swe1",
-          "aut1"
-        ],
-        "rareLeagues": [
-          "ger1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "secondLeagues": ["srb1", "cro1", "cyp1", "hun1", "rou1"],
+        "thirdLeagues": ["swe1", "aut1"],
+        "rareLeagues": ["ger1"],
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -1617,191 +1034,145 @@
         "name": "azerbaijan",
         "logo": "https://fmdataba.com/images/n/AZE.svg",
         "region": "uefa",
+        "firstNameUsages": ["Azerbaijani"],
+        "lastNameUsages": ["Azerbaijani"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "tur1"
-        ],
-        "thirdLeagues": [
-          "rus1",
-          "ukr1"
-        ],
+        "secondLeagues": ["tur1"],
+        "thirdLeagues": ["rus1", "ukr1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "gambia",
         "logo": "https://fmdataba.com/images/n/GAM.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African"],
+        "lastNameUsages": ["Western African"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "zimbabwe",
         "logo": "https://fmdataba.com/images/n/ZIM.svg",
         "region": "caf",
-        "mainLeagues": [
-          "rsa1"
-        ],
-        "secondLeagues": [
-          "eng1"
-        ],
+        "firstNameUsages": ["Southern African", "English"],
+        "lastNameUsages": ["Southern African", "English"],
+        "mainLeagues": ["rsa1"],
+        "secondLeagues": ["eng1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "burkina faso",
         "logo": "https://fmdataba.com/images/n/BFA.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African"],
+        "lastNameUsages": ["Western African"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "egy1",
-          "esp1",
-          "bel1",
-          "fra1"
-        ],
+        "thirdLeagues": ["egy1", "esp1", "bel1", "fra1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "iraq",
         "logo": "https://fmdataba.com/images/n/IRQ.svg",
         "region": "afc",
+        "firstNameUsages": ["Arabic", "Kurdish", "Persian"],
+        "lastNameUsages": ["Arabic", "Persian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "qat1",
-          "swe1"
-        ],
+        "secondLeagues": ["qat1", "swe1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "uzbekistan",
         "logo": "https://fmdataba.com/images/n/UZB.svg",
         "region": "afc",
+        "firstNameUsages": ["Uzbek"],
+        "lastNameUsages": ["Uzbek"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "rus1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["rus1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "zambia",
         "logo": "https://fmdataba.com/images/n/ZAM.svg",
         "region": "caf",
+        "firstNameUsages": ["Southern African", "English"],
+        "lastNameUsages": ["Southern African", "English"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "rsa1"
-        ],
+        "secondLeagues": ["rsa1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "togo",
         "logo": "https://fmdataba.com/images/n/TOG.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "fra1"
-        ],
+        "secondLeagues": ["fra1"],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "bel1",
-          "ger1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["bel1", "ger1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "guinea-Bissau",
         "logo": "https://fmdataba.com/images/n/GNB.svg",
         "region": "caf",
-        "mainLeagues": [
-          "por1"
-        ],
-        "secondLeagues": [
-          "fra1"
-        ],
-        "thirdLeagues": [
-          "esp1"
-        ],
+        "firstNameUsages": ["Western African", "Portuguese"],
+        "lastNameUsages": ["Western African", "Portuguese"],
+        "mainLeagues": ["por1"],
+        "secondLeagues": ["fra1"],
+        "thirdLeagues": ["esp1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "congo",
         "logo": "https://fmdataba.com/images/n/CGO.svg",
         "region": "caf",
-        "mainLeagues": [
-          "fra1"
-        ],
+        "firstNameUsages": ["Western African", "French", "English"],
+        "lastNameUsages": ["Western African", "French", "English"],
+        "mainLeagues": ["fra1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "eng1",
-          "esp1",
-          "bel1"
-        ],
+        "thirdLeagues": ["eng1", "esp1", "bel1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "gabon",
         "logo": "https://fmdataba.com/images/n/GAB.svg",
         "region": "caf",
-        "mainLeagues": [
-          "fra1"
-        ],
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
+        "mainLeagues": ["fra1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "cyp1",
-          "tur1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["cyp1", "tur1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "syria",
         "logo": "https://fmdataba.com/images/n/SYR.svg",
         "region": "afc",
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "tur1",
-          "qat1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["tur1", "qat1"],
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -1812,451 +1183,337 @@
         "name": "libya",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Libya_%281951%E2%80%931969%29.svg",
         "region": "caf",
+        "firstNameUsages": ["Northern African", "Arabic"],
+        "lastNameUsages": ["Northern African", "Arabic"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "tun1"
-        ],
+        "secondLeagues": ["tun1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "sudan",
         "logo": "https://fmdataba.com/images/n/SUD.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "Arabic"],
+        "lastNameUsages": ["Western African", "Arabic"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "qat1",
-          "egy1"
-        ],
+        "thirdLeagues": ["qat1", "egy1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "guatemala",
         "logo": "https://fmdataba.com/images/n/GUA.svg",
         "region": "concacaf",
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "usa1",
-          "mex1"
-        ],
+        "thirdLeagues": ["usa1", "mex1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "faroe islands",
         "logo": "https://fmdataba.com/images/n/FRO.svg",
         "region": "uefa",
+        "firstNameUsages": ["Faroese", "Danish"],
+        "lastNameUsages": ["Faroese", "Danish"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "den1",
-          "nor1"
-        ],
+        "secondLeagues": ["den1", "nor1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "latvia",
         "logo": "https://fmdataba.com/images/n/LVA.svg",
         "region": "uefa",
+        "firstNameUsages": ["Latvian"],
+        "lastNameUsages": ["Latvian"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "nor1",
-          "ger1"
-        ],
-        "rareLeagues": [
-          "swe1",
-          "pol1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "thirdLeagues": ["nor1", "ger1"],
+        "rareLeagues": ["swe1", "pol1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "korea DPR",
         "logo": "https://fmdataba.com/images/n/PRK.svg",
         "region": "afc",
+        "firstNameUsages": ["Korean"],
+        "lastNameUsages": ["Korean"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "jpn1"
-        ],
-        "thirdLeagues": [
-          "kor1"
-        ],
+        "secondLeagues": ["jpn1"],
+        "thirdLeagues": ["kor1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "equatorial guinea",
         "logo": "https://fmdataba.com/images/n/EQG.svg",
         "region": "caf",
-        "mainLeagues": [
-          "esp1"
-        ],
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
+        "mainLeagues": ["esp1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "madagascar",
         "logo": "https://fmdataba.com/images/n/MAD.svg",
         "region": "caf",
-        "mainLeagues": [
-          "fra1"
-        ],
+        "firstNameUsages": ["French"],
+        "lastNameUsages": ["French"],
+        "mainLeagues": ["fra1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "bel1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["bel1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "martinique",
         "logo": "https://fmdataba.com/images/n/MTQ.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "fra1"
-        ],
+        "firstNameUsages": ["French"],
+        "lastNameUsages": ["French"],
+        "mainLeagues": ["fra1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "esp1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["esp1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "suriname",
         "logo": "https://fmdataba.com/images/n/SUR.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "ned1"
-        ],
+        "firstNameUsages": ["Dutch", "English"],
+        "lastNameUsages": ["Dutch", "English"],
+        "mainLeagues": ["ned1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "china PR",
         "logo": "https://fmdataba.com/images/n/CHN.svg",
         "region": "afc",
-        "mainLeagues": [
-          "chn1"
-        ],
+        "firstNameUsages": ["Chinese"],
+        "lastNameUsages": ["Chinese"],
+        "mainLeagues": ["chn1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "esp1"
-        ],
-        "rareLeagues": [
-          "jpn1",
-          "por1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "thirdLeagues": ["esp1"],
+        "rareLeagues": ["jpn1", "por1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "qatar",
         "logo": "https://fmdataba.com/images/n/QAT.svg",
         "region": "afc",
-        "mainLeagues": [
-          "qat1"
-        ],
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
+        "mainLeagues": ["qat1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "egy1",
-          "uae1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["egy1", "uae1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "curaçao",
         "logo": "https://fmdataba.com/images/n/CUW.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "ned1"
-        ],
+        "firstNameUsages": ["English", "Spanish", "Dutch"],
+        "lastNameUsages": ["Spanish", "Dutch"],
+        "mainLeagues": ["ned1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "usa1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["usa1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "armenia",
         "logo": "https://fmdataba.com/images/n/ARM.svg",
         "region": "uefa",
+        "firstNameUsages": ["Armenian"],
+        "lastNameUsages": ["Armenian"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "rus1"
-        ],
+        "secondLeagues": ["rus1"],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "ukr1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["ukr1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "new zealand",
         "logo": "https://fmdataba.com/images/n/NZL.svg",
         "region": "ofc",
-        "mainLeagues": [
-          "aus1"
-        ],
-        "secondLeagues": [
-          "usa1"
-        ],
-        "thirdLeagues": [
-          "eng1",
-          "den1"
-        ],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
+        "mainLeagues": ["aus1"],
+        "secondLeagues": ["usa1"],
+        "thirdLeagues": ["eng1", "den1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "benin",
         "logo": "https://fmdataba.com/images/n/BEN.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "fra1"
-        ],
+        "secondLeagues": ["fra1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "trinidad & tobago",
         "logo": "https://fmdataba.com/images/n/TRI.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "usa1"
-        ],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
+        "mainLeagues": ["usa1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "eng1"
-        ],
+        "thirdLeagues": ["eng1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "sierra leone",
         "logo": "https://fmdataba.com/images/n/SLE.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "English"],
+        "lastNameUsages": ["Western African", "English"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "swe1",
-          "usa1"
-        ],
+        "secondLeagues": ["swe1", "usa1"],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "eng1",
-          "ger1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["eng1", "ger1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "cyprus",
         "logo": "https://fmdataba.com/images/n/CYP.svg",
         "region": "uefa",
-        "mainLeagues": [
-          "cyp1"
-        ],
-        "secondLeagues": [
-          "gre1",
-          "eng1"
-        ],
+        "firstNameUsages": ["Greek"],
+        "lastNameUsages": ["Greek"],
+        "mainLeagues": ["cyp1"],
+        "secondLeagues": ["gre1", "eng1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "estonia",
         "logo": "https://fmdataba.com/images/n/EST.svg",
         "region": "uefa",
+        "firstNameUsages": ["Estonian"],
+        "lastNameUsages": ["Estonian"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "eng1",
-          "nor1",
-          "swe1",
-          "fin1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["eng1", "nor1", "swe1", "fin1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "UAE",
         "logo": "https://fmdataba.com/images/n/UAE.svg",
         "region": "afc",
-        "mainLeagues": [
-          "uae1"
-        ],
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
+        "mainLeagues": ["uae1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "lithuania",
         "logo": "https://fmdataba.com/images/n/LTU.svg",
         "region": "uefa",
+        "firstNameUsages": ["Lithuanian"],
+        "lastNameUsages": ["Lithuanian"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "pol1",
-          "rou1",
-          "ger1",
-          "ita1"
-        ],
+        "thirdLeagues": ["pol1", "rou1", "ger1", "ita1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "mozambique",
         "logo": "https://fmdataba.com/images/n/MOZ.svg",
         "region": "caf",
-        "mainLeagues": [
-          "por1"
-        ],
+        "firstNameUsages": ["Portuguese"],
+        "lastNameUsages": ["Portuguese"],
+        "mainLeagues": ["por1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "ger1",
-          "rsa1",
-          "fra1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["ger1", "rsa1", "fra1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "el salvador",
         "logo": "https://fmdataba.com/images/n/SLV.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "usa1"
-        ],
+        "firstNameUsages": ["Spanish", "English"],
+        "lastNameUsages": ["Spanish", "English"],
+        "mainLeagues": ["usa1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "luxembourg",
         "logo": "https://fmdataba.com/images/n/LUX.svg",
         "region": "uefa",
+        "firstNameUsages": ["French", "German"],
+        "lastNameUsages": ["French", "German"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "bel1",
-          "ger1"
-        ],
+        "secondLeagues": ["bel1", "ger1"],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "ukr1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["ukr1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "uganda",
         "logo": "https://fmdataba.com/images/n/UGA.svg",
         "region": "caf",
+        "firstNameUsages": ["Arabic", "English"],
+        "lastNameUsages": ["Arabic", "English"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "usa1",
-          "swe1",
-          "rsa1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["usa1", "swe1", "rsa1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "haiti",
         "logo": "https://fmdataba.com/images/n/HAI.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "fra1"
-        ],
-        "secondLeagues": [
-          "usa1"
-        ],
+        "firstNameUsages": ["French"],
+        "lastNameUsages": ["French"],
+        "mainLeagues": ["fra1"],
+        "secondLeagues": ["usa1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "jordan",
         "logo": "https://fmdataba.com/images/n/JOR.svg",
         "region": "afc",
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "qat1"
-        ],
+        "secondLeagues": ["qat1"],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "ksa1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["ksa1"],
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -2267,238 +1524,193 @@
         "name": "oman",
         "logo": "https://fmdataba.com/images/n/OMA.svg",
         "region": "afc",
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "uae1"
-        ],
-        "thirdLeagues": [
-          "qat1"
-        ],
+        "secondLeagues": ["uae1"],
+        "thirdLeagues": ["qat1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "kenya",
         "logo": "https://fmdataba.com/images/n/KEN.svg",
         "region": "caf",
+        "firstNameUsages": ["Eastern African"],
+        "lastNameUsages": ["Eastern African"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "swe1"
-        ],
-        "thirdLeagues": [
-          "rsa1",
-          "usa1",
-          "eng1"
-        ],
+        "secondLeagues": ["swe1"],
+        "thirdLeagues": ["rsa1", "usa1", "eng1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "mauritania",
         "logo": "https://fmdataba.com/images/n/MTN.svg",
         "region": "caf",
-        "mainLeagues": [
-          "fra1"
-        ],
-        "secondLeagues": [
-          "esp1"
-        ],
-        "thirdLeagues": [
-          "gre1",
-          "bel1",
-          "tun1"
-        ],
+        "firstNameUsages": ["Northern African", "Arabic"],
+        "lastNameUsages": ["Northern African", "Arabic"],
+        "mainLeagues": ["fra1"],
+        "secondLeagues": ["esp1"],
+        "thirdLeagues": ["gre1", "bel1", "tun1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "namibia",
         "logo": "https://fmdataba.com/images/n/NAM.svg",
         "region": "caf",
-        "mainLeagues": [
-          "rsa1"
-        ],
+        "firstNameUsages": ["Southern African", "English"],
+        "lastNameUsages": ["Southern African", "English"],
+        "mainLeagues": ["rsa1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "niger",
         "logo": "https://fmdataba.com/images/n/NIG.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "French", "Arabic"],
+        "lastNameUsages": ["Western African", "Arabic"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "esp1",
-          "tun1"
-        ],
+        "thirdLeagues": ["esp1", "tun1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "malawi",
         "logo": "https://fmdataba.com/images/n/MWI.svg",
         "region": "caf",
+        "firstNameUsages": ["Southern African", "English"],
+        "lastNameUsages": ["English"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "rsa1"
-        ],
+        "secondLeagues": ["rsa1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "tanzania",
         "logo": "https://fmdataba.com/images/n/TAN.svg",
         "region": "caf",
+        "firstNameUsages": ["Arabic", "English", "Eastern African"],
+        "lastNameUsages": ["Arabic", "English", "Eastern African"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "nicaragua",
         "logo": "https://fmdataba.com/images/n/NCA.svg",
         "region": "concacaf",
+        "firstNameUsages": ["Spanish", "English"],
+        "lastNameUsages": ["Spanish", "English"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "thailand",
         "logo": "https://fmdataba.com/images/n/THA.svg",
         "region": "afc",
+        "firstNameUsages": ["Thai"],
+        "lastNameUsages": ["Thai"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "jpn1"
-        ],
+        "secondLeagues": ["jpn1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "kuwait",
         "logo": "https://fmdataba.com/images/n/KUW.svg",
         "region": "afc",
-        "mainLeagues": [
-          "qat1"
-        ],
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
+        "mainLeagues": ["qat1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "bahrain",
         "logo": "https://fmdataba.com/images/n/BHR.svg",
         "region": "afc",
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "qat1",
-          "ksa1",
-          "uae1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["qat1", "ksa1", "uae1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "lebanon",
         "logo": "https://fmdataba.com/images/n/LIB.svg",
         "region": "afc",
+        "firstNameUsages": ["Arabic"],
+        "lastNameUsages": ["Arabic"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "ger1",
-          "swe1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["ger1", "swe1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "french guiana",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_French_Guiana.svg/2560px-Flag_of_French_Guiana.svg.png",
         "region": "concacaf",
-        "mainLeagues": [
-          "fra1"
-        ],
+        "firstNameUsages": ["English", "French"],
+        "lastNameUsages": ["English", "French"],
+        "mainLeagues": ["fra1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "central african republic",
         "logo": "https://fmdataba.com/images/n/CTA.svg",
         "region": "caf",
-        "mainLeagues": [
-          "fra1"
-        ],
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
+        "mainLeagues": ["fra1"],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "philippines",
         "logo": "https://fmdataba.com/images/n/PHI.svg",
         "region": "afc",
+        "firstNameUsages": ["English", "Filipino"],
+        "lastNameUsages": ["Filipino", "English"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "dominican republic",
         "logo": "https://fmdataba.com/images/n/DOM.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "esp1"
-        ],
+        "firstNameUsages": ["Spanish"],
+        "lastNameUsages": ["Spanish"],
+        "mainLeagues": ["esp1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "ger1",
-          "usa1"
-        ],
+        "thirdLeagues": ["ger1", "usa1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   },
@@ -2509,221 +1721,181 @@
         "name": "kyrgyz republic",
         "logo": "https://fmdataba.com/images/n/KGZ.svg",
         "region": "afc",
+        "firstNameUsages": ["Kyrgyz", "Russian"],
+        "lastNameUsages": ["Kyrgyz", "Russian"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "rus1",
-          "kor1",
-          "tur1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["rus1", "kor1", "tur1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "grenada",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Grenada.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "eng1"
-        ],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
+        "mainLeagues": ["eng1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "usa1"
-        ],
+        "thirdLeagues": ["usa1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "chad",
         "logo": "https://fmdataba.com/images/n/CHA.svg",
         "region": "caf",
+        "firstNameUsages": ["Western African", "French"],
+        "lastNameUsages": ["Western African", "French"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "fra1"
-        ],
+        "thirdLeagues": ["fra1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "antigua & barbuda",
         "logo": "https://fmdataba.com/images/n/ATG.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "eng1"
-        ],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
+        "mainLeagues": ["eng1"],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "usa1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["usa1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "st. kitts & nevis",
         "logo": "https://fmdataba.com/images/n/SKN.svg",
         "region": "concacaf",
-        "mainLeagues": [
-          "eng1"
-        ],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
+        "mainLeagues": ["eng1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "usa1"
-        ],
+        "thirdLeagues": ["usa1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "barbados",
         "logo": "https://fmdataba.com/images/n/BRB.svg",
         "region": "concacaf",
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "eng1"
-        ],
+        "secondLeagues": ["eng1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "bermuda",
         "logo": "https://fmdataba.com/images/n/BER.svg",
         "region": "concacaf",
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "eng1"
-        ],
-        "thirdLeagues": [
-          "usa1"
-        ],
+        "secondLeagues": ["eng1"],
+        "thirdLeagues": ["usa1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "solomon islands",
         "logo": "https://fmdataba.com/images/n/SOL.svg",
         "region": "ofc",
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "aus1"
-        ],
+        "thirdLeagues": ["aus1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "palestine",
         "logo": "https://fmdataba.com/images/n/PLE.svg",
         "region": "afc",
+        "firstNameUsages": ["Hebrew", "Arabic"],
+        "lastNameUsages": ["Jewish", "Arabic"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "egy1"
-        ],
-        "thirdLeagues": [
-          "ger1"
-        ],
+        "secondLeagues": ["egy1"],
+        "thirdLeagues": ["ger1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "vietnam",
         "logo": "https://fmdataba.com/images/n/VIE.svg",
         "region": "afc",
+        "firstNameUsages": ["Vietnamese"],
+        "lastNameUsages": ["Vietnamese"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "india",
         "logo": "https://fmdataba.com/images/n/IND.svg",
         "region": "afc",
-        "mainLeagues": [
-          "ind1"
-        ],
+        "firstNameUsages": ["Indian"],
+        "lastNameUsages": ["Indian"],
+        "mainLeagues": ["ind1"],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "esp1"
-        ],
+        "thirdLeagues": ["esp1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "tajikistan",
         "logo": "https://fmdataba.com/images/n/TJK.svg",
         "region": "afc",
+        "firstNameUsages": ["Tajik"],
+        "lastNameUsages": ["Tajik"],
         "mainLeagues": [],
         "secondLeagues": [],
-        "thirdLeagues": [
-          "rus1"
-        ],
+        "thirdLeagues": ["rus1"],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "turkmenistan",
         "logo": "https://fmdataba.com/images/n/TKM.svg",
         "region": "afc",
+        "firstNameUsages": ["Turkmen"],
+        "lastNameUsages": ["Turkmen"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
-        "rareLeagues": [
-          "tur1"
-        ],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "rareLeagues": ["tur1"],
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "chinese taipei",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/Chinese_Taipei_Football_Flag_on_FIFA_website.svg",
         "region": "afc",
+        "firstNameUsages": ["Chinese"],
+        "lastNameUsages": ["Chinese"],
         "mainLeagues": [],
-        "secondLeagues": [
-          "chn1"
-        ],
+        "secondLeagues": ["chn1"],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       },
       {
         "name": "singapore",
         "logo": "https://fmdataba.com/images/n/SIN.svg",
         "region": "afc",
+        "firstNameUsages": ["Malay", "Indian", "Chinese"],
+        "lastNameUsages": ["Malay", "Indian", "Chinese"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
         "rareLeagues": [],
-        "excludeLeagues": [
-          "bilbao"
-        ]
+        "excludeLeagues": ["bilbao"]
       }
     ]
   }

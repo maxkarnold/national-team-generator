@@ -1,1 +1,90 @@
-<p>roster works!</p>
+<div #fullRosterTarget></div>
+<div class="display-container" *ngIf="players.length > 0">
+  <div class="main-heading">
+    <button
+      mat-icon-button
+      (click)="goToRoster('topPage')"
+      class="arrow-nav arrow-nav--bottom"
+    >
+      <mat-icon>arrow_upward</mat-icon>
+    </button>
+    <h2>Full Roster</h2>
+  </div>
+
+  <app-position-breakdown></app-position-breakdown>
+  <h2 class="nation-name-heading">{{ nationOrTier }} Team</h2>
+  <h3 class="table-heading">Player Table</h3>
+  <table class="player-table" matSort (matSortChange)="sortData($event)">
+    <tr class="table-headings">
+      <!-- <th>Index</th> -->
+      <th mat-sort-header="name">Name</th>
+      <th mat-sort-header="club">Club</th>
+      <th mat-sort-header="nationality">Nationality</th>
+      <th mat-sort-header="roleDuty" class="desktop">Preferred Role/Duty</th>
+      <th mat-sort-header="mainPositions" class="desktop">Position</th>
+      <th mat-sort-header="altPositions" class="desktop">Other Positions</th>
+      <th mat-sort-header="foot" class="desktop">Preferred Foot</th>
+      <th mat-sort-header="rating">Rating</th>
+      <!-- <th mat-sort-header="displayHeight" class="desktop">Height</th>
+                <th mat-sort-header="weight" class="desktop">Weight</th> -->
+      <th mat-sort-header="age">Age</th>
+    </tr>
+    <tbody>
+      <tr *ngFor="let player of sortedData" class="player-row">
+        <td>
+          <span *ngFor="let firstName of player.firstNames">
+            {{ firstName }}
+          </span>
+          <span *ngFor="let lastName of player.lastNames">
+            {{ lastName }}
+          </span>
+        </td>
+        <td>
+          <div class="capitalize">
+            <img
+              [src]="player.clubLogo"
+              [alt]="player.club"
+              [matTooltip]="player.club"
+              class="club-logo"
+            />
+            <span class="desktop">{{ player.club }}</span>
+          </div>
+        </td>
+        <td>
+          <div class="capitalize">
+            <img
+              [src]="player.nationalityLogo"
+              [alt]="player.nationality"
+              [matTooltip]="player.nationality"
+            />
+            <span class="desktop">{{ player.nationality }}</span>
+          </div>
+        </td>
+        <td class="desktop">
+          {{ player.preferredRole }} - {{ player.preferredDuty }}
+        </td>
+        <td>
+          <span
+            *ngFor="let pos of player.mainPositions"
+            class="positions-span"
+            >{{ pos }}</span
+          >
+        </td>
+        <td class="alt-positions desktop">
+          <div>
+            <span
+              *ngFor="let pos of player.altPositions"
+              class="positions-span"
+              >{{ pos }}</span
+            >
+          </div>
+        </td>
+        <td class="desktop capitalize">{{ player.foot }}</td>
+        <td>{{ player.rating }}</td>
+        <!-- <td class="desktop">{{player.displayHeight}}</td>
+                    <td class="desktop">{{player.weight}}</td> -->
+        <td class="desktop">{{ player.age }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

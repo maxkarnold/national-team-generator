@@ -25,17 +25,18 @@ export class AuthService {
       switchMap((user) => {
         if (user) {
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          return of(null)
         }
+        return of(null);
       })
     );
   }
 
   async googleSignin() {
-    const provider = new GoogleAuthProvider;
+    const provider = new GoogleAuthProvider();
     const credential = await this.afAuth.signInWithPopup(provider);
-    if (credential.user) {return this.updateUserData(credential.user)}
+    if (credential.user) {
+      return this.updateUserData(credential.user);
+    }
   }
 
   async login(email: string, password: string) {
@@ -47,7 +48,9 @@ export class AuthService {
       email,
       password
     );
-    if (credential.user) {this.updateUserData(credential.user)};
+    if (credential.user) {
+      this.updateUserData(credential.user);
+    }
   }
 
   async signOut() {
@@ -55,14 +58,13 @@ export class AuthService {
     return this.router.navigate(['/']);
   }
 
-  private updateUserData(
-    {
-      uid,
-      email,
-      displayName,
-      savedRosters,
-      submittedRosters,
-    }: User) {
+  private updateUserData({
+    uid,
+    email,
+    displayName,
+    savedRosters,
+    submittedRosters,
+  }: User) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${uid}`
     );

@@ -46,9 +46,9 @@ export interface Player {
   nickname?: string;
 
   altNationality?: string;
-  relationships?: any[];
+  relationships?: unknown[];
   // Relationships should be an array of players, it will show that the two are linked. Not sure if this should be an array or an object yet.
-  hiddenAttributes?: any;
+  hiddenAttributes?: unknown;
   // This is the same as attributes, except that it will be hidden to the user to allow for greater realism. This will include things like loyalty, ambition, temperament, ambition, adaptability, etc.
   mediaDescription?: string;
   playerTraits?: string[];

@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-mobile": "ng serve --host 192.168.1.228",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -22,6 +23,7 @@
     "@angular/platform-browser": "~13.3.2",
     "@angular/platform-browser-dynamic": "~13.3.2",
     "@angular/router": "~13.3.2",
+    "@ngneat/until-destroy": "^9.2.2",
     "cheerio": "^1.0.0-rc.10",
     "firebase": "^9.6.11",
     "font-awesome": "^4.7.0",
@@ -67,5 +69,8 @@
   "main": "./src/main.ts",
   "keywords": [],
   "author": "Max Arnold",
-  "license": "ISC"
+  "license": "ISC",
+  "eslintIgnore": [
+    "*.spec.ts"
+  ]
 }

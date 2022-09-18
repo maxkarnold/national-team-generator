@@ -1,1 +1,9 @@
-<p>position-breakdown works!</p>
+<div class="position-table">
+  <h3 class="table-heading">Position Breakdown</h3>
+  <ul class="positions">
+    <li *ngFor="let pos of positions">
+      <span>{{ pos.position }}</span
+      ><span>{{ pos.amount }}</span>
+    </li>
+  </ul>
+</div>

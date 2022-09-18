@@ -35,3 +35,18 @@
 - Update the UI so the buttons are more compact and the data/players are easier to get to.
 - Need to fix bulgarian surnames to not include feminine surnames
 - Add a function that creates or grabs a random Brazilian/Spanish nickname
+
+## COMPONENT STRUCTURE
+
+- @nav-bar
+- login
+- leaderboard
+- home
+  - build-roster
+  - lineup
+    - @squad-rules
+    - @lineup-accordion
+    - @pitch-view
+      - @player-card
+  - roster
+    - @position-breakdown
