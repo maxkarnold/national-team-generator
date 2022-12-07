@@ -54,3 +54,17 @@ export function calcSumRating(arr: number[]) {
   const avg = sum / arr.length;
   return Math.round(avg * 10) / 10;
 }
+
+/**
+ *
+ * @function Takes any value and returns a boolean that is true if the value is a non-empty string array and false if not.
+ * @param value any type of value
+ * @returns boolean
+ */
+export function isArrayOfStrings(value: unknown): value is string[] {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every((item) => typeof item === 'string')
+  );
+}

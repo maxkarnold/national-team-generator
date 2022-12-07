@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Player } from 'app/models/player.model';
-import { LastName, FirstName } from 'app/models/names.model';
+import { LastName, FirstName } from 'app/core/services/firestore.model';
 
 import { SQUAD_RULES } from '@shared/constants/squad-rules.model';
 import { POSITION_BOXES } from '@shared/constants/position-boxes';
@@ -17,14 +17,14 @@ import { FirestoreService } from '../../core/services/firestore.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   playerCount = 0;
-  players: Player[];
-  sortedData: Player[];
-  pitchPlayers: Player[];
-  sortedPitchPlayers: Player[];
-  savedData: {
-    id: string;
-    saveName: string;
-  }[];
+  // players: Player[];
+  // sortedData: Player[];
+  // pitchPlayers: Player[];
+  // sortedPitchPlayers: Player[];
+  // savedData: {
+  //   id: string;
+  //   saveName: string;
+  // }[];
 
   lastName$!: Observable<LastName[]>;
   firstName$!: Observable<FirstName[]>;
@@ -47,29 +47,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   positionBoxes = POSITION_BOXES;
 
   constructor(private afs: FirestoreService, private auth: AuthService) {
-    this.players = [];
-    this.pitchPlayers = [];
-    this.sortedData = this.pitchPlayers.concat(this.players);
-    this.sortedPitchPlayers = [];
-    this.savedData = [];
-    this.nationsList = [];
+    // this.players = [];
+    // this.pitchPlayers = [];
+    // this.sortedData = this.pitchPlayers.concat(this.players);
+    // this.sortedPitchPlayers = [];
+    // this.savedData = [];
+    // this.nationsList = [];
   }
 
   ngOnInit(): void {
-    this.nations.forEach((tierObj) => {
-      for (let i = 0; i < tierObj.nations.length; i++) {
-        this.nationsList.push(tierObj.nations[i] as Nation);
-      }
-    });
-    // this.subscription = this.auth.currentAuthState.subscribe(
-    //   (authState) => (this.isLoggedIn = authState)
-    // );
-    if (
-      this.isLoggedIn === true &&
-      localStorage.getItem('TEAMGEN - Player #0')
-    ) {
-      this.loadPlayers('loadLocalStorage');
-    }
+    //   this.nations.forEach((tierObj) => {
+    //     for (let i = 0; i < tierObj.nations.length; i++) {
+    //       this.nationsList.push(tierObj.nations[i] as Nation);
+    //     }
+    //   });
+    //   // this.subscription = this.auth.currentAuthState.subscribe(
+    //   //   (authState) => (this.isLoggedIn = authState)
+    //   // );
+    //   if (
+    //     this.isLoggedIn === true &&
+    //     localStorage.getItem('TEAMGEN - Player #0')
+    //   ) {
+    //     this.loadPlayers('loadLocalStorage');
+    //   }
   }
 
   ngOnDestroy(): void {

@@ -18,7 +18,7 @@ export interface Player {
   age: number;
   club: string;
   clubLogo: string;
-  playerFace: string;
+  playerFace?: string;
   preferredRole: string;
   preferredDuty: string;
   // Attributes will be all the numeric attributes for a player.

@@ -1,4 +1,14 @@
+
+
 .basic-login {
   max-width: 50%;
-  margin: auto;
+  margin: 2rem auto;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column;
+}
+
+.basic-login * {
+  margin-top: 1rem
 }

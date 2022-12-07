@@ -1,8 +1,8 @@
-<div class="page-container">
+<!-- <div class="page-container">
   <h1>Leaderboards</h1>
   <p *ngIf="!isLoggedIn">You must login to see leaderboard</p>
 
-  <!-- <button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button> -->
+  <button *ngIf="isLoggedIn" (click)="updateLeaderboards()">Update Leaderboards</button>
   <div *ngIf="isLoggedIn" class="leaderboard-container">
     <ul *ngFor="let tierGroup of organizedRosters" class="tier">
       <h2 *ngIf="tierGroup[0]" class="tier-name">
@@ -36,11 +36,9 @@
           </div>
           <div class="attribute squad-rating" [attr.data-name]="headers[2]">
             {{ roster.squadRating }}
-            <!--<span class="stars"></span>-->
           </div>
           <div class="attribute starter-rating" [attr.data-name]="headers[3]">
             {{ roster.startersRating }}
-            <!-- <span class="stars"></span> -->
           </div>
           <div class="attribute capitalize" [attr.data-name]="headers[4]">
             {{ roster.nation }}
@@ -78,4 +76,4 @@
       </li>
     </ul>
   </div>
-</div>
+</div> -->

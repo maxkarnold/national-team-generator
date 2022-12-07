@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import {
   AngularFirestore,
   DocumentReference,
 } from '@angular/fire/compat/firestore';
+import { WhereFilterOp } from '@firebase/firestore-types/';
 import { getRandomInt } from '@shared/utils';
 import { Nation } from 'app/models/nation.model';
-import { LastName, FirstName } from '../../models/names.model';
+import { catchError } from 'rxjs/operators';
 import { Player } from '../../models/player.model';
 import { Roster } from '../../models/roster.model';
 import * as nationsJson from '../../../assets/json/nations.json';
+import { Name } from './firestore.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirestoreService {
-  firstNames: Observable<FirstName[]>;
-  lastNames: Observable<LastName[]>;
   nations = nationsJson;
   nationsList: Nation[];
 
   constructor(public afs: AngularFirestore) {
-    this.firstNames = new Observable();
-    this.lastNames = new Observable();
     this.nationsList = [];
     this.nations
       .map((tier) => tier.nations)
@@ -31,35 +29,78 @@ export class FirestoreService {
       );
   }
 
-  getFirstName(nation: string, originNum: number) {
+  getFullName(
+    nationality: string
+  ): Observable<
+    [Name[] | unknown[], string, number, Name[] | unknown[], string, number]
+  > {
+    const firstNameObj = this.getFirstNames(nationality);
+    const lastNameObj = this.getLastNames(nationality, firstNameObj.ethnicity);
+
+    return forkJoin([
+      firstNameObj.request$,
+      of(firstNameObj.ethnicity),
+      of(firstNameObj.totalNames),
+      lastNameObj.request$,
+      of(lastNameObj.ethnicity),
+      of(lastNameObj.totalNames),
+    ]);
+  }
+
+  getFirstNames(nation: string): {
+    request$: Observable<Name[] | unknown[]>;
+    ethnicity: string;
+    totalNames: number;
+  } {
+    let randomNum = getRandomInt(1, 100);
+    if (randomNum > 25) {
+      randomNum = 0;
+    } else if (randomNum > 10) {
+      randomNum = 1;
+    } else if (randomNum > 5) {
+      randomNum = 2;
+    } else if (randomNum > 2) {
+      randomNum = 3;
+    } else if (randomNum > 0) {
+      randomNum = 4;
+    }
+
     const nameOrigin = this.nationsList.find((n) => n.name === nation)
       ?.firstNameUsages || ['English'];
 
-    let usage: string;
-    if (originNum > nameOrigin.length - 1) {
-      [usage] = nameOrigin;
+    let ethnicity: string;
+    if (randomNum > nameOrigin.length - 1) {
+      [ethnicity] = nameOrigin;
     } else {
-      usage = nameOrigin[originNum];
+      ethnicity = nameOrigin[randomNum];
     }
 
-    switch (usage) {
+    switch (ethnicity) {
       case 'French':
       case 'Dutch':
       case 'Arabic':
       case 'Persian':
       case 'Kurdish': {
         // chance for 1-4 given names
-        return this.nameRequest(getRandomInt(1, 4), 'firstNames_male', usage);
+        return this.nameRequest(
+          getRandomInt(1, 4),
+          'firstNames_male',
+          ethnicity
+        );
       }
       case 'Western African': {
         // chance for 1-3 given names
-        return this.nameRequest(getRandomInt(1, 3), 'firstNames_male', usage);
+        return this.nameRequest(
+          getRandomInt(1, 3),
+          'firstNames_male',
+          ethnicity
+        );
       }
       case 'Russian':
       case 'Ukrainian':
       case 'Kazakh': {
         // first name and patronym
-        return this.nameRequest(2, 'firstNames_male', usage);
+        return this.nameRequest(2, 'firstNames_male', ethnicity);
       }
       case 'Belarusian':
       case 'Indian':
@@ -86,7 +127,11 @@ export class FirestoreService {
       case 'Filipino':
       case 'Portuguese': {
         // one or two given names
-        return this.nameRequest(getRandomInt(1, 2), 'firstNames_male', usage);
+        return this.nameRequest(
+          getRandomInt(1, 2),
+          'firstNames_male',
+          ethnicity
+        );
       }
       case 'Estonian':
       case 'Turkish':
@@ -102,32 +147,56 @@ export class FirestoreService {
         } else {
           names = 1;
         }
-        return this.nameRequest(names, 'firstNames_male', usage);
+        return this.nameRequest(names, 'firstNames_male', ethnicity);
       }
 
       default: {
         // only first name (Czech, Slovak, Polish, Bosnian, Serbian, Croatian, Montenegrin, Albanian, Slovene, Macedonian (male-ending), Chinese, Japanese, Korean, Icelandic, Faroese, Malay, Italian, Kyrgyz, Georgian, Armenian, Bulgarian, Uzbek (if no patronym), Hungarian, Greek, Thai)
-        return this.nameRequest(1, 'firstNames_male', usage);
+        return this.nameRequest(1, 'firstNames_male', ethnicity);
       }
     }
   }
 
-  getLastName(nation: string, originNum: number) {
+  getLastNames(
+    nation: string,
+    ethnicity: string
+  ): {
+    request$: Observable<Name[] | unknown[]>;
+    ethnicity: string;
+    totalNames: number;
+  } {
     const nameOrigin = this.nationsList.find((n) => n.name === nation)
       ?.lastNameUsages || ['English'];
 
-    let usage: string;
-    if (originNum > nameOrigin.length - 1) {
-      [usage] = nameOrigin;
-    } else {
-      usage = nameOrigin[originNum];
-    }
+    let origin = ethnicity;
 
     if (nation === 'Argentina') {
       // 1-2 surname countries
-      return this.nameRequest(getRandomInt(1, 2), 'lastNames', usage);
+      return this.nameRequest(getRandomInt(1, 2), 'lastNames', origin);
     }
-    switch (usage) {
+
+    if (!nameOrigin.includes(origin)) {
+      let randomNum = getRandomInt(1, 100);
+      if (randomNum > 25) {
+        randomNum = 0;
+      } else if (randomNum > 10) {
+        randomNum = 1;
+      } else if (randomNum > 5) {
+        randomNum = 2;
+      } else if (randomNum > 2) {
+        randomNum = 3;
+      } else if (randomNum > 0) {
+        randomNum = 4;
+      }
+
+      if (randomNum > nameOrigin.length - 1) {
+        [origin] = nameOrigin;
+      } else {
+        origin = nameOrigin[randomNum];
+      }
+    }
+
+    switch (origin) {
       case 'Spanish':
       case 'Basque':
       case 'Galician':
@@ -137,7 +206,7 @@ export class FirestoreService {
       case 'Spanish (Philippines)': {
         // 2 surname countries
         // need to fix bulgarian names to not include feminine surnames
-        return this.nameRequest(2, 'lastNames', usage);
+        return this.nameRequest(2, 'lastNames', origin);
       }
       case 'Portuguese': {
         // 1-4 surname countries e.g. Portuguese
@@ -151,7 +220,7 @@ export class FirestoreService {
         } else {
           names = getRandomInt(2, 3);
         }
-        return this.nameRequest(names, 'lastNames', usage);
+        return this.nameRequest(names, 'lastNames', origin);
       }
       case 'Icelandic':
       case 'Faroese':
@@ -160,50 +229,66 @@ export class FirestoreService {
       case 'Azerbaijani':
       case 'Eastern African': {
         // nordic/scandinavian/malay/kyrgyz/azerbaijani/eastern african patronym
-        return this.nameRequest(1, 'firstNames_male', usage);
+        return this.nameRequest(1, 'firstNames_male', origin);
       }
       default:
         // just one last name (most countries)
-        return this.nameRequest(1, 'lastNames', usage);
+        return this.nameRequest(1, 'lastNames', origin);
     }
   }
 
   nameRequest(
-    names: number,
+    totalNames: number,
     collection: string,
-    usage: string
+    ethnicity: string
   ): {
-    request$: Observable<unknown[]>;
-    retryRequest$: Observable<unknown[]>;
-    patronym: string;
-    names: number;
+    request$: Observable<Name[] | unknown[]>;
+    ethnicity: string;
+    totalNames: number;
   } {
     const randomIndex = getRandomInt(1, 5);
     const randomQuery = getRandomInt(0, 50000);
-    const request$ = this.afs
+
+    const request$ = this.newRequest(
+      totalNames,
+      collection,
+      ethnicity,
+      randomIndex,
+      randomQuery,
+      '>='
+    ).pipe(
+      catchError((err) =>
+        this.newRequest(
+          totalNames,
+          collection,
+          ethnicity,
+          randomIndex,
+          randomQuery,
+          '<='
+        )
+      )
+    ) as Observable<Name[] | unknown[]>;
+
+    return { request$, ethnicity, totalNames };
+  }
+
+  newRequest(
+    totalNames: number,
+    collection: string,
+    ethnicity: string,
+    randomIndex: number,
+    randomQuery: number,
+    operator: WhereFilterOp
+  ) {
+    return this.afs
       .collection(collection, (ref) =>
         ref
-          .where(`randomNum.${randomIndex}`, '>=', randomQuery)
-          .where('usages', 'array-contains-any', [usage])
+          .where(`randomNum.${randomIndex}`, operator, randomQuery)
+          .where('usages', 'array-contains-any', [ethnicity])
           .orderBy(`randomNum.${randomIndex}`)
-          .limit(names)
+          .limit(totalNames)
       )
       .valueChanges();
-    const retryRequest$ = this.afs
-      .collection(collection, (ref) =>
-        ref
-          .where(`randomNum.${randomIndex}`, '<=', randomQuery)
-          .where('usages', 'array-contains-any', [usage])
-          .orderBy(`randomNum.${randomIndex}`)
-          .limit(names)
-      )
-      .valueChanges();
-    return {
-      request$,
-      retryRequest$,
-      patronym: usage,
-      names,
-    };
   }
 
   saveRoster(

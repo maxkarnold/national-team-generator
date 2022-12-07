@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SubmittedRoster } from 'app/models/roster.model';
+import { Roster } from 'app/models/roster.model';
 import { AuthService } from '@core/services/auth.service';
 import { FirestoreService } from '@core/services/firestore.service';
 
@@ -10,20 +10,20 @@ import { FirestoreService } from '@core/services/firestore.service';
   styleUrls: ['./leaderboard.component.scss'],
 })
 export class LeaderboardComponent implements OnInit {
-  allRosters: SubmittedRoster[] = [];
-  organizedRosters: SubmittedRoster[][] = [];
+  allRosters: Roster[] = [];
+  organizedRosters: Roster[][] = [];
 
-  sTierRosters: SubmittedRoster[] = [];
-  aTierRosters: SubmittedRoster[] = [];
-  bTierRosters: SubmittedRoster[] = [];
-  cTierRosters: SubmittedRoster[] = [];
-  dTierRosters: SubmittedRoster[] = [];
-  eTierRosters: SubmittedRoster[] = [];
-  fTierRosters: SubmittedRoster[] = [];
-  gTierRosters: SubmittedRoster[] = [];
-  hTierRosters: SubmittedRoster[] = [];
-  iTierRosters: SubmittedRoster[] = [];
-  jTierRosters: SubmittedRoster[] = [];
+  sTierRosters: Roster[] = [];
+  aTierRosters: Roster[] = [];
+  bTierRosters: Roster[] = [];
+  cTierRosters: Roster[] = [];
+  dTierRosters: Roster[] = [];
+  eTierRosters: Roster[] = [];
+  fTierRosters: Roster[] = [];
+  gTierRosters: Roster[] = [];
+  hTierRosters: Roster[] = [];
+  iTierRosters: Roster[] = [];
+  jTierRosters: Roster[] = [];
 
   subscription: Subscription = new Subscription();
   isLoggedIn = false;
@@ -57,7 +57,7 @@ export class LeaderboardComponent implements OnInit {
     this.organizeLeaderboards();
   }
 
-  trackByItems(index: number, item: SubmittedRoster) {
+  trackByItems(index: number, item: Roster) {
     return item.id;
   }
 

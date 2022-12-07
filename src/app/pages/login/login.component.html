@@ -1,14 +1,15 @@
 <div *ngIf="auth.user$ | async as user; else login">
-  {{ user | json }}
+  <!-- {{ user | json }} -->
   <hr />
   <button (click)="auth.signOut()">Sign Out</button>
 </div>
 
 <ng-template #login>
-  <form class="basic-login">
+  <div class="basic-login">
     <input type="email" [(ngModel)]="email" />
     <input type="password" [(ngModel)]="password" />
     <button (click)="auth.login(email, password)">Login</button>
-  </form>
-  <button (click)="auth.googleSignin()">Sign In With Google</button>
+    <button (click)="auth.googleSignin()">Sign In With Google</button>
+  </div>
+
 </ng-template>

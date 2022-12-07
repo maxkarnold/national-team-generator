@@ -1,5 +1,5 @@
 <div class="pitch-container">
-  <div class="formation" *ngIf="this.pitchPlayers.length > 0">
+  <!-- <div class="formation" *ngIf="this.pitchPlayers.length > 0">
     Formation: {{ formation }}
   </div>
   <div class="starters-total-rating" *ngIf="this.pitchPlayers.length > 0">
@@ -9,12 +9,12 @@
   <div class="squad-total-rating" *ngIf="checkFormation()">
     <div>Squad Rating - {{ squadTotalRating }}</div>
     <div class="stars"></div>
-  </div>
+  </div> -->
   <!-- <div class="squad-total-rating">
             <div *ngIf="chemistry > 0; else chemContainer">Chemistry: <span style="color: lime;">+{{chemistry}}</span></div>
             <ng-template #chemContainer>Chemistry: {{chemistry}}</ng-template>
         </div> -->
-  <button
+  <!-- <button
     mat-raised-button
     color="primary"
     type="button"
@@ -54,7 +54,6 @@
                 class="pitch-player-info"
                 >{{ box.pitchPlayer.pitchRating }}</span
               >
-              <!-- <span *ngIf="box.pitchPlayer !== undefined" class="pitch-player-info">{{box.pitchPlayer.pitchPosition}}</span> -->
               <span
                 *ngIf="box.pitchPlayer !== undefined"
                 class="pitch-player-info"
@@ -83,7 +82,7 @@
                 box.pitchPlayer.displayName
               }}</span>
             </div>
-          </div>
+          </div> -->
 
           <!-- <div *cdkDragPreview  class="player-box active">
                                 <img [src]="box.pitchPlayer.playerFace" alt="" class="player-face" *ngIf="box.pitchPlayer !== undefined">
@@ -94,9 +93,9 @@
                                 <span *ngIf="box.pitchPlayer !== undefined" class="player-name">{{box.pitchPlayer.displayName}}</span>
                         </div>    -->
           <!-- <div class="player-box active" *cdkDragPlaceholder>Placeholder</div> -->
-        </div>
+        <!-- </div>
         <div [class]="getPosBoxClass(box)"></div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>

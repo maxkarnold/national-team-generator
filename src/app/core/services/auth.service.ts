@@ -8,13 +8,13 @@ import { Router } from '@angular/router';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { User } from './user.model';
+import { User } from './firestore.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user$: Observable<User | null | undefined>;
+  public user$: Observable<User | null | undefined>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -40,7 +40,12 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    return this.afAuth.signInWithEmailAndPassword(email, password);
+    return this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        this.user$ = of(userCredential.user);
+      })
+      .catch((err) => console.log(err.code));
   }
 
   async register(email: string, password: string) {

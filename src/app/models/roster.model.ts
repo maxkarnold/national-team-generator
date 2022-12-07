@@ -1,4 +1,4 @@
-import { User } from '@core/services/user.model';
+import { User } from '@core/services/firestore.model';
 import { Player } from './player.model';
 
 export interface RosterData {

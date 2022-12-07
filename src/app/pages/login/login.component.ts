@@ -9,6 +9,10 @@ import { AuthService } from '@core/services/auth.service';
 export class LoginComponent {
   email = '';
   password = '';
+  user$;
 
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService) {
+    this.user$ = auth.user$;
+    console.log(this.user$);
+  }
 }

@@ -14,6 +14,9 @@
     </button>
   </mat-toolbar>
   <mat-nav-list class="nav-list" role="list" *ngIf="navToggle">
+    <a routerLink="/simulator" class="nav-list__link nav-list__link--ripple"
+      >Simulator</a
+    >
     <a routerLink="/leaderboard" class="nav-list__link nav-list__link--ripple"
       >Leaderboards</a
     >
@@ -36,6 +39,9 @@
       <span class="logo__title">National Team Generator</span>
     </a>
     <span class="nav-bar__nav-spacer"></span>
+    <a routerLink="/simulator" class="nav-bar__link nav-bar__link--ripple"
+      >Simulator</a
+    >
     <a routerLink="/leaderboard" class="nav-bar__link nav-bar__link--ripple"
       >Leaderboards</a
     >
@@ -46,7 +52,7 @@
     </ng-template>
     <a
       (click)="auth.signOut()"
-      *ngIf="auth.user$ | async as user; else login"
+      *ngIf="auth.user$ | async; else login"
       class="nav-bar__link nav-bar__link--ripple"
       >Logout</a
     >

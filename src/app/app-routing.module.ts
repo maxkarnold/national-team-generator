@@ -4,11 +4,12 @@ import { AuthGuard } from '@core/services/auth.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { LoginComponent } from './pages/login/login.component';
+import { SimulationComponent } from './pages/simulation/simulation.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: SimulationComponent,
     pathMatch: 'full',
     canActivate: [AuthGuard],
   },
@@ -17,6 +18,10 @@ const routes: Routes = [
     path: 'leaderboard',
     component: LeaderboardComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'simulation',
+    component: SimulationComponent,
   },
   { path: '**', component: LoginComponent },
 ];

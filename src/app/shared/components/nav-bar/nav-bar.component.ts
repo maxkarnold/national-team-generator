@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { AuthService } from '@core/services/auth.service';
 
 @Component({
@@ -11,8 +10,6 @@ export class NavBarComponent {
   loginOverlayOpen = false;
   navToggle = false;
   isLoggedIn = false;
-
-  subscription: Subscription = new Subscription();
 
   constructor(public auth: AuthService) {}
 }

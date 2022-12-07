@@ -13,6 +13,7 @@ import { LineupComponent } from './pages/lineup/lineup.component';
 import { RosterComponent } from './pages/roster/roster.component';
 import { LoginComponent } from './pages/login/login.component';
 import { BuildRosterComponent } from './pages/build-roster/build-roster.component';
+import { SimulationComponent } from './pages/simulation/simulation.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { BuildRosterComponent } from './pages/build-roster/build-roster.componen
     RosterComponent,
     LoginComponent,
     BuildRosterComponent,
+    SimulationComponent,
   ],
   imports: [
     BrowserModule,
