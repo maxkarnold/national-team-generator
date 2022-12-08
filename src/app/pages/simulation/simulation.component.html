@@ -1,1 +1,50 @@
-<p>simulation works!</p>
+<h1>World Cup Group Stage</h1>
+<div class="number-form">
+  <div class="inputs">
+    <div>
+      <label for="numOfGames">Number of Games Per Opponent</label>
+      <input type="number" name="numOfGames" [(ngModel)]="groupGamesPerOpponent" min="1" max="3">
+    </div>
+    <div>
+      <label for="numOfTeams">Number of Teams</label>
+      <input type="number" name="numOfTeams" [(ngModel)]="numberOfTeams" min="8" max="96" placeholder="multiple of 4">
+    </div>
+    <div class="host-nation">
+      <label for="hostNation">Host Nation</label>
+      <select name="hostNation" [(ngModel)]="hostNation" [compareWith]="compareObj">
+        <option *ngFor="let nation of nationsList" [ngValue]="nation" placeholder="Choose Host Nation">{{nation.name}}</option>
+      </select>
+    </div>
+  </div>
+
+  <button [disabled]="numberOfTeams > 96" (click)="setupTournament()">Setup Tournament</button>
+</div>
+
+<button class="button" *ngIf="tournament.groups" (click)="simulateGroupStages()">Simulate Group Stages</button>
+<div class="group-stage">
+  <div class="group" *ngFor="let group of tournament.groups; index as i; trackBy: groupLetters">
+    <span class="group-name">Group {{groupLetters(i)}}</span>
+    <table>
+      <thead>
+        <tr class="group-headings">
+          <th colspan="2">Team</th>
+          <th *ngFor="let heading of headings">{{heading}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [class]="getNationClass(nation)" *ngFor="let nation of group">
+          <td><img class="nation-flag" [src]="nation.logo" [alt]="nation.name"></td>
+          <td>{{nation.name}}</td>
+          <td>{{nation.rating}}</td>
+          <td>{{nation.matchesPlayed}}</td>
+          <td>{{nation.points}}</td>
+          <td>{{nation.gDiff}}</td>
+          <td>{{nation.gFor}}</td>
+          <td>{{nation.gOpp}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

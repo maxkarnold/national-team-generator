@@ -22,11 +22,11 @@ export class FirestoreService {
 
   constructor(public afs: AngularFirestore) {
     this.nationsList = [];
-    this.nations
-      .map((tier) => tier.nations)
-      .forEach((nationsArr) =>
-        nationsArr.forEach((nation) => this.nationsList.push(nation as Nation))
-      );
+    // this.nations
+    //   .map((tier) => tier.nations)
+    //   .forEach((nationsArr) =>
+    //     nationsArr.forEach((nation) => this.nationsList.push(nation as Nation))
+    //   );
   }
 
   getFullName(

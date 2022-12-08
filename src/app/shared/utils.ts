@@ -18,7 +18,7 @@ export function median(values: number[]) {
   return (values[half - 1] + values[half]) / 2.0;
 }
 
-export function shuffle(arr: unknown[]) {
+export function shuffle<T>(arr: T[]) {
   const array = arr;
   let currentIndex = array.length;
   let randomIndex;
@@ -39,7 +39,7 @@ export function shuffle(arr: unknown[]) {
   return array;
 }
 
-export function getRandomInt(mn: number, mx: number) {
+export function getRandomInt(mn: number, mx: number): number {
   // let seed = xmur3("string-seed");
   // let rand = mulberry32(seed());
   const min = Math.ceil(mn);
@@ -49,7 +49,20 @@ export function getRandomInt(mn: number, mx: number) {
   // The maximum is inclusive and the minimum is inclusive
 }
 
-export function calcSumRating(arr: number[]) {
+export function getRandFloat(min: number, max: number, decimalPlaces = 2) {
+  const rand =
+    Math.random() < 0.5
+      ? (1 - Math.random()) * (max - min) + min
+      : Math.random() * (max - min) + min; // could be min or max or anything in between
+  const power = 10 ** decimalPlaces;
+  return Math.floor(rand * power) / power;
+}
+
+export function roundMax(num: number) {
+  return Math.round(num * 100) / 100;
+}
+
+export function calcSumRating(arr: number[]): number {
   const sum = arr.reduce((partialSum, a) => partialSum + a, 0);
   const avg = sum / arr.length;
   return Math.round(avg * 10) / 10;
@@ -68,3 +81,37 @@ export function isArrayOfStrings(value: unknown): value is string[] {
     value.every((item) => typeof item === 'string')
   );
 }
+
+export function groupLetters(index: number) {
+  const letters = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z',
+  ];
+  return letters[index];
+}
+
+

@@ -9,21 +9,21 @@ import { SimulationComponent } from './pages/simulation/simulation.component';
 const routes: Routes = [
   {
     path: '',
-    component: SimulationComponent,
+    component: HomeComponent,
     pathMatch: 'full',
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   { path: 'login', component: LoginComponent },
   {
     path: 'leaderboard',
     component: LeaderboardComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: 'simulation',
     component: SimulationComponent,
   },
-  { path: '**', component: LoginComponent },
+  { path: '**', component: HomeComponent },
 ];
 
 @NgModule({

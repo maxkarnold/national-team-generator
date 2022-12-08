@@ -35,18 +35,24 @@
   box-sizing: border-box;
 }
 
-html, body { 
-  height: 100%;
+html, body {
+  min-height: 100%;
 }
 
-body { 
-  margin: 0; 
+body {
+  margin: 0;
   padding: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-size: auto 100%;
 }
 
 button {
   cursor: pointer;
+}
+
+select {
+  display: inherit;
+  text-transform: inherit;
 }
 
 // CLASS OVERRIDES
@@ -57,6 +63,10 @@ input.login-overlay__input.login-overlay__input--override {
 }
 
 // ANGULAR MATERIAL CLASSES *DO NOT TOUCH*
+
+td, th {
+  border-radius: 0;
+}
 
 .mat-expansion-indicator::after {
   color: #c8c8c887;

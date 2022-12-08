@@ -1,0 +1,111 @@
+h1 {
+  text-align: center;
+  margin: 3rem;
+  font-size: 3rem;
+  @media screen and (max-width: 600px) {
+    font-size: 2rem;
+  }
+}
+
+.button {
+  margin: 1rem auto;
+  display: block;
+}
+
+.number-form {
+  display: flex;
+  flex-flow: column;
+  width: 90%;
+  margin: auto;
+  button {
+    width: 10rem;
+    align-self: center;
+  }
+  .inputs {
+    display: flex;
+    // align-items: flex-end;
+    justify-content: space-around;
+    & > div {
+      width: 12rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .host-nation {
+      text-transform: capitalize;
+    }
+  }
+}
+
+.group-stage {
+  display: grid;
+  justify-content: space-evenly;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 2rem;
+  @media screen and (max-width: 1200px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-flow: column;
+    margin: 0;
+  }
+  .group-name {
+    text-transform: capitalize;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 150%;
+    background-color: lightgray;
+  }
+  .group {
+    display: flex;
+    flex-flow: column;
+    border: 1px solid black;
+    margin: 10px;
+    table {
+      padding: 0 5px;
+      .nation {
+        text-transform: capitalize;
+        td {
+          .nation-flag {
+            width: 2rem;
+            height: 1.5rem;
+            display: flex;
+          }
+        }
+      }
+    }
+
+
+
+  }
+}
+
+.caf {
+  background: linear-gradient(to bottom right, #199e19bf, #ffff00bf);
+}
+
+.afc {
+  background: linear-gradient(to bottom right, #4848f480, #5649a080);
+}
+
+.concacaf {
+  background: linear-gradient(to bottom right, #d8ba7dbf, #242529bf);
+}
+
+.conmebol {
+  background: linear-gradient(to bottom right, #004c9ebf, #ffffffbf);
+}
+
+.uefa {
+  background: linear-gradient(to bottom right, #005eb4bf, #da1b77bf);
+}
+
+.ofc {
+  background: linear-gradient(to bottom right, #0693e3bf, #00d084bf);
+}
+
+

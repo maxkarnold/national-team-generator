@@ -10,3 +10,18 @@ export interface Nation {
   rareLeagues: string[];
   excludeLeagues: string[];
 }
+
+export interface GroupTeam {
+  name: string;
+  logo: string;
+  region: string;
+  points: number;
+  gDiff: number;
+  gFor: number;
+  gOpp: number;
+  tier: string;
+  attRating: number;
+  defRating: number;
+  rating: number;
+  matchesPlayed: number;
+}
