@@ -74,9 +74,9 @@ export class SimulationComponent {
     let group = [];
     let count = 0;
 
-    if (this.numberOfTeams === 32) {
-      return this.potDraw(teams, extraTeams, teamsInGroup);
-    }
+    // if (this.numberOfTeams === 32) {
+    //   return this.potDraw(teams, extraTeams, teamsInGroup);
+    // }
 
     const groups: GroupTeam[][] = [];
 
@@ -373,77 +373,77 @@ export class SimulationComponent {
     return teamsQualified;
   }
 
-  potDraw(
-    teams: GroupTeam[],
-    extraTeams: number,
-    teamsInGroup: number
-  ): GroupTeam[][] {
-    const pots = teamsInGroup;
-    const teamsInPot = teams.length / pots;
-    const groups: GroupTeam[][] = Array.from(
-      Array(teamsInPot),
-      () => new Array(pots)
-    );
-    // const groups: GroupTeam[][] = [];
-    teams.sort((a, b) => b.rating - a.rating);
+  // potDraw(
+  //   teams: GroupTeam[],
+  //   extraTeams: number,
+  //   teamsInGroup: number
+  // ): GroupTeam[][] {
+  //   const pots = teamsInGroup;
+  //   const teamsInPot = teams.length / pots;
+  //   const groups: GroupTeam[][] = Array.from(
+  //     Array(teamsInPot),
+  //     () => new Array(pots)
+  //   );
+  //   // const groups: GroupTeam[][] = [];
+  //   teams.sort((a, b) => b.rating - a.rating);
 
-    // assign teams to pots
-    const potTeams = [];
-    let index = teamsInPot - 1;
-    for (let i = 0; i < pots; i++) {
-      if (i === 0) {
-        const host = teams.splice(
-          teams.findIndex((t) => t.name === this.hostNation.name),
-          1
-        )[0];
-        potTeams.push([host, ...teams.slice(0, index)]);
-      } else {
-        potTeams.push(teams.slice(index, index + teamsInPot));
-        index += teamsInPot;
-      }
-    }
+  //   // assign teams to pots
+  //   const potTeams = [];
+  //   let index = teamsInPot - 1;
+  //   for (let i = 0; i < pots; i++) {
+  //     if (i === 0) {
+  //       const host = teams.splice(
+  //         teams.findIndex((t) => t.name === this.hostNation.name),
+  //         1
+  //       )[0];
+  //       potTeams.push([host, ...teams.slice(0, index)]);
+  //     } else {
+  //       potTeams.push(teams.slice(index, index + teamsInPot));
+  //       index += teamsInPot;
+  //     }
+  //   }
 
-    const store: string[][] = Array.from(
-      Array(teamsInPot),
-      () => new Array(pots)
-    );
-    // const store: string[][] = [];
-    // draw teams into groups
-    potTeams.forEach((pot, i) => {
-      console.log('test');
-      for (let j = 0; j < teamsInPot; j++) {
-        if (
-          (!store[j].includes(pot[j].region) || pot[j].region === 'uefa') &&
-          store[j].length < i + 1
-        ) {
-          groups[j].push(pot[j]);
-          store[j].push(pot[j].region);
-          console.log(
-            `${pot[j].name} goes in ${j + 1} at position ${groups[j].length}`
-          );
-        } else {
-          // if region is already in this group and it's not a uefa team
-          for (let k = j + 1; k < teamsInPot; k++) {
-            if (
-              (!store[k].includes(pot[j].region) || pot[j].region === 'uefa') &&
-              store[k].length < i + 1
-            ) {
-              groups[k].push(pot[j]);
-              store[k].push(pot[j].region);
-              console.log(
-                `${pot[j].name} goes in ${k + 1} at position ${
-                  groups[k].length
-                }`
-              );
-              break;
-            }
-          }
-        }
-      }
-    });
+  //   const store: string[][] = Array.from(
+  //     Array(teamsInPot),
+  //     () => new Array(pots)
+  //   );
+  //   // const store: string[][] = [];
+  //   // draw teams into groups
+  //   potTeams.forEach((pot, i) => {
+  //     console.log('test');
+  //     for (let j = 0; j < teamsInPot; j++) {
+  //       if (
+  //         (!store[j].includes(pot[j].region) || pot[j].region === 'uefa') &&
+  //         store[j].length < i + 1
+  //       ) {
+  //         groups[j].push(pot[j]);
+  //         store[j].push(pot[j].region);
+  //         console.log(
+  //           `${pot[j].name} goes in ${j + 1} at position ${groups[j].length}`
+  //         );
+  //       } else {
+  //         // if region is already in this group and it's not a uefa team
+  //         for (let k = j + 1; k < teamsInPot; k++) {
+  //           if (
+  //             (!store[k].includes(pot[j].region) || pot[j].region === 'uefa') &&
+  //             store[k].length < i + 1
+  //           ) {
+  //             groups[k].push(pot[j]);
+  //             store[k].push(pot[j].region);
+  //             console.log(
+  //               `${pot[j].name} goes in ${k + 1} at position ${
+  //                 groups[k].length
+  //               }`
+  //             );
+  //             break;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
 
-    return groups;
-  }
+  //   return groups;
+  // }
 
   getNationClass(nation: GroupTeam) {
     return `nation ${nation.region}`;
