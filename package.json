@@ -4,11 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start-mobile": "ng serve --host 192.168.1.228",
+    "start-mobile": "ng serve --host 192.168.0.158",
+    "start-mobile-megan": "ng serve --host 192.168.1.228",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts",
+    "deploy": "firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {

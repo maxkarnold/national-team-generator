@@ -8,17 +8,16 @@ import { SimulationComponent } from './pages/simulation/simulation.component';
 
 const routes: Routes = [
   {
+    path: 'leaderboard',
+    component: LeaderboardComponent,
+  },
+  {
     path: '',
     component: HomeComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard],
   },
   { path: 'login', component: LoginComponent },
-  {
-    path: 'leaderboard',
-    component: LeaderboardComponent,
-    // canActivate: [AuthGuard],
-  },
+
   {
     path: 'simulation',
     component: SimulationComponent,

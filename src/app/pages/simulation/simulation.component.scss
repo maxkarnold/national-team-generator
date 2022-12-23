@@ -23,10 +23,12 @@ h1 {
   }
   .inputs {
     display: flex;
-    // align-items: flex-end;
-    justify-content: space-around;
+    flex-flow: wrap;
+    justify-content: center;
+    margin: 2rem 0;
     & > div {
       width: 12rem;
+      margin: 0 1rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -84,28 +86,144 @@ h1 {
   }
 }
 
+.bracket {
+  padding: 2rem 0;
+  margin: 5rem auto;
+  width: 100%;
+  background: linear-gradient(to bottom, #ff4242, #ab2d2d);
+  text-transform: capitalize;
+  .header-knockouts {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .stats {
+      font-size: 1.25rem;
+      border: 1px solid black;
+      border-radius: 5px;
+      background-color: #d3d1d1e6;
+      padding: 1.5rem;
+      li {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      img {
+        width: 2rem;
+        height: 1.5rem;
+        margin: 0 1rem;
+      }
+    }
+    h1 {
+      color: white;
+      font-size: 4rem;
+    }
+  }
+
+  .headings {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+    font-size: 2.25rem;
+    margin-top: 4rem;
+    padding: 0 5rem;
+    li {
+      display: flex;
+      justify-content: center;
+      color: white;
+    }
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(16, 3.5rem);
+    margin: 0rem 2rem;
+    font-size: 1.25rem;
+    grid-gap: 1rem;
+    .round {
+      display: grid;
+      grid-row: span 16;
+      align-items: center;
+      &:nth-child(2) {
+        grid-column: 2;
+      }
+      &:nth-child(3) {
+        grid-column: 3;
+      }
+      &:nth-child(4) {
+        grid-column: 4;
+        grid-row: 6 / 12;
+        > :first-child {
+          border: 5px solid #f5cc38;
+        }
+        > :last-child {
+          border: 5px solid #D86324;
+        }
+      }
+      .match {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        margin: 10px 5px;
+        border: 1px solid #1f1e1e;
+        border-radius: 5px;
+        background-color: #d3d1d1e6;
+        height: 5rem;
+        img {
+          width: 2rem;
+          height: 1.5rem;
+          margin: 0 1rem;
+        }
+        .winner {
+          color: #e3c30e;
+          background-color: rgb(59, 58, 58);
+          padding: 5px;
+        }
+      }
+    }
+  }
+}
+
+
+
 .caf {
-  background: linear-gradient(to bottom right, #199e19bf, #ffff00bf);
+  background: linear-gradient(45deg, #199e19bf, #ffff00bf);
+  @media screen and (max-width: 600px) {
+    background: #199e19bf;
+  }
 }
 
 .afc {
   background: linear-gradient(to bottom right, #4848f480, #5649a080);
+  @media screen and (max-width: 600px) {
+    background: #5649a080;
+  }
 }
 
 .concacaf {
   background: linear-gradient(to bottom right, #d8ba7dbf, #242529bf);
+  @media screen and (max-width: 600px) {
+    background: #d8ba7dbf;
+  }
 }
 
 .conmebol {
   background: linear-gradient(to bottom right, #004c9ebf, #ffffffbf);
+  @media screen and (max-width: 600px) {
+    background: #004c9ebf;
+  }
 }
 
 .uefa {
   background: linear-gradient(to bottom right, #005eb4bf, #da1b77bf);
+  @media screen and (max-width: 600px) {
+    background: #da1b77bf;
+  }
 }
 
 .ofc {
   background: linear-gradient(to bottom right, #0693e3bf, #00d084bf);
+  @media screen and (max-width: 600px) {
+    background: #00d084bf;
+  }
 }
 
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatSortModule } from '@angular/material/sort';
@@ -17,6 +18,7 @@ import * as fromComponents from './components';
 @NgModule({
   declarations: [...fromComponents.components],
   imports: [
+    RouterModule,
     FormsModule,
     BrowserAnimationsModule,
     DragDropModule,

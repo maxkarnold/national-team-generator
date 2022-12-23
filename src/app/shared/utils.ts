@@ -49,7 +49,11 @@ export function getRandomInt(mn: number, mx: number): number {
   // The maximum is inclusive and the minimum is inclusive
 }
 
-export function getRandFloat(min: number, max: number, decimalPlaces = 2) {
+export function getRandFloat(
+  min: number,
+  max: number,
+  decimalPlaces = 2
+): number {
   const rand =
     Math.random() < 0.5
       ? (1 - Math.random()) * (max - min) + min
@@ -58,7 +62,7 @@ export function getRandFloat(min: number, max: number, decimalPlaces = 2) {
   return Math.floor(rand * power) / power;
 }
 
-export function roundMax(num: number) {
+export function roundMax(num: number): number {
   return Math.round(num * 100) / 100;
 }
 
