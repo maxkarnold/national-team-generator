@@ -2,12 +2,12 @@
 <div class="number-form">
   <div class="inputs">
     <div>
-      <label for="numOfGames">Number of Games Per Opponent</label>
+      <label for="numOfGames">Number of Group Games Per Opponent</label>
       <input type="number" name="numOfGames" [(ngModel)]="groupGamesPerOpponent" min="1" max="3">
     </div>
     <div>
       <label for="numOfTeams">Number of Teams</label>
-      <input type="number" name="numOfTeams" [(ngModel)]="numberOfTeams" min="8" max="96" placeholder="multiple of 4">
+      <input type="number" name="numOfTeams" [(ngModel)]="numberOfTeams" min="8" max="96" placeholder="multiple of 4" disabled>
     </div>
     <div class="host-nation">
       <label for="hostNation">Host Nation</label>
@@ -35,7 +35,7 @@
         <tr [class]="getNationClass(nation)" *ngFor="let nation of group">
           <td><img class="nation-flag" [src]="nation.logo" [alt]="nation.name"></td>
           <td>{{nation.name}}</td>
-          <td>{{nation.rating}}</td>
+          <td>{{nation.ranking}}</td>
           <td>{{nation.matchesPlayed}}</td>
           <td>{{nation.points}}</td>
           <td>{{nation.gDiff}}</td>
@@ -47,7 +47,7 @@
   </div>
 </div>
 
-<div class="bracket" *ngIf="tournament.bracket">
+<div class="bracket" *ngIf="tournament.bracket && tournament.stats">
   <div class="header-knockouts">
     <h1>World Cup Knockouts</h1>
     <ul *ngIf="tournament.stats" class="stats">

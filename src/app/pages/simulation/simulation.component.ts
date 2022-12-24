@@ -40,21 +40,21 @@ export class SimulationComponent {
     matchesPlayed: 0,
   };
 
-  headings = ['RTG', 'MP', 'PTS', 'GD', 'GS', 'GA'];
+  headings = ['RNK', 'MP', 'PTS', 'GD', 'GS', 'GA'];
   numberOfTeams = 32;
   groupGamesPerOpponent = 1;
 
   groupLetters = groupLetters;
 
-  tournament: Tournament32 | undefined;
+  tournament: Tournament32;
 
   constructor() {
     this.createTeams();
+    this.tournament = {};
     this.setupTournament();
   }
 
-  setupTournament() {
-    this.tournament = undefined;
+  setupTournament(): void {
     const teams = this.chooseQualifyingTeams();
     const numOfGroups = teams.length / 4;
     let extraTeams = this.numberOfTeams % 4;
@@ -72,7 +72,12 @@ export class SimulationComponent {
       )
     );
 
-    this.tournament = { teams, groups };
+    this.tournament = {
+      teams,
+      groups,
+      bracket: undefined,
+      stats: undefined,
+    };
   }
 
   organizeGroups(teams: GroupTeam[], extraTeams: number, teamsInGroup: number) {
@@ -120,7 +125,6 @@ export class SimulationComponent {
       this.tournament.groups = this.simulateGroups(groups);
 
       this.tournament.bracket = this.simulateBracket(groups);
-      console.log(this.tournament);
 
       if (this.tournament.bracket !== undefined) {
         this.tournament.stats = this.getTournamentStats(
@@ -474,11 +478,21 @@ export class SimulationComponent {
     const cafTeams: GroupTeam[] = [];
     const concacafTeams: GroupTeam[] = [];
     const teamsQualified: GroupTeam[] = [];
-    const nationsLeft = [...this.nationsList];
+    const nationsLeft = this.nationsList
+      .sort((a, b) => b.rating - a.rating)
+      .map((team, i) => ({
+        ...team,
+        ranking: i + 1,
+      }));
 
     const host = nationsLeft.findIndex((t) => t.name === this.hostNation.name);
     teamsQualified.push(nationsLeft.splice(host, 1)[0]);
-    console.log(teamsQualified[0].name, 'qualifies as host');
+    console.log(
+      teamsQualified[0].name,
+      teamsQualified[0].ranking,
+      teamsQualified[0].rating,
+      'qualifies as host'
+    );
 
     nationsLeft.forEach((team) => {
       switch (team.region) {
@@ -514,37 +528,121 @@ export class SimulationComponent {
       ofcTeams,
     ];
     const regions = ['UEFA', 'AFC', 'CAF', 'CONCACAF', 'CONMEBOL', 'OFC'];
-    const qualifyingSpots = [13, 4, 5, 3, 4, 0];
+    const qualifyingSpots = [10, 4, 0, 3, 4, 0];
     allRegions.forEach((region, i) => {
+      if (qualifyingSpots[i] === 0) {
+        return;
+      }
       region.sort((a, b) => b.rating - a.rating);
       console.log(
-        `qualified from ${regions[i]}`,
-        region.slice(0, qualifyingSpots[i]).map((a) => `${a.name} ${a.rating}`)
+        `qualified automatically for World Cup from ${regions[i]}`,
+        region
+          .slice(0, qualifyingSpots[i])
+          .map((a) => `${a.name} ${a.ranking} - ${a.rating}`)
+      );
+      console.log(
+        `didn't qualify automatically from ${regions[i]}`,
+        region
+          .slice(qualifyingSpots[i])
+          .map((t) => `${t.name} ${t.ranking} - ${t.rating}`)
       );
       teamsQualified.push(...region.slice(0, qualifyingSpots[i]));
-      console.log(
-        `didn't qualify from ${regions[i]}`,
-        region.slice(qualifyingSpots[i]).map((a) => `${a.name} ${a.rating}`)
-      );
     });
 
     // ====== Playoff Qualifiers =======
+    // ====== Confederation Qualifiers ======
+    // ====== CAF Qualifiers ======
+    const cafQualifiers = [
+      this.matchScore(cafTeams[0], cafTeams[9]),
+      this.matchScore(cafTeams[1], cafTeams[8]),
+      this.matchScore(cafTeams[2], cafTeams[7]),
+      this.matchScore(cafTeams[3], cafTeams[6]),
+      this.matchScore(cafTeams[4], cafTeams[5]),
+    ];
+    teamsQualified.push(...cafQualifiers.map((m) => m.winner));
 
-    const playoff1 = this.matchScore(afcTeams[4], conmebolTeams[4]);
+    cafQualifiers.forEach((match) => {
+      console.log(
+        `CAF qualifier playoff where ${match.winner.name} defeated ${
+          match.loser.name
+        } with a score of ${match.score}${
+          match.penaltyWin ? ` after winning on penalties` : ''
+        }`
+      );
+    });
+
+    console.log(
+      `qualified from ${regions[2]}`,
+      cafQualifiers.map(
+        (a) => `${a.winner.name} ${a.winner.ranking} - ${a.winner.rating}`
+      )
+    );
+    console.log(
+      `didn't qualify from ${regions[2]}`,
+      cafTeams.slice(10).map((t) => `${t.name} ${t.ranking} - ${t.rating}`),
+      cafQualifiers.map(
+        (t) => `${t.loser.name} ${t.loser.ranking} - ${t.loser.rating}`
+      )
+    );
+    // ===== UEFA Qualifiers =====
+    const uefaFirstRound = [
+      this.matchScore(uefaTeams[10], uefaTeams[21]),
+      this.matchScore(uefaTeams[11], uefaTeams[20]),
+      this.matchScore(uefaTeams[12], uefaTeams[19]),
+      this.matchScore(uefaTeams[13], uefaTeams[18]),
+      this.matchScore(uefaTeams[14], uefaTeams[17]),
+      this.matchScore(uefaTeams[15], uefaTeams[16]),
+    ];
+    const uefaQualifiers = [
+      this.matchScore(uefaFirstRound[0].winner, uefaFirstRound[5].winner),
+      this.matchScore(uefaFirstRound[1].winner, uefaFirstRound[4].winner),
+      this.matchScore(uefaFirstRound[2].winner, uefaFirstRound[3].winner),
+    ];
+    uefaQualifiers.forEach((match) => {
+      console.log(
+        `UEFA qualifier playoff where ${match.winner.name} defeated ${
+          match.loser.name
+        } with a score of ${match.score}${
+          match.penaltyWin ? ` after winning on penalties` : ''
+        }`
+      );
+    });
+    teamsQualified.push(...uefaQualifiers.map((m) => m.winner));
+    console.log(
+      `qualified from ${regions[0]}`,
+      uefaQualifiers.map(
+        (a) => `${a.winner.name} ${a.winner.ranking} - ${a.winner.rating}`
+      )
+    );
+    console.log(
+      `didn't qualify from ${regions[0]}`,
+      uefaTeams.slice(22).map((t) => `${t.name} ${t.ranking} - ${t.rating}`),
+      uefaFirstRound.map(
+        (t) => `${t.loser.name} ${t.loser.ranking} - ${t.loser.rating}`
+      ),
+      uefaQualifiers.map(
+        (t) => `${t.loser.name} ${t.loser.ranking} - ${t.loser.rating}`
+      )
+    );
+    // ===== Other Qualifiers =====
+    const afcQualifier = this.matchScore(afcTeams[4], afcTeams[5]).winner;
+    const ofcQualifier = this.matchScore(ofcTeams[0], ofcTeams[1]).winner;
+    // ===== Inter-confederation Qualifiers =====
+    const playoff1 = this.matchScore(afcQualifier, conmebolTeams[4]);
     teamsQualified.push(playoff1.winner);
     console.log(
-      `playoff between ${afcTeams[4].name} and ${
+      `playoff between ${afcQualifier.name} and ${
         conmebolTeams[4].name
       } resulted in a win for ${playoff1.winner.name}
        with a score of ${playoff1.goalsFor}-${playoff1.goalsAg}${
         playoff1.penaltyWin ? ' decided on penalties' : ''
       }`
     );
-    const playoff2 = this.matchScore(concacafTeams[3], ofcTeams[0]);
+    const playoff2 = this.matchScore(concacafTeams[3], ofcQualifier);
     teamsQualified.push(playoff2.winner);
     console.log(
       `playoff between ${concacafTeams[3].name} and ${
-        ofcTeams[0].name
+        ofcQualifier.name
       } resulted in a win for ${playoff2.winner.name}
        with a score of ${playoff2.goalsFor}-${playoff2.goalsAg}${
         playoff2.penaltyWin ? ' decided on penalties' : ''
@@ -575,10 +673,22 @@ export class SimulationComponent {
     );
     const second = bracket.finals[0][2].loser;
     const third = bracket.finals[1][2].winner;
-    // group stage overpeformer
-    const overPerformer = groups
-      .flatMap((group) => group.slice(0, 2))
-      .reduce((prev, curr) => (prev.rating < curr.rating ? prev : curr));
+
+    const finalists = bracket.finals.flatMap((m) => [m[2].winner, m[2].loser]);
+
+    const overPerformer = finalists.find((t: GroupTeam) => {
+      if (t.ranking) {
+        return t.ranking > 11;
+      }
+      return 0 > 1;
+    })
+      ? finalists.reduce((prev, curr) =>
+          prev.rating < curr.rating ? prev : curr
+        )
+      : groups
+          .flatMap((group) => group.slice(0, 2))
+          .reduce((prev, curr) => (prev.rating < curr.rating ? prev : curr));
+
     console.log(
       `${overPerformer?.name.toLocaleUpperCase()} overpeformed the most in the world cup group stage`
     );
@@ -615,19 +725,19 @@ export class SimulationComponent {
     const whoWon = (
       gf: number,
       ga: number
-    ): { winner: GroupTeam; loser: GroupTeam } => {
+    ): { winner: GroupTeam; loser: GroupTeam; score: string } => {
       if (penaltyWin) {
         const rand = getRandFloat(0, 1);
         return rand > 0.5
-          ? { winner: team, loser: otherTeam }
-          : { winner: otherTeam, loser: team };
+          ? { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` }
+          : { winner: otherTeam, loser: team, score: `${goalsAg}-${goalsFor}` };
       }
       return gf > ga
-        ? { winner: team, loser: otherTeam }
-        : { winner: otherTeam, loser: team };
+        ? { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` }
+        : { winner: otherTeam, loser: team, score: `${goalsAg}-${goalsFor}` };
     };
 
-    const { winner, loser } = whoWon(goalsFor, goalsAg);
+    const { winner, loser, score } = whoWon(goalsFor, goalsAg);
 
     return {
       goalsFor,
@@ -635,6 +745,7 @@ export class SimulationComponent {
       penaltyWin,
       winner,
       loser,
+      score,
     };
   }
 

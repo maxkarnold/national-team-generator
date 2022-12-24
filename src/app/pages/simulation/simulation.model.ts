@@ -10,6 +10,7 @@ export interface GroupTeam {
   attRating: number;
   defRating: number;
   rating: number;
+  ranking?: number;
   matchesPlayed: number;
   pot?: number;
 }
@@ -20,6 +21,7 @@ export interface Match {
   penaltyWin: boolean;
   winner: GroupTeam;
   loser: GroupTeam;
+  score: string;
 }
 
 export interface TournamentStats {
@@ -39,8 +41,8 @@ export interface TournamentStats {
 }
 
 export interface Tournament32 {
-  teams: GroupTeam[];
-  groups: GroupTeam[][];
+  teams?: GroupTeam[];
+  groups?: GroupTeam[][];
   bracket?: {
     roundOf16: [GroupTeam, GroupTeam, Match][];
     quarterFinals: [GroupTeam, GroupTeam, Match][];

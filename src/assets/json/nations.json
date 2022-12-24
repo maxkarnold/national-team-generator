@@ -218,7 +218,7 @@
         "thirdLeagues": ["uru1", "arg1", "bra1", "per1", "chn1", "por1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "c"
       }
     ]
   },
@@ -275,7 +275,7 @@
         "thirdLeagues": ["bra1", "ksa1"],
         "rareLeagues": ["per1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "c"
       },
       {
         "name": "serbia",
@@ -1818,7 +1818,7 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "g"
       },
       {
         "name": "philippines",
