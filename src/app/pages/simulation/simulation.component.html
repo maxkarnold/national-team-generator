@@ -69,12 +69,22 @@
   <div class="grid">
     <div class="round" *ngFor="let round of tournament.bracket | keyvalue: originalOrder">
       <div class="match" *ngFor="let match of round.value">
-        <img [src]="match[0].logo" [alt]="match[0].name">
-        <span [class]="match[2].winner.name === match[0].name ? 'winner' : ''"> {{match[0].name}} </span>
-        {{match[2].goalsFor}} -- {{match[2].goalsAg}}
-        <span [class]="match[2].winner.name === match[1].name ? 'winner' : ''"> {{match[1].name}} </span>
-        <img [src]="match[1].logo" [alt]="match[1].name">
-        {{match[2].penaltyWin ? '(P)' : ''}}
+        <div>
+          <div>
+            <img [src]="match[0].logo" [alt]="match[0].name">
+            <span [class]="match[2].winner.name === match[0].name ? 'winner' : ''"> {{match[0].name}} </span>
+          </div>
+          <span>{{match[2].goalsFor}} {{match[2].penaltyWin && match[0].name === match[2].winner.name ? '(P)' : match[2].etWin && match[0].name === match[2].winner.name ? '(AET)' : ''}}</span>
+        </div>
+        <div>
+          <div>
+            <img [src]="match[1].logo" [alt]="match[1].name">
+            <span [class]="match[2].winner.name === match[1].name ? 'winner' : ''"> {{match[1].name}} </span>
+          </div>
+          <span>{{match[2].goalsAg}} {{match[2].penaltyWin && match[1].name === match[2].winner.name ? '(P)' : match[2].etWin && match[1].name === match[2].winner.name ? '(AET)' : ''}}</span>
+        </div>
+
+
       </div>
     </div>
   </div>

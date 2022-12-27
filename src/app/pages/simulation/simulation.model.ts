@@ -1,23 +1,9 @@
-export interface GroupTeam {
-  name: string;
-  logo: string;
-  region: string;
-  points: number;
-  gDiff: number;
-  gFor: number;
-  gOpp: number;
-  tier: string;
-  attRating: number;
-  defRating: number;
-  rating: number;
-  ranking?: number;
-  matchesPlayed: number;
-  pot?: number;
-}
+import { GroupTeam } from 'app/models/nation.model';
 
 export interface Match {
   goalsFor: number;
   goalsAg: number;
+  etWin: boolean;
   penaltyWin: boolean;
   winner: GroupTeam;
   loser: GroupTeam;

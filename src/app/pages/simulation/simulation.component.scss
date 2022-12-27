@@ -97,7 +97,7 @@ h1 {
     justify-content: space-around;
     align-items: center;
     .stats {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       border: 1px solid black;
       border-radius: 5px;
       background-color: #d3d1d1e6;
@@ -150,26 +150,36 @@ h1 {
       }
       &:nth-child(4) {
         grid-column: 4;
-        grid-row: 6 / 12;
-        > :first-child {
-          border: 5px solid #f5cc38;
-        }
-        > :last-child {
-          border: 5px solid #D86324;
-        }
+        grid-row: 6 / 20;
+        // > :first-child {
+        //   border: 5px solid #f5cc38;
+        // }
+        // > :last-child {
+        //   border: 5px solid #D86324;
+        // }
       }
       .match {
         display: flex;
-        align-items: center;
-        justify-content: space-evenly;
+        flex-flow: column;
+        justify-content: space-around;
         margin: 10px 5px;
+        padding: 5px;
         border: 1px solid #1f1e1e;
         border-radius: 5px;
         background-color: #d3d1d1e6;
-        height: 5rem;
+        height: 7rem;
+        > div {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          > div {
+            display: flex;
+            align-items: center;
+          }
+        }
         img {
-          width: 2rem;
-          height: 1.5rem;
+          width: 3rem;
+          height: 2rem;
           margin: 0 1rem;
         }
         .winner {

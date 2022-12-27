@@ -1,3 +1,11 @@
+function getResultArr(wins: number, draws: number, losses: number): string[] {
+  return [
+    ...Array(wins).fill('win'),
+    ...Array(losses).fill('loss'),
+    ...Array(draws).fill('draw'),
+  ];
+}
+
 export function compare(
   a: number | string,
   b: number | string,
@@ -66,6 +74,154 @@ export function roundMax(num: number): number {
   return Math.round(num * 100) / 100;
 }
 
+/**
+ *
+ *
+ * @function Takes two number values - a maximum value and an optional minimum - otherwise 0 - it returns a random number between the two values
+ */
+export function calcScore(
+  tAttRating: number,
+  tDefRating: number,
+  otAttRating: number,
+  otDefRating: number
+): number[] {
+  const gF = tAttRating - otDefRating;
+  const gA = otAttRating - tDefRating;
+  const combinedAtt = tAttRating + otAttRating;
+  const combinedDef = tDefRating + otDefRating;
+  const gD = gF - gA;
+  let result = '';
+  let randIndex = getRandomInt(0, 9);
+
+  console.log(combinedAtt, combinedDef, gD);
+
+  if (gD > 40) {
+    result = getResultArr(8, 1, 1)[randIndex];
+  } else if (gD > 20) {
+    result = getResultArr(7, 2, 1)[randIndex];
+  } else if (gD > 10) {
+    result = getResultArr(6, 2, 2)[randIndex];
+  } else if (gD > 0) {
+    result = getResultArr(4, 4, 2)[randIndex];
+  } else if (gD > -10) {
+    result = getResultArr(2, 4, 4)[randIndex];
+  } else if (gD > -20) {
+    result = getResultArr(2, 2, 6)[randIndex];
+  } else if (gD > -40) {
+    result = getResultArr(1, 2, 7)[randIndex];
+  } else {
+    result = getResultArr(1, 1, 8)[randIndex];
+  }
+
+  randIndex = getRandomInt(0, 9);
+  switch (result) {
+    case 'win':
+      return combinedAtt > combinedDef
+        ? [
+            [1, 0],
+            [2, 1],
+            [2, 1],
+            [2, 1],
+            [3, 1],
+            [3, 1],
+            [3, 2],
+            [3, 2],
+            [getRandomInt(4, 6), 1],
+            [getRandomInt(4, 6), 0],
+          ][randIndex]
+        : [
+            [1, 0],
+            [1, 0],
+            [1, 0],
+            [1, 0],
+            [2, 1],
+            [2, 0],
+            [2, 0],
+            [2, 0],
+            [3, 0],
+            [3, 1],
+          ][randIndex];
+    case 'loss':
+      return combinedAtt > combinedDef
+        ? [
+            [0, 1],
+            [1, 2],
+            [1, 2],
+            [1, 2],
+            [1, 3],
+            [1, 3],
+            [2, 3],
+            [2, 3],
+            [1, getRandomInt(4, 6)],
+            [0, getRandomInt(4, 6)],
+          ][randIndex]
+        : [
+            [0, 1],
+            [0, 1],
+            [0, 1],
+            [0, 1],
+            [1, 2],
+            [0, 2],
+            [0, 2],
+            [0, 2],
+            [0, 3],
+            [1, 3],
+          ][randIndex];
+    case 'draw':
+      return combinedAtt > combinedDef
+        ? [
+            [3, 3],
+            [2, 2],
+            [1, 1],
+            [1, 1],
+            [2, 2],
+            [0, 0],
+            [2, 2],
+            [1, 1],
+            [4, 4],
+            [3, 3],
+          ][randIndex]
+        : [
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [1, 1],
+            [1, 1],
+            [1, 1],
+            [1, 1],
+            [2, 2],
+            [3, 3],
+            [0, 0],
+          ][randIndex];
+    default:
+      return combinedAtt > combinedDef
+        ? [
+            [3, 3],
+            [2, 2],
+            [1, 1],
+            [1, 1],
+            [2, 2],
+            [0, 0],
+            [2, 2],
+            [1, 1],
+            [4, 4],
+            [3, 3],
+          ][randIndex]
+        : [
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [1, 1],
+            [1, 1],
+            [1, 1],
+            [1, 1],
+            [2, 2],
+            [3, 3],
+            [0, 0],
+          ][randIndex];
+  }
+}
+
 export function calcSumRating(arr: number[]): number {
   const sum = arr.reduce((partialSum, a) => partialSum + a, 0);
   const avg = sum / arr.length;
@@ -117,5 +273,3 @@ export function groupLetters(index: number) {
   ];
   return letters[index];
 }
-
-

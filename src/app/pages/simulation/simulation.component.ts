@@ -7,15 +7,12 @@ import {
   shuffle,
   groupLetters,
   compare,
+  calcScore,
 } from '@shared/utils';
 import nationsModule from 'assets/json/nations.json';
 import { get, set } from 'lodash';
-import {
-  Match,
-  GroupTeam,
-  Tournament32,
-  TournamentStats,
-} from './simulation.model';
+import { GroupTeam } from 'app/models/nation.model';
+import { Match, Tournament32, TournamentStats } from './simulation.model';
 
 @Component({
   selector: 'app-simulation',
@@ -38,6 +35,9 @@ export class SimulationComponent {
     defRating: 0,
     rating: 0,
     matchesPlayed: 0,
+    qualifiers: [],
+    group: [],
+    bracket: [],
   };
 
   headings = ['RNK', 'MP', 'PTS', 'GD', 'GS', 'GA'];
@@ -66,11 +66,7 @@ export class SimulationComponent {
     }
 
     const groups = this.organizeGroups(teams, extraTeams, teamsInGroup);
-    console.log(
-      groups.map((group) =>
-        group.map((team) => `${team.region} ${team.name} ${team.pot}`)
-      )
-    );
+    console.log(groups);
 
     this.tournament = {
       teams,
@@ -167,6 +163,14 @@ export class SimulationComponent {
             // for each of the other teams play a match
             const otherTeam = g[i][k];
             const matchScore = this.matchScore(team, otherTeam);
+            matchScore.winner.group.push({
+              match: matchScore,
+              opp: matchScore.loser,
+            });
+            matchScore.loser.group.push({
+              match: matchScore,
+              opp: matchScore.winner,
+            });
             goalsFor = matchScore.goalsFor;
             goalsAg = matchScore.goalsAg;
             if (goalsFor > goalsAg) {
@@ -257,13 +261,15 @@ export class SimulationComponent {
       ],
     ];
     console.log('ROUND OF 16 RESULTS');
-    roundOf16.forEach((t) =>
+    roundOf16.forEach((t) => {
+      t[2].winner.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.bracket.push({ match: t[2], opp: t[2].winner });
       console.log(
         `${t[0].name} ${t[2].goalsFor} ${t[1].name} ${t[2].goalsAg} ${
           t[2].penaltyWin ? `${t[2].winner.name} win on penalties` : ''
         }`
-      )
-    );
+      );
+    });
 
     const quarterFinals: [GroupTeam, GroupTeam, Match][] = [
       [
@@ -288,13 +294,19 @@ export class SimulationComponent {
       ],
     ];
     console.log('QUARTERFINAL RESULTS');
-    quarterFinals.forEach((t) =>
+    quarterFinals.forEach((t) => {
+      t[2].winner.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.bracket.push({ match: t[2], opp: t[2].winner });
       console.log(
         `${t[0].name} ${t[2].goalsFor} ${t[1].name} ${t[2].goalsAg} ${
-          t[2].penaltyWin ? `${t[2].winner.name} win on penalties` : ''
+          t[2].penaltyWin
+            ? `${t[2].winner.name} win on penalties`
+            : t[2].etWin
+            ? `${t[2].winner.name} win in extra time`
+            : ''
         }`
-      )
-    );
+      );
+    });
 
     const semiFinals: [GroupTeam, GroupTeam, Match][] = [
       [
@@ -309,13 +321,19 @@ export class SimulationComponent {
       ],
     ];
     console.log('SEMIFINAL RESULTS');
-    semiFinals.forEach((t) =>
+    semiFinals.forEach((t) => {
+      t[2].winner.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.bracket.push({ match: t[2], opp: t[2].winner });
       console.log(
         `${t[0].name} ${t[2].goalsFor} ${t[1].name} ${t[2].goalsAg} ${
-          t[2].penaltyWin ? `${t[2].winner.name} win on penalties` : ''
+          t[2].penaltyWin
+            ? `${t[2].winner.name} win on penalties`
+            : t[2].etWin
+            ? `${t[2].winner.name} win in extra time`
+            : ''
         }`
-      )
-    );
+      );
+    });
 
     const finals: [GroupTeam, GroupTeam, Match][] = [
       [
@@ -330,13 +348,19 @@ export class SimulationComponent {
       ],
     ];
     console.log('FINAL RESULTS');
-    finals.forEach((t) =>
+    finals.forEach((t) => {
+      t[2].winner.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.bracket.push({ match: t[2], opp: t[2].winner });
       console.log(
         `${t[0].name} ${t[2].goalsFor} ${t[1].name} ${t[2].goalsAg} ${
-          t[2].penaltyWin ? `${t[2].winner.name} win on penalties` : ''
+          t[2].penaltyWin
+            ? `${t[2].winner.name} win on penalties`
+            : t[2].etWin
+            ? `${t[2].winner.name} win in extra time`
+            : ''
         }`
-      )
-    );
+      );
+    });
 
     return {
       roundOf16,
@@ -356,48 +380,36 @@ export class SimulationComponent {
 
         switch (nation.ranking) {
           case 's':
-            attRating = getRandFloat(4.25, 5);
-            defRating = getRandFloat(4.25, 5);
+            attRating = getRandFloat(80, 100);
+            defRating = getRandFloat(80, 100);
             break;
           case 'a':
-            attRating = getRandFloat(4, 5);
-            defRating = getRandFloat(4, 5);
+            attRating = getRandFloat(70, 95);
+            defRating = getRandFloat(70, 95);
             break;
           case 'b':
-            attRating = getRandFloat(3.75, 4.75);
-            defRating = getRandFloat(3.75, 4.75);
+            attRating = getRandFloat(60, 88);
+            defRating = getRandFloat(60, 88);
             break;
           case 'c':
-            attRating = getRandFloat(3.25, 4.25);
-            defRating = getRandFloat(3.25, 4.25);
+            attRating = getRandFloat(55, 80);
+            defRating = getRandFloat(55, 80);
             break;
           case 'd':
-            attRating = getRandFloat(2.5, 3.75);
-            defRating = getRandFloat(2.5, 3.75);
+            attRating = getRandFloat(40, 78);
+            defRating = getRandFloat(40, 78);
             break;
           case 'e':
-            attRating = getRandFloat(2.5, 3.25);
-            defRating = getRandFloat(2.5, 3.25);
+            attRating = getRandFloat(30, 70);
+            defRating = getRandFloat(30, 70);
             break;
           case 'f':
-            attRating = getRandFloat(1.5, 3.25);
-            defRating = getRandFloat(1.5, 3.25);
-            break;
-          case 'g':
-            attRating = getRandFloat(1.5, 2.75);
-            defRating = getRandFloat(1.5, 2.75);
-            break;
-          case 'h':
-            attRating = getRandFloat(1, 2);
-            defRating = getRandFloat(1, 2);
-            break;
-          case 'i':
-            attRating = getRandFloat(0.5, 1.5);
-            defRating = getRandFloat(0.5, 1.5);
+            attRating = getRandFloat(25, 55);
+            defRating = getRandFloat(25, 55);
             break;
           default:
-            attRating = getRandFloat(0.5, 4);
-            defRating = getRandFloat(0.5, 4);
+            attRating = getRandFloat(25, 55);
+            defRating = getRandFloat(25, 55);
             break;
         }
         const team: GroupTeam = {
@@ -406,13 +418,16 @@ export class SimulationComponent {
           gOpp: 0,
           points: 0,
           matchesPlayed: 0,
-          tier: tier.tier[0],
+          tier: nation.ranking,
           attRating,
           defRating,
           rating: roundMax(attRating + defRating),
           name: nation.name,
           logo: nation.logo,
           region: nation.region,
+          qualifiers: [],
+          group: [],
+          bracket: [],
         };
         this.nationsList.push(team);
       });
@@ -490,7 +505,6 @@ export class SimulationComponent {
     console.log(
       teamsQualified[0].name,
       teamsQualified[0].ranking,
-      teamsQualified[0].rating,
       'qualifies as host'
     );
 
@@ -534,6 +548,13 @@ export class SimulationComponent {
         return;
       }
       region.sort((a, b) => b.rating - a.rating);
+      if (Math.random() > 0.8 && regions[i] !== 'CONMEBOL') {
+        const team = region.splice(
+          getRandomInt(1, qualifyingSpots[i] - 1),
+          1
+        )[0];
+        region.splice(qualifyingSpots[i], 0, team);
+      }
       console.log(
         `qualified automatically for World Cup from ${regions[i]}`,
         region
@@ -562,11 +583,17 @@ export class SimulationComponent {
     teamsQualified.push(...cafQualifiers.map((m) => m.winner));
 
     cafQualifiers.forEach((match) => {
+      match.winner.qualifiers.push({ match, opp: match.loser });
+      match.loser.qualifiers.push({ match, opp: match.winner });
       console.log(
         `CAF qualifier playoff where ${match.winner.name} defeated ${
           match.loser.name
         } with a score of ${match.score}${
-          match.penaltyWin ? ` after winning on penalties` : ''
+          match.penaltyWin
+            ? ` after winning on penalties`
+            : match.etWin
+            ? ` after extra time`
+            : ''
         }`
       );
     });
@@ -593,17 +620,36 @@ export class SimulationComponent {
       this.matchScore(uefaTeams[14], uefaTeams[17]),
       this.matchScore(uefaTeams[15], uefaTeams[16]),
     ];
+    uefaFirstRound.forEach((match) => {
+      console.log(
+        `UEFA qualifier playoff where ${match.winner.name} defeated ${
+          match.loser.name
+        } with a score of ${match.score}${
+          match.penaltyWin
+            ? ` after winning on penalties`
+            : match.etWin
+            ? ` after extra time`
+            : ''
+        }`
+      );
+    });
     const uefaQualifiers = [
       this.matchScore(uefaFirstRound[0].winner, uefaFirstRound[5].winner),
       this.matchScore(uefaFirstRound[1].winner, uefaFirstRound[4].winner),
       this.matchScore(uefaFirstRound[2].winner, uefaFirstRound[3].winner),
     ];
     uefaQualifiers.forEach((match) => {
+      match.winner.qualifiers.push({ match, opp: match.loser });
+      match.loser.qualifiers.push({ match, opp: match.winner });
       console.log(
         `UEFA qualifier playoff where ${match.winner.name} defeated ${
           match.loser.name
         } with a score of ${match.score}${
-          match.penaltyWin ? ` after winning on penalties` : ''
+          match.penaltyWin
+            ? ` after winning on penalties`
+            : match.etWin
+            ? ` after extra time`
+            : ''
         }`
       );
     });
@@ -625,27 +671,77 @@ export class SimulationComponent {
       )
     );
     // ===== Other Qualifiers =====
-    const afcQualifier = this.matchScore(afcTeams[4], afcTeams[5]).winner;
-    const ofcQualifier = this.matchScore(ofcTeams[0], ofcTeams[1]).winner;
+    const afcQualifier = this.matchScore(afcTeams[4], afcTeams[5]);
+    afcQualifier.winner.qualifiers.push({
+      match: afcQualifier,
+      opp: afcQualifier.loser,
+    });
+    afcQualifier.loser.qualifiers.push({
+      match: afcQualifier,
+      opp: afcQualifier.winner,
+    });
+    console.log(
+      `AFC qualifier playoff where ${afcQualifier.winner.name} defeated ${
+        afcQualifier.loser.name
+      } with a score of ${afcQualifier.score}${
+        afcQualifier.penaltyWin
+          ? ` after winning on penalties`
+          : afcQualifier.etWin
+          ? ` after extra time`
+          : ''
+      }`
+    );
+    const ofcQualifier = this.matchScore(ofcTeams[0], ofcTeams[1]);
+    ofcQualifier.winner.qualifiers.push({
+      match: ofcQualifier,
+      opp: ofcQualifier.loser,
+    });
+    ofcQualifier.loser.qualifiers.push({
+      match: ofcQualifier,
+      opp: ofcQualifier.winner,
+    });
+    console.log(
+      `OFC qualifier playoff where ${ofcQualifier.winner.name} defeated ${
+        ofcQualifier.loser.name
+      } with a score of ${ofcQualifier.score}${
+        ofcQualifier.penaltyWin
+          ? ` after winning on penalties`
+          : ofcQualifier.etWin
+          ? ` after extra time`
+          : ''
+      }`
+    );
     // ===== Inter-confederation Qualifiers =====
-    const playoff1 = this.matchScore(afcQualifier, conmebolTeams[4]);
+    const playoff1 = this.matchScore(afcQualifier.winner, conmebolTeams[4]);
+    playoff1.winner.qualifiers.push({ match: playoff1, opp: playoff1.loser });
+    playoff1.loser.qualifiers.push({ match: playoff1, opp: playoff1.winner });
     teamsQualified.push(playoff1.winner);
     console.log(
-      `playoff between ${afcQualifier.name} and ${
+      `playoff between ${afcQualifier.winner.name} and ${
         conmebolTeams[4].name
       } resulted in a win for ${playoff1.winner.name}
        with a score of ${playoff1.goalsFor}-${playoff1.goalsAg}${
-        playoff1.penaltyWin ? ' decided on penalties' : ''
+        playoff1.penaltyWin
+          ? ' decided on penalties'
+          : playoff1.etWin
+          ? ` after extra time`
+          : ''
       }`
     );
-    const playoff2 = this.matchScore(concacafTeams[3], ofcQualifier);
+    const playoff2 = this.matchScore(concacafTeams[3], ofcQualifier.winner);
+    playoff2.winner.qualifiers.push({ match: playoff2, opp: playoff2.loser });
+    playoff2.loser.qualifiers.push({ match: playoff2, opp: playoff2.winner });
     teamsQualified.push(playoff2.winner);
     console.log(
       `playoff between ${concacafTeams[3].name} and ${
-        ofcQualifier.name
+        ofcQualifier.winner.name
       } resulted in a win for ${playoff2.winner.name}
        with a score of ${playoff2.goalsFor}-${playoff2.goalsAg}${
-        playoff2.penaltyWin ? ' decided on penalties' : ''
+        playoff2.penaltyWin
+          ? ' decided on penalties'
+          : playoff2.etWin
+          ? ` after extra time`
+          : ''
       }`
     );
     console.log(
@@ -678,7 +774,7 @@ export class SimulationComponent {
 
     const overPerformer = finalists.find((t: GroupTeam) => {
       if (t.ranking) {
-        return t.ranking > 11;
+        return t.ranking > 12;
       }
       return 0 > 1;
     })
@@ -698,6 +794,7 @@ export class SimulationComponent {
     console.log(
       `${underPerformer?.name.toLocaleUpperCase()} underpeformed the most in the world cup group stage`
     );
+    console.log(groups, bracket);
 
     return {
       first,
@@ -709,17 +806,18 @@ export class SimulationComponent {
   }
 
   matchScore(team: GroupTeam, otherTeam: GroupTeam): Match {
-    const gfMultiplier =
-      team.attRating - otherTeam.defRating > 0
-        ? team.attRating - otherTeam.defRating + 2.5
-        : -(team.attRating - otherTeam.defRating);
-    const gaMultiplier =
-      otherTeam.attRating - team.defRating > 0
-        ? otherTeam.attRating - team.defRating + 2.5
-        : -(otherTeam.attRating - team.defRating);
-    const goalsFor = getRandomInt(0, gfMultiplier);
-    const goalsAg = getRandomInt(0, gaMultiplier);
+    console.log(
+      [team.name, team.ranking, team.tier],
+      [otherTeam.name, otherTeam.ranking, otherTeam.tier]
+    );
+    const [goalsFor, goalsAg] = calcScore(
+      team.attRating,
+      team.defRating,
+      otherTeam.attRating,
+      otherTeam.defRating
+    );
 
+    const etWin = getRandFloat(0, 1) > 0.9 && goalsFor !== goalsAg;
     const penaltyWin = goalsFor === goalsAg;
 
     const whoWon = (
@@ -742,6 +840,7 @@ export class SimulationComponent {
     return {
       goalsFor,
       goalsAg,
+      etWin,
       penaltyWin,
       winner,
       loser,
