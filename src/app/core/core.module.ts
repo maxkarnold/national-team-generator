@@ -6,7 +6,6 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '@env';
 
 @NgModule({
-  declarations: [],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,

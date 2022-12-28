@@ -26,18 +26,22 @@ export interface GroupTeam {
   attRating: number;
   defRating: number;
   rating: number;
-  qualifiers: {
-    match: Match;
-    opp: GroupTeam;
-  }[];
-  group: {
-    match: Match;
-    opp: GroupTeam;
-  }[];
-  bracket: {
-    match: Match;
-    opp: GroupTeam;
-  }[];
+  matchHistory: {
+    qualifiers: {
+      match: Match;
+      opp: GroupTeam;
+    }[];
+    group: {
+      match: Match;
+      opp: GroupTeam;
+    }[];
+    bracket: {
+      match: Match;
+      opp: GroupTeam;
+    }[];
+  };
   ranking?: number;
   pot?: number;
+  grade?: string;
+  tournamentFinish?: string;
 }

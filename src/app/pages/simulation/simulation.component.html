@@ -34,7 +34,7 @@
       </thead>
       <tbody>
         <tr [class]="getNationClass(nation)" *ngFor="let nation of group">
-          <td><img class="nation-flag" [src]="nation.logo" [alt]="nation.name"></td>
+          <td><img class="nation-flag" (click)="openNationStats(nation)" [src]="nation.logo" [alt]="nation.name"></td>
           <td class="name">{{nation.name}}</td>
           <td>{{nation.ranking}}</td>
           <td>{{nation.matchesPlayed}}</td>
@@ -52,11 +52,11 @@
   <div class="header-knockouts">
     <h1>World Cup Knockouts</h1>
     <ul *ngIf="tournament.stats" class="stats">
-      <li>🥇 <img [src]="tournament.stats.first.logo" [alt]="tournament.stats.first.name">{{tournament.stats.first.name}}</li>
-      <li>🥈 <img [src]="tournament.stats.second.logo" [alt]="tournament.stats.second.name">{{tournament.stats.second.name}}</li>
-      <li>🥉 <img [src]="tournament.stats.third.logo" [alt]="tournament.stats.third.name">{{tournament.stats.third.name}}</li>
-      <li>📈 <img [src]="tournament.stats.overPerformer.logo" [alt]="tournament.stats.overPerformer.name">{{tournament.stats.overPerformer.name}}</li>
-      <li>📉 <img [src]="tournament.stats.underPerformer.logo" [alt]="tournament.stats.underPerformer.name">{{tournament.stats.underPerformer.name}}</li>
+      <li>🥇 <img class="nation-flag" (click)="openNationStats(tournament.stats.first)" [src]="tournament.stats.first.logo" [alt]="tournament.stats.first.name">{{tournament.stats.first.name}}</li>
+      <li>🥈 <img class="nation-flag" (click)="openNationStats(tournament.stats.second)" [src]="tournament.stats.second.logo" [alt]="tournament.stats.second.name">{{tournament.stats.second.name}}</li>
+      <li>🥉 <img class="nation-flag" (click)="openNationStats(tournament.stats.third)" [src]="tournament.stats.third.logo" [alt]="tournament.stats.third.name">{{tournament.stats.third.name}}</li>
+      <li>📈 <img class="nation-flag" (click)="openNationStats(tournament.stats.overPerformer)" [src]="tournament.stats.overPerformer.logo" [alt]="tournament.stats.overPerformer.name">{{tournament.stats.overPerformer.name}}</li>
+      <li>📉 <img class="nation-flag" (click)="openNationStats(tournament.stats.underPerformer)" [src]="tournament.stats.underPerformer.logo" [alt]="tournament.stats.underPerformer.name">{{tournament.stats.underPerformer.name}}</li>
     </ul>
   </div>
 
@@ -72,14 +72,14 @@
       <div class="match" *ngFor="let match of round.value">
         <div>
           <div>
-            <img [src]="match[0].logo" [alt]="match[0].name">
+            <img class="nation-flag" (click)="openNationStats(match[0])" [src]="match[0].logo" [alt]="match[0].name">
             <span [class]="match[2].winner.name === match[0].name ? 'winner' : ''"> {{match[0].name}} </span>
           </div>
           <span>{{match[2].goalsFor}} {{match[2].penaltyWin && match[0].name === match[2].winner.name ? '(P)' : match[2].etWin && match[0].name === match[2].winner.name ? '(AET)' : ''}}</span>
         </div>
         <div>
           <div>
-            <img [src]="match[1].logo" [alt]="match[1].name">
+            <img class="nation-flag" (click)="openNationStats(match[1])" [src]="match[1].logo" [alt]="match[1].name">
             <span [class]="match[2].winner.name === match[1].name ? 'winner' : ''"> {{match[1].name}} </span>
           </div>
           <span>{{match[2].goalsAg}} {{match[2].penaltyWin && match[1].name === match[2].winner.name ? '(P)' : match[2].etWin && match[1].name === match[2].winner.name ? '(AET)' : ''}}</span>
@@ -90,3 +90,5 @@
     </div>
   </div>
 </div>
+
+<app-nation-dialog [nation]="selectedNation" [tournament]="tournament" [class]="selectedNation ? 'show' : ''" (click)="selectedNation = undefined"></app-nation-dialog>

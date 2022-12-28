@@ -74,11 +74,6 @@ export function roundMax(num: number): number {
   return Math.round(num * 100) / 100;
 }
 
-/**
- *
- *
- * @function Takes two number values - a maximum value and an optional minimum - otherwise 0 - it returns a random number between the two values
- */
 export function calcScore(
   tAttRating: number,
   tDefRating: number,
@@ -93,7 +88,7 @@ export function calcScore(
   let result = '';
   let randIndex = getRandomInt(0, 9);
 
-  console.log(combinedAtt, combinedDef, gD);
+  console.log(gF, gA, gD);
 
   if (gD > 40) {
     result = getResultArr(8, 1, 1)[randIndex];
@@ -113,21 +108,37 @@ export function calcScore(
     result = getResultArr(1, 1, 8)[randIndex];
   }
 
-  randIndex = getRandomInt(0, 9);
+  randIndex = getRandomInt(0, 10);
   switch (result) {
     case 'win':
+      if (combinedAtt > combinedDef && gD > 20) {
+        return [
+          [2, 0],
+          [2, 1],
+          [2, 1],
+          [3, 1],
+          [3, 1],
+          [4, 1],
+          [4, 2],
+          [5, 1],
+          [4, 1],
+          [6, 1],
+          [3, 0],
+        ][randIndex];
+      }
       return combinedAtt > combinedDef
         ? [
             [1, 0],
             [2, 1],
             [2, 1],
             [2, 1],
-            [3, 1],
+            [2, 1],
             [3, 1],
             [3, 2],
             [3, 2],
-            [getRandomInt(4, 6), 1],
-            [getRandomInt(4, 6), 0],
+            [4, 2],
+            [4, 3],
+            [3, 0],
           ][randIndex]
         : [
             [1, 0],
@@ -140,20 +151,37 @@ export function calcScore(
             [2, 0],
             [3, 0],
             [3, 1],
+            [1, 0],
           ][randIndex];
     case 'loss':
+      if (combinedAtt > combinedDef && gD < -20) {
+        return [
+          [0, 2],
+          [1, 2],
+          [1, 2],
+          [1, 3],
+          [1, 3],
+          [1, 4],
+          [2, 4],
+          [1, 5],
+          [1, 4],
+          [1, 6],
+          [0, 3],
+        ][randIndex];
+      }
       return combinedAtt > combinedDef
         ? [
             [0, 1],
             [1, 2],
             [1, 2],
             [1, 2],
-            [1, 3],
+            [1, 2],
             [1, 3],
             [2, 3],
             [2, 3],
-            [1, getRandomInt(4, 6)],
-            [0, getRandomInt(4, 6)],
+            [3, 4],
+            [0, 3],
+            [0, 3],
           ][randIndex]
         : [
             [0, 1],
@@ -166,6 +194,7 @@ export function calcScore(
             [0, 2],
             [0, 3],
             [1, 3],
+            [0, 1],
           ][randIndex];
     case 'draw':
       return combinedAtt > combinedDef
@@ -180,6 +209,7 @@ export function calcScore(
             [1, 1],
             [4, 4],
             [3, 3],
+            [1, 1],
           ][randIndex]
         : [
             [0, 0],
@@ -191,6 +221,7 @@ export function calcScore(
             [1, 1],
             [2, 2],
             [3, 3],
+            [0, 0],
             [0, 0],
           ][randIndex];
     default:
@@ -206,6 +237,7 @@ export function calcScore(
             [1, 1],
             [4, 4],
             [3, 3],
+            [1, 1],
           ][randIndex]
         : [
             [0, 0],
@@ -217,6 +249,7 @@ export function calcScore(
             [1, 1],
             [2, 2],
             [3, 3],
+            [0, 0],
             [0, 0],
           ][randIndex];
   }
@@ -273,3 +306,5 @@ export function groupLetters(index: number) {
   ];
   return letters[index];
 }
+
+export const originalOrder = (): number => 0;

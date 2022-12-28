@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-// ANGULAR MATERIAL THEME
-@import '~@angular/material/theming';
-
 @font-face {
   font-family: 'aeonik-regular';
   src: url(assets/fonts/aeonik/AeonikTRIAL-Regular.otf) format('opentype');
@@ -11,24 +8,6 @@
 @font-face {
   font-family: 'aeonik-bold';
   src: url(assets/fonts/aeonik/AeonikTRIAL-Bold.otf) format('opentype');
-}
-
-// Define a custom mixin that takes in the current theme
-@mixin theme-color-grabber($theme) {
-  // Parse the theme and create variables for each color in the pallete
-  $primary: map-get($theme, primary);
-  $accent: map-get($theme, accent);
-  $warn: map-get($theme, warn);
-  // Create theme specfic styles
-  .primaryColorBG {
-    background-color: mat-color($primary);
-  }
-  .accentColorBG {
-    background-color: mat-color($accent);
-  }
-  .warnColorBG {
-    background-color: mat-color($warn);
-  }
 }
 
 // GLOBAL STYLES
@@ -61,6 +40,15 @@ button {
 select {
   display: inherit;
   text-transform: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
 }
 
 // CLASS OVERRIDES

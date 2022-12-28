@@ -29,6 +29,7 @@ export interface TournamentStats {
 export interface Tournament32 {
   teams?: GroupTeam[];
   groups?: GroupTeam[][];
+  groupWinners?: GroupTeam[];
   bracket?: {
     roundOf16: [GroupTeam, GroupTeam, Match][];
     quarterFinals: [GroupTeam, GroupTeam, Match][];

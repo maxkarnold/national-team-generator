@@ -1,0 +1,43 @@
+<div class="container" click-stop-propagation *ngIf="nation">
+
+  <div class="header">
+    <img class="nation-flag" [src]="nation.logo" [alt]="nation.name">
+    <h2>{{nation.name}}</h2>
+    <div>
+      Rank
+      <h3>{{nation.ranking}}</h3>
+    </div>
+  </div>
+  <div class="body">
+    <ul class="stats">
+      <li>Rating: {{nation.rating}}</li>
+      <li>Att Rating: {{nation.attRating}}</li>
+      <li>Def Rating: {{nation.defRating}}</li>
+      <li>Pot {{nation.pot}}</li>
+      <li>Confederation: <span>{{nation.region}}</span></li>
+    </ul>
+    <div class="flex-container">
+      <ul class="matches">
+        <h3>Match History</h3>
+        <li *ngFor="let stage of (nation.matchHistory | keyvalue: originalOrder); let i = index" class="match-stages">
+          <span *ngIf="stage.value.length > 0" class="match-stages">{{stages[i].heading}}</span>
+          <div *ngFor="let item of stage.value; let j = index" class="match">
+              <span *ngIf="stages[i].prop === 'bracket'" class="round">{{rounds[j]}}</span>
+              <img class="nation-flag" [src]="item.match.winner.logo" [alt]="item.match.winner.name">
+              <span class="team-name">{{item.match.winner.name}} {{item.match.penaltyWin && stages[i].prop !== 'group' ? '(P)' : item.match.etWin && stages[i].prop !== 'group' ? '(AET)' : ''}}</span>
+              <span class="score">{{item.match.score}}</span>
+              <img class="nation-flag" [src]="item.match.loser.logo" [alt]="item.match.loser.name">
+              <span class="team-name">{{item.match.loser.name}}</span>
+          </div>
+        </li>
+      </ul>
+      <ul *ngIf="tournament?.bracket && nation.grade" class="report-card">
+        <h3>Performance Grade</h3>
+        <li *ngIf="nation.grade" class="grade">{{nation.grade}} - {{nation.tournamentFinish}}</li>
+        <span>{{gradeSummaries(nation)}}</span>
+      </ul>
+    </div>
+
+  </div>
+
+</div>

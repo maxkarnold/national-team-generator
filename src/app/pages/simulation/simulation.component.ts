@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {
   getRandFloat,
   getRandomInt,
@@ -7,6 +7,7 @@ import {
   groupLetters,
   compare,
   calcScore,
+  originalOrder,
 } from '@shared/utils';
 import nationsModule from 'assets/json/nations.json';
 import { get, set } from 'lodash';
@@ -19,6 +20,9 @@ import { Match, Tournament32, TournamentStats } from './simulation.model';
   styleUrls: ['./simulation.component.scss'],
 })
 export class SimulationComponent {
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
+    this.selectedNation = undefined;
+  }
   nations = nationsModule;
   nationsList: GroupTeam[] = [];
   hostNation: GroupTeam = {
@@ -34,16 +38,20 @@ export class SimulationComponent {
     defRating: 0,
     rating: 0,
     matchesPlayed: 0,
-    qualifiers: [],
-    group: [],
-    bracket: [],
+    matchHistory: {
+      qualifiers: [],
+      group: [],
+      bracket: [],
+    },
   };
 
   headings = ['RNK', 'MP', 'PTS', 'GD', 'GS', 'GA'];
   numberOfTeams = 32;
   groupGamesPerOpponent = 1;
+  selectedNation?: GroupTeam;
 
   groupLetters = groupLetters;
+  originalOrder = originalOrder;
 
   tournament: Tournament32;
 
@@ -65,7 +73,6 @@ export class SimulationComponent {
     }
 
     const groups = this.organizeGroups(teams, extraTeams, teamsInGroup);
-    console.log(groups);
 
     this.tournament = {
       teams,
@@ -141,6 +148,12 @@ export class SimulationComponent {
         g[i][j].gFor = 0;
         g[i][j].gOpp = 0;
         g[i][j].matchesPlayed = 0;
+        g[i][j].matchHistory = {
+          qualifiers: [],
+          group: [],
+          bracket: [],
+        };
+        g[i][j].grade = undefined;
       }
     }
     // go through each group
@@ -162,11 +175,11 @@ export class SimulationComponent {
             // for each of the other teams play a match
             const otherTeam = g[i][k];
             const matchScore = this.matchScore(team, otherTeam);
-            matchScore.winner.group.push({
+            matchScore.winner.matchHistory.group.push({
               match: matchScore,
               opp: matchScore.loser,
             });
-            matchScore.loser.group.push({
+            matchScore.loser.matchHistory.group.push({
               match: matchScore,
               opp: matchScore.winner,
             });
@@ -213,6 +226,7 @@ export class SimulationComponent {
   } {
     console.log('============= KNOCKOUT STAGES ==============');
     const groupWinners = groups.map((group) => group.slice(0, 2));
+    this.tournament.groupWinners = groupWinners.flat() as GroupTeam[];
     console.log(groupWinners.map((g) => g.map((t) => t.name)));
     const [a, b, c, d, e, f, g, h] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     // assign numbers to letter values, to improve readability of code
@@ -261,8 +275,8 @@ export class SimulationComponent {
     ];
     console.log('ROUND OF 16 RESULTS');
     roundOf16.forEach((t) => {
-      t[2].winner.bracket.push({ match: t[2], opp: t[2].loser });
-      t[2].loser.bracket.push({ match: t[2], opp: t[2].winner });
+      t[2].winner.matchHistory.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.matchHistory.bracket.push({ match: t[2], opp: t[2].winner });
       console.log(
         `${t[0].name} ${t[2].goalsFor} ${t[1].name} ${t[2].goalsAg} ${
           t[2].penaltyWin ? `${t[2].winner.name} win on penalties` : ''
@@ -294,8 +308,8 @@ export class SimulationComponent {
     ];
     console.log('QUARTERFINAL RESULTS');
     quarterFinals.forEach((t) => {
-      t[2].winner.bracket.push({ match: t[2], opp: t[2].loser });
-      t[2].loser.bracket.push({ match: t[2], opp: t[2].winner });
+      t[2].winner.matchHistory.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.matchHistory.bracket.push({ match: t[2], opp: t[2].winner });
       console.log(
         `${t[0].name} ${t[2].goalsFor} ${t[1].name} ${t[2].goalsAg} ${
           t[2].penaltyWin
@@ -321,8 +335,8 @@ export class SimulationComponent {
     ];
     console.log('SEMIFINAL RESULTS');
     semiFinals.forEach((t) => {
-      t[2].winner.bracket.push({ match: t[2], opp: t[2].loser });
-      t[2].loser.bracket.push({ match: t[2], opp: t[2].winner });
+      t[2].winner.matchHistory.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.matchHistory.bracket.push({ match: t[2], opp: t[2].winner });
       console.log(
         `${t[0].name} ${t[2].goalsFor} ${t[1].name} ${t[2].goalsAg} ${
           t[2].penaltyWin
@@ -348,8 +362,8 @@ export class SimulationComponent {
     ];
     console.log('FINAL RESULTS');
     finals.forEach((t) => {
-      t[2].winner.bracket.push({ match: t[2], opp: t[2].loser });
-      t[2].loser.bracket.push({ match: t[2], opp: t[2].winner });
+      t[2].winner.matchHistory.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.matchHistory.bracket.push({ match: t[2], opp: t[2].winner });
       console.log(
         `${t[0].name} ${t[2].goalsFor} ${t[1].name} ${t[2].goalsAg} ${
           t[2].penaltyWin
@@ -387,22 +401,26 @@ export class SimulationComponent {
             defRating = getRandFloat(70, 95);
             break;
           case 'b':
+            attRating = getRandFloat(65, 88);
+            defRating = getRandFloat(65, 88);
+            break;
+          case 'c':
             attRating = getRandFloat(60, 88);
             defRating = getRandFloat(60, 88);
             break;
-          case 'c':
+          case 'd':
             attRating = getRandFloat(55, 80);
             defRating = getRandFloat(55, 80);
             break;
-          case 'd':
+          case 'e':
             attRating = getRandFloat(40, 78);
             defRating = getRandFloat(40, 78);
             break;
-          case 'e':
+          case 'f':
             attRating = getRandFloat(30, 70);
             defRating = getRandFloat(30, 70);
             break;
-          case 'f':
+          case 'g':
             attRating = getRandFloat(25, 55);
             defRating = getRandFloat(25, 55);
             break;
@@ -424,9 +442,11 @@ export class SimulationComponent {
           name: nation.name,
           logo: nation.logo,
           region: nation.region,
-          qualifiers: [],
-          group: [],
-          bracket: [],
+          matchHistory: {
+            qualifiers: [],
+            group: [],
+            bracket: [],
+          },
         };
         this.nationsList.push(team);
       });
@@ -582,8 +602,8 @@ export class SimulationComponent {
     teamsQualified.push(...cafQualifiers.map((m) => m.winner));
 
     cafQualifiers.forEach((match) => {
-      match.winner.qualifiers.push({ match, opp: match.loser });
-      match.loser.qualifiers.push({ match, opp: match.winner });
+      match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
+      match.loser.matchHistory.qualifiers.push({ match, opp: match.winner });
       console.log(
         `CAF qualifier playoff where ${match.winner.name} defeated ${
           match.loser.name
@@ -620,6 +640,8 @@ export class SimulationComponent {
       this.matchScore(uefaTeams[15], uefaTeams[16]),
     ];
     uefaFirstRound.forEach((match) => {
+      match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
+      match.loser.matchHistory.qualifiers.push({ match, opp: match.winner });
       console.log(
         `UEFA qualifier playoff where ${match.winner.name} defeated ${
           match.loser.name
@@ -638,8 +660,8 @@ export class SimulationComponent {
       this.matchScore(uefaFirstRound[2].winner, uefaFirstRound[3].winner),
     ];
     uefaQualifiers.forEach((match) => {
-      match.winner.qualifiers.push({ match, opp: match.loser });
-      match.loser.qualifiers.push({ match, opp: match.winner });
+      match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
+      match.loser.matchHistory.qualifiers.push({ match, opp: match.winner });
       console.log(
         `UEFA qualifier playoff where ${match.winner.name} defeated ${
           match.loser.name
@@ -671,11 +693,11 @@ export class SimulationComponent {
     );
     // ===== Other Qualifiers =====
     const afcQualifier = this.matchScore(afcTeams[4], afcTeams[5]);
-    afcQualifier.winner.qualifiers.push({
+    afcQualifier.winner.matchHistory.qualifiers.push({
       match: afcQualifier,
       opp: afcQualifier.loser,
     });
-    afcQualifier.loser.qualifiers.push({
+    afcQualifier.loser.matchHistory.qualifiers.push({
       match: afcQualifier,
       opp: afcQualifier.winner,
     });
@@ -691,11 +713,11 @@ export class SimulationComponent {
       }`
     );
     const ofcQualifier = this.matchScore(ofcTeams[0], ofcTeams[1]);
-    ofcQualifier.winner.qualifiers.push({
+    ofcQualifier.winner.matchHistory.qualifiers.push({
       match: ofcQualifier,
       opp: ofcQualifier.loser,
     });
-    ofcQualifier.loser.qualifiers.push({
+    ofcQualifier.loser.matchHistory.qualifiers.push({
       match: ofcQualifier,
       opp: ofcQualifier.winner,
     });
@@ -712,8 +734,14 @@ export class SimulationComponent {
     );
     // ===== Inter-confederation Qualifiers =====
     const playoff1 = this.matchScore(afcQualifier.winner, conmebolTeams[4]);
-    playoff1.winner.qualifiers.push({ match: playoff1, opp: playoff1.loser });
-    playoff1.loser.qualifiers.push({ match: playoff1, opp: playoff1.winner });
+    playoff1.winner.matchHistory.qualifiers.push({
+      match: playoff1,
+      opp: playoff1.loser,
+    });
+    playoff1.loser.matchHistory.qualifiers.push({
+      match: playoff1,
+      opp: playoff1.winner,
+    });
     teamsQualified.push(playoff1.winner);
     console.log(
       `playoff between ${afcQualifier.winner.name} and ${
@@ -728,8 +756,14 @@ export class SimulationComponent {
       }`
     );
     const playoff2 = this.matchScore(concacafTeams[3], ofcQualifier.winner);
-    playoff2.winner.qualifiers.push({ match: playoff2, opp: playoff2.loser });
-    playoff2.loser.qualifiers.push({ match: playoff2, opp: playoff2.winner });
+    playoff2.winner.matchHistory.qualifiers.push({
+      match: playoff2,
+      opp: playoff2.loser,
+    });
+    playoff2.loser.matchHistory.qualifiers.push({
+      match: playoff2,
+      opp: playoff2.winner,
+    });
     teamsQualified.push(playoff2.winner);
     console.log(
       `playoff between ${concacafTeams[3].name} and ${
@@ -763,9 +797,6 @@ export class SimulationComponent {
     groups: GroupTeam[][]
   ): TournamentStats {
     const first = bracket.finals[0][2].winner;
-    console.log(
-      `${first?.name.toLocaleUpperCase()} HAS WON THE WORLD CUP!! 🏆`
-    );
     const second = bracket.finals[0][2].loser;
     const third = bracket.finals[1][2].winner;
 
@@ -783,17 +814,9 @@ export class SimulationComponent {
       : groups
           .flatMap((group) => group.slice(0, 2))
           .reduce((prev, curr) => (prev.rating < curr.rating ? prev : curr));
-
-    console.log(
-      `${overPerformer?.name.toLocaleUpperCase()} overpeformed the most in the world cup group stage`
-    );
     const underPerformer = groups
       .flatMap((group) => group.slice(-2))
       .reduce((prev, curr) => (prev.rating > curr.rating ? prev : curr));
-    console.log(
-      `${underPerformer?.name.toLocaleUpperCase()} underpeformed the most in the world cup group stage`
-    );
-    console.log(groups, bracket);
 
     return {
       first,
@@ -806,8 +829,8 @@ export class SimulationComponent {
 
   matchScore(team: GroupTeam, otherTeam: GroupTeam): Match {
     console.log(
-      [team.name, team.ranking, team.tier],
-      [otherTeam.name, otherTeam.ranking, otherTeam.tier]
+      [team.name, team.ranking, team.tier, team.rating],
+      [otherTeam.name, otherTeam.ranking, otherTeam.tier, otherTeam.rating]
     );
     const [goalsFor, goalsAg] = calcScore(
       team.attRating,
@@ -946,6 +969,10 @@ export class SimulationComponent {
     return drawAndSort(potTeams, host.name, teamsInPot);
   }
 
+  openNationStats(nation: GroupTeam) {
+    this.selectedNation = nation;
+  }
+
   getNationClass(nation: GroupTeam) {
     return `nation ${nation.region}`;
   }
@@ -953,6 +980,4 @@ export class SimulationComponent {
   compareObj(o1: GroupTeam, o2: GroupTeam) {
     return o1?.name === o2?.name;
   }
-
-  originalOrder = (): number => 0;
 }
