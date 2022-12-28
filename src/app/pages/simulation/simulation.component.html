@@ -18,9 +18,10 @@
   </div>
 
   <button [disabled]="numberOfTeams > 96" (click)="setupTournament()">Setup Tournament</button>
+  <button class="button" *ngIf="tournament.groups" (click)="simulateTournament()">Simulate</button>
 </div>
 
-<button class="button" *ngIf="tournament.groups" (click)="simulateTournament()">Simulate</button>
+
 <div class="group-stage">
   <div class="group" *ngFor="let group of tournament.groups; index as i; trackBy: groupLetters">
     <span class="group-name">Group {{groupLetters(i)}}</span>
@@ -34,7 +35,7 @@
       <tbody>
         <tr [class]="getNationClass(nation)" *ngFor="let nation of group">
           <td><img class="nation-flag" [src]="nation.logo" [alt]="nation.name"></td>
-          <td>{{nation.name}}</td>
+          <td class="name">{{nation.name}}</td>
           <td>{{nation.ranking}}</td>
           <td>{{nation.matchesPlayed}}</td>
           <td>{{nation.points}}</td>

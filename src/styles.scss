@@ -3,6 +3,16 @@
 // ANGULAR MATERIAL THEME
 @import '~@angular/material/theming';
 
+@font-face {
+  font-family: 'aeonik-regular';
+  src: url(assets/fonts/aeonik/AeonikTRIAL-Regular.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'aeonik-bold';
+  src: url(assets/fonts/aeonik/AeonikTRIAL-Bold.otf) format('opentype');
+}
+
 // Define a custom mixin that takes in the current theme
 @mixin theme-color-grabber($theme) {
   // Parse the theme and create variables for each color in the pallete
@@ -33,17 +43,15 @@
 
 *, *::after, *::before {
   box-sizing: border-box;
-}
-
-html, body {
-  min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
   background-size: auto 100%;
+  font-family: 'aeonik-regular', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 button {
@@ -79,4 +87,8 @@ td, th {
 
 .mat-list-base {
   background-color: #3F51B5;
+}
+
+.mat-h1, .mat-headline, .mat-typography .mat-h1, .mat-typography .mat-headline, .mat-typography h1 {
+  font: inherit;
 }
