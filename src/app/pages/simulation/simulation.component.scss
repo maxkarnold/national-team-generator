@@ -1,18 +1,10 @@
-:host {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 64px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  box-sizing: border-box;
-}
+@import 'variables.scss';
 
 h1 {
   text-align: center;
   margin: 3rem;
   font-size: 3rem;
+
   @media screen and (max-width: 600px) {
     font-size: 2rem;
   }
@@ -32,16 +24,19 @@ h1 {
   flex-flow: column;
   width: 90%;
   margin: 0 auto;
+
   button {
     width: 10rem;
     align-self: center;
   }
+
   .inputs {
     display: flex;
     flex-flow: wrap;
     justify-content: center;
     margin: 2rem 0;
-    & > div {
+
+    &>div {
       width: 12rem;
       margin: 0 1rem;
       display: flex;
@@ -49,6 +44,7 @@ h1 {
       justify-content: space-between;
       align-items: flex-start;
     }
+
     .host-nation {
       text-transform: capitalize;
     }
@@ -60,15 +56,18 @@ h1 {
   justify-content: space-evenly;
   grid-template-columns: repeat(4, 1fr);
   margin: 0 2rem;
-  @media screen and (max-width: 1200px) {
+
+  @media screen and (max-width: 1600px) {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
-  @media screen and (max-width: 600px) {
+
+  @media screen and (max-width: 800px) {
     display: flex;
     flex-flow: column;
     margin: 0;
   }
+
   .group-name {
     text-transform: capitalize;
     font-weight: bold;
@@ -80,6 +79,7 @@ h1 {
     color: black;
     border-radius: 5px;
   }
+
   .group {
     background-color: #4F4F4F;
     color: white;
@@ -88,31 +88,40 @@ h1 {
     margin: 10px;
     padding: 5px;
     border-radius: 10px;
+
     table {
       padding: 0 5px;
+
       th {
         padding: 5px;
+
         &:first-child {
           text-align: left;
         }
       }
+
       tr {
+
         // padding: 10px;
         // border-bottom: 1px solid white;
         &.nation:last-child {
           border-bottom: none;
         }
       }
+
       .nation {
         text-transform: capitalize;
+
         td {
           text-align: center;
           padding: 5px;
+
           .nation-flag {
             width: 2.25rem;
             height: 1.5rem;
             display: flex;
           }
+
           &.name {
             font-family: 'aeonik-bold', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
           }
@@ -129,28 +138,33 @@ h1 {
   padding: 2rem 0;
   margin: 5rem auto;
   width: 100%;
-  background: linear-gradient(to bottom, #ff4242, #ab2d2d);
+  background: linear-gradient(to bottom, $secondary-light, $secondary);
   text-transform: capitalize;
+
   .header-knockouts {
     display: flex;
     justify-content: space-around;
     align-items: center;
+
     .stats {
       font-size: 1.5rem;
       border: 1px solid black;
       border-radius: 5px;
       background-color: #d3d1d1e6;
       padding: 1.5rem;
+
       li {
         display: flex;
         margin-bottom: 10px;
       }
+
       .nation-flag {
         width: 2rem;
         height: 1.5rem;
         margin: 0 1rem;
       }
     }
+
     h1 {
       color: white;
       font-size: 4rem;
@@ -164,12 +178,14 @@ h1 {
     font-size: 2.25rem;
     margin-top: 4rem;
     padding: 0 5rem;
+
     li {
       display: flex;
       justify-content: center;
       color: white;
     }
   }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(4, auto);
@@ -177,16 +193,20 @@ h1 {
     margin: 0rem 2rem;
     font-size: 1.25rem;
     grid-gap: 1rem;
+
     .round {
       display: grid;
       grid-row: span 16;
       align-items: center;
+
       &:nth-child(2) {
         grid-column: 2;
       }
+
       &:nth-child(3) {
         grid-column: 3;
       }
+
       &:nth-child(4) {
         grid-column: 4;
         grid-row: 6 / 20;
@@ -197,6 +217,7 @@ h1 {
         //   border: 5px solid #D86324;
         // }
       }
+
       .match {
         display: flex;
         flex-flow: column;
@@ -207,23 +228,27 @@ h1 {
         border-radius: 5px;
         background-color: #d3d1d1e6;
         height: 7rem;
-        > div {
+
+        >div {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          > div {
+
+          >div {
             display: flex;
             align-items: center;
             justify-content: space-between;
           }
         }
+
         .nation-flag {
           width: 3rem;
           height: 2rem;
           margin-right: 1rem;
         }
+
         .winner {
-          color: #e3c30e;
+          color: #7fe654;
           background-color: rgb(59, 58, 58);
           padding: 5px;
         }
@@ -274,5 +299,3 @@ h1 {
 //     background: #00d084bf;
 //   }
 // }
-
-

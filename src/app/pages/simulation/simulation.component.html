@@ -2,46 +2,87 @@
 <div class="number-form">
   <div class="inputs">
     <div>
-      <label for="numOfGames">Number of Group Games Per Opponent</label>
-      <input type="number" name="numOfGames" [(ngModel)]="groupGamesPerOpponent" min="1" max="3">
+      <label for="numOfGames">Group Games Per Opponent</label>
+      <input
+        type="number"
+        name="numOfGames"
+        [(ngModel)]="groupGamesPerOpponent"
+        min="1"
+        max="3"
+      />
     </div>
     <div>
       <label for="numOfTeams">Number of Teams</label>
-      <input type="number" name="numOfTeams" [(ngModel)]="numberOfTeams" min="8" max="96" placeholder="multiple of 4" disabled>
+      <input
+        type="number"
+        name="numOfTeams"
+        [(ngModel)]="numberOfTeams"
+        min="8"
+        max="96"
+        placeholder="multiple of 4"
+        disabled
+      />
     </div>
     <div class="host-nation">
       <label for="hostNation">Host Nation</label>
-      <select name="hostNation" [(ngModel)]="hostNation" [compareWith]="compareObj">
-        <option *ngFor="let nation of nationsList" [ngValue]="nation" placeholder="Choose Host Nation">{{nation.name}}</option>
+      <select
+        name="hostNation"
+        [(ngModel)]="hostNation"
+        [compareWith]="compareObj"
+      >
+        <option
+          *ngFor="let nation of nationsList"
+          [ngValue]="nation"
+          placeholder="Choose Host Nation"
+        >
+          {{ nation.name }}
+        </option>
       </select>
     </div>
   </div>
 
-  <button [disabled]="numberOfTeams > 96" (click)="setupTournament()">Setup Tournament</button>
-  <button class="button" *ngIf="tournament.groups" (click)="simulateTournament()">Simulate</button>
+  <button [disabled]="numberOfTeams > 96" (click)="setupTournament()">
+    Setup Tournament
+  </button>
+  <button
+    class="button"
+    *ngIf="tournament.groups"
+    (click)="simulateTournament()"
+  >
+    Simulate
+  </button>
 </div>
 
-
 <div class="group-stage">
-  <div class="group" *ngFor="let group of tournament.groups; index as i; trackBy: groupLetters">
-    <span class="group-name">Group {{groupLetters(i)}}</span>
+  <div
+    class="group"
+    *ngFor="let group of tournament.groups; index as i; trackBy: groupLetters"
+  >
+    <span class="group-name">Group {{ groupLetters(i) }}</span>
     <table>
       <thead>
         <tr class="group-headings">
           <th colspan="2">Team</th>
-          <th *ngFor="let heading of headings">{{heading}}</th>
+          <th *ngFor="let heading of headings">{{ heading }}</th>
         </tr>
       </thead>
       <tbody>
         <tr [class]="getNationClass(nation)" *ngFor="let nation of group">
-          <td><img class="nation-flag" (click)="openNationStats(nation)" [src]="nation.logo" [alt]="nation.name"></td>
-          <td class="name">{{nation.name}}</td>
-          <td>{{nation.ranking}}</td>
-          <td>{{nation.matchesPlayed}}</td>
-          <td>{{nation.points}}</td>
-          <td>{{nation.gDiff}}</td>
-          <td>{{nation.gFor}}</td>
-          <td>{{nation.gOpp}}</td>
+          <td>
+            <img
+              class="nation-flag"
+              (click)="openNationStats(nation)"
+              [src]="nation.logo"
+              [alt]="nation.name"
+            />
+          </td>
+          <td class="name">{{ nation.name }}</td>
+          <td>{{ nation.ranking }}</td>
+          <td>{{ nation.matchesPlayed }}</td>
+          <td>{{ nation.points }}</td>
+          <td>{{ nation.gDiff }}</td>
+          <td>{{ nation.gFor }}</td>
+          <td>{{ nation.gOpp }}</td>
         </tr>
       </tbody>
     </table>
@@ -52,14 +93,53 @@
   <div class="header-knockouts">
     <h1>World Cup Knockouts</h1>
     <ul *ngIf="tournament.stats" class="stats">
-      <li>🥇 <img class="nation-flag" (click)="openNationStats(tournament.stats.first)" [src]="tournament.stats.first.logo" [alt]="tournament.stats.first.name">{{tournament.stats.first.name}}</li>
-      <li>🥈 <img class="nation-flag" (click)="openNationStats(tournament.stats.second)" [src]="tournament.stats.second.logo" [alt]="tournament.stats.second.name">{{tournament.stats.second.name}}</li>
-      <li>🥉 <img class="nation-flag" (click)="openNationStats(tournament.stats.third)" [src]="tournament.stats.third.logo" [alt]="tournament.stats.third.name">{{tournament.stats.third.name}}</li>
-      <li>📈 <img class="nation-flag" (click)="openNationStats(tournament.stats.overPerformer)" [src]="tournament.stats.overPerformer.logo" [alt]="tournament.stats.overPerformer.name">{{tournament.stats.overPerformer.name}}</li>
-      <li>📉 <img class="nation-flag" (click)="openNationStats(tournament.stats.underPerformer)" [src]="tournament.stats.underPerformer.logo" [alt]="tournament.stats.underPerformer.name">{{tournament.stats.underPerformer.name}}</li>
+      <li>
+        🥇
+        <img
+          class="nation-flag"
+          (click)="openNationStats(tournament.stats.first)"
+          [src]="tournament.stats.first.logo"
+          [alt]="tournament.stats.first.name"
+        />{{ tournament.stats.first.name }}
+      </li>
+      <li>
+        🥈
+        <img
+          class="nation-flag"
+          (click)="openNationStats(tournament.stats.second)"
+          [src]="tournament.stats.second.logo"
+          [alt]="tournament.stats.second.name"
+        />{{ tournament.stats.second.name }}
+      </li>
+      <li>
+        🥉
+        <img
+          class="nation-flag"
+          (click)="openNationStats(tournament.stats.third)"
+          [src]="tournament.stats.third.logo"
+          [alt]="tournament.stats.third.name"
+        />{{ tournament.stats.third.name }}
+      </li>
+      <li>
+        📈
+        <img
+          class="nation-flag"
+          (click)="openNationStats(tournament.stats.overPerformer)"
+          [src]="tournament.stats.overPerformer.logo"
+          [alt]="tournament.stats.overPerformer.name"
+        />{{ tournament.stats.overPerformer.name }}
+      </li>
+      <li>
+        📉
+        <img
+          class="nation-flag"
+          (click)="openNationStats(tournament.stats.underPerformer)"
+          [src]="tournament.stats.underPerformer.logo"
+          [alt]="tournament.stats.underPerformer.name"
+        />{{ tournament.stats.underPerformer.name }}
+      </li>
     </ul>
   </div>
-
 
   <ul class="headings">
     <li>Round of 16</li>
@@ -68,27 +148,69 @@
     <li>Finals</li>
   </ul>
   <div class="grid">
-    <div class="round" *ngFor="let round of tournament.bracket | keyvalue: originalOrder">
+    <div
+      class="round"
+      *ngFor="let round of tournament.bracket | keyvalue: originalOrder"
+    >
       <div class="match" *ngFor="let match of round.value">
         <div>
           <div>
-            <img class="nation-flag" (click)="openNationStats(match[0])" [src]="match[0].logo" [alt]="match[0].name">
-            <span [class]="match[2].winner.name === match[0].name ? 'winner' : ''"> {{match[0].name}} </span>
+            <img
+              class="nation-flag"
+              (click)="openNationStats(match[0])"
+              [src]="match[0].logo"
+              [alt]="match[0].name"
+            />
+            <span
+              [class]="match[2].winner.name === match[0].name ? 'winner' : ''"
+            >
+              {{ match[0].name }}
+            </span>
           </div>
-          <span>{{match[2].goalsFor}} {{match[2].penaltyWin && match[0].name === match[2].winner.name ? '(P)' : match[2].etWin && match[0].name === match[2].winner.name ? '(AET)' : ''}}</span>
+          <span
+            >{{ match[2].goalsFor }}
+            {{
+              match[2].penaltyWin && match[0].name === match[2].winner.name
+                ? "(P)"
+                : match[2].etWin && match[0].name === match[2].winner.name
+                ? "(AET)"
+                : ""
+            }}</span
+          >
         </div>
         <div>
           <div>
-            <img class="nation-flag" (click)="openNationStats(match[1])" [src]="match[1].logo" [alt]="match[1].name">
-            <span [class]="match[2].winner.name === match[1].name ? 'winner' : ''"> {{match[1].name}} </span>
+            <img
+              class="nation-flag"
+              (click)="openNationStats(match[1])"
+              [src]="match[1].logo"
+              [alt]="match[1].name"
+            />
+            <span
+              [class]="match[2].winner.name === match[1].name ? 'winner' : ''"
+            >
+              {{ match[1].name }}
+            </span>
           </div>
-          <span>{{match[2].goalsAg}} {{match[2].penaltyWin && match[1].name === match[2].winner.name ? '(P)' : match[2].etWin && match[1].name === match[2].winner.name ? '(AET)' : ''}}</span>
+          <span
+            >{{ match[2].goalsAg }}
+            {{
+              match[2].penaltyWin && match[1].name === match[2].winner.name
+                ? "(P)"
+                : match[2].etWin && match[1].name === match[2].winner.name
+                ? "(AET)"
+                : ""
+            }}</span
+          >
         </div>
-
-
       </div>
     </div>
   </div>
 </div>
 
-<app-nation-dialog [nation]="selectedNation" [tournament]="tournament" [class]="selectedNation ? 'show' : ''" (click)="selectedNation = undefined"></app-nation-dialog>
+<app-nation-dialog
+  [nation]="selectedNation"
+  [tournament]="tournament"
+  [class]="selectedNation ? 'show' : ''"
+  (click)="selectedNation = undefined"
+></app-nation-dialog>

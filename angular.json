@@ -27,22 +27,18 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/assets", "src/assets/img"],
-            "styles": [
-              "./node_modules/font-awesome/css/font-awesome.css",
-              "./src/styles.scss"
-            ],
+            "styles": ["./src/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
-            },
-            "scripts": ["./node_modules/jquery/dist/jquery.js"]
+            }
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

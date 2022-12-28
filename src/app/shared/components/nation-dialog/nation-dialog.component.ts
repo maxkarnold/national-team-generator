@@ -33,6 +33,7 @@ export class NationDialogComponent implements OnChanges {
       prop: 'bracket',
     },
   ];
+  gradeStyle?: string;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nation && this.tournament?.bracket) {
@@ -42,20 +43,24 @@ export class NationDialogComponent implements OnChanges {
 
   gradePerformance() {
     const { nation } = this;
-    if (nation?.ranking === undefined || nation.grade) {
+    if (nation?.ranking === undefined) {
       return;
     }
-
+    if (nation.grade) {
+      this.gradeStyle = this.getGradeStyle(nation.grade);
+      return;
+    }
     const rankingTiers = [6, 11, 26, 41, 56, 80, 400];
-    let hasGrade = false;
 
-    rankingTiers.forEach((r, i) => {
-      if (nation.ranking && nation.ranking < r && !hasGrade) {
+    rankingTiers.every((r, i) => {
+      if (nation.ranking && nation.ranking < r) {
         const { grade, result } = this.calcGrade(i);
         nation.grade = grade;
         nation.tournamentFinish = result;
-        hasGrade = true;
+        this.gradeStyle = this.getGradeStyle(grade);
+        return false;
       }
+      return true;
     });
   }
 
@@ -104,7 +109,7 @@ export class NationDialogComponent implements OnChanges {
       gradeArr = ['b', 'a', 's', 's', 's', 's', 's'];
       result = 'Runner Up';
     } else if (tournament.stats.first === nation) {
-      gradeArr = ['a', 's', 's', 's', 's', 's', 's'];
+      gradeArr = ['a', 'a', 's', 's', 's', 's', 's'];
       result = 'Winner';
     }
     return {
@@ -134,5 +139,26 @@ export class NationDialogComponent implements OnChanges {
       default:
         return 'ERROR';
     }
+  }
+
+  getGradeStyle(
+    grade: string | undefined
+  ): '' | 'good-grade' | 'ok-grade' | 'bad-grade' {
+    if (grade) {
+      switch (grade) {
+        case 's':
+        case 'a':
+          return 'good-grade';
+        case 'b':
+        case 'c':
+          return 'ok-grade';
+        case 'd':
+        case 'f':
+          return 'bad-grade';
+        default:
+          return 'bad-grade';
+      }
+    }
+    return '';
   }
 }

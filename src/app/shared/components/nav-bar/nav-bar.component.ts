@@ -10,6 +10,5 @@ export class NavBarComponent {
   loginOverlayOpen = false;
   navToggle = false;
   isLoggedIn = false;
-
   constructor(public auth: AuthService) {}
 }

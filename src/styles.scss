@@ -15,12 +15,14 @@
 :root {
   --star-size: 1rem;
   --star-color: #fff;
-  --star-background:#fc0;
+  --star-background: #fc0;
   --starter-rating: 0%;
   --squad-rating: 0%;
 }
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -38,11 +40,15 @@ button {
 }
 
 select {
-  display: inherit;
   text-transform: inherit;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   padding: 0;
 }
@@ -51,32 +57,10 @@ li {
   list-style: none;
 }
 
-// CLASS OVERRIDES
-
-input.login-overlay__input.login-overlay__input--override {
-  margin: 0.5rem 1.5rem;
-  width: auto;
+a {
+  text-decoration: none;
 }
 
-// ANGULAR MATERIAL CLASSES *DO NOT TOUCH*
-
-td, th {
-  border-radius: 0;
-}
-
-.mat-expansion-indicator::after {
-  color: #c8c8c887;
-}
-
-.mat-list-base.list .mat-list-item .mat-list-item-content {
-  justify-content: center;
-  width: 100%;
-}
-
-.mat-list-base {
-  background-color: #3F51B5;
-}
-
-.mat-h1, .mat-headline, .mat-typography .mat-h1, .mat-typography .mat-headline, .mat-typography h1 {
-  font: inherit;
+input:disabled {
+  cursor: not-allowed;
 }

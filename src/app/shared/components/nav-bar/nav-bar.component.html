@@ -1,45 +1,44 @@
 <header class="header header--mobile">
-  <!-- <mat-toolbar color="primary" class="nav-bar"> -->
-
-    <!-- <button
+  <!-- <button
       mat-icon-button
       class="nav-bar__menu-button nav-bar__menu-button--ripple"
       aria-label="Example icon-button with menu icon"
       (click)="navToggle = !navToggle"
     > -->
-      <!-- <mat-icon class="nav-bar__menu-button__icon">menu</mat-icon> -->
-    <!-- </button> -->
-  <!-- </mat-toolbar> -->
-  <!-- <mat-nav-list class="nav-list" role="list" *ngIf="navToggle">
+  <!-- <mat-icon class="nav-bar__menu-button__icon">menu</mat-icon> -->
+  <!-- </button> -->
 
-  </mat-nav-list> -->
-   <a routerLink="/" class="logo logo--ripple">
+  <nav class="nav-bar">
+    <a routerLink="/" class="logo logo--ripple">
       <span class="logo__title">National Team Generator</span>
     </a>
-    <span class="nav-bar__nav-spacer"></span>
-  <a routerLink="/simulation" class="nav-list__link nav-list__link--ripple"
-      >Simulation</a
-    >
+    <div class="nav-bar__menu-button">
+      <fa-icon icon="bars" (click)="navToggle = !navToggle"></fa-icon>
+    </div>
+  </nav>
+  <ul class="nav-list" *ngIf="navToggle">
+    <a routerLink="/simulation" class="nav-list__link nav-list__link--ripple">
+      Simulation
+    </a>
     <a routerLink="/leaderboard" class="nav-list__link nav-list__link--ripple"
       >Leaderboards</a
     >
     <ng-template #login>
-      <a routerLink="/login" class="nav-bar__link nav-bar__link--ripple"
+      <a routerLink="/login" class="nav-list__link nav-list__link--ripple"
         >Login</a
       >
     </ng-template>
     <a
       (click)="auth.signOut()"
       *ngIf="auth.user$ | async as user; else login"
-      class="nav-bar__link nav-bar__link--ripple"
+      class="nav-list__link nav-list__link--ripple"
       >Logout</a
     >
+  </ul>
 </header>
 <header class="header header--desktop">
-  <!-- <mat-toolbar color="primary" class="nav-bar">
-
-  </mat-toolbar> -->
-  <a routerLink="/" class="logo logo--ripple">
+  <nav class="nav-bar">
+    <a routerLink="/" class="logo logo--ripple">
       <span class="logo__title">National Team Generator</span>
     </a>
     <span class="nav-bar__nav-spacer"></span>
@@ -60,37 +59,5 @@
       class="nav-bar__link nav-bar__link--ripple"
       >Logout</a
     >
+  </nav>
 </header>
-<!-- <ng-container *ngIf="loginOverlayOpen" class="ng-container">
-  <div class="login-overlay ng-container__login-overlay">
-    <div class="login-overlay__exit">
-      <button
-        mat-button
-        (click)="loginOverlay()"
-        class="login-overlay__exit__button"
-      >
-        <mat-icon class="login-overlay__exit__button__icon">close</mat-icon>
-      </button>
-    </div>
-    <input
-      class="login-overlay__input login-overlay__input--override"
-      type="text"
-      #email
-      placeholder="email"
-    />
-    <input
-      class="login-overlay__input login-overlay__input--override"
-      type="password"
-      #password
-      placeholder="password"
-    />
-    <button
-      mat-raised-button
-      type="submit"
-      (click)="login(email.value, password.value)"
-      class="login-overlay__button login-overlay__button--ripple"
-    >
-      Login
-    </button>
-  </div>
-</ng-container> -->
