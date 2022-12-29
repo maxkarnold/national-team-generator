@@ -10,11 +10,6 @@ h1 {
   }
 }
 
-.button {
-  margin: 1rem auto;
-  display: block;
-}
-
 .nation-flag {
   cursor: pointer;
 }
@@ -28,6 +23,12 @@ h1 {
   button {
     width: 10rem;
     align-self: center;
+    margin: 1rem auto;
+
+    @media screen and (max-width: 600px) {
+      width: 80%;
+      height: 3rem;
+    }
   }
 
   .inputs {
@@ -78,6 +79,10 @@ h1 {
     background-color: lightgray;
     color: black;
     border-radius: 5px;
+
+    @media screen and (max-width: 600px) {
+      border-radius: 0;
+    }
   }
 
   .group {
@@ -88,6 +93,13 @@ h1 {
     margin: 10px;
     padding: 5px;
     border-radius: 10px;
+
+    @media screen and (max-width: 600px) {
+      margin: 15px 0;
+      padding: 0;
+      border-radius: 0;
+      font-size: 80%;
+    }
 
     table {
       padding: 0 5px;
@@ -101,9 +113,6 @@ h1 {
       }
 
       tr {
-
-        // padding: 10px;
-        // border-bottom: 1px solid white;
         &.nation:last-child {
           border-bottom: none;
         }
@@ -141,6 +150,10 @@ h1 {
   background: linear-gradient(to bottom, $secondary-light, $secondary);
   text-transform: capitalize;
 
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
+
   .header-knockouts {
     display: flex;
     justify-content: space-around;
@@ -177,7 +190,6 @@ h1 {
     grid-gap: 1rem;
     font-size: 2.25rem;
     margin-top: 4rem;
-    padding: 0 5rem;
 
     li {
       display: flex;

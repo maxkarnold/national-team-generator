@@ -211,6 +211,7 @@
 <app-nation-dialog
   [nation]="selectedNation"
   [tournament]="tournament"
+  (closeDialog)="selectedNation = undefined"
   [class]="selectedNation ? 'show' : ''"
   (click)="selectedNation = undefined"
 ></app-nation-dialog>

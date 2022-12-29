@@ -1,11 +1,18 @@
 <div class="container" click-stop-propagation *ngIf="nation">
   <div class="header">
-    <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" />
-    <h2>{{ nation.name }}</h2>
-    <div>
-      Rank
-      <h3>{{ nation.ranking }}</h3>
+    <div class="nation-name">
+      <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" />
+      <h2>{{ nation.name }}</h2>
+      <div class="rank">
+        Rank
+        <h3>{{ nation.ranking }}</h3>
+      </div>
     </div>
+    <fa-icon
+      icon="xmark"
+      class="exit-button"
+      (click)="closeDialog.emit(true)"
+    ></fa-icon>
   </div>
   <div class="body">
     <ul class="stats">
@@ -30,7 +37,10 @@
           <span *ngIf="stage.value.length > 0" class="match-stages">{{
             stages[i].heading
           }}</span>
-          <div *ngFor="let item of stage.value; let j = index" class="match">
+          <div
+            *ngFor="let item of stage.value; let j = index"
+            class="match-row"
+          >
             <span *ngIf="stages[i].prop === 'bracket'" class="round">{{
               rounds[j]
             }}</span>

@@ -7,7 +7,7 @@ import {
   FontAwesomeModule,
   FaIconLibrary,
 } from '@fortawesome/angular-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromComponents from './components';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
@@ -24,6 +24,6 @@ import { ClickStopPropagationDirective } from './directives/click-stop-propagati
 })
 export class SharedModule {
   constructor(library: FaIconLibrary) {
-    library.addIcons(faBars);
+    library.addIcons(faBars, faXmark);
   }
 }

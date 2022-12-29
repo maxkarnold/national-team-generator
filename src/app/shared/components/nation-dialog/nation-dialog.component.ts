@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { GroupTeam } from 'app/models/nation.model';
 import { originalOrder } from '@shared/utils';
 import { Tournament32 } from 'app/pages/simulation/simulation.model';
@@ -11,6 +18,7 @@ import { Tournament32 } from 'app/pages/simulation/simulation.model';
 export class NationDialogComponent implements OnChanges {
   @Input() nation?: GroupTeam = undefined;
   @Input() tournament?: Tournament32;
+  @Output() closeDialog = new EventEmitter<boolean>(false);
 
   originalOrder = originalOrder;
   rounds = [
