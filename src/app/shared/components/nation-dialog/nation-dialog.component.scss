@@ -41,6 +41,11 @@ h3 {
     width: 95%;
   }
 
+  @media screen and (max-width: 600px) {
+    width: 100%;
+    max-height: 100vh;
+  }
+
   .header {
     padding: 1rem;
     display: flex;
@@ -153,6 +158,10 @@ h3 {
         font-size: 2.5rem;
         text-transform: uppercase;
 
+        @media screen and (max-width: 600px) {
+          font-size: 1.25rem;
+        }
+
         &.good-grade {
           color: #00ff00;
         }
@@ -174,11 +183,16 @@ h3 {
 
       @media screen and (max-width: 600px) {
         width: 100%;
+        margin: 0;
       }
 
       .match-stages {
         margin-top: 5px;
         margin-bottom: 15px;
+
+        @media screen and (max-width: 600px) {
+          margin-bottom: 0;
+        }
       }
 
       .match-row {
@@ -211,6 +225,11 @@ h3 {
           width: 2.5rem;
           height: 1.5rem;
           margin-right: 5px;
+          cursor: pointer;
+
+          &.disabled {
+            cursor: not-allowed;
+          }
 
           @media screen and (max-width: 1000px) {
             width: 2rem;

@@ -23,6 +23,7 @@ export class SimulationComponent {
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
     this.selectedNation = undefined;
   }
+  isDialogOpen = false;
   nations = nationsModule;
   nationsList: GroupTeam[] = [];
   hostNation: GroupTeam = {
@@ -149,7 +150,7 @@ export class SimulationComponent {
         g[i][j].gOpp = 0;
         g[i][j].matchesPlayed = 0;
         g[i][j].matchHistory = {
-          qualifiers: [],
+          qualifiers: g[i][j].matchHistory.qualifiers,
           group: [],
           bracket: [],
         };
@@ -599,7 +600,6 @@ export class SimulationComponent {
       this.matchScore(cafTeams[3], cafTeams[6]),
       this.matchScore(cafTeams[4], cafTeams[5]),
     ];
-    teamsQualified.push(...cafQualifiers.map((m) => m.winner));
 
     cafQualifiers.forEach((match) => {
       match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
@@ -616,6 +616,8 @@ export class SimulationComponent {
         }`
       );
     });
+
+    teamsQualified.push(...cafQualifiers.map((m) => m.winner));
 
     console.log(
       `qualified from ${regions[2]}`,
@@ -971,6 +973,7 @@ export class SimulationComponent {
 
   openNationStats(nation: GroupTeam) {
     this.selectedNation = nation;
+    this.isDialogOpen = true;
   }
 
   getNationClass(nation: GroupTeam) {

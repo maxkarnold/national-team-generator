@@ -19,7 +19,7 @@
       <li>Rating: {{ nation.rating }}</li>
       <li>Att Rating: {{ nation.attRating }}</li>
       <li>Def Rating: {{ nation.defRating }}</li>
-      <li>Pot {{ nation.pot }}</li>
+      <li *ngIf="nation.pot">Pot {{ nation.pot }}</li>
       <li>
         Confederation: <span>{{ nation.region }}</span>
       </li>
@@ -48,6 +48,8 @@
               class="nation-flag"
               [src]="item.match.winner.logo"
               [alt]="item.match.winner.name"
+              (click)="changeNation(item.match.winner)"
+              [ngClass]="item.match.winner === nation ? 'disabled' : ''"
             />
             <span class="team-name"
               >{{ item.match.winner.name }}
@@ -64,6 +66,8 @@
               class="nation-flag"
               [src]="item.match.loser.logo"
               [alt]="item.match.loser.name"
+              (click)="changeNation(item.match.loser)"
+              [ngClass]="item.match.loser === nation ? 'disabled' : ''"
             />
             <span class="team-name">{{ item.match.loser.name }}</span>
           </div>

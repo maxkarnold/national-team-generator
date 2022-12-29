@@ -212,6 +212,7 @@
   [nation]="selectedNation"
   [tournament]="tournament"
   (closeDialog)="selectedNation = undefined"
-  [class]="selectedNation ? 'show' : ''"
-  (click)="selectedNation = undefined"
+  (onNationChange)="openNationStats($event)"
+  [class]="isDialogOpen ? 'show' : ''"
+  (click)="selectedNation = undefined; isDialogOpen = false"
 ></app-nation-dialog>

@@ -19,6 +19,7 @@ export class NationDialogComponent implements OnChanges {
   @Input() nation?: GroupTeam = undefined;
   @Input() tournament?: Tournament32;
   @Output() closeDialog = new EventEmitter<boolean>(false);
+  @Output() onNationChange = new EventEmitter<GroupTeam>();
 
   originalOrder = originalOrder;
   rounds = [
@@ -89,7 +90,10 @@ export class NationDialogComponent implements OnChanges {
     }
     let gradeArr = ['f', 'f', 'f', 'f', 'f', 'f', 'f'];
     let result = '';
-    if (nation.points < 3 && nation.gDiff < -3) {
+    if (nation.matchesPlayed < 3) {
+      gradeArr = Array(7).fill('n/a');
+      result = 'Did Not Qualify';
+    } else if (nation.points < 3 && nation.gDiff < -3) {
       gradeArr = ['f', 'f', 'f', 'd', 'c', 'c', 'c'];
       result = 'Group Stage';
     } else if (nation.points < 3) {
@@ -131,6 +135,9 @@ export class NationDialogComponent implements OnChanges {
       .split(' ')
       .map((l) => l[0].toLocaleUpperCase() + l.substring(1))
       .join(' ');
+    if (nation.matchesPlayed < 3) {
+      return `${name} did not qualify for the tournament, their players had to watch from the comfort of their own homes.`;
+    }
     switch (nation.grade) {
       case 's':
         return `${name} had perhaps their best performance at a major tournament ever! Fans will be ecstatic as ${name} blew expectations out of the water. No one thought they would make it this far.`;
@@ -168,5 +175,9 @@ export class NationDialogComponent implements OnChanges {
       }
     }
     return '';
+  }
+
+  changeNation(nation: GroupTeam) {
+    this.onNationChange.emit(nation);
   }
 }
