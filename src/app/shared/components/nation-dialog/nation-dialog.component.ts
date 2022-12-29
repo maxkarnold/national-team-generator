@@ -178,6 +178,13 @@ export class NationDialogComponent implements OnChanges {
   }
 
   changeNation(nation: GroupTeam) {
-    this.onNationChange.emit(nation);
+    const updatedNation = this.tournament?.groups
+      ?.flat()
+      .find((a) => a.name === nation.name);
+    if (updatedNation) {
+      this.onNationChange.emit(updatedNation);
+    } else {
+      this.onNationChange.emit(nation);
+    }
   }
 }

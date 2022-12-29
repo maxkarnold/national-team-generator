@@ -88,8 +88,6 @@ export function calcScore(
   let result = '';
   let randIndex = getRandomInt(0, 9);
 
-  console.log(gF, gA, gD);
-
   if (gD > 40) {
     result = getResultArr(8, 1, 1)[randIndex];
   } else if (gD > 20) {

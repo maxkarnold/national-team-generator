@@ -11,11 +11,14 @@ export interface Nation {
   thirdLeagues: string[];
   rareLeagues: string[];
   excludeLeagues: string[];
+  ranking: string;
+  abbreviation: string;
 }
 
 export interface GroupTeam {
   name: string;
   logo: string;
+  abbreviation: string;
   region: string;
   matchesPlayed: number;
   points: number;

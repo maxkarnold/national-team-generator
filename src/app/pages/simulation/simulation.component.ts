@@ -28,6 +28,7 @@ export class SimulationComponent {
   nationsList: GroupTeam[] = [];
   hostNation: GroupTeam = {
     name: 'qatar',
+    abbreviation: 'qat',
     logo: 'https://fmdataba.com/images/n/QAT.svg',
     region: 'afc',
     points: 0,
@@ -443,6 +444,7 @@ export class SimulationComponent {
           name: nation.name,
           logo: nation.logo,
           region: nation.region,
+          abbreviation: nation.abbreviation,
           matchHistory: {
             qualifiers: [],
             group: [],
@@ -583,9 +585,7 @@ export class SimulationComponent {
       );
       console.log(
         `didn't qualify automatically from ${regions[i]}`,
-        region
-          .slice(qualifyingSpots[i])
-          .map((t) => `${t.name} ${t.ranking} - ${t.rating}`)
+        region.slice(qualifyingSpots[i]).map((t) => `${t.name}-${t.ranking}`)
       );
       teamsQualified.push(...region.slice(0, qualifyingSpots[i]));
     });
@@ -628,9 +628,7 @@ export class SimulationComponent {
     console.log(
       `didn't qualify from ${regions[2]}`,
       cafTeams.slice(10).map((t) => `${t.name} ${t.ranking} - ${t.rating}`),
-      cafQualifiers.map(
-        (t) => `${t.loser.name} ${t.loser.ranking} - ${t.loser.rating}`
-      )
+      cafQualifiers.map((t) => `${t.loser.name}-${t.loser.ranking}`)
     );
     // ===== UEFA Qualifiers =====
     const uefaFirstRound = [
@@ -685,13 +683,9 @@ export class SimulationComponent {
     );
     console.log(
       `didn't qualify from ${regions[0]}`,
-      uefaTeams.slice(22).map((t) => `${t.name} ${t.ranking} - ${t.rating}`),
-      uefaFirstRound.map(
-        (t) => `${t.loser.name} ${t.loser.ranking} - ${t.loser.rating}`
-      ),
-      uefaQualifiers.map(
-        (t) => `${t.loser.name} ${t.loser.ranking} - ${t.loser.rating}`
-      )
+      uefaTeams.slice(22).map((t) => `${t.name}-${t.ranking}`),
+      uefaFirstRound.map((t) => `${t.loser.name}-${t.loser.ranking}`),
+      uefaQualifiers.map((t) => `${t.loser.name}-${t.loser.ranking}`)
     );
     // ===== Other Qualifiers =====
     const afcQualifier = this.matchScore(afcTeams[4], afcTeams[5]);
@@ -733,6 +727,10 @@ export class SimulationComponent {
           ? ` after extra time`
           : ''
       }`
+    );
+    console.log(
+      'teams in OFC',
+      ofcTeams.map((t) => `${t.name}-${t.ranking}`)
     );
     // ===== Inter-confederation Qualifiers =====
     const playoff1 = this.matchScore(afcQualifier.winner, conmebolTeams[4]);
@@ -830,10 +828,6 @@ export class SimulationComponent {
   }
 
   matchScore(team: GroupTeam, otherTeam: GroupTeam): Match {
-    console.log(
-      [team.name, team.ranking, team.tier, team.rating],
-      [otherTeam.name, otherTeam.ranking, otherTeam.tier, otherTeam.rating]
-    );
     const [goalsFor, goalsAg] = calcScore(
       team.attRating,
       team.defRating,

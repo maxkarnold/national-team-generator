@@ -13,7 +13,8 @@
         "thirdLeagues": ["usa1", "sco1"],
         "rareLeagues": ["chn1"],
         "excludeLeagues": ["bilbao", "rsa1"],
-        "ranking": "s"
+        "ranking": "s",
+        "abbreviation": "fra"
       },
       {
         "name": "brazil",
@@ -53,7 +54,8 @@
         ],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "s"
+        "ranking": "s",
+        "abbreviation": "bra"
       },
       {
         "name": "germany",
@@ -66,7 +68,8 @@
         "thirdLeagues": ["esp1", "den1", "usa1", "chn1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "s"
+        "ranking": "s",
+        "abbreviation": "ger"
       },
       {
         "name": "spain",
@@ -79,7 +82,8 @@
         "thirdLeagues": ["chn1", "mex1", "usa1", "pol1", "ind1"],
         "rareLeagues": ["bilbao"],
         "excludeLeagues": [],
-        "ranking": "s"
+        "ranking": "s",
+        "abbreviation": "esp"
       },
       {
         "name": "england",
@@ -92,7 +96,8 @@
         "thirdLeagues": ["chn1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "s"
+        "ranking": "s",
+        "abbreviation": "eng"
       },
       {
         "name": "argentina",
@@ -117,7 +122,8 @@
         "thirdLeagues": ["chn1", "uae1", "per1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "s"
+        "ranking": "s",
+        "abbreviation": "arg"
       }
     ]
   },
@@ -135,7 +141,8 @@
         "thirdLeagues": ["usa1", "mex1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "s"
+        "ranking": "s",
+        "abbreviation": "ita"
       },
       {
         "name": "portugal",
@@ -148,7 +155,8 @@
         "thirdLeagues": ["chn1", "pol1"],
         "rareLeagues": ["wolves"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "por"
       },
       {
         "name": "netherlands",
@@ -161,7 +169,8 @@
         "thirdLeagues": ["esp1", "usa1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "s"
+        "ranking": "s",
+        "abbreviation": "NED"
       }
     ]
   },
@@ -179,7 +188,8 @@
         "thirdLeagues": ["eng1", "ger1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "bel"
       },
       {
         "name": "uruguay",
@@ -192,7 +202,8 @@
         "thirdLeagues": ["bra1", "per1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "uru"
       },
       {
         "name": "mexico",
@@ -205,7 +216,8 @@
         "thirdLeagues": ["crc1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "mex"
       },
       {
         "name": "colombia",
@@ -218,7 +230,8 @@
         "thirdLeagues": ["uru1", "arg1", "bra1", "per1", "chn1", "por1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "col"
       }
     ]
   },
@@ -236,7 +249,8 @@
         "thirdLeagues": ["eng1", "ger1", "usa1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "den"
       },
       {
         "name": "croatia",
@@ -249,7 +263,8 @@
         "thirdLeagues": ["ukr1", "ita1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "cro"
       },
       {
         "name": "sweden",
@@ -262,7 +277,8 @@
         "thirdLeagues": ["eng1", "esp1", "ita1", "ger1", "fra1", "fin1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "swe"
       },
       {
         "name": "chile",
@@ -275,7 +291,8 @@
         "thirdLeagues": ["bra1", "ksa1"],
         "rareLeagues": ["per1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "chi"
       },
       {
         "name": "serbia",
@@ -296,7 +313,8 @@
         ],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "srb"
       },
       {
         "name": "nigeria",
@@ -309,7 +327,8 @@
         "thirdLeagues": ["esp1", "tun1"],
         "rareLeagues": ["ind1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "nga"
       },
       {
         "name": "russia",
@@ -322,7 +341,8 @@
         "thirdLeagues": ["srb1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao", "ukr1"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "rus"
       },
       {
         "name": "ukraine",
@@ -335,7 +355,8 @@
         "thirdLeagues": ["pol1", "rus1", "bel1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "ukr"
       },
       {
         "name": "austria",
@@ -348,7 +369,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "aut"
       },
       {
         "name": "switzerland",
@@ -361,7 +383,8 @@
         "thirdLeagues": ["usa1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "sui"
       },
       {
         "name": "Côte d'Ivoire",
@@ -374,7 +397,8 @@
         "thirdLeagues": ["eng1", "nor1", "tun1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "civ"
       }
     ]
   },
@@ -392,7 +416,8 @@
         "thirdLeagues": ["gre1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "pol"
       },
       {
         "name": "norway",
@@ -405,7 +430,8 @@
         "thirdLeagues": ["eng1", "ger1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "nor"
       },
       {
         "name": "peru",
@@ -418,7 +444,8 @@
         "thirdLeagues": ["esp1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "per"
       },
       {
         "name": "paraguay",
@@ -431,7 +458,8 @@
         "thirdLeagues": ["per1", "bra1", "usa1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "par"
       },
       {
         "name": "united states",
@@ -444,7 +472,8 @@
         "thirdLeagues": ["nor1", "fin1", "mex1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "usa"
       },
       {
         "name": "ecuador",
@@ -457,7 +486,8 @@
         "thirdLeagues": ["arg1", "col1", "uru1", "bra1"],
         "rareLeagues": ["chn1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "ecu"
       },
       {
         "name": "turkey",
@@ -470,7 +500,8 @@
         "thirdLeagues": ["ger1", "ita1", "fra1", "eng1"],
         "rareLeagues": ["ksa1"],
         "excludeLeagues": ["bilbao", "cyp1"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "tur"
       },
       {
         "name": "czech republic",
@@ -483,7 +514,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "a"
+        "ranking": "a",
+        "abbreviation": "cze"
       }
     ]
   },
@@ -501,7 +533,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "gha"
       },
       {
         "name": "scotland",
@@ -514,7 +547,8 @@
         "thirdLeagues": ["aus1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "sco"
       },
       {
         "name": "senegal",
@@ -527,7 +561,8 @@
         "thirdLeagues": ["nor1", "por1", "usa1", "tun1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "sen"
       },
       {
         "name": "romania",
@@ -540,7 +575,8 @@
         "thirdLeagues": ["chn1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "rou"
       },
       {
         "name": "morocco",
@@ -553,7 +589,8 @@
         "thirdLeagues": ["qat1", "uae1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "mar"
       },
       {
         "name": "ireland",
@@ -566,7 +603,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["chn1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "irl"
       },
       {
         "name": "south korea",
@@ -579,7 +617,8 @@
         "thirdLeagues": ["qat1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "kor"
       },
       {
         "name": "japan",
@@ -592,7 +631,8 @@
         "thirdLeagues": ["chn1", "aus1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "jpn"
       },
       {
         "name": "bosnia & herzegovina",
@@ -605,7 +645,8 @@
         "thirdLeagues": ["pol1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "bih"
       },
       {
         "name": "algeria",
@@ -618,7 +659,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "alg"
       },
       {
         "name": "greece",
@@ -631,7 +673,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "gre"
       },
       {
         "name": "venezuela",
@@ -644,7 +687,8 @@
         "thirdLeagues": ["arg1", "uru1", "usa1"],
         "rareLeagues": ["per1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "ven"
       },
       {
         "name": "cameroon",
@@ -657,7 +701,8 @@
         "thirdLeagues": ["tun1", "fin1", "gre1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "cmr"
       }
     ]
   },
@@ -675,7 +720,8 @@
         "thirdLeagues": ["esp1"],
         "rareLeagues": ["per1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "bol"
       },
       {
         "name": "slovakia",
@@ -688,7 +734,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "svk"
       },
       {
         "name": "iran",
@@ -701,7 +748,8 @@
         "thirdLeagues": ["qat1", "por1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao", "ksa1"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "irn"
       },
       {
         "name": "tunisia",
@@ -714,7 +762,8 @@
         "thirdLeagues": ["uae1", "fra1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "tun"
       },
       {
         "name": "slovenia",
@@ -727,7 +776,8 @@
         "thirdLeagues": ["cze1", "ita1", "aut1", "pol1", "tur1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "svn"
       },
       {
         "name": "hungary",
@@ -740,7 +790,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "hun"
       },
       {
         "name": "mali",
@@ -753,7 +804,8 @@
         "thirdLeagues": ["egy1", "tun1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "mli"
       },
       {
         "name": "south africa",
@@ -766,7 +818,8 @@
         "thirdLeagues": ["fra1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "rsa"
       },
       {
         "name": "congo DR",
@@ -779,7 +832,8 @@
         "thirdLeagues": ["tun1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "cod"
       },
       {
         "name": "australia",
@@ -792,7 +846,8 @@
         "thirdLeagues": ["chn1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "aus"
       }
     ]
   },
@@ -810,7 +865,8 @@
         "thirdLeagues": ["tur1", "ita1", "swe1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "kvx"
       },
       {
         "name": "wales",
@@ -823,7 +879,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["chn1", "usa1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "wal"
       },
       {
         "name": "iceland",
@@ -836,7 +893,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "isl"
       },
       {
         "name": "egypt",
@@ -849,7 +907,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["chn1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "egy"
       },
       {
         "name": "costa rica",
@@ -862,7 +921,8 @@
         "thirdLeagues": ["col1", "esp1", "mex1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "crc"
       },
       {
         "name": "albania",
@@ -875,7 +935,8 @@
         "thirdLeagues": ["cro1", "gre1", "hun1", "rou1", "swe1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "alb"
       },
       {
         "name": "finland",
@@ -888,7 +949,8 @@
         "thirdLeagues": ["nor1", "den1"],
         "rareLeagues": ["ned1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "fin"
       },
       {
         "name": "montenegro",
@@ -901,7 +963,8 @@
         "thirdLeagues": ["esp1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "mne"
       },
       {
         "name": "israel",
@@ -914,7 +977,8 @@
         "thirdLeagues": ["bel1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao", "ksa1", "qat1", "uae1", "egy1"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "isr"
       },
       {
         "name": "bulgaria",
@@ -927,7 +991,8 @@
         "thirdLeagues": ["chn1", "cyp1", "hun1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "b"
+        "ranking": "b",
+        "abbreviation": "bul"
       }
     ]
   },
@@ -945,7 +1010,8 @@
         "thirdLeagues": ["ger1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "kaz"
       },
       {
         "name": "panama",
@@ -958,7 +1024,8 @@
         "thirdLeagues": ["per1", "usa1", "esp1", "crc1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "pan"
       },
       {
         "name": "georgia",
@@ -971,7 +1038,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "geo"
       },
       {
         "name": "northern ireland",
@@ -984,7 +1052,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["chn1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "c"
+        "ranking": "c",
+        "abbreviation": "nir"
       },
       {
         "name": "guinea",
@@ -997,7 +1066,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "gui"
       },
       {
         "name": "jamaica",
@@ -1010,7 +1080,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "jam"
       },
       {
         "name": "cabo verde",
@@ -1023,7 +1094,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "cpv"
       },
       {
         "name": "belarus",
@@ -1036,7 +1108,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "blr"
       },
       {
         "name": "honduras",
@@ -1049,7 +1122,8 @@
         "thirdLeagues": ["crc1"],
         "rareLeagues": ["esp1", "mex1", "por1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "hon"
       },
       {
         "name": "angola",
@@ -1062,7 +1136,8 @@
         "thirdLeagues": ["esp1", "fra1", "ger1", "sui1", "tur1", "egy1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "ang"
       },
       {
         "name": "saudi arabia",
@@ -1075,7 +1150,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["qat1", "tur1", "esp1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "ksa"
       },
       {
         "name": "canada",
@@ -1088,7 +1164,8 @@
         "thirdLeagues": ["sco1"],
         "rareLeagues": ["ger1", "por1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "can"
       },
       {
         "name": "north macedonia",
@@ -1101,7 +1178,8 @@
         "thirdLeagues": ["swe1", "aut1"],
         "rareLeagues": ["ger1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "mkd"
       }
     ]
   },
@@ -1119,7 +1197,8 @@
         "thirdLeagues": ["rus1", "ukr1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "aze"
       },
       {
         "name": "gambia",
@@ -1132,7 +1211,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "gam"
       },
       {
         "name": "zimbabwe",
@@ -1145,7 +1225,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "zim"
       },
       {
         "name": "burkina faso",
@@ -1158,7 +1239,8 @@
         "thirdLeagues": ["egy1", "esp1", "bel1", "fra1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "bfa"
       },
       {
         "name": "iraq",
@@ -1171,7 +1253,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "irq"
       },
       {
         "name": "uzbekistan",
@@ -1184,7 +1267,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["rus1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "uzb"
       },
       {
         "name": "zambia",
@@ -1197,7 +1281,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "zam"
       },
       {
         "name": "togo",
@@ -1210,7 +1295,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["bel1", "ger1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "tog"
       },
       {
         "name": "guinea-Bissau",
@@ -1223,7 +1309,8 @@
         "thirdLeagues": ["esp1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "gnb"
       },
       {
         "name": "congo",
@@ -1236,7 +1323,8 @@
         "thirdLeagues": ["eng1", "esp1", "bel1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "cgo"
       },
       {
         "name": "gabon",
@@ -1249,7 +1337,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["cyp1", "tur1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "gab"
       },
       {
         "name": "syria",
@@ -1262,7 +1351,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["tur1", "qat1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "syr"
       }
     ]
   },
@@ -1280,7 +1370,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "lby"
       },
       {
         "name": "sudan",
@@ -1293,7 +1384,8 @@
         "thirdLeagues": ["qat1", "egy1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "sud"
       },
       {
         "name": "guatemala",
@@ -1306,7 +1398,8 @@
         "thirdLeagues": ["usa1", "mex1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "gua"
       },
       {
         "name": "faroe islands",
@@ -1319,7 +1412,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "g"
+        "ranking": "g",
+        "abbreviation": "fro"
       },
       {
         "name": "latvia",
@@ -1332,7 +1426,8 @@
         "thirdLeagues": ["nor1", "ger1"],
         "rareLeagues": ["swe1", "pol1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "lva"
       },
       {
         "name": "korea DPR",
@@ -1345,7 +1440,8 @@
         "thirdLeagues": ["kor1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "prk"
       },
       {
         "name": "equatorial guinea",
@@ -1358,7 +1454,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "eqg"
       },
       {
         "name": "madagascar",
@@ -1371,7 +1468,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["bel1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "mad"
       },
       {
         "name": "martinique",
@@ -1384,7 +1482,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["esp1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "mtq"
       },
       {
         "name": "suriname",
@@ -1397,7 +1496,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "sur"
       },
       {
         "name": "china PR",
@@ -1410,7 +1510,8 @@
         "thirdLeagues": ["esp1"],
         "rareLeagues": ["jpn1", "por1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "chn"
       },
       {
         "name": "qatar",
@@ -1423,7 +1524,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["egy1", "uae1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "qat"
       },
       {
         "name": "curaçao",
@@ -1436,7 +1538,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["usa1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "cuw"
       },
       {
         "name": "armenia",
@@ -1449,7 +1552,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["ukr1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "arm"
       },
       {
         "name": "new zealand",
@@ -1462,7 +1566,8 @@
         "thirdLeagues": ["eng1", "den1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "nzl"
       },
       {
         "name": "benin",
@@ -1475,7 +1580,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "ben"
       },
       {
         "name": "trinidad & tobago",
@@ -1488,7 +1594,8 @@
         "thirdLeagues": ["eng1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "tri"
       },
       {
         "name": "sierra leone",
@@ -1501,7 +1608,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["eng1", "ger1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "sle"
       },
       {
         "name": "cyprus",
@@ -1514,7 +1622,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "cyp"
       },
       {
         "name": "estonia",
@@ -1527,7 +1636,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["eng1", "nor1", "swe1", "fin1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "est"
       },
       {
         "name": "UAE",
@@ -1540,7 +1650,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "uae"
       },
       {
         "name": "lithuania",
@@ -1553,7 +1664,8 @@
         "thirdLeagues": ["pol1", "rou1", "ger1", "ita1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "ltu"
       },
       {
         "name": "mozambique",
@@ -1566,7 +1678,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["ger1", "rsa1", "fra1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "moz"
       },
       {
         "name": "el salvador",
@@ -1579,7 +1692,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "slv"
       },
       {
         "name": "luxembourg",
@@ -1592,7 +1706,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["ukr1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "lux"
       },
       {
         "name": "uganda",
@@ -1605,7 +1720,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["usa1", "swe1", "rsa1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "uga"
       },
       {
         "name": "haiti",
@@ -1618,7 +1734,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "hai"
       },
       {
         "name": "jordan",
@@ -1631,7 +1748,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["ksa1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "jor"
       }
     ]
   },
@@ -1649,7 +1767,8 @@
         "thirdLeagues": ["qat1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "oma"
       },
       {
         "name": "kenya",
@@ -1662,7 +1781,8 @@
         "thirdLeagues": ["rsa1", "usa1", "eng1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "ken"
       },
       {
         "name": "mauritania",
@@ -1675,7 +1795,8 @@
         "thirdLeagues": ["gre1", "bel1", "tun1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "mtn"
       },
       {
         "name": "namibia",
@@ -1688,7 +1809,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "nam"
       },
       {
         "name": "niger",
@@ -1701,7 +1823,8 @@
         "thirdLeagues": ["esp1", "tun1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "nig"
       },
       {
         "name": "malawi",
@@ -1714,7 +1837,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "mwi"
       },
       {
         "name": "tanzania",
@@ -1727,7 +1851,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "tan"
       },
       {
         "name": "nicaragua",
@@ -1740,7 +1865,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "g"
+        "ranking": "g",
+        "abbreviation": "nca"
       },
       {
         "name": "thailand",
@@ -1753,7 +1879,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "tha"
       },
       {
         "name": "kuwait",
@@ -1766,7 +1893,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "d"
+        "ranking": "d",
+        "abbreviation": "kuw"
       },
       {
         "name": "bahrain",
@@ -1779,7 +1907,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["qat1", "ksa1", "uae1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "e"
+        "ranking": "e",
+        "abbreviation": "bhr"
       },
       {
         "name": "lebanon",
@@ -1792,7 +1921,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["ger1", "swe1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "lib"
       },
       {
         "name": "french guiana",
@@ -1805,7 +1935,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "guf"
       },
       {
         "name": "central african republic",
@@ -1818,7 +1949,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "cta"
       },
       {
         "name": "philippines",
@@ -1831,7 +1963,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "g"
+        "ranking": "g",
+        "abbreviation": "phi"
       },
       {
         "name": "dominican republic",
@@ -1844,7 +1977,8 @@
         "thirdLeagues": ["ger1", "usa1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "g"
+        "ranking": "g",
+        "abbreviation": "dom"
       }
     ]
   },
@@ -1862,7 +1996,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["rus1", "kor1", "tur1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "g"
+        "ranking": "g",
+        "abbreviation": "kgz"
       },
       {
         "name": "grenada",
@@ -1875,7 +2010,8 @@
         "thirdLeagues": ["usa1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "grn"
       },
       {
         "name": "chad",
@@ -1888,7 +2024,8 @@
         "thirdLeagues": ["fra1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "g"
+        "ranking": "g",
+        "abbreviation": "cha"
       },
       {
         "name": "antigua & barbuda",
@@ -1901,7 +2038,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["usa1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "g"
+        "ranking": "g",
+        "abbreviation": "atg"
       },
       {
         "name": "st. kitts & nevis",
@@ -1914,7 +2052,8 @@
         "thirdLeagues": ["usa1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "skn"
       },
       {
         "name": "barbados",
@@ -1927,7 +2066,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "brb"
       },
       {
         "name": "bermuda",
@@ -1940,7 +2080,8 @@
         "thirdLeagues": ["usa1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "ber"
       },
       {
         "name": "solomon islands",
@@ -1953,7 +2094,8 @@
         "thirdLeagues": ["aus1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "sol"
       },
       {
         "name": "palestine",
@@ -1966,7 +2108,8 @@
         "thirdLeagues": ["ger1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "ple"
       },
       {
         "name": "vietnam",
@@ -1979,7 +2122,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "vie"
       },
       {
         "name": "india",
@@ -1992,7 +2136,8 @@
         "thirdLeagues": ["esp1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "ind"
       },
       {
         "name": "tajikistan",
@@ -2005,7 +2150,8 @@
         "thirdLeagues": ["rus1"],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "tjk"
       },
       {
         "name": "turkmenistan",
@@ -2018,7 +2164,8 @@
         "thirdLeagues": [],
         "rareLeagues": ["tur1"],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "tkm"
       },
       {
         "name": "chinese taipei",
@@ -2031,7 +2178,8 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "tpe"
       },
       {
         "name": "singapore",
@@ -2044,7 +2192,92 @@
         "thirdLeagues": [],
         "rareLeagues": [],
         "excludeLeagues": ["bilbao"],
-        "ranking": "f"
+        "ranking": "f",
+        "abbreviation": "sin"
+      },
+      {
+        "name": "tahiti",
+        "logo": "https://fmdataba.com/images/n/TAH.svg",
+        "region": "ofc",
+        "firstNameUsages": [],
+        "lastNameUsages": [],
+        "mainLeagues": [],
+        "secondLeagues": [],
+        "thirdLeagues": [],
+        "rareLeagues": [],
+        "excludeLeagues": ["bilbao"],
+        "ranking": "e",
+        "abbreviation": "tah"
+      },
+      {
+        "name": "malaysia",
+        "logo": "https://fmdataba.com/images/n/MAS.svg",
+        "region": "afc",
+        "firstNameUsages": [],
+        "lastNameUsages": [],
+        "mainLeagues": [],
+        "secondLeagues": [],
+        "thirdLeagues": [],
+        "rareLeagues": [],
+        "excludeLeagues": ["bilbao"],
+        "ranking": "f",
+        "abbreviation": "mas"
+      },
+      {
+        "name": "fiji",
+        "logo": "https://fmdataba.com/images/n/FIJ.svg",
+        "region": "ofc",
+        "firstNameUsages": [],
+        "lastNameUsages": [],
+        "mainLeagues": [],
+        "secondLeagues": [],
+        "thirdLeagues": [],
+        "rareLeagues": [],
+        "excludeLeagues": ["bilbao"],
+        "ranking": "f",
+        "abbreviation": "fij"
+      },
+      {
+        "name": "new caledonia",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/6/66/Flag_of_FLNKS.svg",
+        "region": "ofc",
+        "firstNameUsages": [],
+        "lastNameUsages": [],
+        "mainLeagues": [],
+        "secondLeagues": [],
+        "thirdLeagues": [],
+        "rareLeagues": [],
+        "excludeLeagues": ["bilbao"],
+        "ranking": "f",
+        "abbreviation": "ncl"
+      },
+      {
+        "name": "indonesia",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg",
+        "region": "afc",
+        "firstNameUsages": [],
+        "lastNameUsages": [],
+        "mainLeagues": [],
+        "secondLeagues": [],
+        "thirdLeagues": [],
+        "rareLeagues": [],
+        "excludeLeagues": ["bilbao"],
+        "ranking": "f",
+        "abbreviation": "ina"
+      },
+      {
+        "name": "papua new guinea",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Flag_of_Papua_New_Guinea.svg",
+        "region": "ofc",
+        "firstNameUsages": [],
+        "lastNameUsages": [],
+        "mainLeagues": [],
+        "secondLeagues": [],
+        "thirdLeagues": [],
+        "rareLeagues": [],
+        "excludeLeagues": ["bilbao"],
+        "ranking": "g",
+        "abbreviation": "png"
       }
     ]
   }
