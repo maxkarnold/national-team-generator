@@ -13,7 +13,7 @@
     </div>
     <div>
       <label for="numOfTeams">Number of Teams</label>
-      <input
+      <!-- <input
         type="number"
         name="numOfTeams"
         [(ngModel)]="numberOfTeams"
@@ -21,7 +21,12 @@
         max="96"
         placeholder="multiple of 4"
         disabled
-      />
+      /> -->
+      <select name="numOfTeams" [(ngModel)]="numberOfTeams">
+        <option value="32">32 - World Cup Format</option>
+        <option value="24" disabled>24 - EUROS, AFCON</option>
+        <option value="12" disabled>12 - Copa América</option>
+      </select>
     </div>
     <div class="host-nation">
       <label for="hostNation">Host Nation</label>
@@ -76,7 +81,9 @@
               [alt]="nation.name"
             />
           </td>
-          <td class="name">{{ nation.name }}</td>
+          <td class="name" (click)="openNationStats(nation)">
+            {{ nation.name }}
+          </td>
           <td>{{ nation.ranking }}</td>
           <td>{{ nation.matchesPlayed }}</td>
           <td>{{ nation.points }}</td>
@@ -89,119 +96,86 @@
   </div>
 </div>
 
-<div class="bracket" *ngIf="tournament.bracket && tournament.stats">
-  <div class="header-knockouts">
-    <h1>World Cup Knockouts</h1>
-    <ul *ngIf="tournament.stats" class="stats">
-      <li>
-        🥇
-        <img
-          class="nation-flag"
-          (click)="openNationStats(tournament.stats.first)"
-          [src]="tournament.stats.first.logo"
-          [alt]="tournament.stats.first.name"
-        />{{ tournament.stats.first.name }}
-      </li>
-      <li>
-        🥈
-        <img
-          class="nation-flag"
-          (click)="openNationStats(tournament.stats.second)"
-          [src]="tournament.stats.second.logo"
-          [alt]="tournament.stats.second.name"
-        />{{ tournament.stats.second.name }}
-      </li>
-      <li>
-        🥉
-        <img
-          class="nation-flag"
-          (click)="openNationStats(tournament.stats.third)"
-          [src]="tournament.stats.third.logo"
-          [alt]="tournament.stats.third.name"
-        />{{ tournament.stats.third.name }}
-      </li>
-      <li>
-        📈
-        <img
-          class="nation-flag"
-          (click)="openNationStats(tournament.stats.overPerformer)"
-          [src]="tournament.stats.overPerformer.logo"
-          [alt]="tournament.stats.overPerformer.name"
-        />{{ tournament.stats.overPerformer.name }}
-      </li>
-      <li>
-        📉
-        <img
-          class="nation-flag"
-          (click)="openNationStats(tournament.stats.underPerformer)"
-          [src]="tournament.stats.underPerformer.logo"
-          [alt]="tournament.stats.underPerformer.name"
-        />{{ tournament.stats.underPerformer.name }}
-      </li>
-    </ul>
-  </div>
+<div class="header-knockouts" *ngIf="tournament.bracket">
+  <h1>World Cup Knockouts</h1>
+  <ul *ngIf="tournament.stats" class="stats">
+    <li *ngFor="let stat of tournament.stats; let i = index">
+      <div *ngIf="stat" class="stat" (click)="openNationStats(stat)">
+        {{ tournamentStats[i].emoji }}
+        <img class="nation-flag" [src]="stat.logo" [alt]="stat.name" />
+        <span>{{ stat.name }}</span>
+      </div>
+    </li>
+  </ul>
+</div>
 
+<div class="bracket" *ngIf="tournament.bracket">
   <ul class="headings">
     <li>Round of 16</li>
     <li>Quarter Finals</li>
     <li>Semi Finals</li>
-    <li>Finals</li>
   </ul>
   <div class="grid">
     <div
       class="round"
       *ngFor="let round of tournament.bracket | keyvalue: originalOrder"
     >
-      <div class="match" *ngFor="let match of round.value">
-        <div>
-          <div>
+      <div class="match" *ngFor="let match of round.value; let i = index">
+        <h3
+          *ngIf="round.key === 'finals'"
+          [class]="i === 0 ? 'first' : 'second'"
+        >
+          {{ i === 0 ? "Finals" : "3rd Place" }}
+        </h3>
+        <div [class]="match[2].loser.name === match[0].name ? 'loser' : ''">
+          <div (click)="openNationStats(match[0])" class="nation">
             <img
               class="nation-flag"
-              (click)="openNationStats(match[0])"
               [src]="match[0].logo"
               [alt]="match[0].name"
             />
-            <span
-              [class]="match[2].winner.name === match[0].name ? 'winner' : ''"
-            >
+            <span>
               {{ match[0].name }}
             </span>
           </div>
-          <span
-            >{{ match[2].goalsFor }}
-            {{
-              match[2].penaltyWin && match[0].name === match[2].winner.name
-                ? "(P)"
-                : match[2].etWin && match[0].name === match[2].winner.name
-                ? "(AET)"
-                : ""
-            }}</span
-          >
+          <div class="score">
+            <span
+              >{{ match[2].goalsFor }}
+              {{
+                match[2].penaltyWin && match[0].name === match[2].winner.name
+                  ? "(P)"
+                  : match[2].etWin && match[0].name === match[2].winner.name
+                  ? "(AET)"
+                  : ""
+              }}</span
+            >
+            <span>{{ match[0].name === match[2].winner.name ? "◀" : "" }}</span>
+          </div>
         </div>
-        <div>
-          <div>
+        <div [class]="match[2].loser.name === match[1].name ? 'loser' : ''">
+          <div (click)="openNationStats(match[1])" class="nation">
             <img
               class="nation-flag"
-              (click)="openNationStats(match[1])"
               [src]="match[1].logo"
               [alt]="match[1].name"
             />
-            <span
-              [class]="match[2].winner.name === match[1].name ? 'winner' : ''"
-            >
+            <span>
               {{ match[1].name }}
             </span>
           </div>
-          <span
-            >{{ match[2].goalsAg }}
-            {{
-              match[2].penaltyWin && match[1].name === match[2].winner.name
-                ? "(P)"
-                : match[2].etWin && match[1].name === match[2].winner.name
-                ? "(AET)"
-                : ""
-            }}</span
-          >
+          <div class="score">
+            <span
+              >{{ match[2].goalsAg }}
+              {{
+                match[2].penaltyWin && match[1].name === match[2].winner.name
+                  ? "(P)"
+                  : match[2].etWin && match[1].name === match[2].winner.name
+                  ? "(AET)"
+                  : ""
+              }}</span
+            >
+            <span>{{ match[1].name === match[2].winner.name ? "◀" : "" }}</span>
+          </div>
         </div>
       </div>
     </div>

@@ -36,5 +36,17 @@ export interface Tournament32 {
     semiFinals: [GroupTeam, GroupTeam, Match][];
     finals: [GroupTeam, GroupTeam, Match][];
   };
-  stats?: TournamentStats;
+  stats?: [
+    first: GroupTeam,
+    second: GroupTeam,
+    third: GroupTeam,
+    underPerformer: GroupTeam,
+    overPerformer: GroupTeam,
+    uefa?: GroupTeam,
+    afc?: GroupTeam,
+    caf?: GroupTeam,
+    concacaf?: GroupTeam,
+    conmebol?: GroupTeam,
+    ofc?: GroupTeam
+  ];
 }

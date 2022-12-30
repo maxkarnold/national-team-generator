@@ -144,6 +144,7 @@ h1 {
 
           &.name {
             font-family: 'aeonik-bold', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            cursor: pointer;
           }
         }
       }
@@ -154,58 +155,83 @@ h1 {
   }
 }
 
+.header-knockouts {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-transform: capitalize;
+  margin-top: 5rem;
+
+  @media screen and (max-width: 1200px) {
+    display: block;
+    margin: 0 2rem;
+  }
+
+  .stats {
+    font-size: 1.5rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #d3d1d1e6;
+    padding: 1.5rem;
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .nation-flag {
+      width: 2rem;
+      height: 1.5rem;
+      margin: 0 1rem;
+    }
+  }
+
+  h1 {
+    font-size: 4rem;
+
+    @media screen and (max-width: 1200px) {
+      font-size: 2.5rem;
+    }
+  }
+}
+
 .bracket {
   padding: 2rem 0;
   margin: 5rem auto;
   width: 100%;
   background: linear-gradient(to bottom, $secondary-light, $secondary);
   text-transform: capitalize;
-
-  @media screen and (max-width: 1000px) {
-    display: none;
-  }
-
-  .header-knockouts {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    .stats {
-      font-size: 1.5rem;
-      border: 1px solid black;
-      border-radius: 5px;
-      background-color: #d3d1d1e6;
-      padding: 1.5rem;
-
-      li {
-        display: flex;
-        margin-bottom: 10px;
-      }
-
-      .nation-flag {
-        width: 2rem;
-        height: 1.5rem;
-        margin: 0 1rem;
-      }
-    }
-
-    h1 {
-      color: white;
-      font-size: 4rem;
-    }
-  }
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  height: auto;
 
   .headings {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 1rem;
     font-size: 2.25rem;
-    margin-top: 4rem;
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(4, 100%);
+      gap: 0;
+
+    }
 
     li {
       display: flex;
       justify-content: center;
       color: white;
+
+      @media screen and (max-width: 1200px) {
+        margin: 0 2rem;
+
+      }
     }
   }
 
@@ -215,30 +241,51 @@ h1 {
     grid-template-rows: repeat(16, 3.5rem);
     margin: 0rem 2rem;
     font-size: 1.25rem;
-    grid-gap: 1rem;
+    gap: 1rem;
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(4, 100%);
+      grid-template-rows: repeat(16, auto);
+      gap: 0;
+      margin: 0;
+    }
 
     .round {
       display: grid;
       grid-row: span 16;
       align-items: center;
+      scroll-snap-align: center;
+      position: relative;
+
+
+
+      @media screen and (max-width: 1200px) {
+        grid-row: span 16;
+      }
 
       &:nth-child(2) {
         grid-column: 2;
+
+        @media screen and (max-width: 1200px) {
+          grid-row: span 8;
+        }
       }
 
       &:nth-child(3) {
         grid-column: 3;
+
+        @media screen and (max-width: 1200px) {
+          grid-row: span 4;
+        }
       }
 
       &:nth-child(4) {
         grid-column: 4;
         grid-row: 6 / 20;
-        // > :first-child {
-        //   border: 5px solid #f5cc38;
-        // }
-        // > :last-child {
-        //   border: 5px solid #D86324;
-        // }
+
+        @media screen and (max-width: 1200px) {
+          grid-row: span 8;
+        }
       }
 
       .match {
@@ -252,15 +299,62 @@ h1 {
         background-color: #d3d1d1e6;
         height: 7rem;
 
+        @media screen and (max-width: 1200px) {
+          margin: 1rem auto;
+          min-width: 70%;
+        }
+
+        h3 {
+          position: absolute;
+          color: white;
+          font-size: 2.5rem;
+          display: flex;
+          justify-content: center;
+          width: 90%;
+
+          @media screen and (max-width: 1200px) {
+            width: 70%;
+          }
+
+          &.first {
+            top: 10%;
+
+            @media screen and (max-width: 1200px) {
+              top: 0;
+            }
+          }
+
+          &.second {
+            top: 60%;
+
+            @media screen and (max-width: 1200px) {
+              top: 50%;
+            }
+          }
+        }
+
+        .loser {
+          opacity: 0.5;
+        }
+
         >div {
           display: flex;
           align-items: center;
           justify-content: space-between;
 
-          >div {
+          .nation {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            cursor: pointer;
+          }
+
+          .score {
+            max-width: 5.5rem;
+
+            span:first-child {
+              margin-right: 5px;
+            }
           }
         }
 
@@ -269,56 +363,7 @@ h1 {
           height: 2rem;
           margin-right: 1rem;
         }
-
-        .winner {
-          color: #7fe654;
-          background-color: rgb(59, 58, 58);
-          padding: 5px;
-        }
       }
     }
   }
 }
-
-
-// .caf {
-//   background: linear-gradient(45deg, #199e19bf, #ffff00bf);
-//   @media screen and (max-width: 600px) {
-//     background: #199e19bf;
-//   }
-// }
-
-// .afc {
-//   background: linear-gradient(to bottom right, #4848f480, #5649a080);
-//   @media screen and (max-width: 600px) {
-//     background: #5649a080;
-//   }
-// }
-
-// .concacaf {
-//   background: linear-gradient(to bottom right, #d8ba7dbf, #242529bf);
-//   @media screen and (max-width: 600px) {
-//     background: #d8ba7dbf;
-//   }
-// }
-
-// .conmebol {
-//   background: linear-gradient(to bottom right, #004c9ebf, #ffffffbf);
-//   @media screen and (max-width: 600px) {
-//     background: #004c9ebf;
-//   }
-// }
-
-// .uefa {
-//   background: linear-gradient(to bottom right, #005eb4bf, #da1b77bf);
-//   @media screen and (max-width: 600px) {
-//     background: #da1b77bf;
-//   }
-// }
-
-// .ofc {
-//   background: linear-gradient(to bottom right, #0693e3bf, #00d084bf);
-//   @media screen and (max-width: 600px) {
-//     background: #00d084bf;
-//   }
-// }

@@ -59,10 +59,11 @@ export class NationDialogComponent implements OnChanges {
       this.gradeStyle = this.getGradeStyle(nation.grade);
       return;
     }
-    const rankingTiers = [6, 11, 26, 41, 56, 80, 400];
+    // const rankingTiers = [6, 11, 26, 41, 56, 80, 400];
+    const rankingTiers = ['s', 'a', 'b', 'c', 'd', 'e', 'f', 'g'];
 
     rankingTiers.every((r, i) => {
-      if (nation.ranking && nation.ranking < r) {
+      if (nation.ranking && nation.tier === r) {
         const { grade, result } = this.calcGrade(i);
         nation.grade = grade;
         nation.tournamentFinish = result;
@@ -94,34 +95,34 @@ export class NationDialogComponent implements OnChanges {
       gradeArr = Array(7).fill('n/a');
       result = 'Did Not Qualify';
     } else if (nation.points < 3 && nation.gDiff < -3) {
-      gradeArr = ['f', 'f', 'f', 'd', 'c', 'c', 'c'];
+      gradeArr = ['f', 'f', 'f', 'd', 'c', 'c', 'c', 'b'];
       result = 'Group Stage';
     } else if (nation.points < 3) {
-      gradeArr = ['f', 'f', 'd', 'c', 'c', 'b', 'b'];
+      gradeArr = ['f', 'f', 'd', 'c', 'c', 'b', 'b', 'a'];
       result = 'Group Stage';
     } else if (!tournament.groupWinners.includes(nation)) {
-      gradeArr = ['f', 'f', 'c', 'c', 'b', 'b', 'a'];
+      gradeArr = ['f', 'f', 'c', 'c', 'b', 'b', 'a', 's'];
       result = 'Group Stage';
     } else if (!tournament.bracket.quarterFinals.flat().includes(nation)) {
-      gradeArr = ['d', 'd', 'b', 'a', 'a', 's', 's'];
+      gradeArr = ['d', 'd', 'b', 'a', 'a', 's', 's', 's'];
       [result] = this.rounds;
     } else if (!tournament.bracket.semiFinals.flat().includes(nation)) {
-      gradeArr = ['c', 'c', 'b', 'a', 's', 's', 's'];
+      gradeArr = ['c', 'c', 'b', 'a', 's', 's', 's', 's'];
       result = 'Quarter Finals';
     } else if (
       tournament.bracket.finals[1].includes(nation) &&
-      tournament.stats.third !== nation
+      tournament.stats[2] !== nation
     ) {
-      gradeArr = ['b', 'b', 'a', 's', 's', 's', 's'];
+      gradeArr = ['b', 'b', 'a', 's', 's', 's', 's', 's'];
       result = '4th Place';
-    } else if (tournament.stats.third === nation) {
-      gradeArr = ['b', 'a', 'a', 's', 's', 's', 's'];
+    } else if (tournament.stats[2] === nation) {
+      gradeArr = ['b', 'a', 'a', 's', 's', 's', 's', 's'];
       result = '3rd Place';
-    } else if (tournament.stats.second === nation) {
-      gradeArr = ['b', 'a', 's', 's', 's', 's', 's'];
+    } else if (tournament.stats[1] === nation) {
+      gradeArr = ['b', 'a', 's', 's', 's', 's', 's', 's'];
       result = 'Runner Up';
-    } else if (tournament.stats.first === nation) {
-      gradeArr = ['a', 'a', 's', 's', 's', 's', 's'];
+    } else if (tournament.stats[0] === nation) {
+      gradeArr = ['a', 'a', 's', 's', 's', 's', 's', 's'];
       result = 'Winner';
     }
     return {

@@ -47,6 +47,24 @@ export class SimulationComponent {
     },
   };
 
+  tournamentStats = [
+    {
+      emoji: '🥇',
+    },
+    {
+      emoji: '🥈',
+    },
+    {
+      emoji: '🥉',
+    },
+    {
+      emoji: '📉',
+    },
+    {
+      emoji: '📈',
+    },
+  ];
+
   headings = ['RNK', 'MP', 'PTS', 'GD', 'GS', 'GA'];
   numberOfTeams = 32;
   groupGamesPerOpponent = 1;
@@ -376,6 +394,10 @@ export class SimulationComponent {
         }`
       );
     });
+
+    console.log(
+      groups.flat().map((t) => [t.name, t.ranking, `Pot${t.pot}`, t.tier])
+    );
 
     return {
       roundOf16,
@@ -795,7 +817,19 @@ export class SimulationComponent {
       finals: [GroupTeam, GroupTeam, Match][];
     },
     groups: GroupTeam[][]
-  ): TournamentStats {
+  ): [
+    GroupTeam,
+    GroupTeam,
+    GroupTeam,
+    GroupTeam,
+    GroupTeam,
+    GroupTeam?,
+    GroupTeam?,
+    GroupTeam?,
+    GroupTeam?,
+    GroupTeam?,
+    GroupTeam?
+  ] {
     const first = bracket.finals[0][2].winner;
     const second = bracket.finals[0][2].loser;
     const third = bracket.finals[1][2].winner;
@@ -818,13 +852,7 @@ export class SimulationComponent {
       .flatMap((group) => group.slice(-2))
       .reduce((prev, curr) => (prev.rating > curr.rating ? prev : curr));
 
-    return {
-      first,
-      second,
-      third,
-      underPerformer,
-      overPerformer,
-    };
+    return [first, second, third, underPerformer, overPerformer];
   }
 
   matchScore(team: GroupTeam, otherTeam: GroupTeam): Match {
