@@ -10,22 +10,6 @@ export interface Match {
   score: string;
 }
 
-export interface TournamentStats {
-  first: GroupTeam;
-  second: GroupTeam;
-  third: GroupTeam;
-  underPerformer: GroupTeam;
-  overPerformer: GroupTeam;
-  bestTeamByRegion?: {
-    uefa: GroupTeam;
-    afc: GroupTeam;
-    caf: GroupTeam;
-    concacaf: GroupTeam;
-    conmebol: GroupTeam;
-    ofc?: GroupTeam;
-  };
-}
-
 export interface Tournament32 {
   teams?: GroupTeam[];
   groups?: GroupTeam[][];

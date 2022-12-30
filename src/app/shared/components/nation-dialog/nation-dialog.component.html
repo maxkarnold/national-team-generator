@@ -2,7 +2,13 @@
   <div class="header">
     <div class="nation-name">
       <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" />
-      <h2>{{ nation.name }}</h2>
+      <h2>
+        {{
+          nation.name.length > 9 && screenWidth < 350
+            ? nation.abbreviation.toLocaleUpperCase()
+            : nation.name
+        }}
+      </h2>
       <div class="rank">
         Rank
         <h3>{{ nation.ranking }}</h3>

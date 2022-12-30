@@ -1,0 +1,9 @@
+<ul *ngIf="service.tournament.stats" class="stats">
+  <li *ngFor="let stat of service.tournament.stats; let i = index">
+    <div *ngIf="stat" class="stat" (click)="service.openNationStats(stat)">
+      {{ tournamentStats[i].emoji }}
+      <img class="nation-flag" [src]="stat.logo" [alt]="stat.name" />
+      <span>{{ stat.name }}</span>
+    </div>
+  </li>
+</ul>

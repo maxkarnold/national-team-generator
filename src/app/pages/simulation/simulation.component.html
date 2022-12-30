@@ -1,4 +1,4 @@
-<h1>World Cup Group Stage</h1>
+<h1>Tournament Setup</h1>
 <div class="number-form">
   <div class="inputs">
     <div>
@@ -6,7 +6,7 @@
       <input
         type="number"
         name="numOfGames"
-        [(ngModel)]="groupGamesPerOpponent"
+        [(ngModel)]="service.groupGamesPerOpponent"
         min="1"
         max="3"
       />
@@ -22,7 +22,7 @@
         placeholder="multiple of 4"
         disabled
       /> -->
-      <select name="numOfTeams" [(ngModel)]="numberOfTeams">
+      <select name="numOfTeams" [(ngModel)]="service.numberOfTeams">
         <option value="32">32 - World Cup Format</option>
         <option value="24" disabled>24 - EUROS, AFCON</option>
         <option value="12" disabled>12 - Copa América</option>
@@ -32,11 +32,11 @@
       <label for="hostNation">Host Nation</label>
       <select
         name="hostNation"
-        [(ngModel)]="hostNation"
+        [(ngModel)]="service.hostNation"
         [compareWith]="compareObj"
       >
         <option
-          *ngFor="let nation of nationsList"
+          *ngFor="let nation of service.nationsList"
           [ngValue]="nation"
           placeholder="Choose Host Nation"
         >
@@ -46,147 +46,49 @@
     </div>
   </div>
 
-  <button [disabled]="numberOfTeams > 96" (click)="setupTournament()">
+  <button
+    [disabled]="service.numberOfTeams > 96"
+    (click)="service.setupTournament()"
+  >
     Setup Tournament
   </button>
   <button
     class="button"
-    *ngIf="tournament.groups"
-    (click)="simulateTournament()"
+    *ngIf="service.tournament.groups"
+    (click)="service.simulateTournament()"
   >
     Simulate
   </button>
 </div>
-
-<div class="group-stage">
-  <div
-    class="group"
-    *ngFor="let group of tournament.groups; index as i; trackBy: groupLetters"
-  >
-    <span class="group-name">Group {{ groupLetters(i) }}</span>
-    <table>
-      <thead>
-        <tr class="group-headings">
-          <th colspan="2">Team</th>
-          <th *ngFor="let heading of headings">{{ heading }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr [class]="getNationClass(nation)" *ngFor="let nation of group">
-          <td>
-            <img
-              class="nation-flag"
-              (click)="openNationStats(nation)"
-              [src]="nation.logo"
-              [alt]="nation.name"
-            />
-          </td>
-          <td class="name" (click)="openNationStats(nation)">
-            {{ nation.name }}
-          </td>
-          <td>{{ nation.ranking }}</td>
-          <td>{{ nation.matchesPlayed }}</td>
-          <td>{{ nation.points }}</td>
-          <td>{{ nation.gDiff }}</td>
-          <td>{{ nation.gFor }}</td>
-          <td>{{ nation.gOpp }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="header-knockouts" *ngIf="tournament.bracket">
-  <h1>World Cup Knockouts</h1>
-  <ul *ngIf="tournament.stats" class="stats">
-    <li *ngFor="let stat of tournament.stats; let i = index">
-      <div *ngIf="stat" class="stat" (click)="openNationStats(stat)">
-        {{ tournamentStats[i].emoji }}
-        <img class="nation-flag" [src]="stat.logo" [alt]="stat.name" />
-        <span>{{ stat.name }}</span>
-      </div>
+<nav class="dashboard">
+  <ul>
+    <li>
+      <a
+        [routerLink]="'group-stage'"
+        class="ripple"
+        [routerLinkActive]="['active']"
+        >Groups</a
+      >
+    </li>
+    <li>
+      <a [routerLink]="'bracket'" class="ripple" [routerLinkActive]="['active']"
+        >Bracket</a
+      >
+    </li>
+    <li>
+      <a [routerLink]="'awards'" class="ripple" [routerLinkActive]="['active']"
+        >Awards</a
+      >
     </li>
   </ul>
-</div>
-
-<div class="bracket" *ngIf="tournament.bracket">
-  <ul class="headings">
-    <li>Round of 16</li>
-    <li>Quarter Finals</li>
-    <li>Semi Finals</li>
-  </ul>
-  <div class="grid">
-    <div
-      class="round"
-      *ngFor="let round of tournament.bracket | keyvalue: originalOrder"
-    >
-      <div class="match" *ngFor="let match of round.value; let i = index">
-        <h3
-          *ngIf="round.key === 'finals'"
-          [class]="i === 0 ? 'first' : 'second'"
-        >
-          {{ i === 0 ? "Finals" : "3rd Place" }}
-        </h3>
-        <div [class]="match[2].loser.name === match[0].name ? 'loser' : ''">
-          <div (click)="openNationStats(match[0])" class="nation">
-            <img
-              class="nation-flag"
-              [src]="match[0].logo"
-              [alt]="match[0].name"
-            />
-            <span>
-              {{ match[0].name }}
-            </span>
-          </div>
-          <div class="score">
-            <span
-              >{{ match[2].goalsFor }}
-              {{
-                match[2].penaltyWin && match[0].name === match[2].winner.name
-                  ? "(P)"
-                  : match[2].etWin && match[0].name === match[2].winner.name
-                  ? "(AET)"
-                  : ""
-              }}</span
-            >
-            <span>{{ match[0].name === match[2].winner.name ? "◀" : "" }}</span>
-          </div>
-        </div>
-        <div [class]="match[2].loser.name === match[1].name ? 'loser' : ''">
-          <div (click)="openNationStats(match[1])" class="nation">
-            <img
-              class="nation-flag"
-              [src]="match[1].logo"
-              [alt]="match[1].name"
-            />
-            <span>
-              {{ match[1].name }}
-            </span>
-          </div>
-          <div class="score">
-            <span
-              >{{ match[2].goalsAg }}
-              {{
-                match[2].penaltyWin && match[1].name === match[2].winner.name
-                  ? "(P)"
-                  : match[2].etWin && match[1].name === match[2].winner.name
-                  ? "(AET)"
-                  : ""
-              }}</span
-            >
-            <span>{{ match[1].name === match[2].winner.name ? "◀" : "" }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+</nav>
+<router-outlet></router-outlet>
 
 <app-nation-dialog
-  [nation]="selectedNation"
-  [tournament]="tournament"
-  (closeDialog)="selectedNation = undefined"
-  (onNationChange)="openNationStats($event)"
-  [class]="isDialogOpen ? 'show' : ''"
-  (click)="selectedNation = undefined; isDialogOpen = false"
+  [nation]="service.selectedNation"
+  [tournament]="service.tournament"
+  (closeDialog)="service.selectedNation = undefined"
+  (onNationChange)="service.openNationStats($event)"
+  [class]="service.isDialogOpen ? 'show' : ''"
+  (click)="service.selectedNation = undefined; service.isDialogOpen = false"
 ></app-nation-dialog>

@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   Output,
@@ -16,11 +17,17 @@ import { Tournament32 } from 'app/pages/simulation/simulation.model';
   styleUrls: ['./nation-dialog.component.scss'],
 })
 export class NationDialogComponent implements OnChanges {
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.screenWidth = window.innerWidth;
+  }
+
   @Input() nation?: GroupTeam = undefined;
   @Input() tournament?: Tournament32;
   @Output() closeDialog = new EventEmitter<boolean>(false);
   @Output() onNationChange = new EventEmitter<GroupTeam>();
 
+  screenWidth: number;
   originalOrder = originalOrder;
   rounds = [
     'Round of 16',
@@ -43,6 +50,11 @@ export class NationDialogComponent implements OnChanges {
     },
   ];
   gradeStyle?: string;
+
+  constructor() {
+    this.screenWidth = window.innerWidth;
+    this.getScreenSize();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nation && this.tournament?.bracket) {

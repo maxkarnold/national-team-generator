@@ -1,0 +1,33 @@
+@import 'variables.scss';
+
+.stats {
+  text-transform: capitalize;
+  font-size: 1.5rem;
+  border: 1px solid black;
+  background-color: $primary-light;
+  padding: 1.5rem;
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  .stat {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .nation-flag {
+    width: 2rem;
+    height: 1.5rem;
+    margin: 0 1rem;
+  }
+}
+
+h1 {
+  font-size: 4rem;
+
+  @media screen and (max-width: 1200px) {
+    font-size: 2.5rem;
+  }
+}
