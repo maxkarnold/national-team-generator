@@ -88,7 +88,7 @@
         <li *ngIf="nation.grade" [ngClass]="['grade', gradeStyle]">
           {{ nation.grade }} - {{ nation.tournamentFinish }}
         </li>
-        <span>{{ gradeSummaries(nation) }}</span>
+        <span>{{ reportCard(nation) }}</span>
       </ul>
     </div>
   </div>

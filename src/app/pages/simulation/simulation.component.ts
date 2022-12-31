@@ -8,10 +8,6 @@ import { SimulationService } from './simulation.service';
   styleUrls: ['./simulation.component.scss'],
 })
 export class SimulationComponent {
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
-    this.service.selectedNation = undefined;
-  }
-
   service: SimulationService;
 
   constructor(service: SimulationService) {
@@ -19,6 +15,10 @@ export class SimulationComponent {
 
     service.createTeams();
     service.setupTournament();
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
+    this.service.selectedNation = undefined;
   }
 
   compareObj(o1: GroupTeam, o2: GroupTeam) {

@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { groupLetters } from '@shared/utils';
+import { groupLetters } from 'app/pages/simulation/simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 
@@ -9,11 +9,6 @@ import { SimulationService } from 'app/pages/simulation/simulation.service';
   styleUrls: ['./group-stage.component.scss'],
 })
 export class GroupStageComponent {
-  @HostListener('window:resize', ['$event'])
-  getScreenSize() {
-    this.screenWidth = window.innerWidth;
-  }
-
   screenWidth: number;
   service: SimulationService;
   groupLetters = groupLetters;
@@ -23,6 +18,11 @@ export class GroupStageComponent {
     this.service = service;
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.screenWidth = window.innerWidth;
   }
 
   getNationClass(nation: GroupTeam) {

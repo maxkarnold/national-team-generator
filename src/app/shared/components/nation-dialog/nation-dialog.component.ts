@@ -10,6 +10,7 @@ import {
 import { GroupTeam } from 'app/models/nation.model';
 import { originalOrder } from '@shared/utils';
 import { Tournament32 } from 'app/pages/simulation/simulation.model';
+import { reportCard } from 'app/pages/simulation/simulation.utils';
 
 @Component({
   selector: 'app-nation-dialog',
@@ -17,18 +18,14 @@ import { Tournament32 } from 'app/pages/simulation/simulation.model';
   styleUrls: ['./nation-dialog.component.scss'],
 })
 export class NationDialogComponent implements OnChanges {
-  @HostListener('window:resize', ['$event'])
-  getScreenSize() {
-    this.screenWidth = window.innerWidth;
-  }
-
   @Input() nation?: GroupTeam = undefined;
   @Input() tournament?: Tournament32;
   @Output() closeDialog = new EventEmitter<boolean>(false);
-  @Output() onNationChange = new EventEmitter<GroupTeam>();
+  @Output() nationChange = new EventEmitter<GroupTeam>();
 
   screenWidth: number;
   originalOrder = originalOrder;
+  reportCard = reportCard;
   rounds = [
     'Round of 16',
     'Quarter Finals',
@@ -54,6 +51,11 @@ export class NationDialogComponent implements OnChanges {
   constructor() {
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.screenWidth = window.innerWidth;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -90,7 +92,7 @@ export class NationDialogComponent implements OnChanges {
     grade: string | undefined;
     result: string | undefined;
   } {
-    // top 5, top 10, top 25, top 40, top 55, top 80, other teams
+    // s, a, b, c, d, e, f, g tier
     const { nation, tournament } = this;
     if (
       !nation ||
@@ -98,10 +100,9 @@ export class NationDialogComponent implements OnChanges {
       tournament.bracket === undefined ||
       tournament.stats === undefined
     ) {
-      console.log('fail');
       return { grade: undefined, result: undefined };
     }
-    let gradeArr = ['f', 'f', 'f', 'f', 'f', 'f', 'f'];
+    let gradeArr = ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'f'];
     let result = '';
     if (nation.matchesPlayed < 3) {
       gradeArr = Array(7).fill('n/a');
@@ -143,32 +144,6 @@ export class NationDialogComponent implements OnChanges {
     };
   }
 
-  gradeSummaries(nation: GroupTeam): string {
-    const name = nation.name
-      .split(' ')
-      .map((l) => l[0].toLocaleUpperCase() + l.substring(1))
-      .join(' ');
-    if (nation.matchesPlayed < 3) {
-      return `${name} did not qualify for the tournament, their players had to watch from the comfort of their own homes.`;
-    }
-    switch (nation.grade) {
-      case 's':
-        return `${name} had perhaps their best performance at a major tournament ever! Fans will be ecstatic as ${name} blew expectations out of the water. No one thought they would make it this far.`;
-      case 'a':
-        return `What a tournament for ${name}! It was a resounding success that will send fans home with a smile.`;
-      case 'b':
-        return `A fairly decent tournament for ${name}. There should be no complaints as they were able to meet expectations.`;
-      case 'c':
-        return `The tournament was very mediocre for ${name}. Most likely no one will be fired, but perhaps players will be regretting this missed chance.`;
-      case 'd':
-        return `The tournament could have gone a lot better for ${name}, even if they didn't fully embarrass themselves.`;
-      case 'f':
-        return `This tournament was an absolute disaster in the eyes of the media. Head coach for the ${name} national team will most likely be fired shortly.`;
-      default:
-        return 'ERROR';
-    }
-  }
-
   getGradeStyle(
     grade: string | undefined
   ): '' | 'good-grade' | 'ok-grade' | 'bad-grade' {
@@ -195,9 +170,9 @@ export class NationDialogComponent implements OnChanges {
       ?.flat()
       .find((a) => a.name === nation.name);
     if (updatedNation) {
-      this.onNationChange.emit(updatedNation);
+      this.nationChange.emit(updatedNation);
     } else {
-      this.onNationChange.emit(nation);
+      this.nationChange.emit(nation);
     }
   }
 }

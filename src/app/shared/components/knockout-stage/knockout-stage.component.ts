@@ -8,11 +8,6 @@ import { SimulationService } from 'app/pages/simulation/simulation.service';
   styleUrls: ['./knockout-stage.component.scss'],
 })
 export class KnockoutStageComponent {
-  @HostListener('window:resize', ['$event'])
-  getScreenSize() {
-    this.screenWidth = window.innerWidth;
-  }
-
   screenWidth: number;
   service: SimulationService;
   originalOrder = originalOrder;
@@ -21,5 +16,10 @@ export class KnockoutStageComponent {
     this.service = service;
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.screenWidth = window.innerWidth;
   }
 }

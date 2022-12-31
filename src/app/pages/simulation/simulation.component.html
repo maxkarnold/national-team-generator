@@ -13,15 +13,6 @@
     </div>
     <div>
       <label for="numOfTeams">Number of Teams</label>
-      <!-- <input
-        type="number"
-        name="numOfTeams"
-        [(ngModel)]="numberOfTeams"
-        min="8"
-        max="96"
-        placeholder="multiple of 4"
-        disabled
-      /> -->
       <select name="numOfTeams" [(ngModel)]="service.numberOfTeams">
         <option value="32">32 - World Cup Format</option>
         <option value="24" disabled>24 - EUROS, AFCON</option>
@@ -88,7 +79,7 @@
   [nation]="service.selectedNation"
   [tournament]="service.tournament"
   (closeDialog)="service.selectedNation = undefined"
-  (onNationChange)="service.openNationStats($event)"
+  (nationChange)="service.openNationStats($event)"
   [class]="service.isDialogOpen ? 'show' : ''"
   (click)="service.selectedNation = undefined; service.isDialogOpen = false"
 ></app-nation-dialog>
