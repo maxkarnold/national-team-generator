@@ -1,3 +1,4 @@
 {
-  "editor.formatOnSave": true
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
 }

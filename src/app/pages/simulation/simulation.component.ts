@@ -1,7 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { GroupTeam } from 'app/models/nation.model';
 import { SimulationService } from './simulation.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-simulation',
   templateUrl: './simulation.component.html',
@@ -9,19 +11,21 @@ import { SimulationService } from './simulation.service';
 })
 export class SimulationComponent {
   service: SimulationService;
+  selectedNation: GroupTeam | null = null;
 
   constructor(service: SimulationService) {
     this.service = service;
 
-    service.createTeams();
-    service.setupTournament();
+    service.selectedNation$
+      .pipe(untilDestroyed(this))
+      .subscribe((nation) => (this.selectedNation = nation));
   }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
-    this.service.selectedNation = undefined;
+    this.service.changeSelectedNation(null);
   }
 
-  compareObj(o1: GroupTeam, o2: GroupTeam) {
-    return o1?.name === o2?.name;
+  changeSelectedNation(nation?: GroupTeam) {
+    this.service.changeSelectedNation(nation || null);
   }
 }

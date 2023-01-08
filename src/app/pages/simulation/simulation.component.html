@@ -1,56 +1,5 @@
 <h1>Tournament Setup</h1>
-<div class="number-form">
-  <div class="inputs">
-    <div>
-      <label for="numOfGames">Group Games Per Opponent</label>
-      <input
-        type="number"
-        name="numOfGames"
-        [(ngModel)]="service.groupGamesPerOpponent"
-        min="1"
-        max="3"
-      />
-    </div>
-    <div>
-      <label for="numOfTeams">Number of Teams</label>
-      <select name="numOfTeams" [(ngModel)]="service.numberOfTeams">
-        <option value="32">32 - World Cup Format</option>
-        <option value="24" disabled>24 - EUROS, AFCON</option>
-        <option value="12" disabled>12 - Copa América</option>
-      </select>
-    </div>
-    <div class="host-nation">
-      <label for="hostNation">Host Nation</label>
-      <select
-        name="hostNation"
-        [(ngModel)]="service.hostNation"
-        [compareWith]="compareObj"
-      >
-        <option
-          *ngFor="let nation of service.nationsList"
-          [ngValue]="nation"
-          placeholder="Choose Host Nation"
-        >
-          {{ nation.name }}
-        </option>
-      </select>
-    </div>
-  </div>
-
-  <button
-    [disabled]="service.numberOfTeams > 96"
-    (click)="service.setupTournament()"
-  >
-    Setup Tournament
-  </button>
-  <button
-    class="button"
-    *ngIf="service.tournament.groups"
-    (click)="service.simulateTournament()"
-  >
-    Simulate
-  </button>
-</div>
+<app-tournament-form></app-tournament-form>
 <nav class="dashboard">
   <ul>
     <li>
@@ -76,10 +25,7 @@
 <router-outlet></router-outlet>
 
 <app-nation-dialog
-  [nation]="service.selectedNation"
-  [tournament]="service.tournament"
-  (closeDialog)="service.selectedNation = undefined"
-  (nationChange)="service.openNationStats($event)"
-  [class]="service.isDialogOpen ? 'show' : ''"
-  (click)="service.selectedNation = undefined; service.isDialogOpen = false"
+  *ngIf="selectedNation"
+  [class]="selectedNation ? 'show' : ''"
+  (click)="changeSelectedNation()"
 ></app-nation-dialog>

@@ -1,0 +1,45 @@
+<div class="form-container">
+  <form class="number-form" [formGroup]="tournamentForm" novalidate (ngSubmit)="checkTournamentForm()">
+    <div class="inputs">
+      <div>
+        <label for="numOfGames">Group Games Per Opponent (1-3)</label>
+        <input type="number" formControlName="numOfGames" min="1" max="3" required />
+      </div>
+      <div>
+        <label for="numOfTeams">Number of Teams</label>
+        <select formControlName="numOfTeams" required>
+          <option value="32">32 - World Cup</option>
+          <option value="24" disabled>24 - EUROS, AFCON</option>
+          <option value="12" disabled>12 - Copa América</option>
+        </select>
+      </div>
+      <div>
+        <label for="region">Regions Available</label>
+        <ng-select
+          formControlName="availableRegions"
+          [items]="regions"
+          [multiple]="true"
+          [selectableGroup]="true"
+          [selectableGroupAsModel]="false"
+          [closeOnSelect]="false"
+          [groupBy]="groupByFn"
+          (ngModelChange)="regionChanged($event)"
+          [compareWith]="compareRegions"
+          required
+          placeholder="Please Select A Region">
+        </ng-select>
+      </div>
+      <div class="host-nation">
+        <label for="hostNation">Host Nation</label>
+        <select formControlName="hostNation" [compareWith]="compareObj" required>
+          <option *ngFor="let nation of filteredNations" [ngValue]="nation" placeholder="Choose Host Nation">
+            {{ nation.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="!tournamentForm.valid">Setup Tournament</button>
+  </form>
+  <button class="button" *ngIf="tournament?.groups" (click)="simulateTournamentButton()">Simulate</button>
+</div>

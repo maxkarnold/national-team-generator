@@ -1,12 +1,5 @@
 <div class="group-stage">
-  <div
-    class="group"
-    *ngFor="
-      let group of service.tournament.groups;
-      index as i;
-      trackBy: groupLetters
-    "
-  >
+  <div class="group" *ngFor="let group of tournament?.groups; index as i; trackBy: groupLetters">
     <span class="group-name">Group {{ groupLetters(i) }}</span>
     <table>
       <thead>
@@ -18,19 +11,10 @@
       <tbody>
         <tr [class]="getNationClass(nation)" *ngFor="let nation of group">
           <td>
-            <img
-              class="nation-flag"
-              (click)="service.openNationStats(nation)"
-              [src]="nation.logo"
-              [alt]="nation.name"
-            />
+            <img class="nation-flag" (click)="openNationStats(nation)" [src]="nation.logo" [alt]="nation.name" />
           </td>
-          <td class="name" (click)="service.openNationStats(nation)">
-            {{
-              screenWidth < 350
-                ? nation.abbreviation.toLocaleUpperCase()
-                : nation.name
-            }}
+          <td class="name" (click)="openNationStats(nation)">
+            {{ screenWidth < 350 ? nation.abbreviation.toLocaleUpperCase() : nation.name }}
           </td>
           <td>{{ nation.ranking }}</td>
           <td>{{ nation.matchesPlayed }}</td>

@@ -36,6 +36,8 @@ h3 {
   color: white;
   transform: translateY(-200px);
   transition: all 0.3s ease-in-out;
+  max-height: 100vh;
+  overflow-y: auto;
 
   @media screen and (max-width: 1250px) {
     width: 95%;
@@ -44,77 +46,102 @@ h3 {
   @media screen and (max-width: 600px) {
     width: 100%;
     height: 100vh;
-    overflow-y: auto;
+    margin-top: 25%;
   }
 
   .header {
-    padding: 1rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    padding: 1rem;
 
-    .nation-name {
+    .name-row {
       display: flex;
-      align-items: center;
-
-      @media screen and (max-width: 600px) {
-        flex-wrap: wrap;
-      }
-
-      >* {
-        margin: 0 1rem 0.5rem;
-      }
-
-      .rank {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .nation-flag {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 5rem;
-        height: 3rem;
-
-        @media screen and (max-width: 1250px) {
-          width: 3rem;
-          height: 1.8rem;
-        }
-      }
-
-      h2 {
-        font-size: 3.5rem;
-        text-transform: uppercase;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+      .nation {
         display: flex;
         align-items: center;
-
-        @media screen and (max-width: 1250px) {
-          font-size: 2.25rem;
-        }
 
         @media screen and (max-width: 600px) {
-          font-size: 2rem;
+          flex-wrap: wrap;
         }
+
+        .nation-flag {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          max-width: 6rem;
+          height: 3rem;
+          margin-right: 0.5rem;
+
+          @media screen and (max-width: 600px) {
+            height: 2.5rem;
+          }
+
+          @media screen and (max-width: 450px) {
+            height: 2rem;
+          }
+        }
+
+        h2 {
+          font-size: 3.5rem;
+          margin: 0 0.5rem;
+          text-transform: uppercase;
+          display: flex;
+          align-items: center;
+
+          @media screen and (max-width: 1250px) {
+            font-size: 2.25rem;
+          }
+
+          @media screen and (max-width: 600px) {
+            font-size: 2rem;
+          }
+        }
+
+
       }
-
-      h3 {
-        font-size: 2rem;
-
-        @media screen and (max-width: 1000px) {
-          font-size: 1.25rem;
-        }
+      .exit-button {
+        font-size: 300%;
+        cursor: pointer;
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
       }
     }
 
-    .exit-button {
-      font-size: 200%;
-      cursor: pointer;
-      flex: 1;
+
+
+
+
+    .stats-row {
       display: flex;
-      justify-content: flex-end;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      >div {
+        display: flex;
+        >div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-evenly;
+          padding: 0 0.5rem;
+
+          h3 {
+            font-size: 2rem;
+
+            @media screen and (max-width: 1000px) {
+              font-size: 1.25rem;
+            }
+          }
+
+          &.first {
+            padding: 0 2rem 0 0;
+          }
+        }
+
+      }
+
     }
   }
 
@@ -226,9 +253,9 @@ h3 {
         }
 
         .nation-flag {
-          width: 2.5rem;
-          height: 1.5rem;
-          margin-right: 5px;
+          width: 3rem;
+          max-height: 2.5rem;
+          margin-right: 1rem;
           cursor: pointer;
 
           &.disabled {
@@ -237,7 +264,7 @@ h3 {
 
           @media screen and (max-width: 1000px) {
             width: 2rem;
-            height: 1.2rem;
+            max-height: 1.2rem;
           }
         }
       }

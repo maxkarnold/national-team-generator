@@ -11,6 +11,8 @@ export interface Match {
 }
 
 export interface Tournament32 {
+  availableRegions?: Region[];
+  hostNation?: GroupTeam;
   teams?: GroupTeam[];
   groups?: GroupTeam[][];
   groupWinners?: GroupTeam[];
@@ -20,7 +22,7 @@ export interface Tournament32 {
     semiFinals: [GroupTeam, GroupTeam, Match][];
     finals: [GroupTeam, GroupTeam, Match][];
   };
-  stats?: [
+  awards?: [
     first: GroupTeam,
     second: GroupTeam,
     third: GroupTeam,
@@ -33,4 +35,23 @@ export interface Tournament32 {
     conmebol?: GroupTeam,
     ofc?: GroupTeam
   ];
+}
+
+export interface Region {
+  label: string;
+  value: string;
+  numOfTeams: number;
+  qualifiers: {
+    auto: number;
+    extra: number;
+  };
+}
+
+export interface TeamsByRegion {
+  uefa?: GroupTeam[];
+  afc?: GroupTeam[];
+  caf?: GroupTeam[];
+  concacaf?: GroupTeam[];
+  conmebol?: GroupTeam[];
+  ofc?: GroupTeam[];
 }

@@ -27,6 +27,7 @@
     "@fortawesome/angular-fontawesome": "^0.10.2",
     "@fortawesome/fontawesome-svg-core": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
+    "@ng-select/ng-select": "^8.0.0",
     "@ngneat/until-destroy": "^9.2.2",
     "@types/lodash": "^4.14.191",
     "cheerio": "^1.0.0-rc.10",

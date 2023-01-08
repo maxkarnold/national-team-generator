@@ -27,6 +27,7 @@ export interface GroupTeam {
   gOpp: number;
   tier: string;
   attRating: number;
+  midRating: number;
   defRating: number;
   rating: number;
   matchHistory: {
@@ -43,7 +44,10 @@ export interface GroupTeam {
       opp: GroupTeam;
     }[];
   };
-  ranking?: number;
+  ranking: number;
+  attRanking: number;
+  midRanking: number;
+  defRanking: number;
   pot?: number;
   grade?: string;
   tournamentFinish?: string;

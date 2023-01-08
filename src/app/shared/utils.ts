@@ -1,10 +1,6 @@
 export const originalOrder = (): number => 0;
 
-export function compare(
-  a: number | string,
-  b: number | string,
-  isAsc: boolean
-) {
+export function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
@@ -36,10 +32,7 @@ export function shuffle<T>(arr: T[]) {
     currentIndex--;
 
     // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
 
   return array;
@@ -55,15 +48,8 @@ export function getRandomInt(mn: number, mx: number): number {
   // The maximum is inclusive and the minimum is inclusive
 }
 
-export function getRandFloat(
-  min: number,
-  max: number,
-  decimalPlaces = 2
-): number {
-  const rand =
-    Math.random() < 0.5
-      ? (1 - Math.random()) * (max - min) + min
-      : Math.random() * (max - min) + min; // could be min or max or anything in between
+export function getRandFloat(min: number, max: number, decimalPlaces = 2): number {
+  const rand = Math.random() < 0.5 ? (1 - Math.random()) * (max - min) + min : Math.random() * (max - min) + min; // could be min or max or anything in between
   const power = 10 ** decimalPlaces;
   return Math.floor(rand * power) / power;
 }
@@ -85,9 +71,15 @@ export function calcSumRating(arr: number[]): number {
  * @returns boolean
  */
 export function isArrayOfStrings(value: unknown): value is string[] {
-  return (
-    Array.isArray(value) &&
-    value.length > 0 &&
-    value.every((item) => typeof item === 'string')
-  );
+  return Array.isArray(value) && value.length > 0 && value.every(item => typeof item === 'string');
+}
+
+export function groupByProp(arr: Record<string, any>[], prop: string) {
+  return arr.reduce((memo, x) => {
+    if (!memo[x[prop]]) {
+      memo[x[prop]] = [];
+    }
+    memo[x[prop]].push(x);
+    return memo;
+  }, {});
 }

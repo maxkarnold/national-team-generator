@@ -1,72 +1,64 @@
 <div class="container" click-stop-propagation *ngIf="nation">
   <div class="header">
-    <div class="nation-name">
-      <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" />
-      <h2>
-        {{
-          nation.name.length > 9 && screenWidth < 350
-            ? nation.abbreviation.toLocaleUpperCase()
-            : nation.name
-        }}
-      </h2>
-      <div class="rank">
-        Rank
-        <h3>{{ nation.ranking }}</h3>
+    <div class="name-row">
+      <div class="nation">
+        <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" />
+        <h2>
+          {{ nation.name.length > 9 && screenWidth < 450 ? nation.abbreviation.toLocaleUpperCase() : nation.name }}
+        </h2>
+      </div>
+      <fa-icon icon="xmark" class="exit-button" (click)="changeSelectedNation()"></fa-icon>
+    </div>
+
+    <div class="stats-row">
+      <div class="left-side">
+        <div class="first">
+          <span>Rank</span>
+          <h3>{{ nation.ranking }}</h3>
+        </div>
+        <div>
+          <span>ATT</span>
+          <h3>{{ nation.attRanking }}</h3>
+        </div>
+        <div>
+          <span>MID</span>
+          <h3>{{ nation.midRanking }}</h3>
+        </div>
+        <div>
+          <span>DEF</span>
+          <h3>{{ nation.defRanking }}</h3>
+        </div>
+      </div>
+      <div class="right-side">
+        <div>
+          <span>POT</span>
+          <h3>{{ nation.pot }}</h3>
+        </div>
+        <div>
+          <span>Region</span>
+          <h3>{{ nation.region.toLocaleUpperCase() }}</h3>
+        </div>
       </div>
     </div>
-    <fa-icon
-      icon="xmark"
-      class="exit-button"
-      (click)="closeDialog.emit(true)"
-    ></fa-icon>
   </div>
   <div class="body">
-    <ul class="stats">
-      <li>Rating: {{ nation.rating }}</li>
-      <li>Att Rating: {{ nation.attRating }}</li>
-      <li>Def Rating: {{ nation.defRating }}</li>
-      <li *ngIf="nation.pot">Pot {{ nation.pot }}</li>
-      <li>
-        Confederation: <span>{{ nation.region }}</span>
-      </li>
-    </ul>
     <div class="flex-container">
       <ul class="matches">
         <h3>Match History</h3>
-        <li
-          *ngFor="
-            let stage of nation.matchHistory | keyvalue: originalOrder;
-            let i = index
-          "
-          class="match-stages"
-        >
-          <span *ngIf="stage.value.length > 0" class="match-stages">{{
-            stages[i].heading
-          }}</span>
-          <div
-            *ngFor="let item of stage.value; let j = index"
-            class="match-row"
-          >
-            <span *ngIf="stages[i].prop === 'bracket'" class="round">{{
-              rounds[j]
-            }}</span>
+        <li *ngFor="let stage of nation.matchHistory | keyvalue: originalOrder; let i = index" class="match-stages">
+          <span *ngIf="stage.value.length > 0" class="match-stages">{{ stages[i].heading }}</span>
+          <div *ngFor="let item of stage.value; let j = index" class="match-row">
+            <span *ngIf="stages[i].prop === 'bracket'" class="round">{{ rounds[j] }}</span>
             <img
               class="nation-flag"
               [src]="item.match.winner.logo"
               [alt]="item.match.winner.name"
-              (click)="changeNation(item.match.winner)"
-              [ngClass]="
-                item.match.winner.name === nation.name ? 'disabled' : ''
-              "
-            />
+              (click)="changeSelectedNation(item.match.winner)"
+              [ngClass]="item.match.winner.name === nation.name ? 'disabled' : ''" />
             <span class="team-name"
               >{{ item.match.winner.name }}
               {{
-                item.match.penaltyWin && stages[i].prop !== "group"
-                  ? "(P)"
-                  : item.match.etWin && stages[i].prop !== "group"
-                  ? "(AET)"
-                  : ""
+                item.match.penaltyWin && stages[i].prop !== 'group' ? '(P)' : item.match.etWin && stages[i].prop !== 'group' ? '(AET)' : ''
               }}</span
             >
             <span class="score">{{ item.match.score }}</span>
@@ -74,21 +66,16 @@
               class="nation-flag"
               [src]="item.match.loser.logo"
               [alt]="item.match.loser.name"
-              (click)="changeNation(item.match.loser)"
-              [ngClass]="
-                item.match.loser.name === nation.name ? 'disabled' : ''
-              "
-            />
+              (click)="changeSelectedNation(item.match.loser)"
+              [ngClass]="item.match.loser.name === nation.name ? 'disabled' : ''" />
             <span class="team-name">{{ item.match.loser.name }}</span>
           </div>
         </li>
       </ul>
-      <ul *ngIf="tournament?.bracket && nation.grade" class="report-card">
+      <ul class="report-card">
         <h3>Performance Grade</h3>
-        <li *ngIf="nation.grade" [ngClass]="['grade', gradeStyle]">
-          {{ nation.grade }} - {{ nation.tournamentFinish }}
-        </li>
-        <span>{{ reportCard(nation) }}</span>
+        <li *ngIf="nation.grade" [ngClass]="['grade', gradeStyle]">{{ nation.grade }} - {{ nation.tournamentFinish }}</li>
+        <span>{{ gradeSummary }}</span>
       </ul>
     </div>
   </div>

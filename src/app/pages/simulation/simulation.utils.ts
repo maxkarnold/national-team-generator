@@ -1,21 +1,71 @@
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { getRandomInt } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { Match } from './simulation.model';
+import { Match, Region } from './simulation.model';
+
+export const regions: Region[] = [
+  {
+    label: 'UEFA',
+    value: 'uefa',
+    numOfTeams: 49,
+    qualifiers: {
+      auto: 0,
+      extra: 0,
+    },
+  },
+  {
+    label: 'CAF',
+    value: 'caf',
+    numOfTeams: 39,
+    qualifiers: {
+      auto: 0,
+      extra: 0,
+    },
+  },
+  {
+    label: 'AFC',
+    value: 'afc',
+    numOfTeams: 29,
+    qualifiers: {
+      auto: 0,
+      extra: 0,
+    },
+  },
+  {
+    label: 'CONCACAF',
+    value: 'concacaf',
+    numOfTeams: 22,
+    qualifiers: {
+      auto: 0,
+      extra: 0,
+    },
+  },
+  {
+    label: 'CONMEBOL',
+    value: 'conmebol',
+    numOfTeams: 10,
+    qualifiers: {
+      auto: 0,
+      extra: 0,
+    },
+  },
+  {
+    label: 'OFC',
+    value: 'ofc',
+    numOfTeams: 6,
+    qualifiers: {
+      auto: 0,
+      extra: 0,
+    },
+  },
+];
 
 export function extraTimeResult(match: Match) {
-  return match.penaltyWin
-    ? ` after winning on penalties`
-    : match.etWin
-    ? ` after extra time`
-    : '';
+  return match.penaltyWin ? ` after winning on penalties` : match.etWin ? ` after extra time` : '';
 }
 
 function getResultArr(wins: number, draws: number, losses: number): string[] {
-  return [
-    ...Array(wins).fill('win'),
-    ...Array(losses).fill('loss'),
-    ...Array(draws).fill('draw'),
-  ];
+  return [...Array(wins).fill('win'), ...Array(losses).fill('loss'), ...Array(draws).fill('draw')];
 }
 
 export function groupLetters(index: number) {
@@ -50,19 +100,71 @@ export function groupLetters(index: number) {
   return letters[index];
 }
 
+export function regionsValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const regionsArr: Region[] = control.get('availableRegions')?.value;
+    const numOfTeams: number = control.get('numOfTeams')?.value;
+
+    const forbidden =
+      regionsArr.reduce((a, b) => {
+        return a + b.numOfTeams;
+      }, 0) < numOfTeams;
+
+    return forbidden ? { availableRegions: { value: control.value } } : null;
+  };
+}
+
+export function addRankings(arr: GroupTeam[]) {
+  return arr
+    .sort((a, b) => {
+      return b.attRating - a.attRating;
+    })
+    .map((team, i) => ({
+      ...team,
+      attRanking: i + 1,
+    }))
+    .sort((a, b) => {
+      return b.midRating - a.midRating;
+    })
+    .map((team, i) => ({
+      ...team,
+      midRanking: i + 1,
+    }))
+    .sort((a, b) => {
+      return b.defRating - a.defRating;
+    })
+    .map((team, i) => ({
+      ...team,
+      defRanking: i + 1,
+    }))
+    .sort((a, b) => {
+      return b.rating - a.rating;
+    })
+    .map((team, i) => ({
+      ...team,
+      ranking: i + 1,
+    }));
+}
+
 export function calcScore(
-  tAttRating: number,
-  tDefRating: number,
-  otAttRating: number,
-  otDefRating: number
+  team: { attRating: number; midRating: number; defRating: number },
+  opp: {
+    attRating: number;
+    midRating: number;
+    defRating: number;
+  },
+  homeTeam: boolean
 ): number[] {
-  const gF = tAttRating - otDefRating;
-  const gA = otAttRating - tDefRating;
-  const combinedAtt = tAttRating + otAttRating;
-  const combinedDef = tDefRating + otDefRating;
-  const gD = gF - gA;
+  const gF = team.attRating + team.midRating / 2 - (opp.midRating / 2 + opp.defRating);
+  const gA = opp.attRating + opp.midRating / 2 - (team.midRating / 2 + team.defRating);
+  const combinedAtt = team.attRating + opp.attRating + opp.midRating + team.midRating;
+  const combinedDef = team.defRating + team.midRating + opp.defRating + opp.midRating;
+  let gD = gF - gA;
   let result = '';
   let randIndex = getRandomInt(0, 9);
+  if (homeTeam) {
+    gD += 10;
+  }
 
   if (gD > 40) {
     result = getResultArr(8, 1, 1)[randIndex];
@@ -70,10 +172,14 @@ export function calcScore(
     result = getResultArr(7, 2, 1)[randIndex];
   } else if (gD > 10) {
     result = getResultArr(6, 2, 2)[randIndex];
+  } else if (gD > 5) {
+    result = getResultArr(5, 3, 2)[randIndex];
   } else if (gD > 0) {
-    result = getResultArr(4, 4, 2)[randIndex];
+    result = getResultArr(3, 5, 2)[randIndex];
+  } else if (gD > -5) {
+    result = getResultArr(2, 5, 3)[randIndex];
   } else if (gD > -10) {
-    result = getResultArr(2, 4, 4)[randIndex];
+    result = getResultArr(2, 3, 5)[randIndex];
   } else if (gD > -20) {
     result = getResultArr(2, 2, 6)[randIndex];
   } else if (gD > -40) {
@@ -229,14 +335,10 @@ export function calcScore(
   }
 }
 
-export const reportCard = ({
-  name: nationName,
-  grade,
-  matchesPlayed,
-}: GroupTeam): string => {
+export const reportCard = ({ name: nationName, grade, matchesPlayed }: GroupTeam): string => {
   const name = nationName
     .split(' ')
-    .map((l) => l[0].toLocaleUpperCase() + l.substring(1))
+    .map(l => l[0].toLocaleUpperCase() + l.substring(1))
     .join(' ');
   if (matchesPlayed < 3) {
     return `${name} did not qualify for the tournament, their players had to watch from the comfort of their own homes.`;

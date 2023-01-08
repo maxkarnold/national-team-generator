@@ -1,4 +1,4 @@
-<div class="bracket" *ngIf="service.tournament.bracket">
+<div class="bracket" *ngIf="tournament?.bracket">
   <ul class="headings">
     <li>Round of 16</li>
     <li>Quarter Finals</li>
@@ -7,7 +7,7 @@
   <div class="grid">
     <div
       class="round"
-      *ngFor="let round of service.tournament.bracket | keyvalue: originalOrder"
+      *ngFor="let round of tournament?.bracket | keyvalue: originalOrder"
     >
       <div class="match" *ngFor="let match of round.value; let i = index">
         <h3
@@ -17,7 +17,7 @@
           {{ i === 0 ? "Finals" : "3rd Place" }}
         </h3>
         <div [class]="match[2].loser.name === match[0].name ? 'loser' : ''">
-          <div (click)="service.openNationStats(match[0])" class="nation">
+          <div (click)="openNationStats(match[0])" class="nation">
             <img
               class="nation-flag"
               [src]="match[0].logo"
@@ -29,6 +29,7 @@
                   ? match[0].abbreviation.toLocaleUpperCase()
                   : match[0].name
               }}
+              [{{ match[0].ranking }}]
             </span>
           </div>
           <div class="score">
@@ -46,7 +47,7 @@
           </div>
         </div>
         <div [class]="match[2].loser.name === match[1].name ? 'loser' : ''">
-          <div (click)="service.openNationStats(match[1])" class="nation">
+          <div (click)="openNationStats(match[1])" class="nation">
             <img
               class="nation-flag"
               [src]="match[1].logo"
@@ -58,6 +59,7 @@
                   ? match[1].abbreviation.toLocaleUpperCase()
                   : match[1].name
               }}
+              [{{ match[1].ranking }}]
             </span>
           </div>
           <div class="score">
