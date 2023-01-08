@@ -34,9 +34,7 @@ export class AwardsComponent {
 
   constructor(service: SimulationService) {
     this.service = service;
-    service.tournament$
-      .pipe(untilDestroyed(this))
-      .subscribe((t) => (this.tournament = t));
+    service.tournament$.pipe(untilDestroyed(this)).subscribe(t => (this.tournament = t));
   }
 
   openNationStats(nation: GroupTeam | null) {

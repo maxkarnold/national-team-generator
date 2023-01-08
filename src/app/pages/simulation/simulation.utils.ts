@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { getRandomInt } from '@shared/utils';
+import { getRandFloat, getRandomInt } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
 import { Match, Region } from './simulation.model';
 
@@ -147,13 +147,13 @@ export function addRankings(arr: GroupTeam[]) {
 }
 
 export function calcScore(
-  team: { attRating: number; midRating: number; defRating: number },
+  team: { attRating: number; midRating: number; defRating: number; homeTeam: boolean },
   opp: {
     attRating: number;
     midRating: number;
     defRating: number;
-  },
-  homeTeam: boolean
+    homeTeam: boolean;
+  }
 ): number[] {
   const gF = team.attRating + team.midRating / 2 - (opp.midRating / 2 + opp.defRating);
   const gA = opp.attRating + opp.midRating / 2 - (team.midRating / 2 + team.defRating);
@@ -162,8 +162,10 @@ export function calcScore(
   let gD = gF - gA;
   let result = '';
   let randIndex = getRandomInt(0, 9);
-  if (homeTeam) {
+  if (team.homeTeam) {
     gD += 10;
+  } else if (opp.homeTeam) {
+    gD -= 10;
   }
 
   if (gD > 40) {
@@ -360,3 +362,46 @@ export const reportCard = ({ name: nationName, grade, matchesPlayed }: GroupTeam
       return 'ERROR';
   }
 };
+
+export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hostNation?: GroupTeam): Match {
+  const tm = {
+    attRating: team.attRating,
+    midRating: team.midRating,
+    defRating: team.defRating,
+    homeTeam: hostNation?.name === team.name ?? false,
+  };
+  const opp = {
+    attRating: otherTeam.attRating,
+    midRating: otherTeam.midRating,
+    defRating: otherTeam.defRating,
+    homeTeam: hostNation?.name === otherTeam.name ?? false,
+  };
+  const [goalsFor, goalsAg] = calcScore(tm, opp);
+
+  const etWin = getRandFloat(0, 1) > 0.9 && goalsFor !== goalsAg && Math.abs(goalsFor - goalsAg) < 2;
+  const penaltyWin = goalsFor === goalsAg;
+
+  const whoWon = (gf: number, ga: number): { winner: GroupTeam; loser: GroupTeam; score: string } => {
+    if (penaltyWin) {
+      const rand = getRandFloat(0, 1);
+      return rand > 0.5
+        ? { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` }
+        : { winner: otherTeam, loser: team, score: `${goalsAg}-${goalsFor}` };
+    }
+    return gf > ga
+      ? { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` }
+      : { winner: otherTeam, loser: team, score: `${goalsAg}-${goalsFor}` };
+  };
+
+  const { winner, loser, score } = whoWon(goalsFor, goalsAg);
+
+  return {
+    goalsFor,
+    goalsAg,
+    etWin,
+    penaltyWin,
+    winner,
+    loser,
+    score,
+  };
+}

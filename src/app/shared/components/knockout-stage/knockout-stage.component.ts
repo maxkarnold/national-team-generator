@@ -22,9 +22,7 @@ export class KnockoutStageComponent {
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
 
-    service.tournament$
-      .pipe(untilDestroyed(this))
-      .subscribe((t) => (this.tournament = t));
+    service.tournament$.pipe(untilDestroyed(this)).subscribe(t => (this.tournament = t));
   }
 
   @HostListener('window:resize', ['$event'])

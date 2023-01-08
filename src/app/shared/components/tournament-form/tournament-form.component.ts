@@ -6,7 +6,8 @@ import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { regions, regionsValidator } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
 import { getRandFloat, getRandomInt, roundMax } from '@shared/utils';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { SimulationQualifiersService } from 'app/pages/simulation/simulation-qualifiers.service';
 
 @UntilDestroy()
 @Component({
@@ -15,7 +16,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   styleUrls: ['./tournament-form.component.scss'],
 })
 export class TournamentFormComponent {
-  service: SimulationService;
+  simulator: SimulationService;
+  qualifier: SimulationQualifiersService;
   regions = regions;
   nations = nationsModule;
   nationsList: GroupTeam[] = [];
@@ -58,15 +60,15 @@ export class TournamentFormComponent {
     { validators: regionsValidator() }
   );
 
-  constructor(service: SimulationService, private fb: FormBuilder) {
-    this.service = service;
-    this.service.tournament$.pipe(untilDestroyed(this)).subscribe(t => {
+  constructor(simulator: SimulationService, qualifier: SimulationQualifiersService, private fb: FormBuilder) {
+    this.simulator = simulator;
+    this.qualifier = qualifier;
+    this.simulator.tournament$.pipe(untilDestroyed(this)).subscribe(t => {
       this.tournament = t;
     });
 
     this.createTeams();
     this.filteredNations = this.nationsList;
-    // console.log(this);
     this.setupTournament(1, 32, regions, this.hostNation);
   }
 
@@ -77,7 +79,6 @@ export class TournamentFormComponent {
       availableRegions,
       hostNation,
     }: { numOfGames: number; numOfTeams: number; availableRegions: Region[]; hostNation: GroupTeam } = this.tournamentForm.value;
-    // console.log(numOfGames, numOfTeams, availableRegions, hostNation);
     this.setupTournament(numOfGames, numOfTeams, availableRegions, hostNation);
   }
 
@@ -196,7 +197,7 @@ export class TournamentFormComponent {
 
   setupTournament(numOfGames: number, numOfTeams: number, availableRegions: Region[], hostNation: GroupTeam): void {
     this.createTeams();
-    const teams = this.service.chooseQualifyingTeams(availableRegions, numOfTeams, this.nationsList, hostNation);
+    const teams = this.qualifier.chooseQualifyingTeams(availableRegions, numOfTeams, this.nationsList, hostNation);
     const numOfGroups = teams.length / 4;
     const extraTeams = numOfTeams % 4;
     const teamsInGroup = teams.length / numOfGroups;
@@ -206,9 +207,9 @@ export class TournamentFormComponent {
     //   extraTeams = numOfTeams % teamsInGroup;
     // }
 
-    const groups = this.service.organizeGroups(teams, extraTeams, teamsInGroup, numOfTeams, hostNation, availableRegions);
+    const groups = this.qualifier.organizeGroups(teams, extraTeams, teamsInGroup, numOfTeams, hostNation, availableRegions);
 
-    this.service.tournament$.next({
+    this.simulator.tournament$.next({
       teams,
       groups,
       availableRegions: availableRegions,
@@ -224,11 +225,11 @@ export class TournamentFormComponent {
     }
     const teams = this.tournament.teams;
     const availableRegions = this.tournament.availableRegions;
-    const groups = this.service.simulateGroups(numOfGames, this.tournament.groups);
+    const groups = this.simulator.simulateGroups(numOfGames, this.tournament.groups);
 
-    const { bracket, groupWinners } = this.service.simulateBracket(groups);
-    const awards = this.service.getTournamentAwards(bracket, groups, availableRegions);
-    this.service.tournament$.next({
+    const { bracket, groupWinners } = this.simulator.simulateBracket(groups);
+    const awards = this.simulator.getTournamentAwards(bracket, groups, availableRegions);
+    this.simulator.tournament$.next({
       groups,
       groupWinners,
       bracket,
