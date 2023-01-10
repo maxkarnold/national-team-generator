@@ -3,29 +3,16 @@
 <nav class="dashboard">
   <ul>
     <li>
-      <a
-        [routerLink]="'group-stage'"
-        class="ripple"
-        [routerLinkActive]="['active']"
-        >Groups</a
-      >
+      <a [routerLink]="'group-stage'" class="ripple" [routerLinkActive]="['active']">Groups</a>
     </li>
     <li>
-      <a [routerLink]="'bracket'" class="ripple" [routerLinkActive]="['active']"
-        >Bracket</a
-      >
+      <a [routerLink]="'bracket'" class="ripple" [routerLinkActive]="['active']">Bracket</a>
     </li>
     <li>
-      <a [routerLink]="'awards'" class="ripple" [routerLinkActive]="['active']"
-        >Awards</a
-      >
+      <a [routerLink]="'awards'" class="ripple" [routerLinkActive]="['active']">Awards</a>
     </li>
   </ul>
 </nav>
 <router-outlet></router-outlet>
 
-<app-nation-dialog
-  *ngIf="selectedNation"
-  [class]="selectedNation ? 'show' : ''"
-  (click)="changeSelectedNation()"
-></app-nation-dialog>
+<app-nation-dialog *ngIf="selectedNation" [class]="selectedNation ? 'show' : ''" (click)="changeSelectedNation()"></app-nation-dialog>

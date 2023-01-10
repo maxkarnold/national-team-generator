@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { compare } from '@shared/utils';
-import { matchScore } from './simulation.utils';
+import { findTeamInTournament, matchScore } from './simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
 import { Match, Region, Tournament32 } from './simulation.model';
 import { BehaviorSubject } from 'rxjs';
@@ -24,7 +24,16 @@ export class SimulationService {
   }
 
   changeSelectedNation(value: null | GroupTeam) {
-    this.selectedNation$.next(value);
+    if (!this.tournament?.groups || !value) {
+      this.selectedNation$.next(value);
+      return;
+    }
+    const updatedNation = findTeamInTournament(this.tournament?.groups, value);
+    if (updatedNation) {
+      this.selectedNation$.next(updatedNation);
+    } else {
+      this.selectedNation$.next(value);
+    }
   }
 
   simulateGroups(groupGamesPerOpponent: number, groups: GroupTeam[][]): GroupTeam[][] {
@@ -43,7 +52,12 @@ export class SimulationService {
           group: [],
           bracket: [],
         };
-        g[i][j].grade = undefined;
+        g[i][j].reportCard = {
+          grade: null,
+          gradeStyle: null,
+          gradeSummary: null,
+          tournamentFinish: null,
+        };
       }
     }
     // go through each group

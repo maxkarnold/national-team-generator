@@ -49,6 +49,42 @@ export interface GroupTeam {
   midRanking: number;
   defRanking: number;
   pot?: number;
-  grade?: string;
-  tournamentFinish?: string;
+  reportCard: {
+    grade: string | null;
+    tournamentFinish: string | null;
+    gradeStyle: string | null;
+    gradeSummary: string | null;
+  };
 }
+
+export const defaultHost: GroupTeam = {
+  name: 'qatar',
+  abbreviation: 'qat',
+  logo: 'https://fmdataba.com/images/n/QAT.svg',
+  region: 'afc',
+  points: 0,
+  gDiff: 0,
+  gFor: 0,
+  gOpp: 0,
+  tier: 'j',
+  attRating: 0,
+  midRating: 0,
+  defRating: 0,
+  rating: 0,
+  matchesPlayed: 0,
+  matchHistory: {
+    qualifiers: [],
+    group: [],
+    bracket: [],
+  },
+  reportCard: {
+    grade: null,
+    gradeStyle: null,
+    gradeSummary: null,
+    tournamentFinish: null,
+  },
+  ranking: 0,
+  attRanking: 0,
+  midRanking: 0,
+  defRanking: 0,
+};

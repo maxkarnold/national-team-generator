@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { GroupTeam } from 'app/models/nation.model';
+import { defaultHost, GroupTeam } from 'app/models/nation.model';
 import { Region, Tournament32 } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
-import { regions, regionsValidator } from 'app/pages/simulation/simulation.utils';
+import { addRankings, regions, regionsValidator } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
 import { getRandFloat, getRandomInt, roundMax } from '@shared/utils';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -24,31 +24,7 @@ export class TournamentFormComponent {
   filteredNations: GroupTeam[];
   tournament: Tournament32 | null = {};
 
-  hostNation: GroupTeam = {
-    name: 'qatar',
-    abbreviation: 'qat',
-    logo: 'https://fmdataba.com/images/n/QAT.svg',
-    region: 'afc',
-    points: 0,
-    gDiff: 0,
-    gFor: 0,
-    gOpp: 0,
-    tier: 'j',
-    attRating: 0,
-    midRating: 0,
-    defRating: 0,
-    rating: 0,
-    matchesPlayed: 0,
-    matchHistory: {
-      qualifiers: [],
-      group: [],
-      bracket: [],
-    },
-    ranking: 0,
-    attRanking: 0,
-    midRanking: 0,
-    defRanking: 0,
-  };
+  hostNation = defaultHost;
 
   tournamentForm = this.fb.group(
     {
@@ -110,6 +86,7 @@ export class TournamentFormComponent {
   }
 
   createTeams() {
+    this.simulator.tournament$.next(null);
     this.nationsList = [];
     this.nations.forEach(tier => {
       tier.nations.forEach(nation => {
@@ -189,6 +166,12 @@ export class TournamentFormComponent {
             group: [],
             bracket: [],
           },
+          reportCard: {
+            grade: null,
+            gradeStyle: null,
+            gradeSummary: null,
+            tournamentFinish: null,
+          },
         };
         this.nationsList.push(team);
       });
@@ -197,6 +180,13 @@ export class TournamentFormComponent {
 
   setupTournament(numOfGames: number, numOfTeams: number, availableRegions: Region[], hostNation: GroupTeam): void {
     this.createTeams();
+    const nations = addRankings(this.nationsList);
+    const allTeams = {
+      rankings: [...nations],
+      attRankings: [...nations.sort((a, b) => a.attRanking - b.attRanking)],
+      midRankings: [...nations.sort((a, b) => a.midRanking - b.midRanking)],
+      defRankings: [...nations.sort((a, b) => a.defRanking - b.defRanking)],
+    };
     const teams = this.qualifier.chooseQualifyingTeams(availableRegions, numOfTeams, this.nationsList, hostNation);
     const numOfGroups = teams.length / 4;
     const extraTeams = numOfTeams % 4;
@@ -210,7 +200,7 @@ export class TournamentFormComponent {
     const groups = this.qualifier.organizeGroups(teams, extraTeams, teamsInGroup, numOfTeams, hostNation, availableRegions);
 
     this.simulator.tournament$.next({
-      teams,
+      allTeams,
       groups,
       availableRegions: availableRegions,
       hostNation: hostNation,
@@ -220,10 +210,10 @@ export class TournamentFormComponent {
   }
 
   simulateTournament(numOfGames: number): void {
-    if (!this.tournament?.teams || !this.tournament?.groups) {
+    if (!this.tournament?.allTeams || !this.tournament?.groups) {
       return;
     }
-    const teams = this.tournament.teams;
+    const allTeams = this.tournament.allTeams;
     const availableRegions = this.tournament.availableRegions;
     const groups = this.simulator.simulateGroups(numOfGames, this.tournament.groups);
 
@@ -234,7 +224,7 @@ export class TournamentFormComponent {
       groupWinners,
       bracket,
       awards,
-      teams,
+      allTeams,
       availableRegions,
     });
   }

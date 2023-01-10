@@ -64,6 +64,10 @@ export function extraTimeResult(match: Match) {
   return match.penaltyWin ? ` after winning on penalties` : match.etWin ? ` after extra time` : '';
 }
 
+export function findTeamInTournament(groups: GroupTeam[][], nation: GroupTeam) {
+  return groups.flat().find(t => t.name === nation.name);
+}
+
 function getResultArr(wins: number, draws: number, losses: number): string[] {
   return [...Array(wins).fill('win'), ...Array(losses).fill('loss'), ...Array(draws).fill('draw')];
 }
@@ -337,11 +341,12 @@ export function calcScore(
   }
 }
 
-export const reportCard = ({ name: nationName, grade, matchesPlayed }: GroupTeam): string => {
+export function getGradeSummary({ name: nationName, reportCard, matchesPlayed }: GroupTeam): string {
   const name = nationName
     .split(' ')
     .map(l => l[0].toLocaleUpperCase() + l.substring(1))
     .join(' ');
+  const grade = reportCard.grade;
   if (matchesPlayed < 3) {
     return `${name} did not qualify for the tournament, their players had to watch from the comfort of their own homes.`;
   }
@@ -361,7 +366,26 @@ export const reportCard = ({ name: nationName, grade, matchesPlayed }: GroupTeam
     default:
       return 'ERROR';
   }
-};
+}
+
+export function getGradeStyle(grade: string | undefined): '' | 'good-grade' | 'ok-grade' | 'bad-grade' {
+  if (grade) {
+    switch (grade) {
+      case 's':
+      case 'a':
+        return 'good-grade';
+      case 'b':
+      case 'c':
+        return 'ok-grade';
+      case 'd':
+      case 'f':
+        return 'bad-grade';
+      default:
+        return 'bad-grade';
+    }
+  }
+  return '';
+}
 
 export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hostNation?: GroupTeam): Match {
   const tm = {

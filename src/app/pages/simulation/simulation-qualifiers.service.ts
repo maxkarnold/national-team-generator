@@ -123,11 +123,13 @@ export class SimulationQualifiersService {
         const extraSpots = Math.round(nationsInRegion % ratio);
         console.log(
           region.toLocaleUpperCase(),
-          `\n`,
+          '\n',
           '# of nations from region',
           nationsInRegion,
+          '\n',
           'Qualifying spots from this region',
           qualifyingSpots,
+          '\n',
           'Extra spots available for this region',
           extraSpots
         );
@@ -163,7 +165,6 @@ export class SimulationQualifiersService {
         if (numQualified === 32 || extra === 0) {
           return;
         }
-        // console.log(numQualified);
         // console.log('test', extra, nations.length, auto);
         const qualifiers = this.autoQualifiers(extra, nations, auto, regions[index]);
         teamsQualified.push(...qualifiers.map(m => m.winner));
@@ -210,7 +211,6 @@ export class SimulationQualifiersService {
     for (let i = 0; i < matches; i++) {
       const wtIndex = alreadyQualified + (matches * 2 - 1 - i);
       qualifiers.push(matchScore(availableNations[alreadyQualified + i], availableNations[wtIndex]));
-      console.log(alreadyQualified + i, wtIndex);
     }
     qualifiers.forEach(match => {
       match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });

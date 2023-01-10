@@ -6,15 +6,24 @@
   border: 1px solid black;
   background-color: $primary-light;
   padding: 1.5rem;
+  display: flex;
+  flex-flow: row wrap;
 
-  li {
-    margin-bottom: 10px;
+  >div {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+
   }
 
-  .stat {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  h4 {
+    text-align: center;
+    font-size: 2.5rem;
+    padding: 0 0 1.5rem;
+  }
+
+  >ul >h4 {
+    padding-bottom: 1rem;
   }
 
   .nation-flag {
@@ -22,12 +31,40 @@
     height: 1.5rem;
     margin: 0 1rem;
   }
-}
 
-h1 {
-  font-size: 4rem;
+  li {
+    margin-bottom: 1rem;
+  }
 
-  @media screen and (max-width: 1200px) {
-    font-size: 2.5rem;
+  .awards {
+    margin: 0 0 2rem;
+    @media screen and (max-width: 450px) {
+      flex: 1;
+    }
+  }
+
+  .stat {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    // justify-content: center;
+  }
+  .rankings {
+    display: flex;
+    flex-flow: wrap;
+    padding-left: 5rem;
+    @media screen and (max-width: 450px) {
+      padding-left: 0;
+    }
+
+    .heading {
+      padding: 1rem 1rem 1rem 0;
+      cursor: pointer;
+      // text-align: center;
+    }
+
+    details {
+      flex: 1;
+    }
   }
 }

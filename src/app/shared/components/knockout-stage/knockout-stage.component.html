@@ -5,31 +5,17 @@
     <li>Semi Finals</li>
   </ul>
   <div class="grid">
-    <div
-      class="round"
-      *ngFor="let round of tournament?.bracket | keyvalue: originalOrder"
-    >
+    <div class="round" *ngFor="let round of tournament?.bracket | keyvalue: originalOrder">
       <div class="match" *ngFor="let match of round.value; let i = index">
-        <h3
-          *ngIf="round.key === 'finals'"
-          [class]="i === 0 ? 'first' : 'second'"
-        >
-          {{ i === 0 ? "Finals" : "3rd Place" }}
+        <h3 *ngIf="round.key === 'finals'" [class]="i === 0 ? 'first' : 'second'">
+          {{ i === 0 ? 'Finals' : '3rd Place' }}
         </h3>
         <div [class]="match[2].loser.name === match[0].name ? 'loser' : ''">
           <div (click)="openNationStats(match[0])" class="nation">
-            <img
-              class="nation-flag"
-              [src]="match[0].logo"
-              [alt]="match[0].name"
-            />
+            <img class="nation-flag" [src]="match[0].logo" [alt]="match[0].name" />
             <span>
-              {{
-                screenWidth < 400
-                  ? match[0].abbreviation.toLocaleUpperCase()
-                  : match[0].name
-              }}
-              [{{ match[0].ranking }}]
+              {{ screenWidth < 600 ? match[0].abbreviation.toLocaleUpperCase() : match[0].name }}
+              {{ screenWidth > 350 ? '[' + match[0].ranking + ']' : '' }}
             </span>
           </div>
           <div class="score">
@@ -37,29 +23,21 @@
               >{{ match[2].goalsFor }}
               {{
                 match[2].penaltyWin && match[0].name === match[2].winner.name
-                  ? "(P)"
+                  ? '(P)'
                   : match[2].etWin && match[0].name === match[2].winner.name
-                  ? "(AET)"
-                  : ""
+                  ? '(AET)'
+                  : ''
               }}</span
             >
-            <span>{{ match[0].name === match[2].winner.name ? "◀" : "" }}</span>
+            <span>{{ match[0].name === match[2].winner.name ? '◀' : '' }}</span>
           </div>
         </div>
         <div [class]="match[2].loser.name === match[1].name ? 'loser' : ''">
           <div (click)="openNationStats(match[1])" class="nation">
-            <img
-              class="nation-flag"
-              [src]="match[1].logo"
-              [alt]="match[1].name"
-            />
+            <img class="nation-flag" [src]="match[1].logo" [alt]="match[1].name" />
             <span>
-              {{
-                screenWidth < 400
-                  ? match[1].abbreviation.toLocaleUpperCase()
-                  : match[1].name
-              }}
-              [{{ match[1].ranking }}]
+              {{ screenWidth < 600 ? match[1].abbreviation.toLocaleUpperCase() : match[1].name }}
+              {{ screenWidth > 350 ? '[' + match[1].ranking + ']' : '' }}
             </span>
           </div>
           <div class="score">
@@ -67,13 +45,13 @@
               >{{ match[2].goalsAg }}
               {{
                 match[2].penaltyWin && match[1].name === match[2].winner.name
-                  ? "(P)"
+                  ? '(P)'
                   : match[2].etWin && match[1].name === match[2].winner.name
-                  ? "(AET)"
-                  : ""
+                  ? '(AET)'
+                  : ''
               }}</span
             >
-            <span>{{ match[1].name === match[2].winner.name ? "◀" : "" }}</span>
+            <span>{{ match[1].name === match[2].winner.name ? '◀' : '' }}</span>
           </div>
         </div>
       </div>

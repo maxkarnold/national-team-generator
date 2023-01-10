@@ -32,7 +32,7 @@
       <div class="right-side">
         <div>
           <span>POT</span>
-          <h3>{{ nation.pot }}</h3>
+          <h3>{{ nation.pot ?? 'N/A' }}</h3>
         </div>
         <div>
           <span>Region</span>
@@ -72,10 +72,12 @@
           </div>
         </li>
       </ul>
-      <ul class="report-card">
+      <ul class="report-card" *ngIf="nation.reportCard">
         <h3>Performance Grade</h3>
-        <li *ngIf="nation.grade" [ngClass]="['grade', gradeStyle]">{{ nation.grade }} - {{ nation.tournamentFinish }}</li>
-        <span>{{ gradeSummary }}</span>
+        <li [ngClass]="['grade', nation.reportCard.gradeStyle]">
+          {{ nation.reportCard.grade }} - {{ nation.reportCard.tournamentFinish }}
+        </li>
+        <span>{{ nation.reportCard.gradeSummary }}</span>
       </ul>
     </div>
   </div>

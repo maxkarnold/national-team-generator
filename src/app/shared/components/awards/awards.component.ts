@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { GroupTeam } from 'app/models/nation.model';
 import { Tournament32 } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
+import { get as _get } from 'lodash';
 
 @UntilDestroy()
 @Component({
@@ -12,7 +13,10 @@ import { SimulationService } from 'app/pages/simulation/simulation.service';
 })
 export class AwardsComponent {
   service: SimulationService;
+  screenWidth: number;
+  get = _get;
   tournament: Tournament32 | null = null;
+  rankings: { heading: string; prop: string; class: string; nations?: GroupTeam[] }[] | null = null;
 
   tournamentStats = [
     {
@@ -34,7 +38,46 @@ export class AwardsComponent {
 
   constructor(service: SimulationService) {
     this.service = service;
-    service.tournament$.pipe(untilDestroyed(this)).subscribe(t => (this.tournament = t));
+    this.screenWidth = window.innerWidth;
+    this.getScreenSize();
+    service.tournament$.pipe(untilDestroyed(this)).subscribe(t => {
+      this.tournament = t;
+      this.rankings = null;
+      if (!t?.allTeams) {
+        return;
+      }
+      this.rankings = [
+        {
+          heading: 'Overall',
+          prop: 'r',
+          class: 'main',
+          nations: t.allTeams.rankings,
+        },
+        {
+          heading: 'Attack',
+          prop: 'attR',
+          class: 'att',
+          nations: t.allTeams.attRankings,
+        },
+        {
+          heading: 'Midfield',
+          prop: 'midR',
+          class: 'mid',
+          nations: t.allTeams.midRankings,
+        },
+        {
+          heading: 'Defense',
+          prop: 'defR',
+          class: 'def',
+          nations: t.allTeams.defRankings,
+        },
+      ];
+    });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.screenWidth = window.innerWidth;
   }
 
   openNationStats(nation: GroupTeam | null) {

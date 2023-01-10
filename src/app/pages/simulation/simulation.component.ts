@@ -16,9 +16,7 @@ export class SimulationComponent {
   constructor(service: SimulationService) {
     this.service = service;
 
-    service.selectedNation$
-      .pipe(untilDestroyed(this))
-      .subscribe((nation) => (this.selectedNation = nation));
+    service.selectedNation$.pipe(untilDestroyed(this)).subscribe(nation => (this.selectedNation = nation));
   }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {

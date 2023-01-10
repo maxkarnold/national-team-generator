@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { GroupTeam } from 'app/models/nation.model';
 import { originalOrder } from '@shared/utils';
 import { Tournament32 } from 'app/pages/simulation/simulation.model';
-import { reportCard } from 'app/pages/simulation/simulation.utils';
+import { findTeamInTournament, getGradeStyle, getGradeSummary } from 'app/pages/simulation/simulation.utils';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest } from 'rxjs';
@@ -19,7 +19,7 @@ export class NationDialogComponent {
   tournament: Tournament32 | null = null;
   screenWidth: number;
   originalOrder = originalOrder;
-  gradeSummary = '';
+
   rounds = ['Round of 16', 'Quarter Finals', 'Semi Finals', 'Finals / Third Place Match'];
   stages = [
     {
@@ -35,7 +35,6 @@ export class NationDialogComponent {
       prop: 'bracket',
     },
   ];
-  gradeStyle?: string;
 
   constructor(service: SimulationService) {
     this.screenWidth = window.innerWidth;
@@ -49,9 +48,8 @@ export class NationDialogComponent {
       .subscribe(([tournament, nation]) => {
         this.tournament = tournament;
         this.nation = nation;
-        if (this.nation !== null) {
-          this.gradePerformance();
-          this.gradeSummary = reportCard(this.nation);
+        if (nation && !nation.reportCard.grade) {
+          this.getNationReportCard(nation);
         }
       });
   }
@@ -68,15 +66,36 @@ export class NationDialogComponent {
     this.service.changeSelectedNation(nation || null);
   }
 
-  gradePerformance() {
-    const { nation, tournament } = this;
-    if (nation?.ranking === undefined || tournament === null) {
+  updateNation(nation: GroupTeam) {
+    if (!this.tournament || !this.tournament.groups) {
       return;
     }
-    if (nation.grade) {
-      this.gradeStyle = this.getGradeStyle(nation.grade);
+    const updatedNation = this.tournament.groups.flat().find(a => a.name === nation.name);
+    if (updatedNation !== undefined) {
+      this.service.changeSelectedNation(nation);
       return;
     }
+    nation.matchHistory.qualifiers.map(m => {
+      if (this.tournament?.groups) {
+        const opp = findTeamInTournament(this.tournament.groups, m.opp);
+        if (opp) {
+          m.opp = opp;
+        }
+      }
+      return m;
+    });
+    this.nation = nation;
+    this.service.changeSelectedNation(nation);
+    return;
+  }
+
+  getNationReportCard(team: GroupTeam) {
+    const { tournament } = this;
+    if (!team.ranking || !tournament?.groups) {
+      return;
+    }
+
+    const nation = findTeamInTournament(tournament.groups, team) ?? team;
 
     let rankingTiers: Array<string | number> = ['s', 'a', 'b', 'c', 'd', 'e', 'f', 'g'];
     if (tournament.availableRegions) {
@@ -101,30 +120,32 @@ export class NationDialogComponent {
 
     rankingTiers.every((r, i) => {
       if (nation.ranking && (nation.ranking <= r || nation.tier === r || nation.pot === r)) {
-        const { grade, result } = this.calcGrade(i);
-        nation.grade = grade;
-        nation.tournamentFinish = result;
-        this.gradeStyle = this.getGradeStyle(grade);
+        const { grade, result } = this.calcGrade(nation, i);
+        nation.reportCard.grade = grade;
+        nation.reportCard.tournamentFinish = result;
+        nation.reportCard.gradeStyle = getGradeStyle(grade);
+        nation.reportCard.gradeSummary = getGradeSummary(nation);
         return false;
       }
       return true;
     });
-
-    this.updateNation(nation);
   }
 
-  calcGrade(rankingIndex: number): {
-    grade: string | undefined;
-    result: string | undefined;
+  calcGrade(
+    nation: GroupTeam,
+    rankingIndex: number
+  ): {
+    grade: string;
+    result: string;
   } {
-    const { nation, tournament } = this;
-    if (!nation || tournament?.groupWinners === undefined || tournament.bracket === undefined || tournament.awards === undefined) {
-      return { grade: undefined, result: undefined };
+    const { tournament } = this;
+    if (tournament?.groupWinners === undefined || tournament.bracket === undefined || tournament.awards === undefined) {
+      return { grade: 'n/a', result: 'Did Not Qualify' };
     }
     let gradeArr = ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'f'];
     let result = '';
     if (nation.matchesPlayed < 3) {
-      gradeArr = Array(7).fill('n/a');
+      gradeArr = Array(8).fill('n/a');
       result = 'Did Not Qualify';
     } else if (nation.points < 3 && nation.gDiff < -3) {
       gradeArr = ['f', 'f', 'f', 'd', 'c', 'c', 'c', 'b'];
@@ -153,37 +174,13 @@ export class NationDialogComponent {
     } else if (tournament.awards[0] === nation) {
       gradeArr = ['a', 'a', 's', 's', 's', 's', 's', 's'];
       result = 'Winner';
+    } else {
+      gradeArr = Array(8).fill('n/a');
+      result = 'Did Not Qualify';
     }
     return {
       grade: gradeArr[rankingIndex],
       result,
     };
-  }
-
-  getGradeStyle(grade: string | undefined): '' | 'good-grade' | 'ok-grade' | 'bad-grade' {
-    if (grade) {
-      switch (grade) {
-        case 's':
-        case 'a':
-          return 'good-grade';
-        case 'b':
-        case 'c':
-          return 'ok-grade';
-        case 'd':
-        case 'f':
-          return 'bad-grade';
-        default:
-          return 'bad-grade';
-      }
-    }
-    return '';
-  }
-
-  updateNation(nation: GroupTeam) {
-    const updatedNation = this.tournament?.groups?.flat().find(a => a.name === nation.name);
-    if (updatedNation !== undefined) {
-      this.service.selectedNation$.next(updatedNation);
-      return;
-    }
   }
 }
