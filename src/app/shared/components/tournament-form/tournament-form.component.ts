@@ -172,6 +172,7 @@ export class TournamentFormComponent {
             gradeSummary: null,
             tournamentFinish: null,
           },
+          emoji: nation.emoji,
         };
         this.nationsList.push(team);
       });

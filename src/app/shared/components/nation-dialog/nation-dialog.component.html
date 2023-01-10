@@ -2,7 +2,8 @@
   <div class="header">
     <div class="name-row">
       <div class="nation">
-        <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" />
+        <!-- <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" /> -->
+        <span class="nation-flag">{{ nation.emoji }}</span>
         <h2>
           {{ nation.name.length > 9 && screenWidth < 450 ? nation.abbreviation.toLocaleUpperCase() : nation.name }}
         </h2>
@@ -56,19 +57,21 @@
               (click)="changeSelectedNation(item.match.winner)"
               [ngClass]="item.match.winner.name === nation.name ? 'disabled' : ''" />
             <span class="team-name"
-              >{{ item.match.winner.name }}
+              >{{ item.match.winner.name }} {{ screenWidth > 400 ? '[' + item.match.winner.ranking + ']' : '' }}
+            </span>
+            <span class="score"
+              >{{ item.match.score }}
               {{
                 item.match.penaltyWin && stages[i].prop !== 'group' ? '(P)' : item.match.etWin && stages[i].prop !== 'group' ? '(AET)' : ''
-              }}</span
-            >
-            <span class="score">{{ item.match.score }}</span>
+              }}
+            </span>
             <img
               class="nation-flag"
               [src]="item.match.loser.logo"
               [alt]="item.match.loser.name"
               (click)="changeSelectedNation(item.match.loser)"
               [ngClass]="item.match.loser.name === nation.name ? 'disabled' : ''" />
-            <span class="team-name">{{ item.match.loser.name }}</span>
+            <span class="team-name">{{ item.match.loser.name }} {{ screenWidth > 400 ? '[' + item.match.loser.ranking + ']' : '' }}</span>
           </div>
         </li>
       </ul>

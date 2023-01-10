@@ -1,6 +1,15 @@
 <div class="form-container">
   <form class="number-form" [formGroup]="tournamentForm" novalidate (ngSubmit)="checkTournamentForm()">
     <div class="inputs">
+      <div class="host-nation">
+        <label for="hostNation">Host Nation</label>
+        <select formControlName="hostNation" [compareWith]="compareObj" required>
+          <option *ngFor="let nation of filteredNations" [ngValue]="nation" placeholder="Choose Host Nation">
+            {{ nation.emoji }} {{ nation.name }}
+          </option>
+        </select>
+      </div>
+
       <div>
         <label for="region">Regions Available</label>
         <ng-select
@@ -16,15 +25,6 @@
           required
           placeholder="Please Select A Region">
         </ng-select>
-      </div>
-
-      <div class="host-nation">
-        <label for="hostNation">Host Nation</label>
-        <select formControlName="hostNation" [compareWith]="compareObj" required>
-          <option *ngFor="let nation of filteredNations" [ngValue]="nation" placeholder="Choose Host Nation">
-            {{ nation.name }}
-          </option>
-        </select>
       </div>
 
       <div>

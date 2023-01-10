@@ -55,12 +55,14 @@ export interface GroupTeam {
     gradeStyle: string | null;
     gradeSummary: string | null;
   };
+  emoji: string;
 }
 
 export const defaultHost: GroupTeam = {
   name: 'qatar',
   abbreviation: 'qat',
   logo: 'https://fmdataba.com/images/n/QAT.svg',
+  emoji: '🇶🇦',
   region: 'afc',
   points: 0,
   gDiff: 0,
