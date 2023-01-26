@@ -58,3 +58,19 @@ h1 {
     }
   }
 }
+
+.overlay-container {
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.286);
+  top: 0;
+  left: 0;
+  position: fixed;
+  .spinner {
+    z-index: 3;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}

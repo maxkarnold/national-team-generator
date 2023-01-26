@@ -10,7 +10,7 @@
     .inputs {
       display: flex;
       justify-content: center;
-      margin: 2rem 0;
+      font-size: 1.25rem;
 
       @media screen and (max-width: 1800px) {
         flex-direction: column;
@@ -30,6 +30,10 @@
         }
       }
 
+      input, select {
+        height: 2.5rem;
+      }
+
       >div {
         margin: 0 2rem;
         display: flex;
@@ -40,16 +44,12 @@
           margin-bottom: 1rem;
         }
       }
-      .host-nation {
-        text-transform: capitalize;
-
-      }
     }
   }
 
   button {
-    width: 10rem;
-    align-self: center;
+    width: 20rem;
+    height: 3rem;
     margin: 1rem auto;
 
     &:disabled {

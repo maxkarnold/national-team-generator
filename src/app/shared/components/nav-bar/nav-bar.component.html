@@ -1,13 +1,4 @@
 <header class="header header--mobile">
-  <!-- <button
-      mat-icon-button
-      class="nav-bar__menu-button nav-bar__menu-button--ripple"
-      aria-label="Example icon-button with menu icon"
-      (click)="navToggle = !navToggle"
-    > -->
-  <!-- <mat-icon class="nav-bar__menu-button__icon">menu</mat-icon> -->
-  <!-- </button> -->
-
   <nav class="nav-bar">
     <a routerLink="/" class="logo logo--ripple">
       <span class="logo__title">National Team Generator</span>
@@ -17,23 +8,12 @@
     </div>
   </nav>
   <ul class="nav-list" *ngIf="navToggle">
-    <a routerLink="/simulation" class="nav-list__link nav-list__link--ripple">
-      Simulation
-    </a>
-    <a routerLink="/leaderboard" class="nav-list__link nav-list__link--ripple"
-      >Leaderboards</a
-    >
+    <a routerLink="/simulation" class="nav-list__link nav-list__link--ripple"> Simulation </a>
+    <a routerLink="/leaderboard" class="nav-list__link nav-list__link--ripple">Leaderboards</a>
+    <a (click)="auth.signOut()" *ngIf="auth.user$ | async as user; else login" class="nav-list__link nav-list__link--ripple">Logout</a>
     <ng-template #login>
-      <a routerLink="/login" class="nav-list__link nav-list__link--ripple"
-        >Login</a
-      >
+      <a routerLink="/login" class="nav-list__link nav-list__link--ripple">Login</a>
     </ng-template>
-    <a
-      (click)="auth.signOut()"
-      *ngIf="auth.user$ | async as user; else login"
-      class="nav-list__link nav-list__link--ripple"
-      >Logout</a
-    >
   </ul>
 </header>
 <header class="header header--desktop">
@@ -42,22 +22,11 @@
       <span class="logo__title">National Team Generator</span>
     </a>
     <span class="nav-bar__nav-spacer"></span>
-    <a routerLink="/simulation" class="nav-bar__link nav-bar__link--ripple"
-      >Simulation</a
-    >
-    <a routerLink="/leaderboard" class="nav-bar__link nav-bar__link--ripple"
-      >Leaderboards</a
-    >
+    <a routerLink="/simulation" class="nav-bar__link nav-bar__link--ripple">Simulation</a>
+    <a routerLink="/leaderboard" class="nav-bar__link nav-bar__link--ripple">Leaderboards</a>
+    <a (click)="auth.signOut()" *ngIf="auth.user$ | async; else login" class="nav-bar__link nav-bar__link--ripple">Logout</a>
     <ng-template #login>
-      <a routerLink="/login" class="nav-bar__link nav-bar__link--ripple"
-        >Login</a
-      >
+      <a routerLink="/login" class="nav-bar__link nav-bar__link--ripple">Login</a>
     </ng-template>
-    <a
-      (click)="auth.signOut()"
-      *ngIf="auth.user$ | async; else login"
-      class="nav-bar__link nav-bar__link--ripple"
-      >Logout</a
-    >
   </nav>
 </header>

@@ -5,22 +5,27 @@ import { GroupTeam } from 'app/models/nation.model';
 import { Match, Region, Tournament32 } from './simulation.model';
 import { BehaviorSubject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { CreatePlayerService } from '@core/services/create-player.service';
 
 @UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export class SimulationService {
+  createPerson: CreatePlayerService;
   selectedNation$ = new BehaviorSubject<GroupTeam | null>(null);
   tournament$ = new BehaviorSubject<Tournament32 | null>(null);
+  isLoading$ = new BehaviorSubject<boolean>(true);
   tournament: Tournament32 | null = null;
   hostNation?: GroupTeam;
 
-  constructor() {
+  constructor(createPerson: CreatePlayerService) {
     this.tournament$.pipe(untilDestroyed(this)).subscribe(t => {
       this.tournament = t;
       this.hostNation = t?.hostNation;
     });
+
+    this.createPerson = createPerson;
   }
 
   changeSelectedNation(value: null | GroupTeam) {
@@ -224,5 +229,31 @@ export class SimulationService {
     const underPerformer = groups.flatMap(group => group.slice(-2)).reduce((prev, curr) => (prev.rating > curr.rating ? prev : curr));
 
     return [first, second, third, underPerformer, overPerformer];
+  }
+
+  getPersonInfo(nations: GroupTeam[]): GroupTeam[] {
+    const updatedNations: GroupTeam[] = [];
+    for (let i = 0; i < nations.length; i++) {
+      this.createPerson
+        .getNames(nations[i].name)
+        .pipe(untilDestroyed(this))
+        .subscribe(a => {
+          updatedNations.push({
+            ...nations[i],
+            coach: {
+              firstNames: a.firstNames,
+              lastNames: a.lastNames,
+              firstInitial: a.firstInitial,
+              singleLastName: a.lastNames[0],
+              firstNameUsage: a.firstNameUsage,
+              lastNameUsage: a.lastNameUsage,
+              nationality: nations[i].name,
+              age: 40,
+              rating: nations[i].rating,
+            },
+          });
+        });
+    }
+    return updatedNations;
   }
 }

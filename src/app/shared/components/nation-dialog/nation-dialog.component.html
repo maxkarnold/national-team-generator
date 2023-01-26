@@ -57,7 +57,7 @@
               (click)="changeSelectedNation(item.match.winner)"
               [ngClass]="item.match.winner.name === nation.name ? 'disabled' : ''" />
             <span class="team-name"
-              >{{ item.match.winner.name }} {{ screenWidth > 400 ? '[' + item.match.winner.ranking + ']' : '' }}
+              >{{ item.match.winner.name }} {{ screenWidth > 350 ? '[' + item.match.winner.ranking + ']' : '' }}
             </span>
             <span class="score"
               >{{ item.match.score }}
@@ -71,7 +71,7 @@
               [alt]="item.match.loser.name"
               (click)="changeSelectedNation(item.match.loser)"
               [ngClass]="item.match.loser.name === nation.name ? 'disabled' : ''" />
-            <span class="team-name">{{ item.match.loser.name }} {{ screenWidth > 400 ? '[' + item.match.loser.ranking + ']' : '' }}</span>
+            <span class="team-name">{{ item.match.loser.name }} {{ screenWidth > 350 ? '[' + item.match.loser.ranking + ']' : '' }}</span>
           </div>
         </li>
       </ul>

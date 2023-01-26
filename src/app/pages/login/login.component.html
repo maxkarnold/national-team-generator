@@ -1,14 +1,6 @@
-<!-- <div *ngIf="auth.user$ | async as user; else login">
-  <hr />
-  <button (click)="auth.signOut()">Sign Out</button>
-</div> -->
-
-<!-- <ng-template #login>
-  <div class="basic-login">
-    <input type="email" [(ngModel)]="email" />
-    <input type="password" [(ngModel)]="password" />
-    <button (click)="auth.login(email, password)">Login</button>
-    <button (click)="auth.googleSignin()">Sign In With Google</button>
-  </div>
-
-</ng-template> -->
+<div class="basic-login">
+  <input type="email" [(ngModel)]="email" placeholder="Email" />
+  <input type="password" [(ngModel)]="password" placeholder="Password" />
+  <button (click)="loginWithPassword(email, password)">Login</button>
+  <button (click)="loginWithGoogle()">Sign In With Google</button>
+</div>

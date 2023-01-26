@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of } from 'rxjs';
-import {
-  AngularFirestore,
-  DocumentReference,
-} from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
 import { WhereFilterOp } from '@firebase/firestore-types/';
 import { getRandomInt } from '@shared/utils';
 import { Nation } from 'app/models/nation.model';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { Player } from '../../models/player.model';
 import { Roster } from '../../models/roster.model';
 import * as nationsJson from '../../../assets/json/nations.json';
@@ -22,18 +19,14 @@ export class FirestoreService {
 
   constructor(public afs: AngularFirestore) {
     this.nationsList = [];
-    // this.nations
-    //   .map((tier) => tier.nations)
-    //   .forEach((nationsArr) =>
-    //     nationsArr.forEach((nation) => this.nationsList.push(nation as Nation))
-    //   );
+    Object.values(this.nations).forEach(t => {
+      if (t.nations) {
+        this.nationsList.push(...(t.nations as Nation[]));
+      }
+    });
   }
 
-  getFullName(
-    nationality: string
-  ): Observable<
-    [Name[] | unknown[], string, number, Name[] | unknown[], string, number]
-  > {
+  getFullName(nationality: string): Observable<[Name[], string, number, Name[], string, number]> {
     const firstNameObj = this.getFirstNames(nationality);
     const lastNameObj = this.getLastNames(nationality, firstNameObj.ethnicity);
 
@@ -48,7 +41,7 @@ export class FirestoreService {
   }
 
   getFirstNames(nation: string): {
-    request$: Observable<Name[] | unknown[]>;
+    request$: Observable<Name[]>;
     ethnicity: string;
     totalNames: number;
   } {
@@ -65,14 +58,22 @@ export class FirestoreService {
       randomNum = 4;
     }
 
-    const nameOrigin = this.nationsList.find((n) => n.name === nation)
-      ?.firstNameUsages || ['English'];
+    const nameOrigin = (this.nationsList.find(n => n.name === nation)?.firstNameUsages.length || 0 < 1
+      ? this.nationsList.find(n => n.name === nation)?.firstNameUsages
+      : ['English']) || ['English'];
+    if (nameOrigin.length === 1 || !nameOrigin) {
+      console.log(nation, nameOrigin);
+    } else {
+      console.log(nation, nameOrigin);
+    }
 
     let ethnicity: string;
     if (randomNum > nameOrigin.length - 1) {
       [ethnicity] = nameOrigin;
-    } else {
+    } else if (randomNum < nameOrigin.length - 1) {
       ethnicity = nameOrigin[randomNum];
+    } else {
+      ethnicity = 'English';
     }
 
     switch (ethnicity) {
@@ -82,19 +83,11 @@ export class FirestoreService {
       case 'Persian':
       case 'Kurdish': {
         // chance for 1-4 given names
-        return this.nameRequest(
-          getRandomInt(1, 4),
-          'firstNames_male',
-          ethnicity
-        );
+        return this.nameRequest(getRandomInt(1, 4), 'firstNames_male', ethnicity);
       }
       case 'Western African': {
         // chance for 1-3 given names
-        return this.nameRequest(
-          getRandomInt(1, 3),
-          'firstNames_male',
-          ethnicity
-        );
+        return this.nameRequest(getRandomInt(1, 3), 'firstNames_male', ethnicity);
       }
       case 'Russian':
       case 'Ukrainian':
@@ -127,11 +120,7 @@ export class FirestoreService {
       case 'Filipino':
       case 'Portuguese': {
         // one or two given names
-        return this.nameRequest(
-          getRandomInt(1, 2),
-          'firstNames_male',
-          ethnicity
-        );
+        return this.nameRequest(getRandomInt(1, 2), 'firstNames_male', ethnicity);
       }
       case 'Estonian':
       case 'Turkish':
@@ -151,7 +140,8 @@ export class FirestoreService {
       }
 
       default: {
-        // only first name (Czech, Slovak, Polish, Bosnian, Serbian, Croatian, Montenegrin, Albanian, Slovene, Macedonian (male-ending), Chinese, Japanese, Korean, Icelandic, Faroese, Malay, Italian, Kyrgyz, Georgian, Armenian, Bulgarian, Uzbek (if no patronym), Hungarian, Greek, Thai)
+        // only first name (Czech, Slovak, Polish, Bosnian, Serbian, Croatian, Montenegrin, Albanian, Slovene, Macedonian (male-ending),
+        // Chinese, Japanese, Korean, Icelandic, Faroese, Malay, Italian, Kyrgyz, Georgian, Armenian, Bulgarian, Uzbek (if no patronym), Hungarian, Greek, Thai)
         return this.nameRequest(1, 'firstNames_male', ethnicity);
       }
     }
@@ -161,12 +151,11 @@ export class FirestoreService {
     nation: string,
     ethnicity: string
   ): {
-    request$: Observable<Name[] | unknown[]>;
+    request$: Observable<Name[]>;
     ethnicity: string;
     totalNames: number;
   } {
-    const nameOrigin = this.nationsList.find((n) => n.name === nation)
-      ?.lastNameUsages || ['English'];
+    const nameOrigin = this.nationsList.find(n => n.name === nation)?.lastNameUsages || ['English'];
 
     let origin = ethnicity;
 
@@ -233,6 +222,7 @@ export class FirestoreService {
       }
       default:
         // just one last name (most countries)
+        // need more surnames for pacific islanders
         return this.nameRequest(1, 'lastNames', origin);
     }
   }
@@ -242,86 +232,59 @@ export class FirestoreService {
     collection: string,
     ethnicity: string
   ): {
-    request$: Observable<Name[] | unknown[]>;
+    request$: Observable<Name[]>;
     ethnicity: string;
     totalNames: number;
   } {
     const randomIndex = getRandomInt(1, 5);
     const randomQuery = getRandomInt(0, 50000);
 
-    const request$ = this.newRequest(
-      totalNames,
-      collection,
-      ethnicity,
-      randomIndex,
-      randomQuery,
-      '>='
-    ).pipe(
-      catchError((err) =>
-        this.newRequest(
-          totalNames,
-          collection,
-          ethnicity,
-          randomIndex,
-          randomQuery,
-          '<='
-        )
-      )
-    ) as Observable<Name[] | unknown[]>;
-
+    const request$ = this.newRequest(totalNames, collection, ethnicity, randomIndex, randomQuery, '>=').pipe(
+      catchError(err => {
+        console.log(err);
+        return this.newRequest(totalNames, collection, ethnicity, randomIndex, randomQuery, '<=');
+      })
+    );
     return { request$, ethnicity, totalNames };
   }
 
-  newRequest(
-    totalNames: number,
-    collection: string,
-    ethnicity: string,
-    randomIndex: number,
-    randomQuery: number,
-    operator: WhereFilterOp
-  ) {
+  newRequest(totalNames: number, collection: string, ethnicity: string, randomIndex: number, randomQuery: number, operator: WhereFilterOp) {
+    if (!totalNames || !collection || !ethnicity || !randomIndex || !randomQuery || !operator) {
+      console.log('error calling new request', totalNames, collection, ethnicity, randomIndex, randomQuery, operator);
+    }
     return this.afs
-      .collection(collection, (ref) =>
+      .collection<Name>(collection, ref =>
         ref
           .where(`randomNum.${randomIndex}`, operator, randomQuery)
           .where('usages', 'array-contains-any', [ethnicity])
           .orderBy(`randomNum.${randomIndex}`)
           .limit(totalNames)
       )
-      .valueChanges();
+      .snapshotChanges()
+      .pipe(
+        map(actions =>
+          actions.map(a => {
+            // console.log(a.payload.doc.metadata.fromCache);
+            return {
+              ...(a.payload.doc.data() as Name),
+            };
+          })
+        ),
+        take(1)
+      );
   }
 
-  saveRoster(
-    uid: string,
-    saveName: string,
-    benchReserves: Player[],
-    starters: Player[],
-    nationOrTier: string
-  ) {
-    return this.afs
-      .collection('users')
-      .doc(uid)
-      .collection('savedRosters')
-      .add({
-        benchReserves,
-        starters,
-        nationOrTier,
-        saveName,
-      });
+  saveRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], nationOrTier: string) {
+    return this.afs.collection('users').doc(uid).collection('savedRosters').add({
+      benchReserves,
+      starters,
+      nationOrTier,
+      saveName,
+    });
   }
 
-  updateRoster(
-    uid: string,
-    saveName: string,
-    benchReserves: Player[],
-    starters: Player[],
-    firestoreId: string
-  ) {
-    const docRef = this.afs
-      .collection('users')
-      .doc(uid)
-      .collection('savedRosters')
-      .doc(firestoreId);
+  updateRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], firestoreId: string) {
+    const docRef = this.afs.collection('users').doc(uid).collection('savedRosters').doc(firestoreId);
     docRef
       .update({
         saveName,
@@ -365,26 +328,15 @@ export class FirestoreService {
   }
 
   getSubmittedRosters() {
-    const rostersCollection = this.afs.collection('submittedRosters', (ref) =>
-      ref.orderBy('startersRating', 'desc').limit(50)
-    );
+    const rostersCollection = this.afs.collection('submittedRosters', ref => ref.orderBy('startersRating', 'desc').limit(50));
     return rostersCollection.snapshotChanges();
   }
 
   getRosterId(uid: string) {
-    return this.afs
-      .collection('users')
-      .doc(uid)
-      .collection('savedRosters')
-      .snapshotChanges();
+    return this.afs.collection('users').doc(uid).collection('savedRosters').snapshotChanges();
   }
 
   getRoster(uid: string, rosterId: string) {
-    return this.afs
-      .collection('users')
-      .doc(uid)
-      .collection('savedRosters')
-      .doc(rosterId)
-      .snapshotChanges();
+    return this.afs.collection('users').doc(uid).collection('savedRosters').doc(rosterId).snapshotChanges();
   }
 }

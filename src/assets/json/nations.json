@@ -3,7 +3,7 @@
     "tier": "s tier",
     "nations": [
       {
-        "name": "france",
+        "name": "France",
         "logo": "https://fmdataba.com/images/n/FRA.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -47,7 +47,7 @@
         "emoji": "🇫🇷"
       },
       {
-        "name": "brazil",
+        "name": "Brazil",
         "logo": "https://fmdataba.com/images/n/BRA.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -103,7 +103,7 @@
         "emoji": "🇧🇷"
       },
       {
-        "name": "germany",
+        "name": "Germany",
         "logo": "https://fmdataba.com/images/n/GER.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -140,7 +140,7 @@
         "emoji": "🇩🇪"
       },
       {
-        "name": "spain",
+        "name": "Spain",
         "logo": "https://fmdataba.com/images/n/ESP.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -183,7 +183,7 @@
         "emoji": "🇪🇸"
       },
       {
-        "name": "england",
+        "name": "England",
         "logo": "https://fmdataba.com/images/n/ENG.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -215,7 +215,7 @@
         "emoji": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
       },
       {
-        "name": "argentina",
+        "name": "Argentina",
         "logo": "https://fmdataba.com/images/n/ARG.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -260,7 +260,7 @@
     "tier": "a tier",
     "nations": [
       {
-        "name": "italy",
+        "name": "Italy",
         "logo": "https://fmdataba.com/images/n/ITA.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -295,7 +295,7 @@
         "emoji": "🇮🇹"
       },
       {
-        "name": "portugal",
+        "name": "Portugal",
         "logo": "https://fmdataba.com/images/n/POR.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -331,7 +331,7 @@
         "emoji": "🇵🇹"
       },
       {
-        "name": "netherlands",
+        "name": "Netherlands",
         "logo": "https://fmdataba.com/images/n/NED.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -367,7 +367,7 @@
     "tier": "b tier",
     "nations": [
       {
-        "name": "belgium",
+        "name": "Belgium",
         "logo": "https://fmdataba.com/images/n/BEL.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -401,7 +401,7 @@
         "emoji": "🇧🇪"
       },
       {
-        "name": "uruguay",
+        "name": "Uruguay",
         "logo": "https://fmdataba.com/images/n/URU.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -433,7 +433,7 @@
         "emoji": "🇺🇾"
       },
       {
-        "name": "mexico",
+        "name": "Mexico",
         "logo": "https://fmdataba.com/images/n/MEX.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -464,7 +464,7 @@
         "emoji": "🇲🇽"
       },
       {
-        "name": "colombia",
+        "name": "Colombia",
         "logo": "https://fmdataba.com/images/n/COL.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -503,7 +503,7 @@
     "tier": "c tier",
     "nations": [
       {
-        "name": "denmark",
+        "name": "Denmark",
         "logo": "https://fmdataba.com/images/n/DEN.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -535,7 +535,7 @@
         "emoji": "🇩🇰"
       },
       {
-        "name": "croatia",
+        "name": "Croatia",
         "logo": "https://fmdataba.com/images/n/CRO.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -566,7 +566,7 @@
         "emoji": "🇭🇷"
       },
       {
-        "name": "sweden",
+        "name": "Sweden",
         "logo": "https://fmdataba.com/images/n/SWE.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -601,7 +601,7 @@
         "emoji": "🇸🇪"
       },
       {
-        "name": "chile",
+        "name": "Chile",
         "logo": "https://fmdataba.com/images/n/CHI.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -632,7 +632,7 @@
         "emoji": "🇨🇱"
       },
       {
-        "name": "serbia",
+        "name": "Serbia",
         "logo": "https://fmdataba.com/images/n/SRB.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -671,7 +671,7 @@
         "emoji": "🇷🇸"
       },
       {
-        "name": "nigeria",
+        "name": "Nigeria",
         "logo": "https://fmdataba.com/images/n/NGA.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -705,7 +705,7 @@
         "emoji": "🇳🇬"
       },
       {
-        "name": "russia",
+        "name": "Russia",
         "logo": "https://fmdataba.com/images/n/RUS.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -732,7 +732,7 @@
         "emoji": "🇷🇺"
       },
       {
-        "name": "ukraine",
+        "name": "Ukraine",
         "logo": "https://fmdataba.com/images/n/UKR.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -762,7 +762,7 @@
         "emoji": "🇺🇦"
       },
       {
-        "name": "austria",
+        "name": "Austria",
         "logo": "https://fmdataba.com/images/n/AUT.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -790,7 +790,7 @@
         "emoji": "🇦🇹"
       },
       {
-        "name": "switzerland",
+        "name": "Switzerland",
         "logo": "https://fmdataba.com/images/n/SUI.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -861,7 +861,7 @@
     "tier": "d tier",
     "nations": [
       {
-        "name": "poland",
+        "name": "Poland",
         "logo": "https://fmdataba.com/images/n/POL.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -889,7 +889,7 @@
         "emoji": "🇵🇱"
       },
       {
-        "name": "norway",
+        "name": "Norway",
         "logo": "https://fmdataba.com/images/n/NOR.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -919,7 +919,7 @@
         "emoji": "🇳🇴"
       },
       {
-        "name": "peru",
+        "name": "Peru",
         "logo": "https://fmdataba.com/images/n/PER.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -949,7 +949,7 @@
         "emoji": "🇵🇪"
       },
       {
-        "name": "paraguay",
+        "name": "Paraguay",
         "logo": "https://fmdataba.com/images/n/PAR.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -978,7 +978,7 @@
         "emoji": "🇵🇾"
       },
       {
-        "name": "united states",
+        "name": "United States",
         "logo": "https://fmdataba.com/images/n/USA.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -1010,7 +1010,7 @@
         "emoji": "🇺🇸"
       },
       {
-        "name": "ecuador",
+        "name": "Ecuador",
         "logo": "https://fmdataba.com/images/n/ECU.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -1042,7 +1042,7 @@
         "emoji": "🇪🇨"
       },
       {
-        "name": "turkey",
+        "name": "Turkey",
         "logo": "https://fmdataba.com/images/n/TUR.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1076,7 +1076,7 @@
         "emoji": "🇹🇷"
       },
       {
-        "name": "czech republic",
+        "name": "Czech Republic",
         "logo": "https://fmdataba.com/images/n/CZE.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1107,7 +1107,7 @@
     "tier": "e tier",
     "nations": [
       {
-        "name": "ghana",
+        "name": "Ghana",
         "logo": "https://fmdataba.com/images/n/GHA.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1137,7 +1137,7 @@
         "emoji": "🇬🇭"
       },
       {
-        "name": "scotland",
+        "name": "Scotland",
         "logo": "https://fmdataba.com/images/n/SCO.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1166,7 +1166,7 @@
         "emoji": "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
       },
       {
-        "name": "senegal",
+        "name": "Senegal",
         "logo": "https://fmdataba.com/images/n/SEN.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1198,7 +1198,7 @@
         "emoji": "🇸🇳"
       },
       {
-        "name": "romania",
+        "name": "Romania",
         "logo": "https://fmdataba.com/images/n/ROU.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1227,7 +1227,7 @@
         "emoji": "🇷🇴"
       },
       {
-        "name": "morocco",
+        "name": "Morocco",
         "logo": "https://fmdataba.com/images/n/MAR.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1258,7 +1258,7 @@
         "emoji": "🇲🇦"
       },
       {
-        "name": "ireland",
+        "name": "Ireland",
         "logo": "https://fmdataba.com/images/n/IRL.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1288,7 +1288,7 @@
         "emoji": "🇮🇪"
       },
       {
-        "name": "south korea",
+        "name": "South Korea",
         "logo": "https://fmdataba.com/images/n/KOR.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -1317,7 +1317,7 @@
         "emoji": "🇰🇷"
       },
       {
-        "name": "japan",
+        "name": "Japan",
         "logo": "https://fmdataba.com/images/n/JPN.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -1347,7 +1347,7 @@
         "emoji": "🇯🇵"
       },
       {
-        "name": "bosnia & herzegovina",
+        "name": "Bosnia & Herzegovina",
         "logo": "https://fmdataba.com/images/n/BIH.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1374,7 +1374,7 @@
         "emoji": "🇧🇦"
       },
       {
-        "name": "algeria",
+        "name": "Algeria",
         "logo": "https://fmdataba.com/images/n/ALG.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1402,7 +1402,7 @@
         "emoji": "🇩🇿"
       },
       {
-        "name": "greece",
+        "name": "Greece",
         "logo": "https://fmdataba.com/images/n/GRE.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1430,7 +1430,7 @@
         "emoji": "🇬🇷"
       },
       {
-        "name": "venezuela",
+        "name": "Venezuela",
         "logo": "https://fmdataba.com/images/n/VEN.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -1460,7 +1460,7 @@
         "emoji": "🇻🇪"
       },
       {
-        "name": "cameroon",
+        "name": "Cameroon",
         "logo": "https://fmdataba.com/images/n/CMR.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1495,7 +1495,7 @@
     "tier": "f tier",
     "nations": [
       {
-        "name": "bolivia",
+        "name": "Bolivia",
         "logo": "https://fmdataba.com/images/n/BOL.svg",
         "region": "conmebol",
         "firstNameUsages": [
@@ -1521,7 +1521,7 @@
         "emoji": "🇧🇴"
       },
       {
-        "name": "slovakia",
+        "name": "Slovakia",
         "logo": "https://fmdataba.com/images/n/SVK.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1548,7 +1548,7 @@
         "emoji": "🇸🇰"
       },
       {
-        "name": "iran",
+        "name": "Iran",
         "logo": "https://fmdataba.com/images/n/IRN.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -1574,7 +1574,7 @@
         "emoji": "🇮🇷"
       },
       {
-        "name": "tunisia",
+        "name": "Tunisia",
         "logo": "https://fmdataba.com/images/n/TUN.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1606,7 +1606,7 @@
         "emoji": "🇹🇳"
       },
       {
-        "name": "slovenia",
+        "name": "Slovenia",
         "logo": "https://fmdataba.com/images/n/SVN.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1636,7 +1636,7 @@
         "emoji": "🇸🇮"
       },
       {
-        "name": "hungary",
+        "name": "Hungary",
         "logo": "https://fmdataba.com/images/n/HUN.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1662,7 +1662,7 @@
         "emoji": "🇭🇺"
       },
       {
-        "name": "mali",
+        "name": "Mali",
         "logo": "https://fmdataba.com/images/n/MLI.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1689,7 +1689,7 @@
         "emoji": "🇲🇱"
       },
       {
-        "name": "south africa",
+        "name": "South Africa",
         "logo": "https://fmdataba.com/images/n/RSA.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1717,7 +1717,7 @@
         "emoji": "🇿🇦"
       },
       {
-        "name": "congo DR",
+        "name": "Congo DR",
         "logo": "https://fmdataba.com/images/n/COD.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1746,7 +1746,7 @@
         "emoji": "🇨🇩"
       },
       {
-        "name": "australia",
+        "name": "Australia",
         "logo": "https://fmdataba.com/images/n/AUS.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -1785,7 +1785,7 @@
     "tier": "g tier",
     "nations": [
       {
-        "name": "kosovo",
+        "name": "Kosovo",
         "logo": "https://fmdataba.com/images/n/KVX.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1814,7 +1814,7 @@
         "emoji": "🇽🇰"
       },
       {
-        "name": "wales",
+        "name": "Wales",
         "logo": "https://fmdataba.com/images/n/WAL.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1844,7 +1844,7 @@
         "emoji": "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
       },
       {
-        "name": "iceland",
+        "name": "Iceland",
         "logo": "https://fmdataba.com/images/n/ISL.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1870,7 +1870,7 @@
         "emoji": "🇮🇸"
       },
       {
-        "name": "egypt",
+        "name": "Egypt",
         "logo": "https://fmdataba.com/images/n/EGY.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -1896,7 +1896,7 @@
         "emoji": "🇪🇬"
       },
       {
-        "name": "costa rica",
+        "name": "Costa Rica",
         "logo": "https://fmdataba.com/images/n/CRC.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -1926,7 +1926,7 @@
         "emoji": "🇨🇷"
       },
       {
-        "name": "albania",
+        "name": "Albania",
         "logo": "https://fmdataba.com/images/n/ALB.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1956,7 +1956,7 @@
         "emoji": "🇦🇱"
       },
       {
-        "name": "finland",
+        "name": "Finland",
         "logo": "https://fmdataba.com/images/n/FIN.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -1987,7 +1987,7 @@
         "emoji": "🇫🇮"
       },
       {
-        "name": "montenegro",
+        "name": "Montenegro",
         "logo": "https://fmdataba.com/images/n/MNE.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2013,7 +2013,7 @@
         "emoji": "🇲🇪"
       },
       {
-        "name": "israel",
+        "name": "Israel",
         "logo": "https://fmdataba.com/images/n/ISR.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2045,7 +2045,7 @@
         "emoji": "🇮🇱"
       },
       {
-        "name": "bulgaria",
+        "name": "Bulgaria",
         "logo": "https://fmdataba.com/images/n/BUL.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2078,7 +2078,7 @@
     "tier": "h tier",
     "nations": [
       {
-        "name": "kazakhstan",
+        "name": "Kazakhstan",
         "logo": "https://fmdataba.com/images/n/KAZ.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2104,7 +2104,7 @@
         "emoji": "🇰🇿"
       },
       {
-        "name": "panama",
+        "name": "Panama",
         "logo": "https://fmdataba.com/images/n/PAN.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -2131,7 +2131,7 @@
         "emoji": "🇵🇦"
       },
       {
-        "name": "georgia",
+        "name": "Georgia",
         "logo": "https://fmdataba.com/images/n/GEO.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2156,7 +2156,7 @@
         "emoji": "🇬🇪"
       },
       {
-        "name": "northern ireland",
+        "name": "Northern Ireland",
         "logo": "https://fmdataba.com/images/n/NIR.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2185,7 +2185,7 @@
         "emoji": "🇬🇧"
       },
       {
-        "name": "guinea",
+        "name": "Guinea",
         "logo": "https://fmdataba.com/images/n/GUI.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2214,7 +2214,7 @@
         "emoji": "🇬🇳"
       },
       {
-        "name": "jamaica",
+        "name": "Jamaica",
         "logo": "https://fmdataba.com/images/n/JAM.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -2239,7 +2239,7 @@
         "emoji": "🇯🇲"
       },
       {
-        "name": "cabo verde",
+        "name": "Cabo Verde",
         "logo": "https://fmdataba.com/images/n/CPV.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2265,7 +2265,7 @@
         "emoji": "🇨🇻"
       },
       {
-        "name": "belarus",
+        "name": "Belarus",
         "logo": "https://fmdataba.com/images/n/BLR.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2290,7 +2290,7 @@
         "emoji": "🇧🇾"
       },
       {
-        "name": "honduras",
+        "name": "Honduras",
         "logo": "https://fmdataba.com/images/n/HON.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -2320,7 +2320,7 @@
         "emoji": "🇭🇳"
       },
       {
-        "name": "angola",
+        "name": "Angola",
         "logo": "https://fmdataba.com/images/n/ANG.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2355,7 +2355,7 @@
         "emoji": "🇦🇴"
       },
       {
-        "name": "saudi arabia",
+        "name": "Saudi Arabia",
         "logo": "https://fmdataba.com/images/n/KSA.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -2383,7 +2383,7 @@
         "emoji": "🇸🇦"
       },
       {
-        "name": "canada",
+        "name": "Canada",
         "logo": "https://fmdataba.com/images/n/CAN.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -2414,7 +2414,7 @@
         "emoji": "🇨🇦"
       },
       {
-        "name": "north macedonia",
+        "name": "North Macedonia",
         "logo": "https://fmdataba.com/images/n/MKD.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2452,7 +2452,7 @@
     "tier": "i tier",
     "nations": [
       {
-        "name": "azerbaijan",
+        "name": "Azerbaijan",
         "logo": "https://fmdataba.com/images/n/AZE.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2479,7 +2479,7 @@
         "emoji": "🇦🇿"
       },
       {
-        "name": "gambia",
+        "name": "Gambia",
         "logo": "https://fmdataba.com/images/n/GAM.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2501,7 +2501,7 @@
         "emoji": "🇬🇲"
       },
       {
-        "name": "zimbabwe",
+        "name": "Zimbabwe",
         "logo": "https://fmdataba.com/images/n/ZIM.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2529,7 +2529,7 @@
         "emoji": "🇿🇼"
       },
       {
-        "name": "burkina faso",
+        "name": "Burkina Faso",
         "logo": "https://fmdataba.com/images/n/BFA.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2556,7 +2556,7 @@
         "emoji": "🇧🇫"
       },
       {
-        "name": "iraq",
+        "name": "Iraq",
         "logo": "https://fmdataba.com/images/n/IRQ.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -2584,7 +2584,7 @@
         "emoji": "🇮🇶"
       },
       {
-        "name": "uzbekistan",
+        "name": "Uzbekistan",
         "logo": "https://fmdataba.com/images/n/UZB.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -2608,7 +2608,7 @@
         "emoji": "🇺🇿"
       },
       {
-        "name": "zambia",
+        "name": "Zambia",
         "logo": "https://fmdataba.com/images/n/ZAM.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2634,7 +2634,7 @@
         "emoji": "🇿🇲"
       },
       {
-        "name": "togo",
+        "name": "Togo",
         "logo": "https://fmdataba.com/images/n/TOG.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2663,7 +2663,7 @@
         "emoji": "🇹🇬"
       },
       {
-        "name": "guinea-Bissau",
+        "name": "Guinea-Bissau",
         "logo": "https://fmdataba.com/images/n/GNB.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2693,7 +2693,7 @@
         "emoji": "🇬🇼"
       },
       {
-        "name": "congo",
+        "name": "Congo",
         "logo": "https://fmdataba.com/images/n/CGO.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2725,7 +2725,7 @@
         "emoji": "🇨🇬"
       },
       {
-        "name": "gabon",
+        "name": "Gabon",
         "logo": "https://fmdataba.com/images/n/GAB.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2754,7 +2754,7 @@
         "emoji": "🇬🇦"
       },
       {
-        "name": "syria",
+        "name": "Syria",
         "logo": "https://fmdataba.com/images/n/SYR.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -2784,7 +2784,7 @@
     "tier": "j tier",
     "nations": [
       {
-        "name": "libya",
+        "name": "Libya",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Libya_%281951%E2%80%931969%29.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2810,7 +2810,7 @@
         "emoji": "🇱🇾"
       },
       {
-        "name": "sudan",
+        "name": "Sudan",
         "logo": "https://fmdataba.com/images/n/SUD.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2837,7 +2837,7 @@
         "emoji": "🇸🇩"
       },
       {
-        "name": "guatemala",
+        "name": "Guatemala",
         "logo": "https://fmdataba.com/images/n/GUA.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -2862,7 +2862,7 @@
         "emoji": "🇬🇹"
       },
       {
-        "name": "faroe islands",
+        "name": "Faroe Islands",
         "logo": "https://fmdataba.com/images/n/FRO.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2889,7 +2889,7 @@
         "emoji": "🇫🇴"
       },
       {
-        "name": "latvia",
+        "name": "Latvia",
         "logo": "https://fmdataba.com/images/n/LVA.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -2917,7 +2917,7 @@
         "emoji": "🇱🇻"
       },
       {
-        "name": "korea DPR",
+        "name": "Korea DPR",
         "logo": "https://fmdataba.com/images/n/PRK.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -2943,7 +2943,7 @@
         "emoji": "🇰🇵"
       },
       {
-        "name": "equatorial guinea",
+        "name": "Equatorial Guinea",
         "logo": "https://fmdataba.com/images/n/EQG.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2967,7 +2967,7 @@
         "emoji": "🇬🇶"
       },
       {
-        "name": "madagascar",
+        "name": "Madagascar",
         "logo": "https://fmdataba.com/images/n/MAD.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -2993,7 +2993,7 @@
         "emoji": "🇲🇬"
       },
       {
-        "name": "martinique",
+        "name": "Martinique",
         "logo": "https://fmdataba.com/images/n/MTQ.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3019,7 +3019,7 @@
         "emoji": "🇲🇶"
       },
       {
-        "name": "suriname",
+        "name": "Suriname",
         "logo": "https://fmdataba.com/images/n/SUR.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3045,7 +3045,7 @@
         "emoji": "🇸🇷"
       },
       {
-        "name": "china PR",
+        "name": "China PR",
         "logo": "https://fmdataba.com/images/n/CHN.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3074,7 +3074,7 @@
         "emoji": "🇨🇳"
       },
       {
-        "name": "qatar",
+        "name": "Qatar",
         "logo": "https://fmdataba.com/images/n/QAT.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3101,7 +3101,7 @@
         "emoji": "🇶🇦"
       },
       {
-        "name": "curaçao",
+        "name": "Curaçao",
         "logo": "https://fmdataba.com/images/n/CUW.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3130,7 +3130,7 @@
         "emoji": "🇨🇼"
       },
       {
-        "name": "armenia",
+        "name": "Armenia",
         "logo": "https://fmdataba.com/images/n/ARM.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -3156,7 +3156,7 @@
         "emoji": "🇦🇲"
       },
       {
-        "name": "new zealand",
+        "name": "New Zealand",
         "logo": "https://fmdataba.com/images/n/NZL.svg",
         "region": "ofc",
         "firstNameUsages": [
@@ -3185,7 +3185,7 @@
         "emoji": "🇳🇿"
       },
       {
-        "name": "benin",
+        "name": "Benin",
         "logo": "https://fmdataba.com/images/n/BEN.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3211,7 +3211,7 @@
         "emoji": "🇧🇯"
       },
       {
-        "name": "trinidad & tobago",
+        "name": "Trinidad & Tobago",
         "logo": "https://fmdataba.com/images/n/TRI.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3237,7 +3237,7 @@
         "emoji": "🇹🇹"
       },
       {
-        "name": "sierra leone",
+        "name": "Sierra Leone",
         "logo": "https://fmdataba.com/images/n/SLE.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3267,7 +3267,7 @@
         "emoji": "🇸🇱"
       },
       {
-        "name": "cyprus",
+        "name": "Cyprus",
         "logo": "https://fmdataba.com/images/n/CYP.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -3294,7 +3294,7 @@
         "emoji": "🇨🇾"
       },
       {
-        "name": "estonia",
+        "name": "Estonia",
         "logo": "https://fmdataba.com/images/n/EST.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -3321,7 +3321,7 @@
         "emoji": "🇪🇪"
       },
       {
-        "name": "UAE",
+        "name": "United Arab Emirates",
         "logo": "https://fmdataba.com/images/n/UAE.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3345,7 +3345,7 @@
         "emoji": "🇦🇪"
       },
       {
-        "name": "lithuania",
+        "name": "Lithuania",
         "logo": "https://fmdataba.com/images/n/LTU.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -3372,7 +3372,7 @@
         "emoji": "🇱🇹"
       },
       {
-        "name": "mozambique",
+        "name": "Mozambique",
         "logo": "https://fmdataba.com/images/n/MOZ.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3400,7 +3400,7 @@
         "emoji": "🇲🇿"
       },
       {
-        "name": "el salvador",
+        "name": "El Salvador",
         "logo": "https://fmdataba.com/images/n/SLV.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3426,7 +3426,7 @@
         "emoji": "🇸🇻"
       },
       {
-        "name": "luxembourg",
+        "name": "Luxembourg",
         "logo": "https://fmdataba.com/images/n/LUX.svg",
         "region": "uefa",
         "firstNameUsages": [
@@ -3455,7 +3455,7 @@
         "emoji": "🇱🇺"
       },
       {
-        "name": "uganda",
+        "name": "Uganda",
         "logo": "https://fmdataba.com/images/n/UGA.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3483,7 +3483,7 @@
         "emoji": "🇺🇬"
       },
       {
-        "name": "haiti",
+        "name": "Haiti",
         "logo": "https://fmdataba.com/images/n/HAI.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3509,7 +3509,7 @@
         "emoji": "🇭🇹"
       },
       {
-        "name": "jordan",
+        "name": "Jordan",
         "logo": "https://fmdataba.com/images/n/JOR.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3540,7 +3540,7 @@
     "tier": "k tier",
     "nations": [
       {
-        "name": "oman",
+        "name": "Oman",
         "logo": "https://fmdataba.com/images/n/OMA.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3566,7 +3566,7 @@
         "emoji": "🇴🇲"
       },
       {
-        "name": "kenya",
+        "name": "Kenya",
         "logo": "https://fmdataba.com/images/n/KEN.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3594,7 +3594,7 @@
         "emoji": "🇰🇪"
       },
       {
-        "name": "mauritania",
+        "name": "Mauritania",
         "logo": "https://fmdataba.com/images/n/MTN.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3626,7 +3626,7 @@
         "emoji": "🇲🇷"
       },
       {
-        "name": "namibia",
+        "name": "Namibia",
         "logo": "https://fmdataba.com/images/n/NAM.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3652,7 +3652,7 @@
         "emoji": "🇳🇦"
       },
       {
-        "name": "niger",
+        "name": "Niger",
         "logo": "https://fmdataba.com/images/n/NIG.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3680,7 +3680,7 @@
         "emoji": "🇳🇪"
       },
       {
-        "name": "malawi",
+        "name": "Malawi",
         "logo": "https://fmdataba.com/images/n/MWI.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3705,7 +3705,7 @@
         "emoji": "🇲🇼"
       },
       {
-        "name": "tanzania",
+        "name": "Tanzania",
         "logo": "https://fmdataba.com/images/n/TAN.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3731,7 +3731,7 @@
         "emoji": "🇹🇿"
       },
       {
-        "name": "nicaragua",
+        "name": "Nicaragua",
         "logo": "https://fmdataba.com/images/n/NCA.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3755,7 +3755,7 @@
         "emoji": "🇳🇮"
       },
       {
-        "name": "thailand",
+        "name": "Thailand",
         "logo": "https://fmdataba.com/images/n/THA.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3779,7 +3779,7 @@
         "emoji": "🇹🇭"
       },
       {
-        "name": "kuwait",
+        "name": "Kuwait",
         "logo": "https://fmdataba.com/images/n/KUW.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3803,7 +3803,7 @@
         "emoji": "🇰🇼"
       },
       {
-        "name": "bahrain",
+        "name": "Bahrain",
         "logo": "https://fmdataba.com/images/n/BHR.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3829,7 +3829,7 @@
         "emoji": "🇧🇭"
       },
       {
-        "name": "lebanon",
+        "name": "Lebanon",
         "logo": "https://fmdataba.com/images/n/LIB.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3854,7 +3854,7 @@
         "emoji": "🇱🇧"
       },
       {
-        "name": "french guiana",
+        "name": "French Guiana",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_French_Guiana.svg/2560px-Flag_of_French_Guiana.svg.png",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3880,7 +3880,7 @@
         "emoji": "🇬🇫"
       },
       {
-        "name": "central african republic",
+        "name": "Central African Republic",
         "logo": "https://fmdataba.com/images/n/CTA.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -3906,7 +3906,7 @@
         "emoji": "🇨🇫"
       },
       {
-        "name": "philippines",
+        "name": "Philippines",
         "logo": "https://fmdataba.com/images/n/PHI.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3930,7 +3930,7 @@
         "emoji": "🇵🇭"
       },
       {
-        "name": "dominican republic",
+        "name": "Dominican Republic",
         "logo": "https://fmdataba.com/images/n/DOM.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -3962,7 +3962,7 @@
     "tier": "l tier",
     "nations": [
       {
-        "name": "kyrgyz republic",
+        "name": "Kyrgyz Republic",
         "logo": "https://fmdataba.com/images/n/KGZ.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -3990,7 +3990,7 @@
         "emoji": "🇰🇬"
       },
       {
-        "name": "grenada",
+        "name": "Grenada",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Grenada.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -4016,7 +4016,7 @@
         "emoji": "🇬🇩"
       },
       {
-        "name": "chad",
+        "name": "Chad",
         "logo": "https://fmdataba.com/images/n/CHA.svg",
         "region": "caf",
         "firstNameUsages": [
@@ -4042,7 +4042,7 @@
         "emoji": "🇹🇩"
       },
       {
-        "name": "antigua & barbuda",
+        "name": "Antigua & Barbuda",
         "logo": "https://fmdataba.com/images/n/ATG.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -4068,7 +4068,7 @@
         "emoji": "🇦🇬"
       },
       {
-        "name": "st. kitts & nevis",
+        "name": "St Kitts & Nevis",
         "logo": "https://fmdataba.com/images/n/SKN.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -4094,7 +4094,7 @@
         "emoji": "🇰🇳"
       },
       {
-        "name": "barbados",
+        "name": "Barbados",
         "logo": "https://fmdataba.com/images/n/BRB.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -4118,7 +4118,7 @@
         "emoji": "🇧🇧"
       },
       {
-        "name": "bermuda",
+        "name": "Bermuda",
         "logo": "https://fmdataba.com/images/n/BER.svg",
         "region": "concacaf",
         "firstNameUsages": [
@@ -4144,7 +4144,7 @@
         "emoji": "🇧🇲"
       },
       {
-        "name": "solomon islands",
+        "name": "Solomon Islands",
         "logo": "https://fmdataba.com/images/n/SOL.svg",
         "region": "ofc",
         "firstNameUsages": [
@@ -4168,7 +4168,7 @@
         "emoji": "🇸🇧"
       },
       {
-        "name": "palestine",
+        "name": "Palestine",
         "logo": "https://fmdataba.com/images/n/PLE.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -4196,7 +4196,7 @@
         "emoji": "🇵🇸"
       },
       {
-        "name": "vietnam",
+        "name": "Vietnam",
         "logo": "https://fmdataba.com/images/n/VIE.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -4218,7 +4218,7 @@
         "emoji": "🇻🇳"
       },
       {
-        "name": "india",
+        "name": "India",
         "logo": "https://fmdataba.com/images/n/IND.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -4244,7 +4244,7 @@
         "emoji": "🇮🇳"
       },
       {
-        "name": "tajikistan",
+        "name": "Tajikistan",
         "logo": "https://fmdataba.com/images/n/TJK.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -4268,7 +4268,7 @@
         "emoji": "🇹🇯"
       },
       {
-        "name": "turkmenistan",
+        "name": "Turkmenistan",
         "logo": "https://fmdataba.com/images/n/TKM.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -4292,7 +4292,7 @@
         "emoji": "🇹🇲"
       },
       {
-        "name": "chinese taipei",
+        "name": "Chinese Taipei",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/Chinese_Taipei_Football_Flag_on_FIFA_website.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -4316,7 +4316,7 @@
         "emoji": "🇹🇼"
       },
       {
-        "name": "singapore",
+        "name": "Singapore",
         "logo": "https://fmdataba.com/images/n/SIN.svg",
         "region": "afc",
         "firstNameUsages": [
@@ -4342,11 +4342,15 @@
         "emoji": "🇸🇬"
       },
       {
-        "name": "tahiti",
+        "name": "Tahiti",
         "logo": "https://fmdataba.com/images/n/TAH.svg",
         "region": "ofc",
-        "firstNameUsages": [],
-        "lastNameUsages": [],
+        "firstNameUsages": [
+          "French"
+        ],
+        "lastNameUsages": [
+          "French"
+        ],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
@@ -4360,11 +4364,15 @@
         "emoji": "🇵🇫"
       },
       {
-        "name": "malaysia",
+        "name": "Malaysia",
         "logo": "https://fmdataba.com/images/n/MAS.svg",
         "region": "afc",
-        "firstNameUsages": [],
-        "lastNameUsages": [],
+        "firstNameUsages": [
+          "Malay"
+        ],
+        "lastNameUsages": [
+          "Malay"
+        ],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
@@ -4378,11 +4386,11 @@
         "emoji": "🇲🇾"
       },
       {
-        "name": "fiji",
+        "name": "Fiji",
         "logo": "https://fmdataba.com/images/n/FIJ.svg",
         "region": "ofc",
-        "firstNameUsages": [],
-        "lastNameUsages": [],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
@@ -4396,11 +4404,11 @@
         "emoji": "🇫🇯"
       },
       {
-        "name": "new caledonia",
+        "name": "New Caledonia",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/6/66/Flag_of_FLNKS.svg",
         "region": "ofc",
-        "firstNameUsages": [],
-        "lastNameUsages": [],
+        "firstNameUsages": ["French"],
+        "lastNameUsages": ["French"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
@@ -4414,11 +4422,11 @@
         "emoji": "🇳🇨"
       },
       {
-        "name": "indonesia",
+        "name": "Indonesia",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg",
         "region": "afc",
-        "firstNameUsages": [],
-        "lastNameUsages": [],
+        "firstNameUsages": ["Indonesian"],
+        "lastNameUsages": ["Indonesian"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],
@@ -4432,11 +4440,11 @@
         "emoji": "🇮🇩"
       },
       {
-        "name": "papua new guinea",
+        "name": "Papua New Guinea",
         "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Flag_of_Papua_New_Guinea.svg",
         "region": "ofc",
-        "firstNameUsages": [],
-        "lastNameUsages": [],
+        "firstNameUsages": ["English"],
+        "lastNameUsages": ["English"],
         "mainLeagues": [],
         "secondLeagues": [],
         "thirdLeagues": [],

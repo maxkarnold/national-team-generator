@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { getRandomInt, shuffle, median } from '@shared/utils';
-import {
-  GkAttributes,
-  OutfieldAttributes,
-} from 'app/models/player-attributes.model';
+import { GkAttributes, OutfieldAttributes } from 'app/models/player-attributes.model';
 import { Player } from 'app/models/player.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,6 +10,7 @@ import { Nation } from 'app/models/nation.model';
 import { Name, FirstName, LastName } from './firestore.model';
 import { FirestoreService } from './firestore.service';
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -23,11 +21,8 @@ export class CreatePlayerService {
 
   constructor(afsService: FirestoreService) {
     this.afsService = afsService;
-    this.nations
-      .map((tier) => tier.nations)
-      .forEach((nationsArr) =>
-        nationsArr.forEach((nation) => this.nationsList.push(nation as Nation))
-      );
+    // this.nations.map(tier => tier.nations).forEach(nationsArr => nationsArr.forEach(nation => this.nationsList.push(nation as Nation)));
+    // console.log(this.nations);
   }
 
   createPlayer(
@@ -45,7 +40,6 @@ export class CreatePlayerService {
     ]
   ) {
     // const { rating, clubRep } = this.getRatingAndClubRep(...count);
-
     // const mainPositions = this.getMainPositions(rating);
     // const foot = this.getFoot(mainPositions[0]);
     // const { altPos, compPos, unconvincingPos } = this.getAltPositions(
@@ -60,14 +54,12 @@ export class CreatePlayerService {
     //   rating,
     //   age
     // );
-
     // const { nationality, logo } = this.getNationOrTier(
     //   nationOrTier,
     //   'nationality',
     //   rating
     // );
     // const { clubName, clubLogoUrl } = this.getClub(clubRep, nationality || '');
-
     // const { height, weight, weakFoot, attributes } = this.getAttributes(
     //   mainPositions[0],
     //   altPos,
@@ -76,14 +68,12 @@ export class CreatePlayerService {
     //   rating,
     //   age
     // );
-
     // let firstInitial = '';
     // let firstNameUsage = '';
     // let firstNames: string[] = [];
     // let lastNameUsage = '';
     // let lastNames: string[] = [];
     // let singleLastName = '';
-
     // this.getNames(nationality)
     //   .pipe(untilDestroyed(this))
     //   .subscribe((obj) => {
@@ -94,7 +84,6 @@ export class CreatePlayerService {
     //     lastNames = obj.lastNames;
     //     [singleLastName] = obj.lastNames;
     //   });
-
     // return {
     //   rating,
     //   mainPositions,
@@ -131,29 +120,20 @@ export class CreatePlayerService {
   }> {
     return this.afsService.getFullName(nationality).pipe(
       untilDestroyed(this),
-      map(
-        ([
-          fNames,
-          firstNameUsage,
-          totalFirstNames,
-          lNames,
-          lastNameUsage,
-          totalLastNames,
-        ]) => {
-          const firstNames = fNames.map((obj) => {
-            const fName = obj as FirstName;
-            return fName.name;
-          });
-          const lastNames = lNames.map((obj) => {
-            const lName = obj as LastName;
-            return lName.name;
-          });
-          return {
-            ...this.getFirstNames(firstNames, firstNameUsage, totalFirstNames),
-            ...this.getLastNames(lastNames, lastNameUsage, totalLastNames),
-          };
-        }
-      )
+      map(([fNames, firstNameUsage, totalFirstNames, lNames, lastNameUsage, totalLastNames]) => {
+        const firstNames = fNames.map(obj => {
+          const fName = obj;
+          return fName.name;
+        });
+        const lastNames = lNames.map(obj => {
+          const lName = obj;
+          return lName.name;
+        });
+        return {
+          ...this.getFirstNames(firstNames, firstNameUsage, totalFirstNames),
+          ...this.getLastNames(lastNames, lastNameUsage, totalLastNames),
+        };
+      })
     );
     // add nickname based on nationality
     // About 90% chance: Mozambique
@@ -170,8 +150,11 @@ export class CreatePlayerService {
     firstNameUsage: string;
   } {
     let firstNames = fNames;
+    if (fNames.length !== totalFirstNames) {
+      console.log('error with first names', fNames, totalFirstNames);
+    }
 
-    if (totalFirstNames > 1) {
+    if (totalFirstNames > 1 && fNames.length > 1) {
       const nameLength = fNames[1].length;
       const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
       const chance = getRandomInt(0, 2);
@@ -211,7 +194,7 @@ export class CreatePlayerService {
       // e.g. Abd al-Rahmin => A. a.
       firstInitial = `${firstNames[0]
         .split(' ')
-        .map((full) => full[0])
+        .map(full => full[0])
         .join('. ')}.`;
     }
     return { firstNames, firstInitial, firstNameUsage };
@@ -232,15 +215,14 @@ export class CreatePlayerService {
     let nameLength: number;
     let vowels: string[];
     let first = lNames[0];
-
+    if (lNames.length !== totalLastNames) {
+      console.log('error with last names', lNames, totalLastNames);
+    }
     switch (lastNameUsage) {
       case 'Portuguese':
-        for (let i = 0; i < totalLastNames; i++) {
+        for (let i = 0; i < lNames.length; i++) {
           // for each surname
-          if (
-            (articleUsed && lastNames.length <= totalLastNames + 1) ||
-            (!articleUsed && lastNames.length <= totalLastNames)
-          ) {
+          if ((articleUsed && lastNames.length <= totalLastNames + 1) || (!articleUsed && lastNames.length <= totalLastNames)) {
             //
             chance = getRandomInt(1, 4);
             const surname = lNames[i];

@@ -15,7 +15,6 @@ export class SimulationComponent {
 
   constructor(service: SimulationService) {
     this.service = service;
-
     service.selectedNation$.pipe(untilDestroyed(this)).subscribe(nation => (this.selectedNation = nation));
   }
 

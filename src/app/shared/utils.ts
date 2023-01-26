@@ -1,5 +1,12 @@
 export const originalOrder = (): number => 0;
 
+export function formatDecimal(num: number, decimals: number) {
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(num);
+}
+
 export function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
@@ -52,10 +59,6 @@ export function getRandFloat(min: number, max: number, decimalPlaces = 2): numbe
   const rand = Math.random() < 0.5 ? (1 - Math.random()) * (max - min) + min : Math.random() * (max - min) + min; // could be min or max or anything in between
   const power = 10 ** decimalPlaces;
   return Math.floor(rand * power) / power;
-}
-
-export function roundMax(num: number): number {
-  return Math.round(num * 100) / 100;
 }
 
 export function calcSumRating(arr: number[]): number {

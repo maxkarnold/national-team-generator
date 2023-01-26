@@ -1,4 +1,5 @@
 import { Match } from 'app/pages/simulation/simulation.model';
+import { Person } from './player.model';
 
 export interface Nation {
   name: string;
@@ -48,7 +49,6 @@ export interface GroupTeam {
   attRanking: number;
   midRanking: number;
   defRanking: number;
-  pot?: number;
   reportCard: {
     grade: string | null;
     tournamentFinish: string | null;
@@ -56,10 +56,12 @@ export interface GroupTeam {
     gradeSummary: string | null;
   };
   emoji: string;
+  coach?: Person;
+  pot?: number;
 }
 
 export const defaultHost: GroupTeam = {
-  name: 'qatar',
+  name: 'Qatar',
   abbreviation: 'qat',
   logo: 'https://fmdataba.com/images/n/QAT.svg',
   emoji: '🇶🇦',

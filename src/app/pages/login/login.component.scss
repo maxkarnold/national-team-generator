@@ -1,14 +1,23 @@
-
-
 .basic-login {
-  max-width: 50%;
+  width: clamp(300px, 95%, 600px);
   margin: 2rem auto;
   height: 100vh;
   display: flex;
   justify-content: flex-start;
   flex-flow: column;
-}
 
-.basic-login * {
-  margin-top: 1rem
+  input, button {
+    margin-top: 1rem;
+    height: 3rem;
+  }
+
+  input {
+    font-size: 2rem;
+  }
+
+  button {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
 }

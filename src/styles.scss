@@ -11,6 +11,10 @@
   src: url(assets/fonts/aeonik/AeonikTRIAL-Bold.otf) format('opentype');
 }
 
+html, body {
+  height: 100%;
+ }
+
 *,
 *::after,
 *::before {

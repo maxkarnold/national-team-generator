@@ -77,3 +77,30 @@
     </ul>
   </div>
 </div> -->
+<div class="leaderboards-container">
+  <div class="personal-table">
+    <h2>Personal Leaderboard</h2>
+    <h3>Most Recent Tournaments (Last 10)</h3>
+    <ul *ngIf="personalLeaderboards" class="recent-table">
+      <li *ngFor="let item of personalLeaderboards; let i = index" class="tournament">
+        <span class="index">{{ i + 1 }}</span>
+        <div>
+          <span>Winner:</span><span>#{{ item.tournament.winnerRank }} {{ item.tournament.winner }}</span>
+        </div>
+        <div>
+          <span>Second Place:</span><span>{{ item.tournament.second }}</span>
+        </div>
+        <div>
+          <span>Third Place:</span><span> {{ item.tournament.third }}</span>
+        </div>
+        <div>
+          <span>Worst Rank:</span><span> #{{ item.tournament.worstRank }} {{ item.tournament.worst }}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="world-table">
+    <h2>World Leaderboard</h2>
+    <table *ngIf="worldLeaderboards"></table>
+  </div>
+</div>

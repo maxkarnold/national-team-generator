@@ -1,21 +1,25 @@
 import { OutfieldAttributes, GkAttributes } from './player-attributes.model';
 
-export interface Player {
+export interface Person {
   firstNames: string[];
   lastNames: string[];
-  mainPositions: string[];
-  altPositions: string[];
-  competentPositions: string[];
-  unconvincingPositions: string[];
   rating: number;
-  foot: string;
   firstInitial: string;
   singleLastName: string;
   firstNameUsage: string;
   lastNameUsage: string;
   nationality: string;
-  nationalityLogo: string;
   age: number;
+  playerFace?: string;
+}
+
+export interface Player extends Person {
+  mainPositions: string[];
+  altPositions: string[];
+  competentPositions: string[];
+  unconvincingPositions: string[];
+  foot: string;
+  nationalityLogo: string;
   club: string;
   clubLogo: string;
   playerFace?: string;

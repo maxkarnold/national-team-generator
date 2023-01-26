@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/services/auth.guard';
-import {
-  AwardsComponent,
-  GroupStageComponent,
-  KnockoutStageComponent,
-} from '@shared/components';
+import { AwardsComponent, GroupStageComponent, KnockoutStageComponent } from '@shared/components';
 import { HomeComponent } from './pages/home/home.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -40,7 +36,7 @@ const routes: Routes = [
     path: 'leaderboard',
     component: LeaderboardComponent,
   },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
 
   { path: '**', component: SimulationComponent },
 ];

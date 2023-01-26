@@ -5,10 +5,6 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '@env';
 
 @NgModule({
-  imports: [
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-  ],
+  imports: [AngularFireModule.initializeApp(environment.firebase), AngularFireAuthModule, AngularFirestoreModule.enablePersistence()],
 })
 export class CoreModule {}

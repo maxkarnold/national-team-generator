@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
+import { compare, getRandomInt, groupByProp } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { Match, Region } from './simulation.model';
-import { compare, groupByProp } from '@shared/utils';
-import { addRankings, extraTimeResult, matchScore } from './simulation.utils';
 import { get } from 'lodash';
-import { getRandomInt } from '@shared/utils';
-import { TeamsByRegion } from './simulation.model';
+import { BehaviorSubject } from 'rxjs';
+import { Match, Region, TeamsByRegion } from './simulation.model';
 import { SimulationService } from './simulation.service';
+import { extraTimeResult, matchScore } from './simulation.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +13,7 @@ import { SimulationService } from './simulation.service';
 export class SimulationQualifiersService {
   simulator: SimulationService;
   extraTeams = 0;
+  drawData$: BehaviorSubject<GroupTeam[][]> = new BehaviorSubject([] as GroupTeam[][]);
   constructor(simulator: SimulationService) {
     this.simulator = simulator;
   }
@@ -33,7 +33,7 @@ export class SimulationQualifiersService {
     numberOfTeams: number,
     hostNation: GroupTeam,
     availableRegions: Region[]
-  ): GroupTeam[][] {
+  ): BehaviorSubject<GroupTeam[][]> {
     let group = [];
     let count = 0;
 
@@ -66,16 +66,18 @@ export class SimulationQualifiersService {
         }
       }
     }
+    this.drawData$.next(groups);
 
-    return groups;
+    return this.drawData$;
   }
 
   tournament32Format(regions: Region[], nationsList: GroupTeam[], hostNation: GroupTeam): GroupTeam[] {
     const teamsQualified: GroupTeam[] = [];
     const regionValues = regions.map(r => r.value);
 
-    const nationsLeft: GroupTeam[] = addRankings(nationsList).filter(team => regionValues.includes(team.region));
-
+    console.log(nationsList);
+    const nationsLeft: GroupTeam[] = nationsList.filter(team => regionValues.includes(team.region));
+    console.log('nationsleft', nationsLeft);
     const host = nationsLeft.findIndex(t => t.name === hostNation.name);
     teamsQualified.push(nationsLeft.splice(host, 1)[0]);
     console.log(teamsQualified[0].name, teamsQualified[0].ranking, 'qualifies as host');
@@ -390,7 +392,7 @@ export class SimulationQualifiersService {
     return teamsQualified;
   }
 
-  potDraw32(teams: GroupTeam[], teamsInGroup: number, hostNation: GroupTeam, availableRegions: Region[]): GroupTeam[][] {
+  potDraw32(teams: GroupTeam[], teamsInGroup: number, hostNation: GroupTeam, availableRegions: Region[]): BehaviorSubject<GroupTeam[][]> {
     const pots = teamsInGroup;
     const teamsInPot = teams.length / pots;
     const extraTeams = this.extraTeams;
@@ -416,89 +418,83 @@ export class SimulationQualifiersService {
     }
     const start = Date.now();
 
-    // ======= draw teams into groups ===========
-    const draw = (pts: GroupTeam[][], nbrOfGroups: number): GroupTeam[][] => {
-      const allTeams: GroupTeam[] = pts.flatMap((p, i) => {
-        const team = p.map(x => ({ ...x, pot: i + 1 }));
-        if (availableRegions.length > 1) {
-          team.sort(({ region: a }, { region: b }) => compare(a, b, true));
-        }
-        return team;
-      });
-      const groups: GroupTeam[][] = Array.from({ length: teamsInPot }, _ => []);
-      for (let i = 0; i < allTeams.length; i++) {
-        // for each team in the draw
-        const team = allTeams[i];
-        // console.log('TEAM', team.region, team.pot);
-        const candidateGroups = groups.filter(
-          // return each group that returns true to ...
-          group => {
-            if (availableRegions.length > 4) {
-              // check the group has less teams than is needed in each group
-              return (
-                group.length < allTeams.length / nbrOfGroups &&
-                group.every(member => {
-                  // console.log('MEMBER', member.region, member.pot);
-                  return (
-                    member.pot !== team.pot &&
-                    (team.region !== 'uefa'
-                      ? group.every(m => m.region !== team.region) // checking that every member of this group does not match region
-                      : group.filter(m => m.region === 'uefa').length < 2)
-                  );
-                })
-              ); // if team is uefa, the group can have a uefa team
+    if (typeof Worker !== 'undefined') {
+      // Create a new
+      const worker = new Worker(new URL('./simulation.worker', import.meta.url));
+      worker.onmessage = ({ data }) => {
+        this.drawData$.next(data.draw);
+        this.simulator.isLoading$.next(false);
+      };
+      this.simulator.isLoading$.next(true);
+      worker.postMessage({ potTeams, teamsInPot, availableRegions, start, host });
+    } else {
+      const draw = (pts: GroupTeam[][], nbrOfGroups: number) => {
+        const regionValues = availableRegions.map(r => r.value);
+        const allTeams: GroupTeam[] = pts.flatMap((p, i) => {
+          const team = p.map(x => ({ ...x, pot: i + 1 }));
+          if (availableRegions.length > 1) {
+            team.sort(({ region: a }, { region: b }) => compare(a, b, true));
+          }
+          return team;
+        });
+        const groups: GroupTeam[][] = Array.from({ length: teamsInPot }, _ => []);
+        for (let i = 0; i < allTeams.length; i++) {
+          // for each team in the draw
+          const team = allTeams[i];
+          // console.log('TEAM', team.region, team.pot);
+          const candidateGroups = groups.filter(
+            // return each group that returns true to ...
+            group => {
+              if ((availableRegions.length > 4 && !regionValues.includes('ofc')) || availableRegions.length > 5) {
+                // check the group has less teams than is needed in each group
+                return (
+                  group.length < allTeams.length / nbrOfGroups &&
+                  group.every(member => {
+                    // console.log('MEMBER', member.region, member.pot);
+                    return (
+                      member.pot !== team.pot &&
+                      (team.region !== 'uefa'
+                        ? group.every(m => m.region !== team.region) // checking that every member of this group does not match region
+                        : group.filter(m => m.region === 'uefa').length < 2)
+                    );
+                  })
+                ); // if team is uefa, the group can have a uefa team
+              }
+              return group.length < allTeams.length / nbrOfGroups && group.every(member => member.pot !== team.pot);
             }
-            return (
-              group.length < allTeams.length / nbrOfGroups &&
-              group.every(
-                member =>
-                  // console.log(member.pot, team.pot);
-                  member.pot !== team.pot
-              )
-            );
-          }
-        );
-        if (candidateGroups.length < 1) {
-          if (Date.now() > start + 5000) {
-            console.log(
-              'ERROR WITH POT DRAW',
-              allTeams.map(t => `${t.name} ${t.pot} ${t.region}`)
-            );
-            return groups;
-          }
-          return draw(pts, nbrOfGroups);
+          );
+          candidateGroups[Math.floor(Math.random() * candidateGroups.length)].push(team);
         }
-        candidateGroups[Math.floor(Math.random() * candidateGroups.length)].push(team);
-      }
-      console.log(
-        'potTeams',
-        potTeams.map(g => g.map(t => `${t.name} ${t.region}`))
-      );
-      return groups;
-    };
-    const compareFn = (first: string, a: string, b: string) => {
-      let returnValue;
-      if (a === first) {
-        returnValue = -1;
-      } else if (b === first) {
-        returnValue = 1;
-      } else if (a < b) {
-        returnValue = -1;
-      } else if (b < a) {
-        returnValue = 1;
-      } else {
-        returnValue = 0;
-      }
-      return returnValue;
-    };
+        console.log(
+          'groups',
+          groups.map(g => g.map(t => `${t.name} ${t.region}`))
+        );
+        return groups;
+      };
 
-    const sortGroups = (h: string) => (t: GroupTeam[][]) =>
-      t
-        .map(team => team.sort(({ name: a }: { name: string }, { name: b }: { name: string }) => compareFn(h, a, b)))
-        .sort(([{ name: a }], [{ name: b }]) => compareFn(h, a, b));
+      const compareFn = (first: string, a: string, b: string) => {
+        let returnValue;
+        if (a === first) {
+          returnValue = -1;
+        } else if (b === first) {
+          returnValue = 1;
+        } else if (a < b) {
+          returnValue = -1;
+        } else if (b < a) {
+          returnValue = 1;
+        } else {
+          returnValue = 0;
+        }
+        return returnValue;
+      };
 
-    const drawAndSort = (t: GroupTeam[][], h: string, nbrOfGroups: number) => sortGroups(h)(draw(t, nbrOfGroups));
+      const sortGroups = (h: string) => (t: GroupTeam[][]) =>
+        t
+          .map(team => team.sort(({ name: a }: { name: string }, { name: b }: { name: string }) => compareFn(h, a, b)))
+          .sort(([{ name: a }], [{ name: b }]) => compareFn(h, a, b));
 
-    return drawAndSort(potTeams, host.name, teamsInPot);
+      this.drawData$.next(sortGroups(host.name)(draw(potTeams, teamsInPot)));
+    }
+    return this.drawData$;
   }
 }

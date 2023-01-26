@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { Roster } from 'app/models/roster.model';
 import { AuthService } from '@core/services/auth.service';
 import { FirestoreService } from '@core/services/firestore.service';
+import { LeaderboardItem, LeaderboardService } from './leaderboard.service';
 
 @Component({
   selector: 'app-leaderboard',
@@ -10,6 +11,7 @@ import { FirestoreService } from '@core/services/firestore.service';
   styleUrls: ['./leaderboard.component.scss'],
 })
 export class LeaderboardComponent implements OnInit {
+  service: LeaderboardService;
   allRosters: Roster[] = [];
   organizedRosters: Roster[][] = [];
 
@@ -41,25 +43,34 @@ export class LeaderboardComponent implements OnInit {
     'Nationality',
   ];
 
-  constructor(private db: FirestoreService, private auth: AuthService) {}
+  personalLeaderboards: LeaderboardItem[] | null = null;
+  worldLeaderboards: LeaderboardItem[] | null = null;
+
+  constructor(private db: FirestoreService, private auth: AuthService, leaderboard: LeaderboardService) {
+    this.service = leaderboard;
+  }
 
   ngOnInit(): void {
     // this.subscription = this.auth.currentAuthState.subscribe(
     //   (authState) => (this.isLoggedIn = authState)
     // );
-    for (let i = 0; i < 100; i++) {
-      const roster = localStorage.getItem(`Roster #${i}`) || null;
-      if (roster === null) {
-        break;
-      }
-      this.allRosters.push(JSON.parse(roster));
-    }
-    this.organizeLeaderboards();
+    // for (let i = 0; i < 100; i++) {
+    //   const roster = localStorage.getItem(`Roster #${i}`) || null;
+    //   if (roster === null) {
+    //     break;
+    //   }
+    //   this.allRosters.push(JSON.parse(roster));
+    // }
+    // this.organizeLeaderboards();
+    const { worldLeaderboards, personalLeaderboards } = this.service.fetchTournamentLeaderboards();
+    this.personalLeaderboards = personalLeaderboards;
+    console.log(this.personalLeaderboards);
+    this.worldLeaderboards = worldLeaderboards;
   }
 
-  trackByItems(index: number, item: Roster) {
-    return item.id;
-  }
+  // trackByItems(index: number, item: Roster) {
+  //   return item.id;
+  // }
 
   // updateLeaderboards() {
   //   this.db.getSubmittedRosters().subscribe((snapshot) => {
@@ -127,71 +138,71 @@ export class LeaderboardComponent implements OnInit {
   //   });
   // }
 
-  organizeLeaderboards() {
-    this.organizedRosters = [];
-    this.sTierRosters = [];
-    this.aTierRosters = [];
-    this.bTierRosters = [];
-    this.cTierRosters = [];
-    this.dTierRosters = [];
-    this.eTierRosters = [];
-    this.fTierRosters = [];
-    this.gTierRosters = [];
-    this.hTierRosters = [];
-    this.iTierRosters = [];
-    this.jTierRosters = [];
+  // organizeLeaderboards() {
+  //   this.organizedRosters = [];
+  //   this.sTierRosters = [];
+  //   this.aTierRosters = [];
+  //   this.bTierRosters = [];
+  //   this.cTierRosters = [];
+  //   this.dTierRosters = [];
+  //   this.eTierRosters = [];
+  //   this.fTierRosters = [];
+  //   this.gTierRosters = [];
+  //   this.hTierRosters = [];
+  //   this.iTierRosters = [];
+  //   this.jTierRosters = [];
 
-    this.allRosters.forEach((roster) => {
-      switch (roster.tier) {
-        case 's':
-          this.sTierRosters.push(roster);
-          break;
-        case 'a':
-          this.aTierRosters.push(roster);
-          break;
-        case 'b':
-          this.bTierRosters.push(roster);
-          break;
-        case 'c':
-          this.cTierRosters.push(roster);
-          break;
-        case 'd':
-          this.dTierRosters.push(roster);
-          break;
-        case 'e':
-          this.eTierRosters.push(roster);
-          break;
-        case 'f':
-          this.fTierRosters.push(roster);
-          break;
-        case 'g':
-          this.gTierRosters.push(roster);
-          break;
-        case 'h':
-          this.hTierRosters.push(roster);
-          break;
-        case 'i':
-          this.iTierRosters.push(roster);
-          break;
-        case 'j':
-          this.jTierRosters.push(roster);
-          break;
-        default:
-          throw new Error('No tier found on roster');
-      }
-    });
-    this.organizedRosters = [
-      this.sTierRosters,
-      this.aTierRosters,
-      this.bTierRosters,
-      this.cTierRosters,
-      this.dTierRosters,
-      this.eTierRosters,
-      this.fTierRosters,
-      this.gTierRosters,
-      this.hTierRosters,
-      this.iTierRosters,
-      this.jTierRosters,
-    ];
-  }
+  //   this.allRosters.forEach((roster) => {
+  //     switch (roster.tier) {
+  //       case 's':
+  //         this.sTierRosters.push(roster);
+  //         break;
+  //       case 'a':
+  //         this.aTierRosters.push(roster);
+  //         break;
+  //       case 'b':
+  //         this.bTierRosters.push(roster);
+  //         break;
+  //       case 'c':
+  //         this.cTierRosters.push(roster);
+  //         break;
+  //       case 'd':
+  //         this.dTierRosters.push(roster);
+  //         break;
+  //       case 'e':
+  //         this.eTierRosters.push(roster);
+  //         break;
+  //       case 'f':
+  //         this.fTierRosters.push(roster);
+  //         break;
+  //       case 'g':
+  //         this.gTierRosters.push(roster);
+  //         break;
+  //       case 'h':
+  //         this.hTierRosters.push(roster);
+  //         break;
+  //       case 'i':
+  //         this.iTierRosters.push(roster);
+  //         break;
+  //       case 'j':
+  //         this.jTierRosters.push(roster);
+  //         break;
+  //       default:
+  //         throw new Error('No tier found on roster');
+  //     }
+  //   });
+  //   this.organizedRosters = [
+  //     this.sTierRosters,
+  //     this.aTierRosters,
+  //     this.bTierRosters,
+  //     this.cTierRosters,
+  //     this.dTierRosters,
+  //     this.eTierRosters,
+  //     this.fTierRosters,
+  //     this.gTierRosters,
+  //     this.hTierRosters,
+  //     this.iTierRosters,
+  //     this.jTierRosters,
+  //   ];
+  // }
 }

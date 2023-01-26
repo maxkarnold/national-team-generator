@@ -15,4 +15,8 @@
 </nav>
 <router-outlet></router-outlet>
 
+<div class="overlay-container" *ngIf="service.isLoading$ | async">
+  <mat-spinner class="spinner"></mat-spinner>
+</div>
+
 <app-nation-dialog *ngIf="selectedNation" [class]="selectedNation ? 'show' : ''" (click)="changeSelectedNation()"></app-nation-dialog>
