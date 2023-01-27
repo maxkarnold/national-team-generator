@@ -67,8 +67,8 @@ export class SimulationQualifiersService {
       }
       console.log(
         `qualified automatically for World Cup from ${region.label}`,
-        [`${teamsQualified[0].name} ${teamsQualified[0].ranking} - ${teamsQualified[0].rating}`],
-        nationsLeft.slice(0, qualifyingSpots).map(a => `${a.name} ${a.ranking} - ${a.rating}`)
+        [`${teamsQualified[0].name} ${teamsQualified[0].ranking}`],
+        nationsLeft.slice(0, qualifyingSpots).map(a => `${a.name} ${a.ranking}`)
       );
       console.log(
         `didn't qualify automatically from ${region.label}`,
@@ -114,7 +114,7 @@ export class SimulationQualifiersService {
         teamsQualified.push(...nations.slice(0, qualifyingSpots));
         console.log(
           `qualified automatically for World Cup from ${region.toLocaleUpperCase()}`,
-          nations.slice(0, regions[index].qualifiers.auto).map(a => `${a.name} ${a.ranking} - ${a.rating}`)
+          nations.slice(0, regions[index].qualifiers.auto).map(a => `${a.name} ${a.ranking}`)
         );
         console.log(
           `didn't qualify automatically from ${region.toLocaleUpperCase()}`,
@@ -164,10 +164,8 @@ export class SimulationQualifiersService {
         }
         console.log(
           `qualified automatically for World Cup from ${region.toLocaleUpperCase()}`,
-          teamsQualified[0].region === region
-            ? [`${teamsQualified[0].name} ${teamsQualified[0].ranking} - ${teamsQualified[0].rating}`]
-            : '',
-          nations.slice(0, qualifyingSpot).map(a => `${a.name} ${a.ranking} - ${a.rating}`)
+          teamsQualified[0].region === region ? [`${teamsQualified[0].name} ${teamsQualified[0].ranking}`] : '',
+          nations.slice(0, qualifyingSpot).map(a => `${a.name} ${a.ranking}`)
         );
         console.log(
           `didn't qualify automatically from ${region.toLocaleUpperCase()}`,
@@ -183,7 +181,7 @@ export class SimulationQualifiersService {
     const qualifiers: Match[] = [];
     for (let i = 0; i < matches; i++) {
       const wtIndex = alreadyQualified + (matches * 2 - 1 - i);
-      qualifiers.push(matchScore(availableNations[alreadyQualified + i], availableNations[wtIndex]));
+      qualifiers.push(matchScore(availableNations[alreadyQualified + i], availableNations[wtIndex], true));
     }
     qualifiers.forEach(match => {
       match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
@@ -196,11 +194,11 @@ export class SimulationQualifiersService {
     });
     console.log(
       `qualified from ${region.label} via playoff`,
-      qualifiers.map(a => `${a.winner.name} ${a.winner.ranking} - ${a.winner.rating}`)
+      qualifiers.map(a => `${a.winner.name} ${a.winner.ranking}`)
     );
     console.log(
       `didn't qualify from ${region.label} via playoff`,
-      qualifiers.map(t => `${t.loser.name}-${t.loser.ranking}`)
+      qualifiers.map(t => `${t.loser.name} ${t.loser.ranking}`)
     );
     return qualifiers;
   }
@@ -212,11 +210,11 @@ export class SimulationQualifiersService {
     if (caf) {
       // ====== CAF Qualifiers ======
       const cafQualifiers = [
-        matchScore(caf[0], caf[9]),
-        matchScore(caf[1], caf[8]),
-        matchScore(caf[2], caf[7]),
-        matchScore(caf[3], caf[6]),
-        matchScore(caf[4], caf[5]),
+        matchScore(caf[0], caf[9], true),
+        matchScore(caf[1], caf[8], true),
+        matchScore(caf[2], caf[7], true),
+        matchScore(caf[3], caf[6], true),
+        matchScore(caf[4], caf[5], true),
       ];
 
       cafQualifiers.forEach(match => {
@@ -233,23 +231,23 @@ export class SimulationQualifiersService {
 
       console.log(
         `qualified from ${cafQualifiers[0].winner.region}`,
-        cafQualifiers.map(a => `${a.winner.name} ${a.winner.ranking} - ${a.winner.rating}`)
+        cafQualifiers.map(a => `${a.winner.name} ${a.winner.ranking}`)
       );
       console.log(
         `didn't qualify from ${cafQualifiers[0].loser.region}`,
-        caf.slice(10).map(t => `${t.name} ${t.ranking} - ${t.rating}`),
+        caf.slice(10).map(t => `${t.name} ${t.ranking}`),
         cafQualifiers.map(t => `${t.loser.name}-${t.loser.ranking}`)
       );
     }
     if (uefa) {
       // ===== UEFA Qualifiers =====
       const uefaFirstRound = [
-        matchScore(uefa[10], uefa[21]),
-        matchScore(uefa[11], uefa[20]),
-        matchScore(uefa[12], uefa[19]),
-        matchScore(uefa[13], uefa[18]),
-        matchScore(uefa[14], uefa[17]),
-        matchScore(uefa[15], uefa[16]),
+        matchScore(uefa[10], uefa[21], true),
+        matchScore(uefa[11], uefa[20], true),
+        matchScore(uefa[12], uefa[19], true),
+        matchScore(uefa[13], uefa[18], true),
+        matchScore(uefa[14], uefa[17], true),
+        matchScore(uefa[15], uefa[16], true),
       ];
       uefaFirstRound.forEach(match => {
         match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
@@ -261,9 +259,9 @@ export class SimulationQualifiersService {
         );
       });
       const uefaQualifiers = [
-        matchScore(uefaFirstRound[0].winner, uefaFirstRound[5].winner),
-        matchScore(uefaFirstRound[1].winner, uefaFirstRound[4].winner),
-        matchScore(uefaFirstRound[2].winner, uefaFirstRound[3].winner),
+        matchScore(uefaFirstRound[0].winner, uefaFirstRound[5].winner, true),
+        matchScore(uefaFirstRound[1].winner, uefaFirstRound[4].winner, true),
+        matchScore(uefaFirstRound[2].winner, uefaFirstRound[3].winner, true),
       ];
       uefaQualifiers.forEach(match => {
         match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
@@ -277,7 +275,7 @@ export class SimulationQualifiersService {
       teamsQualified.push(...uefaQualifiers.map(m => m.winner));
       console.log(
         `qualified from ${uefaQualifiers[0].winner.region}`,
-        uefaQualifiers.map(a => `${a.winner.name} ${a.winner.ranking} - ${a.winner.rating}`)
+        uefaQualifiers.map(a => `${a.winner.name} ${a.winner.ranking}`)
       );
       console.log(
         `didn't qualify from ${uefaQualifiers[0].loser.region}`,
@@ -288,7 +286,7 @@ export class SimulationQualifiersService {
     }
     if (afc && conmebol && concacaf) {
       // ===== AFC Qualifier =====
-      const afcQualifier = matchScore(afc[4], afc[5]);
+      const afcQualifier = matchScore(afc[4], afc[5], true);
       afcQualifier.winner.matchHistory.qualifiers.push({
         match: afcQualifier,
         opp: afcQualifier.loser,
@@ -304,7 +302,7 @@ export class SimulationQualifiersService {
       );
       let ofcQualifier: Match | null = null;
       if (ofc) {
-        ofcQualifier = matchScore(ofc[0], ofc[1]);
+        ofcQualifier = matchScore(ofc[0], ofc[1], true);
         ofcQualifier.winner.matchHistory.qualifiers.push({
           match: ofcQualifier,
           opp: ofcQualifier.loser,
@@ -324,7 +322,7 @@ export class SimulationQualifiersService {
         );
       }
       // ===== Inter-confederation Qualifiers =====
-      const playoff1 = matchScore(afcQualifier.winner, conmebol[4]);
+      const playoff1 = matchScore(afcQualifier.winner, conmebol[4], true);
       playoff1.winner.matchHistory.qualifiers.push({
         match: playoff1,
         opp: playoff1.loser,
@@ -338,7 +336,7 @@ export class SimulationQualifiersService {
         `playoff between ${afcQualifier.winner.name} and ${conmebol[4].name} resulted in a win for ${playoff1.winner.name}
        with a score of ${playoff1.goalsFor}-${playoff1.goalsAg}${extraTimeResult(playoff1)}`
       );
-      const playoff2 = ofcQualifier ? matchScore(concacaf[3], ofcQualifier.winner) : null;
+      const playoff2 = ofcQualifier ? matchScore(concacaf[3], ofcQualifier.winner, true) : null;
       if (playoff2 && ofcQualifier) {
         playoff2.winner.matchHistory.qualifiers.push({
           match: playoff2,

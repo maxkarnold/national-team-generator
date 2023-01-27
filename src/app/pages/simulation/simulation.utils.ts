@@ -1,7 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { getRandFloat, getRandomInt } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { round } from 'lodash';
 import { Match, Region } from './simulation.model';
 
 export const regions: Region[] = [
@@ -67,10 +66,6 @@ export function extraTimeResult(match: Match) {
 
 export function findTeamInTournament(groups: GroupTeam[][], nation: GroupTeam) {
   return groups.flat().find(t => t.name === nation.name);
-}
-
-function getResultArr(wins: number, draws: number, losses: number): string[] {
-  return [...Array(wins).fill('win'), ...Array(losses).fill('loss'), ...Array(draws).fill('draw')];
 }
 
 export function groupLetters(index: number) {
@@ -151,195 +146,75 @@ export function addRankings(arr: GroupTeam[]) {
     }));
 }
 
-export function calcScore(
-  team: { attRating: number; midRating: number; defRating: number; homeTeam: boolean },
-  opp: {
-    attRating: number;
-    midRating: number;
-    defRating: number;
-    homeTeam: boolean;
+export function calcScore(team: GroupTeam, opp: GroupTeam, extraTime: boolean): [number, number, boolean] {
+  const eventTimes = [15, 30, 45, 60, 75, 90];
+  if (extraTime) {
+    eventTimes.push(105, 120);
   }
-): number[] {
   const gF = team.attRating + team.midRating / 2 - (opp.midRating / 2 + opp.defRating);
   const gA = opp.attRating + opp.midRating / 2 - (team.midRating / 2 + team.defRating);
-  const combinedAtt = team.attRating + opp.attRating + opp.midRating + team.midRating;
-  const combinedDef = team.defRating + team.midRating + opp.defRating + opp.midRating;
-  let gD = gF - gA;
-  let result = '';
-  let randIndex = getRandomInt(0, 9);
+
+  let teamMultiplier = ((gF + 80) / 160) * 50;
+  let oppMultiplier = ((gA + 80) / 160) * 50;
   if (team.homeTeam) {
-    gD += 10;
-  } else if (opp.homeTeam) {
-    gD -= 10;
+    teamMultiplier += 2.5;
   }
+  if (opp.homeTeam) {
+    oppMultiplier += 2.5;
+  }
+  let goalFor = 0;
+  let goalAg = 0;
+  let etWin = false;
 
-  if (gD > 40) {
-    result = getResultArr(8, 1, 1)[randIndex];
-  } else if (gD > 20) {
-    result = getResultArr(7, 2, 1)[randIndex];
-  } else if (gD > 10) {
-    result = getResultArr(6, 2, 2)[randIndex];
-  } else if (gD > 5) {
-    result = getResultArr(5, 3, 2)[randIndex];
-  } else if (gD > 0) {
-    result = getResultArr(3, 5, 2)[randIndex];
-  } else if (gD > -5) {
-    result = getResultArr(2, 5, 3)[randIndex];
-  } else if (gD > -10) {
-    result = getResultArr(2, 3, 5)[randIndex];
-  } else if (gD > -20) {
-    result = getResultArr(2, 2, 6)[randIndex];
-  } else if (gD > -40) {
-    result = getResultArr(1, 2, 7)[randIndex];
-  } else {
-    result = getResultArr(1, 1, 8)[randIndex];
-  }
+  for (let i = 0; i < eventTimes.length; i++) {
+    // teamMultiplier and oppMultiplier have range of (0 - 100) * 1.25
+    const rand1 = getRandFloat(0, 100);
+    const rand2 = getRandFloat(0, 100);
+    let teamAdv = teamMultiplier;
+    let oppAdv = oppMultiplier;
 
-  randIndex = getRandomInt(0, 10);
-  switch (result) {
-    case 'win':
-      if (combinedAtt > combinedDef && gD > 20) {
-        return [
-          [2, 0],
-          [2, 1],
-          [2, 1],
-          [3, 1],
-          [3, 1],
-          [4, 1],
-          [4, 2],
-          [5, 1],
-          [4, 1],
-          [6, 1],
-          [3, 0],
-        ][randIndex];
+    if (eventTimes[i] < 90) {
+      if (goalFor === 0) {
+        teamAdv -= 5;
       }
-      return combinedAtt > combinedDef
-        ? [
-            [1, 0],
-            [2, 1],
-            [2, 1],
-            [2, 1],
-            [2, 1],
-            [3, 1],
-            [3, 2],
-            [3, 2],
-            [4, 2],
-            [4, 3],
-            [3, 0],
-          ][randIndex]
-        : [
-            [1, 0],
-            [1, 0],
-            [1, 0],
-            [1, 0],
-            [2, 1],
-            [2, 0],
-            [2, 0],
-            [2, 0],
-            [3, 0],
-            [3, 1],
-            [1, 0],
-          ][randIndex];
-    case 'loss':
-      if (combinedAtt > combinedDef && gD < -20) {
-        return [
-          [0, 2],
-          [1, 2],
-          [1, 2],
-          [1, 3],
-          [1, 3],
-          [1, 4],
-          [2, 4],
-          [1, 5],
-          [1, 4],
-          [1, 6],
-          [0, 3],
-        ][randIndex];
+
+      if (goalAg === 0) {
+        oppAdv -= 5;
       }
-      return combinedAtt > combinedDef
-        ? [
-            [0, 1],
-            [1, 2],
-            [1, 2],
-            [1, 2],
-            [1, 2],
-            [1, 3],
-            [2, 3],
-            [2, 3],
-            [3, 4],
-            [0, 3],
-            [0, 3],
-          ][randIndex]
-        : [
-            [0, 1],
-            [0, 1],
-            [0, 1],
-            [0, 1],
-            [1, 2],
-            [0, 2],
-            [0, 2],
-            [0, 2],
-            [0, 3],
-            [1, 3],
-            [0, 1],
-          ][randIndex];
-    case 'draw':
-      return combinedAtt > combinedDef
-        ? [
-            [3, 3],
-            [2, 2],
-            [1, 1],
-            [1, 1],
-            [2, 2],
-            [0, 0],
-            [2, 2],
-            [1, 1],
-            [4, 4],
-            [3, 3],
-            [1, 1],
-          ][randIndex]
-        : [
-            [0, 0],
-            [0, 0],
-            [0, 0],
-            [1, 1],
-            [1, 1],
-            [1, 1],
-            [1, 1],
-            [2, 2],
-            [3, 3],
-            [0, 0],
-            [0, 0],
-          ][randIndex];
-    default:
-      return combinedAtt > combinedDef
-        ? [
-            [3, 3],
-            [2, 2],
-            [1, 1],
-            [1, 1],
-            [2, 2],
-            [0, 0],
-            [2, 2],
-            [1, 1],
-            [4, 4],
-            [3, 3],
-            [1, 1],
-          ][randIndex]
-        : [
-            [0, 0],
-            [0, 0],
-            [0, 0],
-            [1, 1],
-            [1, 1],
-            [1, 1],
-            [1, 1],
-            [2, 2],
-            [3, 3],
-            [0, 0],
-            [0, 0],
-          ][randIndex];
+    }
+
+    if (goalFor === goalAg && eventTimes[i] !== 90) {
+      teamAdv -= 5;
+      oppAdv -= 5;
+    }
+
+    if (rand1 <= teamAdv) {
+      goalFor++;
+      if (teamAdv > 35 && getRandomInt(0, 10) < 6) {
+        goalFor++;
+      }
+    }
+
+    if (rand2 <= oppAdv) {
+      goalAg++;
+      if (oppAdv > 35 && getRandomInt(0, 10) < 6) {
+        goalAg++;
+      }
+    }
+
+    if (eventTimes[i] === 90 && goalFor !== goalAg) {
+      break;
+    }
+
+    if (eventTimes[i] === 120 && goalFor !== goalAg) {
+      etWin = true;
+      break;
+    }
   }
+  // console.log(teamMultiplier, oppMultiplier);
+  // console.log([goalFor, goalAg, etWin], [team.homeTeam, opp.homeTeam]);
+
+  return [goalFor, goalAg, etWin];
 }
 
 export function getGradeSummary({ name: nationName, reportCard, matchesPlayed }: GroupTeam): string {
@@ -388,30 +263,26 @@ export function getGradeStyle(grade: string | undefined): '' | 'good-grade' | 'o
   return '';
 }
 
-export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hostNation?: GroupTeam): Match {
-  const tm = {
-    attRating: team.attRating,
-    midRating: team.midRating,
-    defRating: team.defRating,
-    homeTeam: hostNation?.name === team.name ?? false,
-  };
-  const opp = {
-    attRating: otherTeam.attRating,
-    midRating: otherTeam.midRating,
-    defRating: otherTeam.defRating,
-    homeTeam: hostNation?.name === otherTeam.name ?? false,
-  };
-  const [goalsFor, goalsAg] = calcScore(tm, opp);
+export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: boolean): Match {
+  const [goalsFor, goalsAg, etWin] = calcScore(team, otherTeam, hasExtraTime);
 
-  const etWin = getRandFloat(0, 1) > 0.9 && goalsFor !== goalsAg && Math.abs(goalsFor - goalsAg) < 2;
   const penaltyWin = goalsFor === goalsAg;
 
   const whoWon = (gf: number, ga: number): { winner: GroupTeam; loser: GroupTeam; score: string } => {
     if (penaltyWin) {
-      const rand = getRandFloat(0, 1);
-      return rand > 0.5
-        ? { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` }
-        : { winner: otherTeam, loser: team, score: `${goalsAg}-${goalsFor}` };
+      let rand = getRandFloat(0, 1);
+      const firstTeamAdvantage = team.penRating > otherTeam.penRating;
+      const firstTeamWin = { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` };
+      const secondTeamWin = { winner: otherTeam, loser: team, score: `${goalsAg}-${goalsFor}` };
+
+      if (firstTeamAdvantage && rand > 0.25) {
+        return firstTeamWin;
+      } else if (!firstTeamAdvantage && rand > 0.25) {
+        return secondTeamWin;
+      } else {
+        rand = getRandFloat(0, 1);
+        return rand > 0.5 ? firstTeamWin : secondTeamWin;
+      }
     }
     return gf > ga
       ? { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` }
@@ -432,5 +303,5 @@ export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hostNation?: G
 }
 
 export function getDisplayRating(rating: number) {
-  return round(rating, 1).toFixed(1);
+  return Math.floor(rating);
 }

@@ -30,6 +30,7 @@ export interface GroupTeam {
   attRating: number;
   midRating: number;
   defRating: number;
+  penRating: number;
   rating: number;
   matchHistory: {
     qualifiers: {
@@ -56,6 +57,7 @@ export interface GroupTeam {
     gradeSummary: string | null;
   };
   emoji: string;
+  homeTeam: boolean;
   coach?: Person;
   pot?: number;
 }
@@ -74,6 +76,7 @@ export const defaultHost: GroupTeam = {
   attRating: 0,
   midRating: 0,
   defRating: 0,
+  penRating: 0,
   rating: 0,
   matchesPlayed: 0,
   matchHistory: {
@@ -91,4 +94,5 @@ export const defaultHost: GroupTeam = {
   attRanking: 0,
   midRanking: 0,
   defRanking: 0,
+  homeTeam: true,
 };

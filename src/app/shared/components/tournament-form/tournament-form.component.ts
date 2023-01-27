@@ -12,7 +12,6 @@ import { Region, Tournament32 } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { addRankings, regions, regionsValidator } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
-import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 @UntilDestroy()
@@ -149,57 +148,51 @@ export class TournamentFormComponent {
     this.nations.forEach(tier => {
       tier.nations.forEach(nation => {
         // random nation values
-        let attRating = 0;
-        let midRating = 0;
-        let defRating = 0;
+        let min = 0;
+        let max = 0;
 
         switch (nation.ranking) {
           case 's':
-            attRating = getRandFloat(80, 100);
-            midRating = getRandFloat(80, 100);
-            defRating = getRandFloat(80, 100);
+            min = 80;
+            max = 100;
             break;
           case 'a':
-            attRating = getRandFloat(70, 95);
-            midRating = getRandFloat(70, 95);
-            defRating = getRandFloat(70, 95);
+            min = 70;
+            max = 95;
             break;
           case 'b':
-            attRating = getRandFloat(65, 88);
-            midRating = getRandFloat(65, 88);
-            defRating = getRandFloat(65, 88);
+            min = 65;
+            max = 88;
             break;
           case 'c':
-            attRating = getRandFloat(60, 88);
-            midRating = getRandFloat(60, 88);
-            defRating = getRandFloat(60, 88);
+            min = 60;
+            max = 88;
             break;
           case 'd':
-            attRating = getRandFloat(55, 80);
-            midRating = getRandFloat(55, 80);
-            defRating = getRandFloat(55, 80);
+            min = 55;
+            max = 80;
             break;
           case 'e':
-            attRating = getRandFloat(40, 78);
-            midRating = getRandFloat(40, 78);
-            defRating = getRandFloat(40, 78);
+            min = 40;
+            max = 78;
             break;
           case 'f':
-            attRating = getRandFloat(30, 70);
-            midRating = getRandFloat(30, 70);
-            defRating = getRandFloat(30, 70);
+            min = 30;
+            max = 70;
             break;
           case 'g':
-            attRating = getRandFloat(25, 55);
-            midRating = getRandFloat(25, 55);
-            defRating = getRandFloat(25, 55);
+            min = 25;
+            max = 55;
             break;
           default:
-            attRating = getRandFloat(25, 55);
-            midRating = getRandFloat(25, 55);
-            defRating = getRandFloat(25, 55);
+            min = 25;
+            max = 55;
             break;
         }
+        const attRating = getRandFloat(min, max);
+        const midRating = getRandFloat(min, max);
+        const defRating = getRandFloat(min, max);
+        const penRating = getRandFloat(min, max);
         const team: GroupTeam = {
           gDiff: 0,
           gFor: 0,
@@ -210,7 +203,8 @@ export class TournamentFormComponent {
           attRating,
           defRating,
           midRating,
-          rating: attRating + midRating + defRating,
+          penRating,
+          rating: (attRating + midRating + defRating) / 3,
           ranking: 0,
           attRanking: 0,
           midRanking: 0,
@@ -231,6 +225,7 @@ export class TournamentFormComponent {
             tournamentFinish: null,
           },
           emoji: nation.emoji,
+          homeTeam: this.hostNation.name === nation.name ? true : false,
         };
         this.nationsList.push(team);
       });
@@ -281,8 +276,6 @@ export class TournamentFormComponent {
   }
 
   simulateTournament(tournament: Tournament32, numOfGames: number, save?: boolean): void {
-    console.log(tournament);
-
     const groupsArr = tournament.groups || [];
 
     const hostNation = tournament.hostNation;
@@ -325,7 +318,6 @@ export class TournamentFormComponent {
     groups: GroupTeam[][],
     hostNation?: GroupTeam
   ) {
-    console.log('test');
     const data = this.localData || [];
     if (data.length === 10 && new Date().toDateString() === data[0]?.time) {
       this.snackbar.open('Cannot submit more than 10 tournaments per day.', 'Dismiss');

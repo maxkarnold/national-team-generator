@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { compare } from '@shared/utils';
 import { findTeamInTournament, matchScore } from './simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { Match, Region, Tournament32 } from './simulation.model';
+import { appData, Match, Region, Tournament32 } from './simulation.model';
 import { BehaviorSubject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CreatePlayerService } from '@core/services/create-player.service';
@@ -27,6 +27,12 @@ export class SimulationService {
 
     this.createPerson = createPerson;
   }
+
+  // checkForApp() {
+  //   if ((window.navigator as appData).standalone === true) {
+  //     console.log('test');
+  //   }
+  // }
 
   changeSelectedNation(value: null | GroupTeam) {
     if (!this.tournament?.groups || !value) {
@@ -82,7 +88,7 @@ export class SimulationService {
           for (let k = j + 1; k < g[i].length; k++) {
             // for each of the other teams play a match
             const otherTeam = g[i][k];
-            const match = matchScore(team, otherTeam, this.hostNation);
+            const match = matchScore(team, otherTeam, false);
             match.winner.matchHistory.group.push({
               match: match,
               opp: match.loser,
@@ -133,14 +139,14 @@ export class SimulationService {
     // assign numbers to letter values, to improve readability of code
 
     const roundOf16: [GroupTeam, GroupTeam, Match][] = [
-      [gWinners[a][0], gWinners[b][1], matchScore(gWinners[a][0], gWinners[b][1], this.hostNation)],
-      [gWinners[c][0], gWinners[d][1], matchScore(gWinners[c][0], gWinners[d][1], this.hostNation)],
-      [gWinners[e][0], gWinners[f][1], matchScore(gWinners[e][0], gWinners[f][1], this.hostNation)],
-      [gWinners[g][0], gWinners[h][1], matchScore(gWinners[g][0], gWinners[h][1], this.hostNation)],
-      [gWinners[d][0], gWinners[c][1], matchScore(gWinners[d][0], gWinners[c][1], this.hostNation)],
-      [gWinners[b][0], gWinners[a][1], matchScore(gWinners[b][0], gWinners[a][1], this.hostNation)],
-      [gWinners[f][0], gWinners[e][1], matchScore(gWinners[f][0], gWinners[e][1], this.hostNation)],
-      [gWinners[h][0], gWinners[g][1], matchScore(gWinners[h][0], gWinners[g][1], this.hostNation)],
+      [gWinners[a][0], gWinners[b][1], matchScore(gWinners[a][0], gWinners[b][1], true)],
+      [gWinners[c][0], gWinners[d][1], matchScore(gWinners[c][0], gWinners[d][1], true)],
+      [gWinners[e][0], gWinners[f][1], matchScore(gWinners[e][0], gWinners[f][1], true)],
+      [gWinners[g][0], gWinners[h][1], matchScore(gWinners[g][0], gWinners[h][1], true)],
+      [gWinners[d][0], gWinners[c][1], matchScore(gWinners[d][0], gWinners[c][1], true)],
+      [gWinners[b][0], gWinners[a][1], matchScore(gWinners[b][0], gWinners[a][1], true)],
+      [gWinners[f][0], gWinners[e][1], matchScore(gWinners[f][0], gWinners[e][1], true)],
+      [gWinners[h][0], gWinners[g][1], matchScore(gWinners[h][0], gWinners[g][1], true)],
     ];
 
     roundOf16.forEach(t => {
@@ -149,10 +155,10 @@ export class SimulationService {
     });
 
     const quarterFinals: [GroupTeam, GroupTeam, Match][] = [
-      [roundOf16[0][2].winner, roundOf16[1][2].winner, matchScore(roundOf16[0][2].winner, roundOf16[1][2].winner, this.hostNation)],
-      [roundOf16[2][2].winner, roundOf16[3][2].winner, matchScore(roundOf16[2][2].winner, roundOf16[3][2].winner, this.hostNation)],
-      [roundOf16[4][2].winner, roundOf16[5][2].winner, matchScore(roundOf16[4][2].winner, roundOf16[5][2].winner, this.hostNation)],
-      [roundOf16[6][2].winner, roundOf16[7][2].winner, matchScore(roundOf16[6][2].winner, roundOf16[7][2].winner, this.hostNation)],
+      [roundOf16[0][2].winner, roundOf16[1][2].winner, matchScore(roundOf16[0][2].winner, roundOf16[1][2].winner, true)],
+      [roundOf16[2][2].winner, roundOf16[3][2].winner, matchScore(roundOf16[2][2].winner, roundOf16[3][2].winner, true)],
+      [roundOf16[4][2].winner, roundOf16[5][2].winner, matchScore(roundOf16[4][2].winner, roundOf16[5][2].winner, true)],
+      [roundOf16[6][2].winner, roundOf16[7][2].winner, matchScore(roundOf16[6][2].winner, roundOf16[7][2].winner, true)],
     ];
 
     quarterFinals.forEach(t => {
@@ -161,16 +167,8 @@ export class SimulationService {
     });
 
     const semiFinals: [GroupTeam, GroupTeam, Match][] = [
-      [
-        quarterFinals[0][2].winner,
-        quarterFinals[1][2].winner,
-        matchScore(quarterFinals[0][2].winner, quarterFinals[1][2].winner, this.hostNation),
-      ],
-      [
-        quarterFinals[2][2].winner,
-        quarterFinals[3][2].winner,
-        matchScore(quarterFinals[2][2].winner, quarterFinals[3][2].winner, this.hostNation),
-      ],
+      [quarterFinals[0][2].winner, quarterFinals[1][2].winner, matchScore(quarterFinals[0][2].winner, quarterFinals[1][2].winner, true)],
+      [quarterFinals[2][2].winner, quarterFinals[3][2].winner, matchScore(quarterFinals[2][2].winner, quarterFinals[3][2].winner, true)],
     ];
 
     semiFinals.forEach(t => {
@@ -179,8 +177,8 @@ export class SimulationService {
     });
 
     const finals: [GroupTeam, GroupTeam, Match][] = [
-      [semiFinals[0][2].winner, semiFinals[1][2].winner, matchScore(semiFinals[0][2].winner, semiFinals[1][2].winner, this.hostNation)],
-      [semiFinals[0][2].loser, semiFinals[1][2].loser, matchScore(semiFinals[0][2].loser, semiFinals[1][2].loser, this.hostNation)],
+      [semiFinals[0][2].winner, semiFinals[1][2].winner, matchScore(semiFinals[0][2].winner, semiFinals[1][2].winner, true)],
+      [semiFinals[0][2].loser, semiFinals[1][2].loser, matchScore(semiFinals[0][2].loser, semiFinals[1][2].loser, true)],
     ];
     finals.forEach(t => {
       t[2].winner.matchHistory.bracket.push({ match: t[2], opp: t[2].loser });

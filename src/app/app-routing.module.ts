@@ -38,7 +38,7 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
 
-  { path: '**', component: SimulationComponent },
+  { path: '**', redirectTo: '/simulation/group-stage' },
 ];
 
 @NgModule({

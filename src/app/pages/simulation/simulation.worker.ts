@@ -51,7 +51,7 @@ const draw = (pts: GroupTeam[][], nbrOfGroups: number, availableRegions: Region[
           .map(r => r.value);
         const regions4 = availableRegions.filter(r => r.qualifiers.auto + r.qualifiers.extra > 13).map(r => r.value);
         if (!test) {
-          console.log(availableRegions, regions2, regions3, regions4);
+          // console.log(availableRegions, regions2, regions3, regions4);
           test = false;
         }
         return (
@@ -90,10 +90,10 @@ const draw = (pts: GroupTeam[][], nbrOfGroups: number, availableRegions: Region[
   //   'potTeams',
   //   potTeams.map(g => g.map(t => `${t.name} ${t.region}`))
   // );
-  console.log(
-    'groups',
-    groups.map(g => g.map(t => `${t.name} ${t.region}`))
-  );
+  // console.log(
+  //   'groups',
+  //   groups.map(g => g.map(t => `${t.name} ${t.region}`))
+  // );
   return groups;
 };
 

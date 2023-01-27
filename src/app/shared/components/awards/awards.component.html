@@ -16,7 +16,7 @@
         <summary class="heading">{{ list.heading }}</summary>
         <li *ngFor="let nation of list.nations" class="nation">
           <div *ngIf="nation" class="stat" (click)="openNationStats(nation)">
-            <span>{{ list.prop === 'r' ? nation.ranking : getDisplayRating(get(nation, list.prop + 'ating', 0)) }}</span>
+            <span>{{ get(nation, list.prop + 'anking', 0) }}</span>
             <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" />
             <span>{{ nation.abbreviation.toLocaleUpperCase() }}</span>
           </div>
