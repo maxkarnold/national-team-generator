@@ -60,7 +60,3 @@ export interface TeamsByRegion {
   conmebol?: GroupTeam[];
   ofc?: GroupTeam[];
 }
-
-// export interface appData extends Navigator {
-//   standalone: boolean;
-// }

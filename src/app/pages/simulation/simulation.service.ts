@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { compare } from '@shared/utils';
 import { findTeamInTournament, matchScore } from './simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { appData, Match, Region, Tournament32 } from './simulation.model';
+import { Match, Region, Tournament32 } from './simulation.model';
 import { BehaviorSubject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CreatePlayerService } from '@core/services/create-player.service';
@@ -28,11 +28,17 @@ export class SimulationService {
     this.createPerson = createPerson;
   }
 
-  // checkForApp() {
-  //   if ((window.navigator as appData).standalone === true) {
-  //     console.log('test');
-  //   }
-  // }
+  checkForApp() {
+    // not ideal to type this as any, but no choice until I find a better solution
+    if ((window.navigator as any).standalone === true) {
+      console.log('iOS app');
+      return true;
+    } else if (window.matchMedia('(display-mode: standalone)').matches) {
+      console.log('android app');
+      return true;
+    }
+    return false;
+  }
 
   changeSelectedNation(value: null | GroupTeam) {
     if (!this.tournament?.groups || !value) {

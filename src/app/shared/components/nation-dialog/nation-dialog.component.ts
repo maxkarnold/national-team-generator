@@ -15,6 +15,7 @@ import { combineLatest } from 'rxjs';
 })
 export class NationDialogComponent {
   service: SimulationService;
+  isApp = false;
   nation: GroupTeam | null = null;
   tournament: Tournament32 | null = null;
   screenWidth: number;
@@ -41,6 +42,7 @@ export class NationDialogComponent {
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
     this.service = service;
+    this.isApp = service.checkForApp();
 
     service.tournament$.pipe(untilDestroyed(this)).subscribe(t => (this.tournament = t));
 
