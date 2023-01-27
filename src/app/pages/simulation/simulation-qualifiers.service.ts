@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { compare, getRandomInt, groupByProp } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
 import { get } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { Match, Region, TeamsByRegion } from './simulation.model';
+import { Match, Region, TeamsByRegion, Tournament32 } from './simulation.model';
 import { SimulationService } from './simulation.service';
 import { extraTimeResult, matchScore } from './simulation.utils';
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -14,8 +16,11 @@ export class SimulationQualifiersService {
   simulator: SimulationService;
   extraTeams = 0;
   drawData$: BehaviorSubject<GroupTeam[][]> = new BehaviorSubject([] as GroupTeam[][]);
+  tournament: Tournament32 | null = null;
   constructor(simulator: SimulationService) {
     this.simulator = simulator;
+
+    this.simulator.tournament$.pipe(untilDestroyed(this)).subscribe(t => (this.tournament = t));
   }
 
   chooseQualifyingTeams(regionsSelected: Region[], numberOfTeams: number, nationsList: GroupTeam[], hostNation: GroupTeam): GroupTeam[] {
@@ -33,51 +38,17 @@ export class SimulationQualifiersService {
     numberOfTeams: number,
     hostNation: GroupTeam,
     availableRegions: Region[]
-  ): BehaviorSubject<GroupTeam[][]> {
-    let group = [];
-    let count = 0;
-
+  ) {
     if (numberOfTeams === 32) {
-      return this.potDraw32(teams, teamsInGroup, hostNation, availableRegions);
+      this.potDraw32(teams, teamsInGroup, hostNation, availableRegions);
     }
-
-    const groups: GroupTeam[][] = [];
-
-    // if the team numbers don't divide by 4
-    // for each team place them in a group until there is 4 in group
-    for (let i = 0; i < teams.length; i++) {
-      if (teams.length - i <= extraTeams) {
-        // if extra teams need a group
-        for (let j = 0; j < groups.length; j++) {
-          if (groups[j].length < 5) {
-            groups[j].push(teams[i]);
-            break;
-          }
-        }
-      } else {
-        group.push(teams[i]);
-        count++;
-        if (count === teamsInGroup) {
-          // when right group size (usually 4 teams), add the group and create new group
-          // console.log(group, count);
-          groups.push(group);
-          count = 0;
-          group = [];
-        }
-      }
-    }
-    this.drawData$.next(groups);
-
-    return this.drawData$;
   }
 
   tournament32Format(regions: Region[], nationsList: GroupTeam[], hostNation: GroupTeam): GroupTeam[] {
     const teamsQualified: GroupTeam[] = [];
     const regionValues = regions.map(r => r.value);
 
-    console.log(nationsList);
     const nationsLeft: GroupTeam[] = nationsList.filter(team => regionValues.includes(team.region));
-    console.log('nationsleft', nationsLeft);
     const host = nationsLeft.findIndex(t => t.name === hostNation.name);
     teamsQualified.push(nationsLeft.splice(host, 1)[0]);
     console.log(teamsQualified[0].name, teamsQualified[0].ranking, 'qualifies as host');
@@ -392,7 +363,7 @@ export class SimulationQualifiersService {
     return teamsQualified;
   }
 
-  potDraw32(teams: GroupTeam[], teamsInGroup: number, hostNation: GroupTeam, availableRegions: Region[]): BehaviorSubject<GroupTeam[][]> {
+  potDraw32(teams: GroupTeam[], teamsInGroup: number, hostNation: GroupTeam, availableRegions: Region[]) {
     const pots = teamsInGroup;
     const teamsInPot = teams.length / pots;
     const extraTeams = this.extraTeams;
@@ -422,12 +393,14 @@ export class SimulationQualifiersService {
       // Create a new
       const worker = new Worker(new URL('./simulation.worker', import.meta.url));
       worker.onmessage = ({ data }) => {
-        this.drawData$.next(data.draw);
+        this.simulator.tournament$.next({ groups: data.draw });
+
         this.simulator.isLoading$.next(false);
       };
       this.simulator.isLoading$.next(true);
       worker.postMessage({ potTeams, teamsInPot, availableRegions, start, host });
     } else {
+      console.log('test: worker not working');
       const draw = (pts: GroupTeam[][], nbrOfGroups: number) => {
         const regionValues = availableRegions.map(r => r.value);
         const allTeams: GroupTeam[] = pts.flatMap((p, i) => {
@@ -493,8 +466,7 @@ export class SimulationQualifiersService {
           .map(team => team.sort(({ name: a }: { name: string }, { name: b }: { name: string }) => compareFn(h, a, b)))
           .sort(([{ name: a }], [{ name: b }]) => compareFn(h, a, b));
 
-      this.drawData$.next(sortGroups(host.name)(draw(potTeams, teamsInPot)));
+      this.simulator.tournament$.next({ groups: sortGroups(host.name)(draw(potTeams, teamsInPot)) });
     }
-    return this.drawData$;
   }
 }

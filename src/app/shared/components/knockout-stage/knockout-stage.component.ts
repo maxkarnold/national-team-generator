@@ -4,6 +4,7 @@ import { originalOrder } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
 import { Tournament32 } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
+import { filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -22,7 +23,12 @@ export class KnockoutStageComponent {
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
 
-    service.tournament$.pipe(untilDestroyed(this)).subscribe(t => (this.tournament = t));
+    service.tournament$
+      .pipe(
+        untilDestroyed(this),
+        filter(t => t?.bracket !== undefined)
+      )
+      .subscribe(t => (this.tournament = t));
   }
 
   @HostListener('window:resize', ['$event'])

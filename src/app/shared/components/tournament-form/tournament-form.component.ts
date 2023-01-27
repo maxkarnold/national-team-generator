@@ -13,6 +13,7 @@ import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { addRankings, regions, regionsValidator } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
 import { BehaviorSubject, combineLatest } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -33,7 +34,7 @@ export class TournamentFormComponent {
   coaches = [];
   cannotSave = true;
   localData: LeaderboardItem[] | null = null;
-  groups$ = new BehaviorSubject<GroupTeam[][]>([]);
+  drawData: GroupTeam[][] = [];
 
   hostNation = defaultHost;
   buttonDisplay = 'Setup Tournament and Save';
@@ -64,12 +65,6 @@ export class TournamentFormComponent {
       this.user = user;
     });
 
-    combineLatest([simulator.tournament$, qualifier.drawData$])
-      .pipe(untilDestroyed(this))
-      .subscribe(([t, d]) => {
-        this.tournament = t;
-      });
-
     this.cannotSaveCheck();
     this.createTeams();
 
@@ -91,7 +86,10 @@ export class TournamentFormComponent {
   }
 
   simulateTournamentButton() {
-    this.simulateTournament(this.tournamentForm.value.numOfGames);
+    if (!this.tournament?.groups) {
+      return;
+    }
+    this.simulateTournament(this.tournament, this.tournamentForm.value.numOfGames);
   }
 
   setupAndSaveTournament() {
@@ -257,50 +255,56 @@ export class TournamentFormComponent {
     //   teamsInGroup = 3;
     //   extraTeams = numOfTeams % teamsInGroup;
     // }
-    let simulated = false;
 
-    this.qualifier
-      .organizeGroups(teams, extraTeams, teamsInGroup, numOfTeams, hostNation, availableRegions)
-      .pipe(untilDestroyed(this))
-      .subscribe(groups => {
-        if (groups.length > 0) {
-          this.simulator.tournament$.next({
-            groups,
-            allTeams,
-            availableRegions: availableRegions,
-            hostNation: hostNation,
-          });
-          if (simulated) {
-            this.simulateTournament(numOfGames, save);
-          }
-          simulated = true;
+    this.qualifier.organizeGroups(teams, extraTeams, teamsInGroup, numOfTeams, hostNation, availableRegions);
+
+    this.simulator.tournament$
+      .pipe(
+        untilDestroyed(this),
+        filter(t => (t?.groups ? true : false)),
+        take(1)
+      )
+      .subscribe(t => {
+        if (!t?.groups) {
+          return;
         }
+        const tournament = { allTeams, availableRegions, hostNation, ...t };
+        this.simulator.tournament$.next({
+          groups: tournament.groups,
+          allTeams,
+          availableRegions,
+          hostNation,
+        });
+
+        this.simulateTournament(tournament, numOfGames, save);
       });
   }
 
-  simulateTournament(numOfGames: number, save?: boolean): void {
-    if (this.tournament && this.tournament.groups) {
-      const groupsArr = this.tournament.groups;
-      const tournament = this.tournament;
+  simulateTournament(tournament: Tournament32, numOfGames: number, save?: boolean): void {
+    console.log(tournament);
 
-      const hostNation = tournament.hostNation;
-      const allTeams = tournament.allTeams;
-      const availableRegions = tournament.availableRegions;
-      const groups = this.simulator.simulateGroups(numOfGames, groupsArr);
-      const { bracket, groupWinners } = this.simulator.simulateBracket(groups);
-      const awards = this.simulator.getTournamentAwards(bracket, groups, availableRegions);
-      this.simulator.tournament$.next({
-        groups,
-        groupWinners,
-        bracket,
-        awards,
-        allTeams,
-        availableRegions,
-      });
+    const groupsArr = tournament.groups || [];
 
-      if (save) {
-        this.saveTournament(awards, groups, hostNation);
-      }
+    const hostNation = tournament.hostNation;
+    const allTeams = tournament.allTeams;
+    const availableRegions = tournament.availableRegions;
+    const groups = this.simulator.simulateGroups(numOfGames, groupsArr);
+    const { bracket, groupWinners } = this.simulator.simulateBracket(groups);
+    const awards = this.simulator.getTournamentAwards(bracket, groups, availableRegions);
+    const newTournament = {
+      groups,
+      groupWinners,
+      bracket,
+      awards,
+      allTeams,
+      availableRegions,
+    };
+
+    this.simulator.tournament$.next(newTournament);
+    this.tournament = newTournament;
+
+    if (save) {
+      this.saveTournament(awards, groups, hostNation);
     }
   }
 

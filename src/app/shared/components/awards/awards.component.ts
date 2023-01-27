@@ -3,6 +3,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { GroupTeam } from 'app/models/nation.model';
 import { Tournament32 } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
+import { getDisplayRating } from 'app/pages/simulation/simulation.utils';
 import { get as _get } from 'lodash';
 
 @UntilDestroy()
@@ -15,6 +16,7 @@ export class AwardsComponent {
   service: SimulationService;
   screenWidth: number;
   get = _get;
+  getDisplayRating = getDisplayRating;
   tournament: Tournament32 | null = null;
   rankings: { heading: string; prop: string; class: string; nations?: GroupTeam[] }[] | null = null;
 
@@ -41,11 +43,11 @@ export class AwardsComponent {
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
     service.tournament$.pipe(untilDestroyed(this)).subscribe(t => {
-      this.tournament = t;
-      this.rankings = null;
-      if (!t?.allTeams) {
+      if (!t?.awards || !t?.allTeams) {
         return;
       }
+      this.tournament = t;
+      this.rankings = null;
       this.rankings = [
         {
           heading: 'Overall',

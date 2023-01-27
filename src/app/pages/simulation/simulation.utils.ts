@@ -1,6 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { getRandFloat, getRandomInt } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
+import { round } from 'lodash';
 import { Match, Region } from './simulation.model';
 
 export const regions: Region[] = [
@@ -428,4 +429,8 @@ export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hostNation?: G
     loser,
     score,
   };
+}
+
+export function getDisplayRating(rating: number) {
+  return round(rating, 1).toFixed(1);
 }

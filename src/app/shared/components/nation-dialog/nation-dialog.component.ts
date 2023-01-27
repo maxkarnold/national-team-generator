@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { GroupTeam } from 'app/models/nation.model';
 import { originalOrder } from '@shared/utils';
 import { Tournament32 } from 'app/pages/simulation/simulation.model';
-import { findTeamInTournament, getGradeStyle, getGradeSummary } from 'app/pages/simulation/simulation.utils';
+import { findTeamInTournament, getDisplayRating, getGradeStyle, getGradeSummary } from 'app/pages/simulation/simulation.utils';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest } from 'rxjs';
@@ -19,6 +19,7 @@ export class NationDialogComponent {
   tournament: Tournament32 | null = null;
   screenWidth: number;
   originalOrder = originalOrder;
+  getDisplayRating = getDisplayRating;
 
   rounds = ['Round of 16', 'Quarter Finals', 'Semi Finals', 'Finals / Third Place Match'];
   stages = [
