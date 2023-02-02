@@ -4,13 +4,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { getRandFloat, getRandomInt } from '@shared/utils';
-import { defaultHost, GroupTeam } from 'app/models/nation.model';
+import { getRandFloat } from '@shared/utils';
+import { defaultHost, GroupTeam, Nation } from 'app/models/nation.model';
 import { LeaderboardItem, LeaderboardService } from 'app/pages/leaderboard/leaderboard.service';
 import { SimulationQualifiersService } from 'app/pages/simulation/simulation-qualifiers.service';
 import { Region, Tournament32 } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
-import { addRankings, regions, regionsValidator } from 'app/pages/simulation/simulation.utils';
+import { addRankings, getHostNations, regions, regionsValidator, validateHosts } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
 import { filter, take } from 'rxjs/operators';
 
@@ -35,7 +35,8 @@ export class TournamentFormComponent {
   localData: LeaderboardItem[] | null = null;
   drawData: GroupTeam[][] = [];
 
-  hostNation = defaultHost;
+  hostNations: GroupTeam[] = [defaultHost];
+  potentialHosts: GroupTeam[];
   buttonDisplay = 'Setup Tournament and Save';
 
   tournamentForm = this.fb.group(
@@ -43,7 +44,7 @@ export class TournamentFormComponent {
       numOfGames: [1, Validators.required],
       numOfTeams: [32, Validators.required],
       availableRegions: [regions, Validators.required],
-      hostNation: [this.hostNation, Validators.required],
+      hostNations: [this.hostNations, [Validators.required, validateHosts]],
     },
     { validators: regionsValidator() }
   );
@@ -70,8 +71,12 @@ export class TournamentFormComponent {
     // const updatedNations = this.simulator.getPersonInfo(this.nationsList);
     const updatedNations = this.nationsList;
 
-    this.filteredNations = updatedNations.length === 155 ? updatedNations : this.nationsList;
-    this.setupTournament(1, 32, regions, this.hostNation);
+    this.filteredNations = updatedNations.length === 156 ? updatedNations : this.nationsList;
+
+    const numOfTeams: number = this.tournamentForm.value.numOfTeams;
+    const numOfGames: number = this.tournamentForm.value.numOfGames;
+    this.potentialHosts = [];
+    this.setupTournament(numOfGames, numOfTeams, regions, this.hostNations);
   }
 
   checkTournamentForm() {
@@ -79,9 +84,9 @@ export class TournamentFormComponent {
       numOfGames,
       numOfTeams,
       availableRegions,
-      hostNation,
-    }: { numOfGames: number; numOfTeams: number; availableRegions: Region[]; hostNation: GroupTeam } = this.tournamentForm.value;
-    this.setupTournament(numOfGames, numOfTeams, availableRegions, hostNation);
+      hostNations,
+    }: { numOfGames: number; numOfTeams: number; availableRegions: Region[]; hostNations: GroupTeam[] } = this.tournamentForm.value;
+    this.setupTournament(numOfGames, numOfTeams, availableRegions, hostNations);
   }
 
   simulateTournamentButton() {
@@ -96,12 +101,12 @@ export class TournamentFormComponent {
       numOfGames,
       numOfTeams,
       availableRegions,
-      hostNation,
-    }: { numOfGames: number; numOfTeams: number; availableRegions: Region[]; hostNation: GroupTeam } = this.tournamentForm.value;
+      hostNations,
+    }: { numOfGames: number; numOfTeams: number; availableRegions: Region[]; hostNations: GroupTeam[] } = this.tournamentForm.value;
 
     this.localData = this.leaderboard.fetchLocalStorage();
     if (this.user) {
-      this.setupTournament(numOfGames, numOfTeams, availableRegions, hostNation, true);
+      this.setupTournament(numOfGames, numOfTeams, availableRegions, hostNations, true);
     } else if (this.localData && this.localData?.length > 9) {
       this.snackbar.open('Already saved 10 Tournaments. Please wait 24 hours to save a new one.', 'Dismiss');
     } else if (!this.user) {
@@ -110,10 +115,14 @@ export class TournamentFormComponent {
     return;
   }
 
-  groupByFn = (_item: Region) => 'World';
+  groupRegion = (_item: Region) => 'World';
+  groupHosts = (host: GroupTeam) => host.region.toUpperCase();
 
-  compareObj(o1: GroupTeam, o2: GroupTeam) {
-    return o1?.name === o2?.name;
+  compareArr(array1: GroupTeam[], array2: GroupTeam[]) {
+    if (array1 && array2 && array1.length === array2.length) {
+      return array1.every(t => array2.map(n => n.name).includes(t.name));
+    }
+    return false;
   }
 
   compareRegions = (item: Region, selected: Region) => {
@@ -123,15 +132,38 @@ export class TournamentFormComponent {
     return false;
   };
 
+  compareHosts = (item: GroupTeam, selected: GroupTeam) => {
+    if (selected.name && item.name) {
+      return item.name === selected.name;
+    }
+    return false;
+  };
+
   regionChanged(regionSelected: Region[]) {
     if (!regionSelected) {
       return;
     }
     const regionValues = regionSelected.map(r => r.value);
+    const numOfTeams = this.tournamentForm.value.numOfTeams;
+
     this.filteredNations = this.nationsList.filter(nation => regionValues.includes(nation.region));
-    this.hostNation = this.filteredNations[getRandomInt(0, this.filteredNations.length - 1)];
-    this.tournamentForm.patchValue({ hostNation: this.hostNation });
+    const newHostNations = this.tournamentForm.value.hostNations.filter((nation: GroupTeam) => regionValues.includes(nation.region));
+    this.tournamentForm.patchValue({ hostNations: newHostNations });
+    this.potentialHosts = getHostNations(this.filteredNations, numOfTeams);
     this.cannotSaveCheck(regionSelected.length, this.tournamentForm.value.numOfGames);
+  }
+
+  hostChanged(hosts: GroupTeam[]) {
+    const numOfTeams: number = this.tournamentForm.value.numOfTeams;
+    const maxSelectedItems = 2;
+    if (hosts.length === maxSelectedItems) {
+      this.potentialHosts = [];
+    } else if (hosts.length > 0) {
+      const cohosts = hosts.flatMap(h => h.cohosts32);
+      this.potentialHosts = getHostNations(this.filteredNations, numOfTeams).filter(c => cohosts.includes(c.name));
+    } else {
+      this.potentialHosts = getHostNations(this.filteredNations, numOfTeams);
+    }
   }
 
   numOfGamesChanged(value: number) {
@@ -151,7 +183,7 @@ export class TournamentFormComponent {
         let min = 0;
         let max = 0;
 
-        switch (nation.ranking) {
+        switch (nation.nationTier) {
           case 's':
             min = 80;
             max = 100;
@@ -193,13 +225,15 @@ export class TournamentFormComponent {
         const midRating = getRandFloat(min, max);
         const defRating = getRandFloat(min, max);
         const penRating = getRandFloat(min, max);
+        const hostNations: GroupTeam[] = this.tournamentForm.value.hostNations;
         const team: GroupTeam = {
+          ...nation,
           gDiff: 0,
           gFor: 0,
           gOpp: 0,
           points: 0,
           matchesPlayed: 0,
-          tier: nation.ranking,
+          tier: nation.nationTier,
           attRating,
           defRating,
           midRating,
@@ -209,10 +243,6 @@ export class TournamentFormComponent {
           attRanking: 0,
           midRanking: 0,
           defRanking: 0,
-          name: nation.name,
-          logo: nation.logo,
-          region: nation.region,
-          abbreviation: nation.abbreviation,
           matchHistory: {
             qualifiers: [],
             group: [],
@@ -224,15 +254,14 @@ export class TournamentFormComponent {
             gradeSummary: null,
             tournamentFinish: null,
           },
-          emoji: nation.emoji,
-          homeTeam: this.hostNation.name === nation.name ? true : false,
+          homeTeam: hostNations.map(t => t.name).includes(nation.name) ? true : false,
         };
         this.nationsList.push(team);
       });
     });
   }
 
-  setupTournament(numOfGames: number, numOfTeams: number, availableRegions: Region[], hostNation: GroupTeam, save?: boolean): void {
+  setupTournament(numOfGames: number, numOfTeams: number, availableRegions: Region[], hostNations: GroupTeam[], save?: boolean): void {
     this.createTeams();
     const nations = addRankings(this.nationsList);
     const allTeams = {
@@ -241,7 +270,7 @@ export class TournamentFormComponent {
       midRankings: [...nations.sort((a, b) => a.midRanking - b.midRanking)],
       defRankings: [...nations.sort((a, b) => a.defRanking - b.defRanking)],
     };
-    const teams = this.qualifier.chooseQualifyingTeams(availableRegions, numOfTeams, nations, hostNation);
+    const teams = this.qualifier.chooseQualifyingTeams(availableRegions, numOfTeams, nations, hostNations);
     const numOfGroups = teams.length / 4;
     const extraTeams = numOfTeams % 4;
     const teamsInGroup = teams.length / numOfGroups;
@@ -251,7 +280,7 @@ export class TournamentFormComponent {
     //   extraTeams = numOfTeams % teamsInGroup;
     // }
 
-    this.qualifier.organizeGroups(teams, extraTeams, teamsInGroup, numOfTeams, hostNation, availableRegions);
+    this.qualifier.organizeGroups(teams, extraTeams, teamsInGroup, numOfTeams, hostNations, availableRegions);
 
     this.simulator.tournament$
       .pipe(
@@ -263,12 +292,12 @@ export class TournamentFormComponent {
         if (!t?.groups) {
           return;
         }
-        const tournament = { allTeams, availableRegions, hostNation, ...t };
+        const tournament = { allTeams, availableRegions, hostNations, ...t };
         this.simulator.tournament$.next({
           groups: tournament.groups,
           allTeams,
           availableRegions,
-          hostNation,
+          hostNations,
         });
 
         this.simulateTournament(tournament, numOfGames, save);
@@ -278,7 +307,7 @@ export class TournamentFormComponent {
   simulateTournament(tournament: Tournament32, numOfGames: number, save?: boolean): void {
     const groupsArr = tournament.groups || [];
 
-    const hostNation = tournament.hostNation;
+    const hostNations = tournament.hostNations;
     const allTeams = tournament.allTeams;
     const availableRegions = tournament.availableRegions;
     const groups = this.simulator.simulateGroups(numOfGames, groupsArr);
@@ -297,7 +326,7 @@ export class TournamentFormComponent {
     this.tournament = newTournament;
 
     if (save) {
-      this.saveTournament(awards, groups, hostNation);
+      this.saveTournament(awards, groups, hostNations);
     }
   }
 
@@ -316,7 +345,7 @@ export class TournamentFormComponent {
       (GroupTeam | undefined)?
     ],
     groups: GroupTeam[][],
-    hostNation?: GroupTeam
+    hostNations?: GroupTeam[]
   ) {
     const data = this.localData || [];
     if (data.length === 10 && new Date().toDateString() === data[0]?.time) {
@@ -326,8 +355,8 @@ export class TournamentFormComponent {
     // can save 10 tournaments per day, otherwise must wait 24 hours since 10th tournament
     const filteredData = data.length > 9 ? data.slice(Math.max(data.length - 9, 0)) : data;
 
-    const host = groups.flat().find(n => n.name === hostNation?.name);
-    const worstRank = groups.flat().reduce((prev, curr) => (prev.ranking < curr.ranking || curr.name !== host?.name ? curr : prev));
+    const hosts = groups.flat().filter(n => hostNations?.includes(n));
+    const worstRank = groups.flat().reduce((prev, curr) => (prev.ranking < curr.ranking || !hosts.includes(curr) ? curr : prev));
     filteredData.push({
       time: new Date().toDateString(),
       tournament: {

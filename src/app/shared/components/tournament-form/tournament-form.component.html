@@ -2,12 +2,32 @@
   <form class="number-form" [formGroup]="tournamentForm" novalidate (ngSubmit)="checkTournamentForm()">
     <div class="inputs">
       <div class="host-nation">
-        <label for="hostNation">Host Nation</label>
-        <select formControlName="hostNation" [compareWith]="compareObj" required>
-          <option *ngFor="let nation of filteredNations" [ngValue]="nation" placeholder="Choose Host Nation">
-            {{ nation.emoji }} {{ nation.name }}
+        <label for="hostNations">Host Nation(s)</label>
+        <!-- <select formControlName="hostNations" [compareWith]="compareArr" required>
+          <option *ngFor="let nations of potentialHosts" [ngValue]="nations" placeholder="Choose Host Nation(s)">
+            <span *ngFor="let nation of nations">{{ nation.emoji }} {{ nation.name }} </span>
           </option>
-        </select>
+        </select> -->
+        <ng-select
+          formControlName="hostNations"
+          [items]="potentialHosts"
+          [multiple]="true"
+          placeholder="Please Select A Host Nation(s)"
+          (ngModelChange)="hostChanged($event)"
+          [compareWith]="compareHosts"
+          bindLabel="name"
+          [groupBy]="groupHosts"
+          required>
+          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value" *ngFor="let item of items">
+              <span class="ng-value-label">{{ item.emoji }} {{ item.name }}</span>
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">x</span>
+            </div>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <span>{{ item.emoji }} {{ item.name }}</span>
+          </ng-template>
+        </ng-select>
       </div>
 
       <div>
@@ -19,7 +39,7 @@
           [selectableGroup]="true"
           [selectableGroupAsModel]="false"
           [closeOnSelect]="false"
-          [groupBy]="groupByFn"
+          [groupBy]="groupRegion"
           (ngModelChange)="regionChanged($event)"
           [compareWith]="compareRegions"
           required

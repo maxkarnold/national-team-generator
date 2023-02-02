@@ -12,7 +12,7 @@ export interface Match {
 
 export interface Tournament32 {
   availableRegions?: Region[];
-  hostNation?: GroupTeam;
+  hostNations?: GroupTeam[];
   allTeams?: {
     rankings: GroupTeam[];
     attRankings: GroupTeam[];

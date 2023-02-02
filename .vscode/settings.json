@@ -1,4 +1,7 @@
 {
   "editor.formatOnSave": false,
-  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

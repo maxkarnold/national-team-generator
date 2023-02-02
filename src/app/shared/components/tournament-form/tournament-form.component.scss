@@ -15,13 +15,13 @@
       @media screen and (max-width: 1800px) {
         flex-direction: column;
         align-items: center;
-        * {
+        >div, >div>div, input, ng-select, select {
           width: 50vw;
         }
       }
 
       @media screen and (max-width: 600px) {
-        * {
+        >div, >div>div, input, ng-select, select {
           width: 100%;
         }
 

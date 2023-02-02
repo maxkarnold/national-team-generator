@@ -12,8 +12,10 @@ export interface Nation {
   thirdLeagues: string[];
   rareLeagues: string[];
   excludeLeagues: string[];
-  ranking: string;
+  nationTier: string;
   abbreviation: string;
+  canSoloHost32: boolean;
+  cohosts32: string[];
 }
 
 export interface GroupTeam {
@@ -27,6 +29,7 @@ export interface GroupTeam {
   gFor: number;
   gOpp: number;
   tier: string;
+  nationTier: string;
   attRating: number;
   midRating: number;
   defRating: number;
@@ -58,6 +61,8 @@ export interface GroupTeam {
   };
   emoji: string;
   homeTeam: boolean;
+  canSoloHost32: boolean;
+  cohosts32: string[];
   coach?: Person;
   pot?: number;
 }
@@ -73,6 +78,7 @@ export const defaultHost: GroupTeam = {
   gFor: 0,
   gOpp: 0,
   tier: 'j',
+  nationTier: 'e',
   attRating: 0,
   midRating: 0,
   defRating: 0,
@@ -95,4 +101,6 @@ export const defaultHost: GroupTeam = {
   midRanking: 0,
   defRanking: 0,
   homeTeam: true,
+  canSoloHost32: true,
+  cohosts32: [],
 };

@@ -79,7 +79,7 @@
           </div>
         </li>
       </ul>
-      <ul class="report-card" *ngIf="nation.reportCard">
+      <ul class="report-card" *ngIf="nation.reportCard.grade">
         <h3>Performance Grade</h3>
         <li [ngClass]="['grade', nation.reportCard.gradeStyle]">
           {{ nation.reportCard.grade }} - {{ nation.reportCard.tournamentFinish }}

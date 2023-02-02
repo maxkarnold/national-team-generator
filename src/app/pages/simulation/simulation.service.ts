@@ -17,12 +17,12 @@ export class SimulationService {
   tournament$ = new BehaviorSubject<Tournament32 | null>(null);
   isLoading$ = new BehaviorSubject<boolean>(true);
   tournament: Tournament32 | null = null;
-  hostNation?: GroupTeam;
+  hostNations?: GroupTeam[];
 
   constructor(createPerson: CreatePlayerService) {
     this.tournament$.pipe(untilDestroyed(this)).subscribe(t => {
       this.tournament = t;
-      this.hostNation = t?.hostNation;
+      this.hostNations = t?.hostNations;
     });
 
     this.createPerson = createPerson;
@@ -45,6 +45,7 @@ export class SimulationService {
       this.selectedNation$.next(value);
       return;
     }
+    console.log(value);
     const updatedNation = findTeamInTournament(this.tournament?.groups, value);
     if (updatedNation) {
       this.selectedNation$.next(updatedNation);

@@ -1,6 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+// import { hosts } from '@shared/constants/constants';
 import { getRandFloat, getRandomInt } from '@shared/utils';
-import { GroupTeam } from 'app/models/nation.model';
+import { GroupTeam, Nation } from 'app/models/nation.model';
+import { get } from 'lodash';
 import { Match, Region } from './simulation.model';
 
 export const regions: Region[] = [
@@ -25,7 +27,7 @@ export const regions: Region[] = [
   {
     label: 'AFC',
     value: 'afc',
-    numOfTeams: 29,
+    numOfTeams: 30,
     qualifiers: {
       auto: 0,
       extra: 0,
@@ -304,4 +306,29 @@ export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: 
 
 export function getDisplayRating(rating: number) {
   return Math.floor(rating);
+}
+
+export function getHostNations(filteredNations: GroupTeam[], numOfTeams: number): GroupTeam[] {
+  // for each region that is available push an array of potential hosts
+  // Nations with enough money and space can qualify if they don't have enough stadiums
+  // ======= 32 TEAM RULES ALL REGIONS =======
+  //  only 2 nations may host
+  // must have at least 8 stadiums, minimum 40,000 capacity stadiums
+  // must have a stadium that is at least 70,000 capacity
+  // ======= 48 TEAM RULES ALL REGIONS =======
+  // for 48 team tournament, the rules are unknown but you should have at least 14 stadiums with at least 40,000 capacity
+  // must have one stadium at least about 80,000 capacity
+  // up to 4 nations may host
+  if (numOfTeams === 32) {
+    return filteredNations.filter(n => n.canSoloHost32 || n.cohosts32.length > 0);
+  }
+  return filteredNations;
+}
+
+export function validateHosts(control: AbstractControl) {
+  const hosts: GroupTeam[] = control.value;
+  if (hosts.length < 2 && hosts.filter(h => h.canSoloHost32).length < 1) {
+    return { invalidHosts: true };
+  }
+  return null;
 }

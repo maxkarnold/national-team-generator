@@ -63,33 +63,18 @@ export class NationDialogComponent {
   }
 
   changeSelectedNation(nation?: GroupTeam) {
-    if (nation === this.nation) {
+    if (nation === this.nation || !this.tournament?.groups) {
       return;
     }
-    this.service.changeSelectedNation(nation || null);
-  }
-
-  updateNation(nation: GroupTeam) {
-    if (!this.tournament || !this.tournament.groups) {
+    const nationWithStats = this.tournament.groups.flat().find(a => a.name === nation?.name);
+    if (nationWithStats) {
+      this.service.changeSelectedNation(nationWithStats);
       return;
-    }
-    const updatedNation = this.tournament.groups.flat().find(a => a.name === nation.name);
-    if (updatedNation !== undefined) {
+    } else if (nation) {
       this.service.changeSelectedNation(nation);
       return;
     }
-    nation.matchHistory.qualifiers.map(m => {
-      if (this.tournament?.groups) {
-        const opp = findTeamInTournament(this.tournament.groups, m.opp);
-        if (opp) {
-          m.opp = opp;
-        }
-      }
-      return m;
-    });
-    this.nation = nation;
-    this.service.changeSelectedNation(nation);
-    return;
+    this.service.changeSelectedNation(null);
   }
 
   getNationReportCard(team: GroupTeam) {
@@ -99,7 +84,6 @@ export class NationDialogComponent {
     }
 
     const nation = findTeamInTournament(tournament.groups, team) ?? team;
-
     let rankingTiers: Array<string | number> = ['s', 'a', 'b', 'c', 'd', 'e', 'f', 'g'];
     if (tournament.availableRegions) {
       const availableRegions = tournament.availableRegions.map(r => r.value);
@@ -116,11 +100,10 @@ export class NationDialogComponent {
         } else if (!availableRegions.includes('ofc') && !availableRegions.includes('afc') && !availableRegions.includes('concacaf')) {
           rankingTiers = [5, 10, 20, 35, 50, 80, 100, 400];
         } else {
-          rankingTiers = [1, 1, 2, 2, 3, 3, 4, 4];
+          rankingTiers = [8, 18, 25, 32, 50, 70, 100, 400];
         }
       }
     }
-
     rankingTiers.every((r, i) => {
       if (nation.ranking && (nation.ranking <= r || nation.tier === r || nation.pot === r)) {
         const { grade, result } = this.calcGrade(nation, i);
