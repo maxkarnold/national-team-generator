@@ -4,7 +4,7 @@ import { getRandomInt, shuffle, median } from '@shared/utils';
 import { GkAttributes, OutfieldAttributes } from 'app/models/player-attributes.model';
 import { Player } from 'app/models/player.model';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import * as nationsModule from 'assets/json/nations.json';
 import { Nation } from 'app/models/nation.model';
 import { Name, FirstName, LastName } from './firestore.model';
@@ -114,19 +114,20 @@ export class CreatePlayerService {
   getNames(nationality: string): Observable<{
     lastNames: string[];
     lastNameUsage: string;
+    totalLastNames: number;
     firstNames: string[];
     firstInitial: string;
     firstNameUsage: string;
+    totalFirstNames: number;
   }> {
     return this.afsService.getFullName(nationality).pipe(
       untilDestroyed(this),
+      take(1),
       map(([fNames, firstNameUsage, totalFirstNames, lNames, lastNameUsage, totalLastNames]) => {
-        const firstNames = fNames.map(obj => {
-          const fName = obj;
+        const firstNames = fNames.map(fName => {
           return fName.name;
         });
-        const lastNames = lNames.map(obj => {
-          const lName = obj;
+        const lastNames = lNames.map(lName => {
           return lName.name;
         });
         return {
@@ -148,10 +149,11 @@ export class CreatePlayerService {
     firstNames: string[];
     firstInitial: string;
     firstNameUsage: string;
+    totalFirstNames: number;
   } {
     let firstNames = fNames;
     if (fNames.length !== totalFirstNames) {
-      console.log('error with first names', fNames, totalFirstNames);
+      console.log('error with first names', fNames, totalFirstNames, firstNameUsage);
     }
 
     if (totalFirstNames > 1 && fNames.length > 1) {
@@ -197,7 +199,7 @@ export class CreatePlayerService {
         .map(full => full[0])
         .join('. ')}.`;
     }
-    return { firstNames, firstInitial, firstNameUsage };
+    return { firstNames, firstInitial, firstNameUsage, totalFirstNames };
   }
 
   getLastNames(
@@ -207,6 +209,7 @@ export class CreatePlayerService {
   ): {
     lastNames: string[];
     lastNameUsage: string;
+    totalLastNames: number;
   } {
     const lastNames: string[] = [];
     let articleUsed = false;
@@ -216,7 +219,7 @@ export class CreatePlayerService {
     let vowels: string[];
     let first = lNames[0];
     if (lNames.length !== totalLastNames) {
-      console.log('error with last names', lNames, totalLastNames);
+      console.log('error with last names', lNames, totalLastNames, lastNameUsage);
     }
     switch (lastNameUsage) {
       case 'Portuguese':
@@ -282,7 +285,7 @@ export class CreatePlayerService {
         lastNames.push(...lNames);
         break;
     }
-    return { lastNames, lastNameUsage };
+    return { lastNames, lastNameUsage, totalLastNames };
   }
 
   // getNationOrTier(

@@ -58,21 +58,24 @@ export class FirestoreService {
       randomNum = 4;
     }
 
-    const nameOrigin = (this.nationsList.find(n => n.name === nation)?.firstNameUsages.length || 0 < 1
+    const usages = (this.nationsList.find(n => n.name === nation)?.firstNameUsages.length || 0 < 1
       ? this.nationsList.find(n => n.name === nation)?.firstNameUsages
       : ['English']) || ['English'];
-    if (nameOrigin.length === 1 || !nameOrigin) {
-      console.log(nation, nameOrigin);
-    } else {
-      console.log(nation, nameOrigin);
-    }
+    // if (nameOrigin.length === 1 || !nameOrigin) {
+    //   console.log(nation, nameOrigin);
+    // } else {
+    //   console.log(nation, nameOrigin);
+    // }
 
     let ethnicity: string;
-    if (randomNum > nameOrigin.length - 1) {
-      [ethnicity] = nameOrigin;
-    } else if (randomNum < nameOrigin.length - 1) {
-      ethnicity = nameOrigin[randomNum];
+    if (usages.length === 1 || randomNum > usages.length - 1) {
+      [ethnicity] = usages;
+    } else if (randomNum <= usages.length - 1) {
+      ethnicity = usages[randomNum];
+    } else if (usages.includes('Northern African')) {
+      ethnicity = usages[1];
     } else {
+      console.log('error with getFirstNames', nation, usages, randomNum);
       ethnicity = 'English';
     }
 
@@ -237,6 +240,7 @@ export class FirestoreService {
     totalNames: number;
   } {
     const randomIndex = getRandomInt(1, 5);
+    // changed this to 5,000 from 0, 50,000 in order to fix, need to change back
     const randomQuery = getRandomInt(0, 50000);
 
     const request$ = this.newRequest(totalNames, collection, ethnicity, randomIndex, randomQuery, '>=').pipe(
@@ -264,7 +268,6 @@ export class FirestoreService {
       .pipe(
         map(actions =>
           actions.map(a => {
-            // console.log(a.payload.doc.metadata.fromCache);
             return {
               ...(a.payload.doc.data() as Name),
             };

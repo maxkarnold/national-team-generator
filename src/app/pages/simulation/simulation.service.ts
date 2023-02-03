@@ -3,9 +3,10 @@ import { compare } from '@shared/utils';
 import { findTeamInTournament, matchScore } from './simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
 import { Match, Region, Tournament32 } from './simulation.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CreatePlayerService } from '@core/services/create-player.service';
+import { count, map, scan } from 'rxjs/operators';
 
 @UntilDestroy()
 @Injectable({
@@ -45,7 +46,6 @@ export class SimulationService {
       this.selectedNation$.next(value);
       return;
     }
-    console.log(value);
     const updatedNation = findTeamInTournament(this.tournament?.groups, value);
     if (updatedNation) {
       this.selectedNation$.next(updatedNation);
@@ -236,28 +236,19 @@ export class SimulationService {
     return [first, second, third, underPerformer, overPerformer];
   }
 
-  getPersonInfo(nations: GroupTeam[]): GroupTeam[] {
-    const updatedNations: GroupTeam[] = [];
+  getCoachInfo(nations: GroupTeam[]): Observable<{
+    nationality: string;
+    lastNames: string[];
+    lastNameUsage: string;
+    firstNames: string[];
+    firstInitial: string;
+    firstNameUsage: string;
+    totalLastNames: number;
+    totalFirstNames: number;
+  }>[] {
+    const updatedNations = [];
     for (let i = 0; i < nations.length; i++) {
-      this.createPerson
-        .getNames(nations[i].name)
-        .pipe(untilDestroyed(this))
-        .subscribe(a => {
-          updatedNations.push({
-            ...nations[i],
-            coach: {
-              firstNames: a.firstNames,
-              lastNames: a.lastNames,
-              firstInitial: a.firstInitial,
-              singleLastName: a.lastNames[0],
-              firstNameUsage: a.firstNameUsage,
-              lastNameUsage: a.lastNameUsage,
-              nationality: nations[i].name,
-              age: 40,
-              rating: nations[i].rating,
-            },
-          });
-        });
+      updatedNations.push(this.createPerson.getNames(nations[i].name).pipe(map(n => ({ ...n, nationality: nations[i].name }))));
     }
     return updatedNations;
   }

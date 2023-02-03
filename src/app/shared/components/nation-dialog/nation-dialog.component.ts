@@ -169,4 +169,46 @@ export class NationDialogComponent {
       result,
     };
   }
+
+  getCoachRating(rating: number): string {
+    if (rating > 96) {
+      return 'S+';
+    } else if (rating > 92) {
+      return 'S';
+    } else if (rating > 89) {
+      return 'S-';
+    } else if (rating > 86) {
+      return 'A+';
+    } else if (rating > 82) {
+      return 'A';
+    } else if (rating > 79) {
+      return 'A-';
+    } else if (rating > 76) {
+      return 'B+';
+    } else if (rating > 72) {
+      return 'B';
+    } else if (rating > 69) {
+      return 'B-';
+    } else if (rating > 66) {
+      return 'C+';
+    } else if (rating > 62) {
+      return 'C';
+    } else if (rating > 59) {
+      return 'C-';
+    } else if (rating > 56) {
+      return 'D+';
+    } else if (rating > 52) {
+      return 'D';
+    } else if (rating > 49) {
+      return 'D-';
+    } else if (rating > 46) {
+      return 'E+';
+    } else if (rating > 42) {
+      return 'E';
+    } else if (rating > 39) {
+      return 'E-';
+    } else {
+      return 'F';
+    }
+  }
 }

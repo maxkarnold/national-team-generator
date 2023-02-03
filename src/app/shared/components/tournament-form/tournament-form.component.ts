@@ -4,14 +4,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { getRandFloat } from '@shared/utils';
+import { getRandFloat, getRandomInt, hasLowerCase } from '@shared/utils';
 import { defaultHost, GroupTeam, Nation } from 'app/models/nation.model';
+import { Person } from 'app/models/player.model';
 import { LeaderboardItem, LeaderboardService } from 'app/pages/leaderboard/leaderboard.service';
 import { SimulationQualifiersService } from 'app/pages/simulation/simulation-qualifiers.service';
 import { Region, Tournament32 } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { addRankings, getHostNations, regions, regionsValidator, validateHosts } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
+import { forkJoin } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 @UntilDestroy()
@@ -30,10 +32,10 @@ export class TournamentFormComponent {
   nationsList: GroupTeam[] = [];
   filteredNations: GroupTeam[];
   tournament: Tournament32 | null = {};
-  coaches = [];
   cannotSave = true;
   localData: LeaderboardItem[] | null = null;
   drawData: GroupTeam[][] = [];
+  coaches: Person[] = [];
 
   hostNations: GroupTeam[] = [defaultHost];
   potentialHosts: GroupTeam[];
@@ -76,6 +78,7 @@ export class TournamentFormComponent {
     const numOfTeams: number = this.tournamentForm.value.numOfTeams;
     const numOfGames: number = this.tournamentForm.value.numOfGames;
     this.potentialHosts = [];
+    this.coaches = this.leaderboard.fetchLocalNames() || [];
     this.setupTournament(numOfGames, numOfTeams, regions, this.hostNations);
   }
 
@@ -94,6 +97,33 @@ export class TournamentFormComponent {
       return;
     }
     this.simulateTournament(this.tournament, this.tournamentForm.value.numOfGames);
+  }
+
+  addCoaches() {
+    this.simulator.isLoading$.next(true);
+    forkJoin(this.simulator.getCoachInfo(this.nationsList))
+      .pipe(untilDestroyed(this))
+      .subscribe(names => {
+        const coachesArr: Person[] = names.map(n => {
+          const potentialAges = [getRandomInt(35, 75), getRandomInt(45, 65), getRandomInt(45, 65)];
+          const age = potentialAges[getRandomInt(0, 2)];
+          const { firstNames, lastNames, firstNameUsage, lastNameUsage, nationality } = n;
+          return {
+            ...n,
+            firstNames: firstNames,
+            lastNames: lastNames,
+            singleLastName: hasLowerCase(lastNames[0][0]) ? n.lastNames[1] : n.lastNames[0],
+            firstNameUsage,
+            lastNameUsage,
+            nationality,
+            age,
+          };
+        });
+        this.leaderboard.saveLocalStorage('names', coachesArr);
+        this.coaches = coachesArr;
+        this.simulator.isLoading$.next(false);
+        this.snackbar.open('Coaches successfully added. Setup new tournament to see coaches.', 'Dismiss');
+      });
   }
 
   setupAndSaveTournament() {
@@ -263,7 +293,28 @@ export class TournamentFormComponent {
 
   setupTournament(numOfGames: number, numOfTeams: number, availableRegions: Region[], hostNations: GroupTeam[], save?: boolean): void {
     this.createTeams();
-    const nations = addRankings(this.nationsList);
+
+    if (this.coaches.length > 0) {
+      this.nationsList = this.nationsList.map(n => {
+        const coach = this.coaches.find(c => c.nationality === n.name);
+        if (coach) {
+          // only coaches in their prime years are allowed to be at the top
+          const ageTax = coach.age > 65 || coach.age < 45 ? 9 : 0;
+          const lowerRating = n.rating - 15 > 25 ? n.rating - 15 : 25;
+          const higherRating = n.rating + 15 < 99 - ageTax ? n.rating + 15 : 99 - ageTax;
+          return {
+            ...n,
+            coach: {
+              ...coach,
+              rating: getRandFloat(lowerRating, higherRating),
+            },
+          };
+        }
+        return n;
+      });
+    }
+
+    const nations = addRankings(this.nationsList, this.coaches.length > 0);
     const allTeams = {
       rankings: [...nations],
       attRankings: [...nations.sort((a, b) => a.attRanking - b.attRanking)],

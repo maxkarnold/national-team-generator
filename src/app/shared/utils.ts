@@ -1,5 +1,7 @@
 export const originalOrder = (): number => 0;
 
+export const hasLowerCase = (char: string) => char === char.toLowerCase() && char !== char.toUpperCase();
+
 export function formatDecimal(num: number, decimals: number) {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,

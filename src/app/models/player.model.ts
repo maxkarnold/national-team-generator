@@ -3,7 +3,6 @@ import { OutfieldAttributes, GkAttributes } from './player-attributes.model';
 export interface Person {
   firstNames: string[];
   lastNames: string[];
-  rating: number;
   firstInitial: string;
   singleLastName: string;
   firstNameUsage: string;
@@ -11,6 +10,7 @@ export interface Person {
   nationality: string;
   age: number;
   playerFace?: string;
+  rating?: number;
 }
 
 export interface Player extends Person {

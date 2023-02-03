@@ -48,6 +48,48 @@
   </div>
   <div class="body">
     <div class="flex-container">
+      <ul class="personel" *ngIf="nation.coach && nation.coach.rating">
+        <h3>Head Coach</h3>
+        <table>
+          <tr>
+            <th>Name</th>
+            <td>
+              <span>{{ nation.coach.firstNames[0] }} </span>
+              <span>{{ nation.coach.singleLastName }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th>Tier</th>
+            <td>
+              <span>{{ getCoachRating(nation.coach.rating) }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th>Age</th>
+            <td>
+              <span>{{ nation.coach.age }}</span>
+            </td>
+          </tr>
+        </table>
+        <details>
+          <summary>Additional Info</summary>
+          <table>
+            <tr>
+              <th>Full Name</th>
+              <td>
+                <span *ngFor="let firstName of nation.coach.firstNames">{{ firstName }} </span>
+                <span *ngFor="let lastName of nation.coach.lastNames">{{ lastName }} </span>
+              </td>
+            </tr>
+            <tr>
+              <th>Nationality</th>
+              <td>
+                <span>{{ nation.coach.nationality }}</span>
+              </td>
+            </tr>
+          </table>
+        </details>
+      </ul>
       <ul class="matches">
         <h3>Match History</h3>
         <li *ngFor="let stage of nation.matchHistory | keyvalue: originalOrder; let i = index" class="match-stages">

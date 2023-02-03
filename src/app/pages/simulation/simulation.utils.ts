@@ -116,7 +116,7 @@ export function regionsValidator(): ValidatorFn {
   };
 }
 
-export function addRankings(arr: GroupTeam[]) {
+export function addRankings(arr: GroupTeam[], hasCoaches?: boolean) {
   return arr
     .sort((a, b) => {
       return b.attRating - a.attRating;
@@ -139,6 +139,15 @@ export function addRankings(arr: GroupTeam[]) {
       ...team,
       defRanking: i + 1,
     }))
+    .map(team => {
+      if (team.coach?.rating) {
+        return {
+          ...team,
+          rating: hasCoaches ? (team.coach.rating + team.attRating + team.defRating + team.midRating) / 4 : team.rating,
+        };
+      }
+      return team;
+    })
     .sort((a, b) => {
       return b.rating - a.rating;
     })
@@ -163,6 +172,14 @@ export function calcScore(team: GroupTeam, opp: GroupTeam, extraTime: boolean): 
   }
   if (opp.homeTeam) {
     oppMultiplier += 2.5;
+  }
+
+  if (team.coach?.rating && opp.coach?.rating) {
+    if (team.coach.rating > opp.coach.rating) {
+      teamMultiplier += 2;
+    } else {
+      oppMultiplier += 2;
+    }
   }
   let goalFor = 0;
   let goalAg = 0;

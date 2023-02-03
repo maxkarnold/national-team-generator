@@ -49,7 +49,7 @@ export class SimulationQualifiersService {
     const teamsQualified: GroupTeam[] = [];
     const regionValues = regions.map(r => r.value);
 
-    const nationsLeft: GroupTeam[] = nationsList.filter(team => regionValues.includes(team.region));
+    const nationsLeft: GroupTeam[] = nationsList.filter(team => regionValues.includes(team.region)).sort((a, b) => b.rating - a.rating);
 
     hostNations.forEach((nation, i) => {
       const host = nationsLeft.findIndex(t => t.name === nation.name);
@@ -157,7 +157,7 @@ export class SimulationQualifiersService {
       this.extraTeams = 2;
       const autoQualifyingSpots = { uefa: 10, conmebol: 4, caf: 0, afc: 4, concacaf: 3, ofc: 0 };
       const teamsByRegion: TeamsByRegion = groupByProp(nationsLeft, 'region');
-      // console.log(teamsByRegion);
+      console.log(teamsByRegion, nationsLeft);
 
       Object.entries(teamsByRegion).forEach(([region, nations]: [string, GroupTeam[]], i) => {
         const qualifyingSpot = get(autoQualifyingSpots, region, 0);
@@ -166,8 +166,10 @@ export class SimulationQualifiersService {
         }
         if (Math.random() > 0.8 && region !== 'conmebol') {
           const team = nations.splice(getRandomInt(1, qualifyingSpot - 1), 1)[0];
+          console.log(team.name, 'got removed from qualifying');
           nations.splice(qualifyingSpot, 0, team);
         }
+        // console.log(nations);
         console.log(
           `qualified automatically for World Cup from ${region.toLocaleUpperCase()}`,
           teamsQualified[0].region === region ? [`${teamsQualified[0].name} ${teamsQualified[0].ranking}`] : '',
