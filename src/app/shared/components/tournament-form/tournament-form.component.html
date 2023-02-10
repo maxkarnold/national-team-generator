@@ -63,7 +63,7 @@
     </div>
 
     <button type="submit" [disabled]="!tournamentForm.valid">Setup Tournament</button>
-    <button type="button" *ngIf="user && coaches.length < 1" (click)="addCoaches()">Add Coaches</button>
+    <button type="button" *ngIf="user && coaches.length < 1" (click)="addCoaches()">Add Coaches (Beta)</button>
     <button type="button" [disabled]="!tournamentForm.valid || cannotSave" (click)="setupAndSaveTournament()">
       {{ buttonDisplay }}
     </button>

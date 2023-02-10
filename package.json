@@ -10,7 +10,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "eslint src --ext .ts",
-    "deploy": "firebase deploy --only hosting"
+    "deploy": "ng build; firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {

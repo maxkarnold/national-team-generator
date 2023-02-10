@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { getRandFloat, getRandomInt, hasLowerCase } from '@shared/utils';
+import { getRandFloat, getRandomInt, pickSingleLastName } from '@shared/utils';
 import { defaultHost, GroupTeam, Nation } from 'app/models/nation.model';
 import { Person } from 'app/models/player.model';
 import { LeaderboardItem, LeaderboardService } from 'app/pages/leaderboard/leaderboard.service';
@@ -14,7 +14,7 @@ import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { addRankings, getHostNations, regions, regionsValidator, validateHosts } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
 import { forkJoin } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { catchError, filter, take } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -100,6 +100,9 @@ export class TournamentFormComponent {
   }
 
   addCoaches() {
+    if (!window.confirm('This may take a minute. Are you sure?')) {
+      return;
+    }
     this.simulator.isLoading$.next(true);
     forkJoin(this.simulator.getCoachInfo(this.nationsList))
       .pipe(untilDestroyed(this))
@@ -107,12 +110,13 @@ export class TournamentFormComponent {
         const coachesArr: Person[] = names.map(n => {
           const potentialAges = [getRandomInt(35, 75), getRandomInt(45, 65), getRandomInt(45, 65)];
           const age = potentialAges[getRandomInt(0, 2)];
-          const { firstNames, lastNames, firstNameUsage, lastNameUsage, nationality } = n;
+          const { firstNames, lastNames, firstNameUsage, lastNameUsage, nationality, totalFirstNames, totalLastNames } = n;
+          console.log(nationality, [firstNames, totalFirstNames, firstNameUsage], [lastNames, totalLastNames, lastNameUsage]);
           return {
             ...n,
             firstNames: firstNames,
             lastNames: lastNames,
-            singleLastName: hasLowerCase(lastNames[0][0]) ? n.lastNames[1] : n.lastNames[0],
+            singleLastName: pickSingleLastName(lastNames),
             firstNameUsage,
             lastNameUsage,
             nationality,

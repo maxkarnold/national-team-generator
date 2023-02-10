@@ -1,6 +1,13 @@
 export const originalOrder = (): number => 0;
 
-export const hasLowerCase = (char: string) => char === char.toLowerCase() && char !== char.toUpperCase();
+export const pickSingleLastName = (names: string[]) => {
+  if (names.length > 0) {
+    const char = names[0].charAt(0);
+    const isLowerCase = char === char.toLowerCase() && char !== char.toUpperCase();
+    return isLowerCase ? names[1] : names[0];
+  }
+  return '';
+};
 
 export function formatDecimal(num: number, decimals: number) {
   return new Intl.NumberFormat('en-US', {

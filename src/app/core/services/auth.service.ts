@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { FirebaseError } from 'firebase/app';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -26,13 +27,18 @@ export class AuthService {
 
   googleSignin() {
     const provider = new GoogleAuthProvider();
-    this.afAuth.signInWithPopup(provider).then(credential => {
-      if (credential.user) {
-        this.updateUserData(credential.user);
-        this.snackbar.open('Successfully logged in!', 'Dismiss');
-        this.router.navigate(['/simulation']);
-      }
-    });
+    this.afAuth
+      .signInWithPopup(provider)
+      .then(credential => {
+        if (credential.user) {
+          this.updateUserData(credential.user);
+          this.snackbar.open('Successfully logged in!', 'Dismiss');
+          this.router.navigate(['/simulation']);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   login(email: string, password: string) {
@@ -43,7 +49,9 @@ export class AuthService {
         this.router.navigate(['/simulation']);
         this.user$ = of(userCredential.user);
       })
-      .catch(err => console.log(err.code));
+      .catch((err: FirebaseError) => {
+        this.snackbar.open(`ERROR ${(err.code, err.message, err.name)}`);
+      });
   }
 
   register(email: string, password: string) {

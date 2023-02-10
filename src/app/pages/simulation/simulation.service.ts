@@ -6,7 +6,7 @@ import { Match, Region, Tournament32 } from './simulation.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CreatePlayerService } from '@core/services/create-player.service';
-import { count, map, scan } from 'rxjs/operators';
+import { catchError, count, map, scan } from 'rxjs/operators';
 
 @UntilDestroy()
 @Injectable({

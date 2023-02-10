@@ -4,7 +4,7 @@ import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firest
 import { WhereFilterOp } from '@firebase/firestore-types/';
 import { getRandomInt } from '@shared/utils';
 import { Nation } from 'app/models/nation.model';
-import { catchError, map, take } from 'rxjs/operators';
+import { catchError, map, take, takeWhile } from 'rxjs/operators';
 import { Player } from '../../models/player.model';
 import { Roster } from '../../models/roster.model';
 import * as nationsJson from '../../../assets/json/nations.json';

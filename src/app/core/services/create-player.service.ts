@@ -188,17 +188,21 @@ export class CreatePlayerService {
           break;
       }
     }
-    let firstInitial = firstNames[0].charAt(0);
-    if (firstInitial === "'") {
-      firstInitial = firstNames[0].split("'")[1].charAt(0);
+    let firstInitial = '';
+    if (firstNames.length > 0) {
+      firstInitial = firstNames[0].charAt(0);
+      if (firstInitial === "'") {
+        firstInitial = firstNames[0].split("'")[1].charAt(0);
+      }
+      if (firstNames[0].includes(' ')) {
+        // e.g. Abd al-Rahmin => A. a.
+        firstInitial = `${firstNames[0]
+          .split(' ')
+          .map(full => full[0])
+          .join('. ')}.`;
+      }
     }
-    if (firstNames[0].includes(' ')) {
-      // e.g. Abd al-Rahmin => A. a.
-      firstInitial = `${firstNames[0]
-        .split(' ')
-        .map(full => full[0])
-        .join('. ')}.`;
-    }
+
     return { firstNames, firstInitial, firstNameUsage, totalFirstNames };
   }
 
