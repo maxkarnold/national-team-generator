@@ -1,9 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-// import { hosts } from '@shared/constants/constants';
-import { getRandFloat, getRandomInt } from '@shared/utils';
-import { GroupTeam, Nation } from 'app/models/nation.model';
-import { get } from 'lodash';
-import { Match, Region } from './simulation.model';
+import { getRandFloat, getRandomInt, getRandomInts } from '@shared/utils';
+import { GroupTeam } from 'app/models/nation.model';
+import { sum } from 'lodash';
+import { Match, Region, MatchEvent, EventEmoji } from './simulation.model';
 
 export const regions: Region[] = [
   {
@@ -157,10 +156,130 @@ export function addRankings(arr: GroupTeam[], hasCoaches?: boolean) {
     }));
 }
 
-export function calcScore(team: GroupTeam, opp: GroupTeam, extraTime: boolean): [number, number, boolean] {
-  const eventTimes = [15, 30, 45, 60, 75, 90];
+function getRandomGoalTimes(eventTimes: { for: MatchEvent[]; opp: MatchEvent[] }, time: number): MatchEvent {
+  const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
+  const events = [...eventTimes.for, ...eventTimes.opp];
+
+  const newEventTimes = getRandomInts(4, time - 14, interval);
+  for (let i = 0; i < newEventTimes.size; i++) {
+    const newTime = Array.from(newEventTimes)[i];
+    const newTimeStr = newTime > time ? `${time}+${newTime - time}` : newTime.toString();
+    if (
+      !events
+        .filter(e => e.emoji === '⚽')
+        .map(e => e.time)
+        .includes(newTimeStr)
+    ) {
+      return {
+        time: newTimeStr,
+        emoji: '⚽',
+      };
+    }
+  }
+
+  return {
+    time: 'ERROR',
+    emoji: '🟥',
+  };
+}
+
+const getAdjustedTime = (time: number) => {
+  if (time > 120) {
+    return (time += 20);
+  }
+  if (time > 105) {
+    return (time += 15);
+  }
+  if (time > 90) {
+    return (time += 10);
+  }
+  if (time > 45) {
+    return (time += 5);
+  }
+  return time;
+};
+
+function getRandomCardTimes(events: MatchEvent[], time: number): MatchEvent[] {
+  const canGiveSecondYellow = (evts: MatchEvent[]) => {
+    const firstYellows = evts.map(e => e.emoji).filter(e => e === '🟨');
+    const secondYellows = evts.map(e => e.emoji).filter(e => e === '🟨🟥');
+    return firstYellows.length < secondYellows.length;
+  };
+  const yellowCards = events.filter(e => e.emoji === '🟨');
+  const redCards = events.filter(e => e.emoji === '🟥' || e.emoji === '🟨🟥');
+  // https://football-observatory.com/IMG/sites/mr/mr57/en/
+  const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
+
+  const newEventTimes: MatchEvent[] = [];
+  for (let i = time - 14; i < interval; i++) {
+    // console.log(i, time, interval);
+    const rand = getRandomInt(0, 10000) + yellowCards.length * 100;
+    // console.log(rand);
+    const newTimeStr = i > time ? `${time}+${i - time}` : i.toString();
+    let emoji: EventEmoji = '🟨';
+
+    if (events.map(e => e.time).includes(newTimeStr)) {
+      continue;
+    }
+
+    if (i < 50 && rand < 171) {
+      // first half probability
+      // 1.66% of 1st half yellow
+      // 0.05% of 1st half red
+      if (rand < 5) {
+        if (rand < 3 && canGiveSecondYellow(events)) {
+          emoji = '🟨🟥';
+        } else {
+          emoji = '🟥';
+        }
+      }
+      newEventTimes.push({
+        time: newTimeStr,
+        emoji,
+      });
+    } else if (i > 49 && rand < 346) {
+      // second half probability
+      // 3.23% of 2nd half yellow
+      // 0.23% of 2nd half red
+      if (rand < 23) {
+        if (rand < 12 && canGiveSecondYellow(events)) {
+          emoji = '🟨🟥';
+        } else {
+          emoji = '🟥';
+        }
+      }
+      newEventTimes.push({
+        time: newTimeStr,
+        emoji,
+      });
+    }
+  }
+  return newEventTimes;
+}
+
+function sortEventTimes(a: MatchEvent, b: MatchEvent) {
+  const aValues = a.time.split('+').map(str => parseInt(str, 10));
+  const bValues = b.time.split('+').map(str => parseInt(str, 10));
+  const adjustedA = sum([getAdjustedTime(aValues[0]), aValues[1]]);
+  const adjustedB = sum([getAdjustedTime(bValues[0]), bValues[1]]);
+
+  if (adjustedA < adjustedB) {
+    return -1;
+  }
+  if (adjustedA > adjustedB) {
+    return 1;
+  }
+  return 0;
+}
+
+export function calcScore(
+  team: GroupTeam,
+  opp: GroupTeam,
+  extraTime: boolean
+): [number, number, boolean, { for: MatchEvent[]; opp: MatchEvent[] }] {
+  const timeIntervals = [15, 30, 45, 60, 75, 90];
   if (extraTime) {
-    eventTimes.push(105, 120);
+    timeIntervals.push(105, 120);
   }
   const gF = team.attRating + team.midRating / 2 - (opp.midRating / 2 + opp.defRating);
   const gA = opp.attRating + opp.midRating / 2 - (team.midRating / 2 + team.defRating);
@@ -176,23 +295,27 @@ export function calcScore(team: GroupTeam, opp: GroupTeam, extraTime: boolean): 
 
   if (team.coach?.rating && opp.coach?.rating) {
     if (team.coach.rating > opp.coach.rating) {
-      teamMultiplier += 2;
+      teamMultiplier += (team.coach.rating - opp.coach.rating) / 10;
     } else {
-      oppMultiplier += 2;
+      oppMultiplier += (opp.coach.rating - team.coach.rating) / 10;
     }
   }
   let goalFor = 0;
   let goalAg = 0;
   let etWin = false;
+  const eventTimes: { for: MatchEvent[]; opp: MatchEvent[] } = {
+    for: [],
+    opp: [],
+  };
 
-  for (let i = 0; i < eventTimes.length; i++) {
+  for (let i = 0; i < timeIntervals.length; i++) {
     // teamMultiplier and oppMultiplier have range of (0 - 100) * 1.25
     const rand1 = getRandFloat(0, 100);
     const rand2 = getRandFloat(0, 100);
     let teamAdv = teamMultiplier;
     let oppAdv = oppMultiplier;
 
-    if (eventTimes[i] < 90) {
+    if (timeIntervals[i] < 90) {
       if (goalFor === 0) {
         teamAdv -= 5;
       }
@@ -202,41 +325,49 @@ export function calcScore(team: GroupTeam, opp: GroupTeam, extraTime: boolean): 
       }
     }
 
-    if (goalFor === goalAg && eventTimes[i] !== 90) {
+    if (goalFor === goalAg && timeIntervals[i] !== 90) {
       teamAdv -= 5;
       oppAdv -= 5;
     }
 
     if (rand1 <= teamAdv) {
       goalFor++;
+      eventTimes.for.push(getRandomGoalTimes(eventTimes, timeIntervals[i]));
       if (teamAdv > 35 && getRandomInt(0, 10) < 6) {
         goalFor++;
+        eventTimes.for.push(getRandomGoalTimes(eventTimes, timeIntervals[i]));
       }
     }
 
     if (rand2 <= oppAdv) {
       goalAg++;
+      eventTimes.opp.push(getRandomGoalTimes(eventTimes, timeIntervals[i]));
       if (oppAdv > 35 && getRandomInt(0, 10) < 6) {
         goalAg++;
+        eventTimes.opp.push(getRandomGoalTimes(eventTimes, timeIntervals[i]));
       }
     }
 
-    if (eventTimes[i] === 90 && goalFor !== goalAg) {
+    eventTimes.for.push(...getRandomCardTimes(eventTimes.for, timeIntervals[i]));
+    eventTimes.opp.push(...getRandomCardTimes(eventTimes.opp, timeIntervals[i]));
+
+    if (timeIntervals[i] === 90 && goalFor !== goalAg) {
       break;
     }
 
-    if (eventTimes[i] === 120 && goalFor !== goalAg) {
+    if (timeIntervals[i] === 120 && goalFor !== goalAg) {
       etWin = true;
       break;
     }
   }
-  // console.log(teamMultiplier, oppMultiplier);
-  // console.log([goalFor, goalAg, etWin], [team.homeTeam, opp.homeTeam]);
 
-  return [goalFor, goalAg, etWin];
+  eventTimes.for.sort(sortEventTimes);
+  eventTimes.opp.sort(sortEventTimes);
+
+  return [goalFor, goalAg, etWin, eventTimes];
 }
 
-export function getGradeSummary({ name: nationName, reportCard, matchesPlayed }: GroupTeam): string {
+export function getGradeSummary({ name: nationName, reportCard, matchesPlayed, groupFinish }: GroupTeam): string {
   const name = nationName
     .split(' ')
     .map(l => l[0].toLocaleUpperCase() + l.substring(1))
@@ -245,19 +376,35 @@ export function getGradeSummary({ name: nationName, reportCard, matchesPlayed }:
   if (matchesPlayed < 3) {
     return `${name} did not qualify for the tournament, their players had to watch from the comfort of their own homes.`;
   }
+  const placeSuffix = (place?: string) => {
+    switch (place) {
+      case '1':
+        return '1st';
+      case '2':
+        return '2nd';
+      case '3':
+        return '3rd';
+      default:
+        return `${place}th`;
+    }
+  };
+  const groupFinishSummary: string = `${name} finished ${placeSuffix(groupFinish?.charAt(1))} in Group ${groupFinish?.charAt(0)}. `;
   switch (grade) {
     case 's':
-      return `${name} had perhaps their best performance at a major tournament ever! Fans will be ecstatic as ${name} blew expectations out of the water. No one thought they would make it this far.`;
+      return (
+        `${name} had perhaps their best performance at a major tournament ever! Fans will be ecstatic as ${name} blew expectations out of the water. No one thought they would make it this far. ` +
+        groupFinishSummary
+      );
     case 'a':
-      return `What a tournament for ${name}! It was a resounding success that will send fans home with a smile.`;
+      return `What a tournament for ${name}! It was a resounding success that will send fans home with a smile. ${groupFinishSummary}`;
     case 'b':
-      return `A fairly decent tournament for ${name}. There should be no complaints as they were able to meet expectations.`;
+      return `A fairly decent tournament for ${name}. There should be no complaints as they were able to meet expectations. ${groupFinishSummary}`;
     case 'c':
-      return `The tournament was very mediocre for ${name}. Most likely no one will be fired, but perhaps players will be regretting this missed chance.`;
+      return `The tournament was very mediocre for ${name}. Most likely no one will be fired, but perhaps players will be regretting this missed chance. ${groupFinishSummary}`;
     case 'd':
-      return `The tournament could have gone a lot better for ${name}, even if they didn't fully embarrass themselves.`;
+      return `The tournament could have gone a lot better for ${name}, even if they didn't fully embarrass themselves. ${groupFinishSummary}`;
     case 'f':
-      return `This tournament was an absolute disaster in the eyes of the media. Head coach for the ${name} national team will most likely be fired shortly.`;
+      return `This tournament was an absolute disaster in the eyes of the media. Head coach for the ${name} national team will most likely be fired shortly. ${groupFinishSummary}`;
     default:
       return 'ERROR';
   }
@@ -283,16 +430,30 @@ export function getGradeStyle(grade: string | undefined): '' | 'good-grade' | 'o
 }
 
 export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: boolean): Match {
-  const [goalsFor, goalsAg, etWin] = calcScore(team, otherTeam, hasExtraTime);
+  const [goalsFor, goalsAg, etWin, eventTimes] = calcScore(team, otherTeam, hasExtraTime);
 
   const penaltyWin = goalsFor === goalsAg;
 
-  const whoWon = (gf: number, ga: number): { winner: GroupTeam; loser: GroupTeam; score: string } => {
+  const whoWon = (
+    gf: number,
+    ga: number,
+    events: { for: MatchEvent[]; opp: MatchEvent[] }
+  ): { winner: GroupTeam; loser: GroupTeam; score: string; adjustedEventTimes: { winner: MatchEvent[]; loser: MatchEvent[] } } => {
+    const firstTeamWin = {
+      winner: team,
+      loser: otherTeam,
+      score: `${goalsFor}-${goalsAg}`,
+      adjustedEventTimes: { winner: events.for, loser: events.opp },
+    };
+    const secondTeamWin = {
+      winner: otherTeam,
+      loser: team,
+      score: `${goalsAg}-${goalsFor}`,
+      adjustedEventTimes: { winner: events.opp, loser: events.for },
+    };
     if (penaltyWin) {
       let rand = getRandFloat(0, 1);
       const firstTeamAdvantage = team.penRating > otherTeam.penRating;
-      const firstTeamWin = { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` };
-      const secondTeamWin = { winner: otherTeam, loser: team, score: `${goalsAg}-${goalsFor}` };
 
       if (firstTeamAdvantage && rand > 0.25) {
         return firstTeamWin;
@@ -303,12 +464,10 @@ export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: 
         return rand > 0.5 ? firstTeamWin : secondTeamWin;
       }
     }
-    return gf > ga
-      ? { winner: team, loser: otherTeam, score: `${goalsFor}-${goalsAg}` }
-      : { winner: otherTeam, loser: team, score: `${goalsAg}-${goalsFor}` };
+    return gf > ga ? firstTeamWin : secondTeamWin;
   };
 
-  const { winner, loser, score } = whoWon(goalsFor, goalsAg);
+  const { winner, loser, score, adjustedEventTimes } = whoWon(goalsFor, goalsAg, eventTimes);
 
   return {
     goalsFor,
@@ -318,6 +477,7 @@ export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: 
     winner,
     loser,
     score,
+    eventTimes: adjustedEventTimes,
   };
 }
 

@@ -129,6 +129,13 @@ export class SimulationService {
         g[i].sort((a, b) => b.points - a.points || b.gDiff - a.gDiff || b.gFor - a.gFor || compare(a.name, b.name, true));
       }
     }
+    // assign group finishes to teams
+    const groupLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    for (let i = 0; i < groupLetters.length; i++) {
+      for (let j = 0; j < g[i].length; j++) {
+        g[i][j].groupFinish = groupLetters[i] + (j + 1).toString();
+      }
+    }
     return g;
   }
 

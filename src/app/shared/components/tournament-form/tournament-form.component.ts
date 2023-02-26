@@ -5,7 +5,8 @@ import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { getRandFloat, getRandomInt, pickSingleLastName } from '@shared/utils';
-import { defaultHost, GroupTeam, Nation } from 'app/models/nation.model';
+import { defaultCoaches } from 'app/models/default-coaches.model';
+import { defaultHost, GroupTeam } from 'app/models/nation.model';
 import { Person } from 'app/models/player.model';
 import { LeaderboardItem, LeaderboardService } from 'app/pages/leaderboard/leaderboard.service';
 import { SimulationQualifiersService } from 'app/pages/simulation/simulation-qualifiers.service';
@@ -14,7 +15,7 @@ import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { addRankings, getHostNations, regions, regionsValidator, validateHosts } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
 import { forkJoin } from 'rxjs';
-import { catchError, filter, take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -110,13 +111,13 @@ export class TournamentFormComponent {
         const coachesArr: Person[] = names.map(n => {
           const potentialAges = [getRandomInt(35, 75), getRandomInt(45, 65), getRandomInt(45, 65)];
           const age = potentialAges[getRandomInt(0, 2)];
-          const { firstNames, lastNames, firstNameUsage, lastNameUsage, nationality, totalFirstNames, totalLastNames } = n;
-          console.log(nationality, [firstNames, totalFirstNames, firstNameUsage], [lastNames, totalLastNames, lastNameUsage]);
+          const { firstNames, lastNames, firstNameUsage, lastNameUsage, nationality } = n;
           return {
             ...n,
             firstNames: firstNames,
             lastNames: lastNames,
             singleLastName: pickSingleLastName(lastNames),
+            origin: nationality,
             firstNameUsage,
             lastNameUsage,
             nationality,

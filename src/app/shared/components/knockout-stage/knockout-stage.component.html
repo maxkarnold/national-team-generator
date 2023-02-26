@@ -1,4 +1,4 @@
-<div class="bracket" *ngIf="tournament?.bracket">
+<div class="bracket" *ngIf="tournament?.bracket && tournament">
   <ul class="headings">
     <li>Round of 16</li>
     <li>Quarter Finals</li>
@@ -12,6 +12,7 @@
         </h3>
         <div [class]="match[2].loser.name === match[0].name ? 'loser' : ''">
           <div (click)="openNationStats(match[0])" class="nation">
+            <span *ngIf="round.key === 'roundOf16'" class="group-finish">{{ match[0].groupFinish }}</span>
             <img class="nation-flag" [src]="match[0].logo" [alt]="match[0].name" />
             <span>
               {{ screenWidth < 600 ? match[0].abbreviation.toLocaleUpperCase() : match[0].name }}
@@ -34,6 +35,7 @@
         </div>
         <div [class]="match[2].loser.name === match[1].name ? 'loser' : ''">
           <div (click)="openNationStats(match[1])" class="nation">
+            <span *ngIf="round.key === 'roundOf16'" class="group-finish">{{ match[1].groupFinish }}</span>
             <img class="nation-flag" [src]="match[1].logo" [alt]="match[1].name" />
             <span>
               {{ screenWidth < 600 ? match[1].abbreviation.toLocaleUpperCase() : match[1].name }}

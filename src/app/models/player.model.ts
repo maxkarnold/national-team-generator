@@ -9,8 +9,10 @@ export interface Person {
   lastNameUsage: string;
   nationality: string;
   age: number;
+  origin?: string;
   playerFace?: string;
   rating?: number;
+  nickname?: string;
 }
 
 export interface Player extends Person {

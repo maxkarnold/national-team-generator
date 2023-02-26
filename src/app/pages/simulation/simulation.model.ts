@@ -8,7 +8,19 @@ export interface Match {
   winner: GroupTeam;
   loser: GroupTeam;
   score: string;
+  eventTimes: {
+    winner: MatchEvent[];
+    loser: MatchEvent[];
+  };
 }
+
+export interface MatchEvent {
+  time: string;
+  emoji: EventEmoji;
+  type?: string;
+}
+
+export type EventEmoji = '⚽' | '🟨' | '🟥' | '🟨🟥';
 
 export interface Tournament32 {
   availableRegions?: Region[];

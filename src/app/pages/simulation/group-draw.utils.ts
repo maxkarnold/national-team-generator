@@ -71,9 +71,9 @@ export const draw = (
           .filter(r => r.qualifiers.auto + r.qualifiers.extra > 7 && r.qualifiers.auto + r.qualifiers.extra < 9)
           .map(r => r.value);
         const regions3 = availableRegions
-          .filter(r => r.qualifiers.auto + r.qualifiers.extra > 8 && r.qualifiers.auto + r.qualifiers.extra < 13)
+          .filter(r => r.qualifiers.auto + r.qualifiers.extra > 8 && r.qualifiers.auto + r.qualifiers.extra < 12)
           .map(r => r.value);
-        const regions4 = availableRegions.filter(r => r.qualifiers.auto + r.qualifiers.extra > 12).map(r => r.value);
+        const regions4 = availableRegions.filter(r => r.qualifiers.auto + r.qualifiers.extra > 11).map(r => r.value);
         if (!test) {
           // console.log(availableRegions, regions2, regions3, regions4);
           test = false;

@@ -110,6 +110,18 @@
               {{
                 item.match.penaltyWin && stages[i].prop !== 'group' ? '(P)' : item.match.etWin && stages[i].prop !== 'group' ? '(AET)' : ''
               }}
+              <span class="score-tooltip">
+                <span class="title">Match Recap</span>
+                <span *ngIf="!(item.match.eventTimes.winner.length > 0) && !(item.match.eventTimes.loser.length > 0)">N/A</span>
+                <div class="flex">
+                  <div>
+                    <span *ngFor="let event of item.match.eventTimes.winner">{{ event.time }}' {{ event.emoji }}</span>
+                  </div>
+                  <div>
+                    <span *ngFor="let event of item.match.eventTimes.loser">{{ event.emoji }} {{ event.time }}'</span>
+                  </div>
+                </div>
+              </span>
             </span>
             <img
               class="nation-flag"

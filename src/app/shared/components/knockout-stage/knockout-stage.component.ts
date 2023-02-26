@@ -28,7 +28,9 @@ export class KnockoutStageComponent {
         untilDestroyed(this),
         filter(t => t?.bracket !== undefined)
       )
-      .subscribe(t => (this.tournament = t));
+      .subscribe(t => {
+        this.tournament = t;
+      });
   }
 
   @HostListener('window:resize', ['$event'])

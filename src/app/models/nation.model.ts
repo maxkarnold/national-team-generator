@@ -65,6 +65,7 @@ export interface GroupTeam {
   cohosts32: string[];
   coach?: Person;
   pot?: number;
+  groupFinish?: string;
 }
 
 export const defaultHost: GroupTeam = {

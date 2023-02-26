@@ -64,6 +64,14 @@ export function getRandomInt(mn: number, mx: number): number {
   // The maximum is inclusive and the minimum is inclusive
 }
 
+export function getRandomInts(quantity: number, min: number, max: number): Set<number> {
+  const set = new Set<number>();
+  while (set.size < quantity) {
+    set.add(getRandomInt(min, max));
+  }
+  return set;
+}
+
 export function getRandFloat(min: number, max: number, decimalPlaces = 2): number {
   const rand = Math.random() < 0.5 ? (1 - Math.random()) * (max - min) + min : Math.random() * (max - min) + min; // could be min or max or anything in between
   const power = 10 ** decimalPlaces;

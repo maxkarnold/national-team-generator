@@ -234,7 +234,7 @@ h3 {
         padding: 10px 0;
         align-items: center;
 
-        span {
+        >span {
           margin-right: min(4vw, 50px);
         }
 
@@ -244,6 +244,45 @@ h3 {
 
         .score {
           max-width: 3.5rem;
+          text-decoration: underline dotted;
+          position: relative;
+          cursor: default;
+          .score-tooltip {
+            visibility: hidden;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: 10px 10px;
+            border-radius: 6px;
+
+            /* Position the tooltip text */
+            position: absolute;
+            z-index: 1;
+            width: 200px;
+            top: 100%;
+            right: 50%;
+            margin-right: -100px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+            .title {
+              display: block;
+              font-size: 115%;
+              margin-bottom: 10px;
+            }
+
+            .flex {
+              display: flex;
+              justify-content: space-between;
+              >div {
+                display: flex;
+                flex-flow: column;
+                text-align: left;
+              }
+            }
+          }
+
+          &:hover .score-tooltip {
+            visibility: visible;
+          }
         }
 
         .round {

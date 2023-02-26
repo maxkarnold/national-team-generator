@@ -51,7 +51,7 @@ export class NationDialogComponent {
       .subscribe(([tournament, nation]) => {
         this.tournament = tournament;
         this.nation = nation;
-        if (nation && !nation.reportCard.grade) {
+        if (nation && !nation.reportCard.grade && tournament?.groupWinners) {
           this.getNationReportCard(nation);
         }
       });
