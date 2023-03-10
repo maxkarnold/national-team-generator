@@ -1,13 +1,15 @@
-<header class="header header--mobile">
-  <nav class="nav-bar">
-    <a routerLink="/" class="logo logo--ripple">
-      <span class="logo__title">FB Sim</span>
+<header class="text-white bg-primary md:hidden">
+  <nav class="flex justify-between text-2xl relative">
+    <a
+      routerLink="/"
+      class="flex items-center min-h-full py-6 px-4 cursor-pointer bg-center transition-all duration-700 hover:bg-primary_darker active:bg-primary_dark active:bg-cover active:transition-all active:duration-0">
+      <span class="">FB Sim</span>
     </a>
-    <div class="nav-bar__menu-button">
-      <fa-icon icon="bars" (click)="navToggle = !navToggle"></fa-icon>
+    <div class="flex w-14 justify-center items-center">
+      <fa-icon icon="bars" (click)="navToggle = !navToggle" class="cursor-pointer"></fa-icon>
     </div>
   </nav>
-  <ul class="nav-list" *ngIf="navToggle">
+  <ul class="flex flex-col p-0" *ngIf="navToggle">
     <a routerLink="/simulation" class="nav-list__link nav-list__link--ripple"> Simulation </a>
     <a routerLink="/leaderboard" class="nav-list__link nav-list__link--ripple">Leaderboards</a>
     <a (click)="auth.signOut()" *ngIf="auth.user$ | async as user; else login" class="nav-list__link nav-list__link--ripple">Logout</a>

@@ -1,18 +1,7 @@
 <h1>Tournament Setup</h1>
 <app-tournament-form></app-tournament-form>
-<nav class="dashboard">
-  <ul>
-    <li>
-      <a [routerLink]="'group-stage'" class="ripple" [routerLinkActive]="['active']">Groups</a>
-    </li>
-    <li>
-      <a [routerLink]="'bracket'" class="ripple" [routerLinkActive]="['active']">Bracket</a>
-    </li>
-    <li>
-      <a [routerLink]="'awards'" class="ripple" [routerLinkActive]="['active']">Rankings</a>
-    </li>
-  </ul>
-</nav>
+<app-dashboard></app-dashboard>
+
 <router-outlet></router-outlet>
 
 <div class="overlay-container" *ngIf="service.isLoading$ | async">

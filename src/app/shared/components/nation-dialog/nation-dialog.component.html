@@ -18,6 +18,10 @@
           <h3>{{ nation.ranking }}</h3>
         </div>
         <div>
+          <span>OVR</span>
+          <h3>{{ getDisplayRating(nation.rating) }}</h3>
+        </div>
+        <div>
           <span>ATT</span>
           <h3>{{ getDisplayRating(nation.attRating) }}</h3>
         </div>
@@ -64,12 +68,6 @@
               <span>{{ getCoachRating(nation.coach.rating) }}</span>
             </td>
           </tr>
-          <tr>
-            <th>Age</th>
-            <td>
-              <span>{{ nation.coach.age }}</span>
-            </td>
-          </tr>
         </table>
         <details>
           <summary>Additional Info</summary>
@@ -85,6 +83,18 @@
               <th>Nationality</th>
               <td>
                 <span>{{ nation.coach.nationality }}</span>
+              </td>
+            </tr>
+            <tr>
+              <th>Age</th>
+              <td>
+                <span>{{ nation.coach.age }}</span>
+              </td>
+            </tr>
+            <tr>
+              <th>Personality</th>
+              <td>
+                <span>{{ nation.coach.personality || 'N/A' }}</span>
               </td>
             </tr>
           </table>

@@ -9,6 +9,50 @@ export const pickSingleLastName = (names: string[]) => {
   return '';
 };
 
+export function getRandomPersonality(): string {
+  const personalities = [
+    'Model Citizen',
+    'Perfectionist',
+    'Resolute',
+    'Model Professional',
+    'Professional',
+    'Fairly Professional',
+    'Spirited',
+    'Very Ambitious',
+    'Ambitious',
+    'Driven',
+    'Determined',
+    'Fairly Determined',
+    'Charismatic Leader',
+    'Born Leader',
+    'Leader',
+    'Iron Willed',
+    'Resilient',
+    'Jovial',
+    'Light-hearted',
+    'Devoted',
+    'Very Loyal',
+    'Loyal',
+    'Fairly Loyal',
+    'Honest',
+    'Sporting',
+    'Fairly Sporting',
+    'Unsporting',
+    'Realist',
+    'Balanced',
+    'Slack',
+    'Casual',
+    'Temperamental',
+    'Unambitious',
+    'Easily discouraged',
+    'Low determination',
+    'Spineless',
+    'Low self-belief',
+  ];
+
+  return personalities[Math.floor(Math.random() * personalities.length)];
+}
+
 export function formatDecimal(num: number, decimals: number) {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,

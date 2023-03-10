@@ -13,9 +13,10 @@ import { MemoizerPipe } from './pipes/memoizer.pipe';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
-  declarations: [...fromComponents.components, ClickStopPropagationDirective, MemoizerPipe],
+  declarations: [...fromComponents.components, ClickStopPropagationDirective, MemoizerPipe, DashboardComponent],
   imports: [
     RouterModule,
     ReactiveFormsModule,

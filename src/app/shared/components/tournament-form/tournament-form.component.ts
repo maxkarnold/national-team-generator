@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { getRandFloat, getRandomInt, pickSingleLastName } from '@shared/utils';
+import { getRandFloat, getRandomInt, getRandomPersonality, pickSingleLastName } from '@shared/utils';
 import { defaultCoaches } from 'app/models/default-coaches.model';
 import { defaultHost, GroupTeam } from 'app/models/nation.model';
 import { Person } from 'app/models/player.model';
@@ -118,6 +118,7 @@ export class TournamentFormComponent {
             lastNames: lastNames,
             singleLastName: pickSingleLastName(lastNames),
             origin: nationality,
+            personality: getRandomPersonality(),
             firstNameUsage,
             lastNameUsage,
             nationality,

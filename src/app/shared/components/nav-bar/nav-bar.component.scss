@@ -25,29 +25,29 @@
   }
 }
 
-.logo {
-  color: white;
-  display: flex;
-  align-items: center;
-  min-height: 100%;
-  padding: 1.5rem 1rem;
-  cursor: pointer;
+// .logo {
+//   color: white;
+//   display: flex;
+//   align-items: center;
+//   min-height: 100%;
+//   padding: 1.5rem 1rem;
+//   cursor: pointer;
 
-  &--ripple {
-    background-position: center;
-    transition: background 0.8s;
+//   &--ripple {
+//     background-position: center;
+//     transition: background 0.8s;
 
-    &:hover {
-      background: $primary-darker radial-gradient(circle, transparent 1%, $primary-darker) center/15000%;
-    }
+//     &:hover {
+//       background: $primary-darker radial-gradient(circle, transparent 1%, $primary-darker) center/15000%;
+//     }
 
-    &:active {
-      background-color: $primary-dark;
-      background-size: 100%;
-      transition: background 0s;
-    }
-  }
-}
+//     &:active {
+//       background-color: $primary-dark;
+//       background-size: 100%;
+//       transition: background 0s;
+//     }
+//   }
+// }
 
 .nav-bar {
   display: flex;

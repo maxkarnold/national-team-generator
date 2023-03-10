@@ -9,6 +9,7 @@ export interface Person {
   lastNameUsage: string;
   nationality: string;
   age: number;
+  personality?: string;
   origin?: string;
   playerFace?: string;
   rating?: number;

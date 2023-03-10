@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/services/auth.guard';
-import { AwardsComponent, GroupStageComponent, KnockoutStageComponent } from '@shared/components';
+import { StatsOverviewComponent, GroupStageComponent, KnockoutStageComponent } from '@shared/components';
 import { HomeComponent } from './pages/home/home.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -26,8 +26,8 @@ const routes: Routes = [
         component: KnockoutStageComponent,
       },
       {
-        path: 'awards',
-        component: AwardsComponent,
+        path: 'stats-overview',
+        component: StatsOverviewComponent,
       },
       { path: '', redirectTo: 'group-stage', pathMatch: 'full' },
     ],

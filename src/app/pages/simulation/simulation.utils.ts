@@ -142,7 +142,7 @@ export function addRankings(arr: GroupTeam[], hasCoaches?: boolean) {
       if (team.coach?.rating) {
         return {
           ...team,
-          rating: hasCoaches ? (team.coach.rating + team.attRating + team.defRating + team.midRating) / 4 : team.rating,
+          rating: hasCoaches ? (team.attRating + team.defRating + team.midRating) / 3 : team.rating,
         };
       }
       return team;
@@ -277,6 +277,7 @@ export function calcScore(
   opp: GroupTeam,
   extraTime: boolean
 ): [number, number, boolean, { for: MatchEvent[]; opp: MatchEvent[] }] {
+  // TODO: If team gets a red card, they need to have a lesser chance to score and an increased chance to concede
   const timeIntervals = [15, 30, 45, 60, 75, 90];
   if (extraTime) {
     timeIntervals.push(105, 120);

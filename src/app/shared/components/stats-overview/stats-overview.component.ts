@@ -8,11 +8,11 @@ import { get as _get } from 'lodash';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-awards',
-  templateUrl: './awards.component.html',
-  styleUrls: ['./awards.component.scss'],
+  selector: 'app-stats-overview',
+  templateUrl: './stats-overview.component.html',
+  styleUrls: ['./stats-overview.component.scss'],
 })
-export class AwardsComponent {
+export class StatsOverviewComponent {
   service: SimulationService;
   screenWidth: number;
   get = _get;
