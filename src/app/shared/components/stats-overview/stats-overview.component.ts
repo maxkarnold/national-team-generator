@@ -6,6 +6,13 @@ import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { getDisplayRating } from 'app/pages/simulation/simulation.utils';
 import { get as _get } from 'lodash';
 
+interface RankingsRow {
+  overall: GroupTeam;
+  attack: GroupTeam;
+  midfield: GroupTeam;
+  defense: GroupTeam;
+}
+
 @UntilDestroy()
 @Component({
   selector: 'app-stats-overview',
@@ -18,7 +25,8 @@ export class StatsOverviewComponent {
   get = _get;
   getDisplayRating = getDisplayRating;
   tournament: Tournament32 | null = null;
-  rankings: { heading: string; prop: string; class: string; nations?: GroupTeam[] }[] | null = null;
+  // rankings: { heading: string; prop: string; class: string; nations?: GroupTeam[] }[] | null = null;
+  rankings: GroupTeam[][] = [];
 
   tournamentStats = [
     {
@@ -47,33 +55,37 @@ export class StatsOverviewComponent {
         return;
       }
       this.tournament = t;
-      this.rankings = null;
-      this.rankings = [
-        {
-          heading: 'Overall',
-          prop: 'r',
-          class: 'main',
-          nations: t.allTeams.rankings,
-        },
-        {
-          heading: 'Attack',
-          prop: 'attR',
-          class: 'att',
-          nations: t.allTeams.attRankings,
-        },
-        {
-          heading: 'Midfield',
-          prop: 'midR',
-          class: 'mid',
-          nations: t.allTeams.midRankings,
-        },
-        {
-          heading: 'Defense',
-          prop: 'defR',
-          class: 'def',
-          nations: t.allTeams.defRankings,
-        },
-      ];
+      this.rankings = [];
+      for (let i = 0; i < t.allTeams.rankings.length; i++) {
+        this.rankings.push([t.allTeams.rankings[i], t.allTeams.attRankings[i], t.allTeams.midRankings[i], t.allTeams.defRankings[i]]);
+      }
+      // this.rankings = null;
+      // this.rankings = [
+      //   {
+      //     heading: 'Overall',
+      //     prop: 'r',
+      //     class: 'main',
+      //     nations: t.allTeams.rankings,
+      //   },
+      //   {
+      //     heading: 'Attack',
+      //     prop: 'attR',
+      //     class: 'att',
+      //     nations: t.allTeams.attRankings,
+      //   },
+      //   {
+      //     heading: 'Midfield',
+      //     prop: 'midR',
+      //     class: 'mid',
+      //     nations: t.allTeams.midRankings,
+      //   },
+      //   {
+      //     heading: 'Defense',
+      //     prop: 'defR',
+      //     class: 'def',
+      //     nations: t.allTeams.defRankings,
+      //   },
+      // ];
     });
   }
 

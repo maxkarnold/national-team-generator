@@ -118,7 +118,7 @@
             <span class="score"
               >{{ item.match.score }}
               {{
-                item.match.penaltyWin && stages[i].prop !== 'group' ? '(P)' : item.match.etWin && stages[i].prop !== 'group' ? '(AET)' : ''
+                item.match.isPenaltyWin && stages[i].prop !== 'group' ? '(P)' : item.match.isEtWin && stages[i].prop !== 'group' ? '(AET)' : ''
               }}
               <span class="score-tooltip">
                 <span class="title">Match Recap</span>

@@ -23,9 +23,9 @@
             <span
               >{{ match[2].goalsFor }}
               {{
-                match[2].penaltyWin && match[0].name === match[2].winner.name
+                match[2].isPenaltyWin && match[0].name === match[2].winner.name
                   ? '(P)'
-                  : match[2].etWin && match[0].name === match[2].winner.name
+                  : match[2].isEtWin && match[0].name === match[2].winner.name
                   ? '(AET)'
                   : ''
               }}</span
@@ -46,9 +46,9 @@
             <span
               >{{ match[2].goalsAg }}
               {{
-                match[2].penaltyWin && match[1].name === match[2].winner.name
+                match[2].isPenaltyWin && match[1].name === match[2].winner.name
                   ? '(P)'
-                  : match[2].etWin && match[1].name === match[2].winner.name
+                  : match[2].isEtWin && match[1].name === match[2].winner.name
                   ? '(AET)'
                   : ''
               }}</span

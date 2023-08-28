@@ -11,7 +11,7 @@
   </ul>
   <div *ngIf="tournament?.allTeams">
     <h4>World Rankings</h4>
-    <div class="rankings">
+    <!-- <div class="rankings">
       <details *ngFor="let list of rankings" [class]="list.class + '-rankings'" open="true">
         <summary class="heading">{{ list.heading }}</summary>
         <li *ngFor="let nation of list.nations" class="nation">
@@ -22,6 +22,30 @@
           </div>
         </li>
       </details>
+    </div> -->
+    <div class="overflow-x-auto">
+      <table class="table table-compact table-zebra w-full">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Overall</th>
+            <th>Attack</th>
+            <th>Midfield</th>
+            <th>Defense</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rankings; let i = index">
+            <th>{{ i + 1 }}</th>
+            <td *ngFor="let nation of row">
+              <div class="cursor-pointer md:flex" (click)="openNationStats(nation)">
+                <img [src]="nation.logo" [alt]="nation.name" class="w-8 h-6 md:mr-4 drop-shadow-lg" />
+                <span>{{ nation.abbreviation.toLocaleUpperCase() }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

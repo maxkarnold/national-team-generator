@@ -3,8 +3,8 @@ import { GroupTeam } from 'app/models/nation.model';
 export interface Match {
   goalsFor: number;
   goalsAg: number;
-  etWin: boolean;
-  penaltyWin: boolean;
+  isEtWin: boolean;
+  isPenaltyWin: boolean;
   winner: GroupTeam;
   loser: GroupTeam;
   score: string;

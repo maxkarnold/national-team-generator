@@ -1,34 +1,28 @@
-<header class="text-white bg-primary md:hidden">
-  <nav class="flex justify-between text-2xl relative">
-    <a
-      routerLink="/"
-      class="flex items-center min-h-full py-6 px-4 cursor-pointer bg-center transition-all duration-700 hover:bg-primary_darker active:bg-primary_dark active:bg-cover active:transition-all active:duration-0">
-      <span class="">FB Sim</span>
-    </a>
-    <div class="flex w-14 justify-center items-center">
-      <fa-icon icon="bars" (click)="navToggle = !navToggle" class="cursor-pointer"></fa-icon>
+<nav class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+        </svg>
+      </label>
+      <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+        <li><a routerLink="/simulation">Simulation</a></li>
+        <li><a routerLink="/leaderboard">Leaderboard</a></li>
+      </ul>
     </div>
-  </nav>
-  <ul class="flex flex-col p-0" *ngIf="navToggle">
-    <a routerLink="/simulation" class="nav-list__link nav-list__link--ripple"> Simulation </a>
-    <a routerLink="/leaderboard" class="nav-list__link nav-list__link--ripple">Leaderboards</a>
-    <a (click)="auth.signOut()" *ngIf="auth.user$ | async as user; else login" class="nav-list__link nav-list__link--ripple">Logout</a>
+    <a class="btn btn-ghost normal-case text-xl" routerLink="/">FB Sim</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a routerLink="/simulation">Simulation</a></li>
+      <li><a routerLink="/leaderboard">Leaderboard</a></li>
+    </ul>
+  </div>
+  <div class="navbar-end">
+    <a class="btn" *ngIf="auth.user$ | async as user; else login" (click)="auth.signOut()">Logout</a>
     <ng-template #login>
-      <a routerLink="/login" class="nav-list__link nav-list__link--ripple">Login</a>
+      <a routerLink="/login" class="btn">Login</a>
     </ng-template>
-  </ul>
-</header>
-<header class="header header--desktop">
-  <nav class="nav-bar">
-    <a routerLink="/" class="logo logo--ripple">
-      <span class="logo__title">FB Sim</span>
-    </a>
-    <span class="nav-bar__nav-spacer"></span>
-    <a routerLink="/simulation" class="nav-bar__link nav-bar__link--ripple">Simulation</a>
-    <a routerLink="/leaderboard" class="nav-bar__link nav-bar__link--ripple">Leaderboards</a>
-    <a (click)="auth.signOut()" *ngIf="auth.user$ | async; else login" class="nav-bar__link nav-bar__link--ripple">Logout</a>
-    <ng-template #login>
-      <a routerLink="/login" class="nav-bar__link nav-bar__link--ripple">Login</a>
-    </ng-template>
-  </nav>
-</header>
+  </div>
+</nav>

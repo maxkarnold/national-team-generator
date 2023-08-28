@@ -4,6 +4,252 @@ import { GroupTeam } from 'app/models/nation.model';
 import { sum } from 'lodash';
 import { Match, Region, MatchEvent, EventEmoji } from './simulation.model';
 
+const getAdjustedTime = (time: number) => {
+  if (time > 120) {
+    return (time += 20);
+  }
+  if (time > 105) {
+    return (time += 15);
+  }
+  if (time > 90) {
+    return (time += 10);
+  }
+  if (time > 45) {
+    return (time += 5);
+  }
+  return time;
+};
+
+function whoWon(
+  goalsFor: number,
+  goalsAg: number,
+  forEvents: MatchEvent[],
+  oppEvents: MatchEvent[],
+  team: GroupTeam,
+  otherTeam: GroupTeam,
+  isPenaltyWin: boolean
+): { winner: GroupTeam; loser: GroupTeam; score: string; adjustedEventTimes: { winner: MatchEvent[]; loser: MatchEvent[] } } {
+  const firstTeamWin = {
+    winner: team,
+    loser: otherTeam,
+    score: `${goalsFor}-${goalsAg}`,
+    adjustedEventTimes: { winner: forEvents, loser: oppEvents },
+  };
+  const secondTeamWin = {
+    winner: otherTeam,
+    loser: team,
+    score: `${goalsAg}-${goalsFor}`,
+    adjustedEventTimes: { winner: oppEvents, loser: forEvents },
+  };
+  if (isPenaltyWin) {
+    let rand = getRandFloat(0, 1);
+    const firstTeamAdvantage = team.penRating > otherTeam.penRating;
+
+    if (firstTeamAdvantage && rand > 0.25) {
+      return firstTeamWin;
+    } else if (!firstTeamAdvantage && rand > 0.25) {
+      return secondTeamWin;
+    } else {
+      rand = getRandFloat(0, 1);
+      return rand > 0.5 ? firstTeamWin : secondTeamWin;
+    }
+  }
+  return goalsFor > goalsAg ? firstTeamWin : secondTeamWin;
+}
+
+function sortEventTimes(a: MatchEvent, b: MatchEvent) {
+  const aValues = a.time.split('+').map(str => parseInt(str, 10));
+  const bValues = b.time.split('+').map(str => parseInt(str, 10));
+  const adjustedA = sum([getAdjustedTime(aValues[0]), aValues[1]]);
+  const adjustedB = sum([getAdjustedTime(bValues[0]), bValues[1]]);
+
+  if (adjustedA < adjustedB) {
+    return -1;
+  }
+  if (adjustedA > adjustedB) {
+    return 1;
+  }
+  return 0;
+}
+
+function getRandomCardTimes(events: MatchEvent[], time: number): MatchEvent[] {
+  const canGiveSecondYellow = (evts: MatchEvent[]) => {
+    const firstYellows = evts.map(e => e.emoji).filter(e => e === '🟨');
+    const secondYellows = evts.map(e => e.emoji).filter(e => e === '🟨🟥');
+    return firstYellows.length < secondYellows.length;
+  };
+  const yellowCards = events.filter(e => e.emoji === '🟨');
+  const redCards = events.filter(e => e.emoji === '🟥' || e.emoji === '🟨🟥');
+  // https://football-observatory.com/IMG/sites/mr/mr57/en/
+  const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
+
+  const newEventTimes: MatchEvent[] = [];
+  for (let i = time - 14; i < interval; i++) {
+    const rand = getRandomInt(0, 10000) + yellowCards.length * 100;
+    const newTimeStr = i > time ? `${time}+${i - time}` : i.toString();
+    let emoji: EventEmoji = '🟨';
+
+    if (events.map(e => e.time).includes(newTimeStr)) {
+      continue;
+    }
+
+    if (i < 50 && rand < 171) {
+      // first half probability
+      // 1.66% of 1st half yellow
+      // 0.05% of 1st half red
+      if (rand < 5) {
+        if (rand < 3 && canGiveSecondYellow(events)) {
+          emoji = '🟨🟥';
+        } else {
+          emoji = '🟥';
+        }
+      }
+      newEventTimes.push({
+        time: newTimeStr,
+        emoji,
+      });
+    } else if (i > 49 && rand < 346) {
+      // second half probability
+      // 3.23% of 2nd half yellow
+      // 0.23% of 2nd half red
+      if (rand < 23) {
+        if (rand < 12 && canGiveSecondYellow(events)) {
+          emoji = '🟨🟥';
+        } else {
+          emoji = '🟥';
+        }
+      }
+      newEventTimes.push({
+        time: newTimeStr,
+        emoji,
+      });
+    }
+  }
+  return newEventTimes;
+}
+
+function getRandomGoalTimes(forEventTimes: MatchEvent[], oppEventTimes: MatchEvent[], time: number): MatchEvent {
+  const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
+  const events = [...forEventTimes, ...oppEventTimes];
+
+  const newEventTimes = getRandomInts(4, time - 14, interval);
+  for (let i = 0; i < newEventTimes.size; i++) {
+    const newTime = Array.from(newEventTimes)[i];
+    const newTimeStr = newTime > time ? `${time}+${newTime - time}` : newTime.toString();
+    if (
+      !events
+        .filter(e => e.emoji === '⚽')
+        .map(e => e.time)
+        .includes(newTimeStr)
+    ) {
+      return {
+        time: newTimeStr,
+        emoji: '⚽',
+      };
+    }
+  }
+
+  return {
+    time: 'ERROR',
+    emoji: '🟥',
+  };
+}
+
+function calcScore(
+  team: GroupTeam,
+  opp: GroupTeam,
+  extraTime: boolean
+): { goalsFor: number; goalsAg: number; isEtWin: boolean; forEventTimes: MatchEvent[]; oppEventTimes: MatchEvent[] } {
+  // TODO: If team gets a red card, they need to have a lesser chance to score and an increased chance to concede
+  const timeIntervals = [15, 30, 45, 60, 75, 90];
+  if (extraTime) {
+    timeIntervals.push(105, 120);
+  }
+  const gF = team.attRating + team.midRating / 2 - (opp.midRating / 2 + opp.defRating);
+  const gA = opp.attRating + opp.midRating / 2 - (team.midRating / 2 + team.defRating);
+
+  let teamMultiplier = ((gF + 80) / 160) * 50;
+  let oppMultiplier = ((gA + 80) / 160) * 50;
+  if (team.homeTeam) {
+    teamMultiplier += 2.5;
+  }
+  if (opp.homeTeam) {
+    oppMultiplier += 2.5;
+  }
+
+  if (team.coach?.rating && opp.coach?.rating) {
+    if (team.coach.rating > opp.coach.rating) {
+      teamMultiplier += (team.coach.rating - opp.coach.rating) / 10;
+    } else {
+      oppMultiplier += (opp.coach.rating - team.coach.rating) / 10;
+    }
+  }
+  let goalsFor = 0;
+  let goalsAg = 0;
+  let isEtWin = false;
+
+  const forEventTimes: MatchEvent[] = [];
+  const oppEventTimes: MatchEvent[] = [];
+
+  for (let i = 0; i < timeIntervals.length; i++) {
+    // teamMultiplier and oppMultiplier have range of (0 - 100) * 1.25
+    const rand1 = getRandFloat(0, 100);
+    const rand2 = getRandFloat(0, 100);
+    let teamAdv = teamMultiplier;
+    let oppAdv = oppMultiplier;
+
+    if (timeIntervals[i] < 90) {
+      if (goalsFor === 0) {
+        teamAdv -= 5;
+      }
+
+      if (goalsAg === 0) {
+        oppAdv -= 5;
+      }
+    }
+
+    if (goalsFor === goalsAg && timeIntervals[i] !== 90) {
+      teamAdv -= 5;
+      oppAdv -= 5;
+    }
+
+    if (rand1 <= teamAdv) {
+      goalsFor++;
+      forEventTimes.push(getRandomGoalTimes(forEventTimes, oppEventTimes, timeIntervals[i]));
+      if (teamAdv > 35 && getRandomInt(0, 10) < 6) {
+        goalsFor++;
+        forEventTimes.push(getRandomGoalTimes(forEventTimes, oppEventTimes, timeIntervals[i]));
+      }
+    }
+
+    if (rand2 <= oppAdv) {
+      goalsAg++;
+      oppEventTimes.push(getRandomGoalTimes(oppEventTimes, forEventTimes, timeIntervals[i]));
+      if (oppAdv > 35 && getRandomInt(0, 10) < 6) {
+        goalsAg++;
+        oppEventTimes.push(getRandomGoalTimes(oppEventTimes, forEventTimes, timeIntervals[i]));
+      }
+    }
+
+    forEventTimes.push(...getRandomCardTimes(forEventTimes, timeIntervals[i]));
+    oppEventTimes.push(...getRandomCardTimes(oppEventTimes, timeIntervals[i]));
+
+    if (timeIntervals[i] === 90 && goalsFor !== goalsAg) {
+      break;
+    }
+
+    if (timeIntervals[i] === 120 && goalsFor !== goalsAg) {
+      isEtWin = true;
+      break;
+    }
+  }
+
+  forEventTimes.sort(sortEventTimes);
+  oppEventTimes.sort(sortEventTimes);
+
+  return { goalsFor, goalsAg, isEtWin, forEventTimes, oppEventTimes };
+}
+
 export const regions: Region[] = [
   {
     label: 'UEFA',
@@ -62,7 +308,7 @@ export const regions: Region[] = [
 ];
 
 export function extraTimeResult(match: Match) {
-  return match.penaltyWin ? ` after winning on penalties` : match.etWin ? ` after extra time` : '';
+  return match.isPenaltyWin ? ` after winning on penalties` : match.isEtWin ? ` after extra time` : '';
 }
 
 export function findTeamInTournament(groups: GroupTeam[][], nation: GroupTeam) {
@@ -156,218 +402,6 @@ export function addRankings(arr: GroupTeam[], hasCoaches?: boolean) {
     }));
 }
 
-function getRandomGoalTimes(eventTimes: { for: MatchEvent[]; opp: MatchEvent[] }, time: number): MatchEvent {
-  const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
-  const events = [...eventTimes.for, ...eventTimes.opp];
-
-  const newEventTimes = getRandomInts(4, time - 14, interval);
-  for (let i = 0; i < newEventTimes.size; i++) {
-    const newTime = Array.from(newEventTimes)[i];
-    const newTimeStr = newTime > time ? `${time}+${newTime - time}` : newTime.toString();
-    if (
-      !events
-        .filter(e => e.emoji === '⚽')
-        .map(e => e.time)
-        .includes(newTimeStr)
-    ) {
-      return {
-        time: newTimeStr,
-        emoji: '⚽',
-      };
-    }
-  }
-
-  return {
-    time: 'ERROR',
-    emoji: '🟥',
-  };
-}
-
-const getAdjustedTime = (time: number) => {
-  if (time > 120) {
-    return (time += 20);
-  }
-  if (time > 105) {
-    return (time += 15);
-  }
-  if (time > 90) {
-    return (time += 10);
-  }
-  if (time > 45) {
-    return (time += 5);
-  }
-  return time;
-};
-
-function getRandomCardTimes(events: MatchEvent[], time: number): MatchEvent[] {
-  const canGiveSecondYellow = (evts: MatchEvent[]) => {
-    const firstYellows = evts.map(e => e.emoji).filter(e => e === '🟨');
-    const secondYellows = evts.map(e => e.emoji).filter(e => e === '🟨🟥');
-    return firstYellows.length < secondYellows.length;
-  };
-  const yellowCards = events.filter(e => e.emoji === '🟨');
-  const redCards = events.filter(e => e.emoji === '🟥' || e.emoji === '🟨🟥');
-  // https://football-observatory.com/IMG/sites/mr/mr57/en/
-  const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
-
-  const newEventTimes: MatchEvent[] = [];
-  for (let i = time - 14; i < interval; i++) {
-    // console.log(i, time, interval);
-    const rand = getRandomInt(0, 10000) + yellowCards.length * 100;
-    // console.log(rand);
-    const newTimeStr = i > time ? `${time}+${i - time}` : i.toString();
-    let emoji: EventEmoji = '🟨';
-
-    if (events.map(e => e.time).includes(newTimeStr)) {
-      continue;
-    }
-
-    if (i < 50 && rand < 171) {
-      // first half probability
-      // 1.66% of 1st half yellow
-      // 0.05% of 1st half red
-      if (rand < 5) {
-        if (rand < 3 && canGiveSecondYellow(events)) {
-          emoji = '🟨🟥';
-        } else {
-          emoji = '🟥';
-        }
-      }
-      newEventTimes.push({
-        time: newTimeStr,
-        emoji,
-      });
-    } else if (i > 49 && rand < 346) {
-      // second half probability
-      // 3.23% of 2nd half yellow
-      // 0.23% of 2nd half red
-      if (rand < 23) {
-        if (rand < 12 && canGiveSecondYellow(events)) {
-          emoji = '🟨🟥';
-        } else {
-          emoji = '🟥';
-        }
-      }
-      newEventTimes.push({
-        time: newTimeStr,
-        emoji,
-      });
-    }
-  }
-  return newEventTimes;
-}
-
-function sortEventTimes(a: MatchEvent, b: MatchEvent) {
-  const aValues = a.time.split('+').map(str => parseInt(str, 10));
-  const bValues = b.time.split('+').map(str => parseInt(str, 10));
-  const adjustedA = sum([getAdjustedTime(aValues[0]), aValues[1]]);
-  const adjustedB = sum([getAdjustedTime(bValues[0]), bValues[1]]);
-
-  if (adjustedA < adjustedB) {
-    return -1;
-  }
-  if (adjustedA > adjustedB) {
-    return 1;
-  }
-  return 0;
-}
-
-export function calcScore(
-  team: GroupTeam,
-  opp: GroupTeam,
-  extraTime: boolean
-): [number, number, boolean, { for: MatchEvent[]; opp: MatchEvent[] }] {
-  // TODO: If team gets a red card, they need to have a lesser chance to score and an increased chance to concede
-  const timeIntervals = [15, 30, 45, 60, 75, 90];
-  if (extraTime) {
-    timeIntervals.push(105, 120);
-  }
-  const gF = team.attRating + team.midRating / 2 - (opp.midRating / 2 + opp.defRating);
-  const gA = opp.attRating + opp.midRating / 2 - (team.midRating / 2 + team.defRating);
-
-  let teamMultiplier = ((gF + 80) / 160) * 50;
-  let oppMultiplier = ((gA + 80) / 160) * 50;
-  if (team.homeTeam) {
-    teamMultiplier += 2.5;
-  }
-  if (opp.homeTeam) {
-    oppMultiplier += 2.5;
-  }
-
-  if (team.coach?.rating && opp.coach?.rating) {
-    if (team.coach.rating > opp.coach.rating) {
-      teamMultiplier += (team.coach.rating - opp.coach.rating) / 10;
-    } else {
-      oppMultiplier += (opp.coach.rating - team.coach.rating) / 10;
-    }
-  }
-  let goalFor = 0;
-  let goalAg = 0;
-  let etWin = false;
-  const eventTimes: { for: MatchEvent[]; opp: MatchEvent[] } = {
-    for: [],
-    opp: [],
-  };
-
-  for (let i = 0; i < timeIntervals.length; i++) {
-    // teamMultiplier and oppMultiplier have range of (0 - 100) * 1.25
-    const rand1 = getRandFloat(0, 100);
-    const rand2 = getRandFloat(0, 100);
-    let teamAdv = teamMultiplier;
-    let oppAdv = oppMultiplier;
-
-    if (timeIntervals[i] < 90) {
-      if (goalFor === 0) {
-        teamAdv -= 5;
-      }
-
-      if (goalAg === 0) {
-        oppAdv -= 5;
-      }
-    }
-
-    if (goalFor === goalAg && timeIntervals[i] !== 90) {
-      teamAdv -= 5;
-      oppAdv -= 5;
-    }
-
-    if (rand1 <= teamAdv) {
-      goalFor++;
-      eventTimes.for.push(getRandomGoalTimes(eventTimes, timeIntervals[i]));
-      if (teamAdv > 35 && getRandomInt(0, 10) < 6) {
-        goalFor++;
-        eventTimes.for.push(getRandomGoalTimes(eventTimes, timeIntervals[i]));
-      }
-    }
-
-    if (rand2 <= oppAdv) {
-      goalAg++;
-      eventTimes.opp.push(getRandomGoalTimes(eventTimes, timeIntervals[i]));
-      if (oppAdv > 35 && getRandomInt(0, 10) < 6) {
-        goalAg++;
-        eventTimes.opp.push(getRandomGoalTimes(eventTimes, timeIntervals[i]));
-      }
-    }
-
-    eventTimes.for.push(...getRandomCardTimes(eventTimes.for, timeIntervals[i]));
-    eventTimes.opp.push(...getRandomCardTimes(eventTimes.opp, timeIntervals[i]));
-
-    if (timeIntervals[i] === 90 && goalFor !== goalAg) {
-      break;
-    }
-
-    if (timeIntervals[i] === 120 && goalFor !== goalAg) {
-      etWin = true;
-      break;
-    }
-  }
-
-  eventTimes.for.sort(sortEventTimes);
-  eventTimes.opp.sort(sortEventTimes);
-
-  return [goalFor, goalAg, etWin, eventTimes];
-}
-
 export function getGradeSummary({ name: nationName, reportCard, matchesPlayed, groupFinish }: GroupTeam): string {
   const name = nationName
     .split(' ')
@@ -431,50 +465,25 @@ export function getGradeStyle(grade: string | undefined): '' | 'good-grade' | 'o
 }
 
 export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: boolean): Match {
-  const [goalsFor, goalsAg, etWin, eventTimes] = calcScore(team, otherTeam, hasExtraTime);
+  const { goalsFor, goalsAg, isEtWin, forEventTimes, oppEventTimes } = calcScore(team, otherTeam, hasExtraTime);
 
-  const penaltyWin = goalsFor === goalsAg;
+  const isPenaltyWin = goalsFor === goalsAg;
 
-  const whoWon = (
-    gf: number,
-    ga: number,
-    events: { for: MatchEvent[]; opp: MatchEvent[] }
-  ): { winner: GroupTeam; loser: GroupTeam; score: string; adjustedEventTimes: { winner: MatchEvent[]; loser: MatchEvent[] } } => {
-    const firstTeamWin = {
-      winner: team,
-      loser: otherTeam,
-      score: `${goalsFor}-${goalsAg}`,
-      adjustedEventTimes: { winner: events.for, loser: events.opp },
-    };
-    const secondTeamWin = {
-      winner: otherTeam,
-      loser: team,
-      score: `${goalsAg}-${goalsFor}`,
-      adjustedEventTimes: { winner: events.opp, loser: events.for },
-    };
-    if (penaltyWin) {
-      let rand = getRandFloat(0, 1);
-      const firstTeamAdvantage = team.penRating > otherTeam.penRating;
-
-      if (firstTeamAdvantage && rand > 0.25) {
-        return firstTeamWin;
-      } else if (!firstTeamAdvantage && rand > 0.25) {
-        return secondTeamWin;
-      } else {
-        rand = getRandFloat(0, 1);
-        return rand > 0.5 ? firstTeamWin : secondTeamWin;
-      }
-    }
-    return gf > ga ? firstTeamWin : secondTeamWin;
-  };
-
-  const { winner, loser, score, adjustedEventTimes } = whoWon(goalsFor, goalsAg, eventTimes);
+  const { winner, loser, score, adjustedEventTimes } = whoWon(
+    goalsFor,
+    goalsAg,
+    forEventTimes,
+    oppEventTimes,
+    team,
+    otherTeam,
+    isPenaltyWin
+  );
 
   return {
     goalsFor,
     goalsAg,
-    etWin,
-    penaltyWin,
+    isEtWin,
+    isPenaltyWin,
     winner,
     loser,
     score,

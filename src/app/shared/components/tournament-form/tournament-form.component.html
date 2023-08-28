@@ -1,13 +1,8 @@
-<div class="form-container">
-  <form class="number-form" [formGroup]="tournamentForm" novalidate (ngSubmit)="checkTournamentForm()">
-    <div class="inputs">
-      <div class="host-nation">
+<div class="flex flex-col mx-8 py-8">
+  <form class="flex flex-col" [formGroup]="tournamentForm" novalidate (ngSubmit)="checkTournamentForm()">
+    <div class="flex flex-col justify-center text-xl items-center">
+      <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
         <label for="hostNations">Host Nation(s)</label>
-        <!-- <select formControlName="hostNations" [compareWith]="compareArr" required>
-          <option *ngFor="let nations of potentialHosts" [ngValue]="nations" placeholder="Choose Host Nation(s)">
-            <span *ngFor="let nation of nations">{{ nation.emoji }} {{ nation.name }} </span>
-          </option>
-        </select> -->
         <ng-select
           formControlName="hostNations"
           [items]="potentialHosts"
@@ -17,7 +12,8 @@
           [compareWith]="compareHosts"
           bindLabel="name"
           [groupBy]="groupHosts"
-          required>
+          required
+          class="w-full">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
               <span class="ng-value-label">{{ item.emoji }} {{ item.name }}</span>
@@ -30,7 +26,7 @@
         </ng-select>
       </div>
 
-      <div>
+      <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
         <label for="region">Regions Available</label>
         <ng-select
           formControlName="availableRegions"
@@ -43,20 +39,21 @@
           (ngModelChange)="regionChanged($event)"
           [compareWith]="compareRegions"
           required
-          placeholder="Please Select A Region">
+          placeholder="Please Select A Region"
+          class="w-full">
         </ng-select>
       </div>
 
-      <div>
+      <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
         <label for="numOfTeams">Number of Teams</label>
-        <select formControlName="numOfTeams" required class="border-black/25 border p-1 rounded">
+        <select formControlName="numOfTeams" required class="border p-1 rounded w-full h-10">
           <option value="32">32 - World Cup</option>
           <option value="24" disabled>24 - EUROS, AFCON</option>
           <option value="12" disabled>12 - Copa América</option>
         </select>
       </div>
 
-      <div>
+      <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
         <label for="numOfGames">Group Games Per Opponent (1-3)</label>
         <input
           type="number"
@@ -64,23 +61,29 @@
           min="1"
           max="3"
           (ngModelChange)="numOfGamesChanged($event)"
-          class="border-black/25 border p-1 rounded" />
+          class="border p-1 rounded w-full h-10" />
       </div>
     </div>
 
-    <button type="submit" [disabled]="!tournamentForm.valid" class="bg-secondary_light text-white rounded">Setup Tournament</button>
-    <button type="button" *ngIf="user && coaches.length < 1" (click)="addCoaches()" class="bg-secondary_light text-white rounded">
-      Add Coaches (Beta)
-    </button>
-    <button
-      type="button"
-      [disabled]="!tournamentForm.valid || cannotSave"
-      (click)="setupAndSaveTournament()"
-      class="bg-secondary_light text-white rounded">
-      {{ buttonDisplay }}
-    </button>
+    <div class="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-5 md:justify-center">
+      <button type="submit" [disabled]="!tournamentForm.valid" class="btn disabled:btn-disabled">Setup Tournament</button>
+      <button type="button" *ngIf="user && coaches.length < 1" (click)="addCoaches()" class="btn disabled:btn-disabled">
+        Add Coaches (Beta)
+      </button>
+      <button
+        type="button"
+        [disabled]="!tournamentForm.valid || cannotSave"
+        (click)="setupAndSaveTournament()"
+        class="btn disabled:btn-disabled">
+        {{ buttonDisplay }}
+      </button>
+    </div>
   </form>
-  <button class="button" *ngIf="tournament?.groups" (click)="simulateTournamentButton()" class="bg-secondary_light text-white rounded">
+  <button
+    class="button"
+    *ngIf="tournament?.groups"
+    (click)="simulateTournamentButton()"
+    class="btn btn-primary disabled:btn-disabled my-8 md:mx-auto md:w-80">
     Simulate
   </button>
 </div>
