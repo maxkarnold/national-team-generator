@@ -1,8 +1,8 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Roster, RosterData } from 'app/models/roster.model';
 import { Observable, of } from 'rxjs';
 import { Nation } from 'app/models/nation.model';
-import { Clubs } from 'app/models/club.model';
+import { Club } from 'app/models/club.model';
 import { SQUAD_RULES } from '@shared/constants/squad-rules.model';
 import { compare, getRandomInt } from '@shared/utils';
 import * as pitchPositionsModule from '../../../assets/json/pitchPositions.json';
@@ -12,7 +12,7 @@ import * as nationsModule from '../../../assets/json/nations.json';
 import { CreatePlayerService } from './create-player.service';
 
 @Injectable()
-export class CreateRosterService implements OnDestroy {
+export class CreateRosterService {
   // playerService;
   // roster: Roster;
   squadRules = SQUAD_RULES;
@@ -22,7 +22,7 @@ export class CreateRosterService implements OnDestroy {
 
   nations = nationsModule;
   // nationsList: Nation[];
-  clubs: Clubs = clubsModule;
+  clubs: Club[] = clubsModule as Club[];
 
   shirtIcon = '../../../assets/img/shirt-icon.jpg';
 
@@ -42,8 +42,6 @@ export class CreateRosterService implements OnDestroy {
     //     nationsArr.forEach((nation) => this.nationsList.push(nation as Nation))
     //   );
   }
-
-  ngOnDestroy(): void {}
 
   // currentRoster() {
   //   this.roster$ = of(this.roster);

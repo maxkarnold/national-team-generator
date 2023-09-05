@@ -6,11 +6,12 @@ import { HomeComponent } from './pages/home/home.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SimulationComponent } from './pages/simulation/simulation.component';
+import { CareerComponent } from './pages/career/career.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'simulation',
+    redirectTo: 'career',
     pathMatch: 'full',
   },
   {
@@ -37,7 +38,10 @@ const routes: Routes = [
     component: LeaderboardComponent,
   },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
-
+  {
+    path: 'career',
+    component: CareerComponent,
+  },
   { path: '**', redirectTo: '/simulation/group-stage' },
 ];
 

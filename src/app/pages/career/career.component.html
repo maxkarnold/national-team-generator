@@ -1,0 +1,104 @@
+<div class="container xl:flex">
+  <div class="flex-1 m-8" *ngIf="currentTransferOptions.length > 0">
+    <h2 class="text-2xl mb-4 text-center">Season {{ currentCareerStats.currentSeason }} Options</h2>
+    <legend>Click a club to choose them</legend>
+    <table class="table table-compact">
+      <thead>
+        <tr>
+          <th>Club</th>
+          <th>Transfer Type</th>
+          <th>Transfer Offer</th>
+          <th>Wage (per week)</th>
+          <th>Play Time</th>
+        </tr>
+      </thead>
+      <tr
+        *ngFor="let transfer of currentTransferOptions"
+        class="cursor-pointer capitalize hover:bg-gray-300"
+        (click)="simulateSeason(transfer)">
+        <td class="">
+          <img [src]="transfer.club.logo" [alt]="transfer.club.clubName" class="w-8" /> {{ transfer.club.clubName }}
+          <span class="uppercase">({{ transfer.club.league }})</span>
+        </td>
+        <td>{{ transfer.transferType }}</td>
+        <td>{{ transfer.transferFee | currency: 'EUR':'symbol':'1.0-0' }}</td>
+        <td>{{ transfer.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
+        <td>{{ transfer.playingTime }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div *ngIf="currentTransferOptions.length < 1 && finalStats">
+    <h2 class="text-3xl mb-4 text-center">Final Career Stats</h2>
+    <table class="table table-zebra table-compact m-8">
+      <thead>
+        <th>Final Year</th>
+        <th>Final Age</th>
+        <th>Longest Served Club</th>
+        <th>APP</th>
+        <th>GOALS</th>
+        <th>ASSISTS</th>
+        <th>AVG RATING</th>
+        <th>TOTAL EARNINGS (€)</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            {{ finalStats[0] }}
+          </td>
+          <td>
+            {{ finalStats[1] }}
+          </td>
+          <td class="flex items-center capitalize">
+            <img [src]="finalStats[2]?.logo" [alt]="finalStats[2]?.clubName" class="w-5 mr-2" />
+            {{ finalStats[2]?.clubName }} ({{ finalStats[2]?.league.toUpperCase() }})
+          </td>
+          <td>
+            {{ finalStats[3] }}
+          </td>
+          <td>
+            {{ finalStats[4] }}
+          </td>
+          <td>
+            {{ finalStats[5] }}
+          </td>
+          <td>
+            {{ finalStats[6] }}
+          </td>
+          <td>
+            {{ finalStats[7] | currency: 'EUR':'symbol':'1.0-0' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <table class="table table-compact table-zebra m-8">
+    <thead>
+      <tr>
+        <th>Career Stats</th>
+      </tr>
+      <tr>
+        <th *ngFor="let header of tableHeaders">{{ header }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let season of seasons" class="">
+        <td>{{ season.year }}</td>
+        <td>{{ season.age }}</td>
+        <td class="flex items-center capitalize">
+          <img [src]="season.team.logo" [alt]="season.team.clubName" class="w-5 mr-2" />{{ season.team.clubName }} ({{
+            season.team.league.toUpperCase()
+          }})
+        </td>
+        <td>{{ season.info }}</td>
+        <td>{{ season.appearances }}</td>
+        <td>{{ season.goals }}</td>
+        <td>{{ season.assists }}</td>
+        <td>{{ season.avgRating === 0 ? 'N/A' : season.avgRating.toFixed(1) }}</td>
+        <td>{{ season.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
+        <td class="capitalize">{{ season.playTime }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

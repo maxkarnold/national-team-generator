@@ -1,5 +1,9 @@
 export const originalOrder = (): number => 0;
 
+export const probability = (n: number) => {
+  return !!n && Math.random() <= n;
+};
+
 export const pickSingleLastName = (names: string[]) => {
   if (names.length > 0) {
     const char = names[0].charAt(0);

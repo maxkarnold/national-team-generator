@@ -23,19 +23,19 @@
         </div>
         <div>
           <span>ATT</span>
-          <h3>{{ getDisplayRating(nation.attRating) }}</h3>
+          <h3>{{ getDisplayRating(nation.attRating, true) }}</h3>
         </div>
         <div>
           <span>MID</span>
-          <h3>{{ getDisplayRating(nation.midRating) }}</h3>
+          <h3>{{ getDisplayRating(nation.midRating, true) }}</h3>
         </div>
         <div>
           <span>DEF</span>
-          <h3>{{ getDisplayRating(nation.defRating) }}</h3>
+          <h3>{{ getDisplayRating(nation.defRating, true) }}</h3>
         </div>
         <div>
           <span>PEN</span>
-          <h3>{{ getDisplayRating(nation.penRating) }}</h3>
+          <h3>{{ getDisplayRating(nation.penRating, true) }}</h3>
         </div>
       </div>
       <div class="right-side">
@@ -118,7 +118,11 @@
             <span class="score"
               >{{ item.match.score }}
               {{
-                item.match.isPenaltyWin && stages[i].prop !== 'group' ? '(P)' : item.match.isEtWin && stages[i].prop !== 'group' ? '(AET)' : ''
+                item.match.isPenaltyWin && stages[i].prop !== 'group'
+                  ? '(P)'
+                  : item.match.isEtWin && stages[i].prop !== 'group'
+                  ? '(AET)'
+                  : ''
               }}
               <span class="score-tooltip">
                 <span class="title">Match Recap</span>

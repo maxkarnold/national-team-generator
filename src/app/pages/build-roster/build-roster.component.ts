@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CreateRosterService } from '@core/services/create-roster.service';
 import { Roster, RosterData } from 'app/models/roster.model';
 import { Observable } from 'rxjs';
-import { Clubs } from 'app/models/club.model';
+import { Club } from 'app/models/club.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';
@@ -29,7 +29,7 @@ export class BuildRosterComponent {
   }
 
   ngOnInit(): void {
-    this.auth.user$.pipe(untilDestroyed(this)).subscribe((user) => {
+    this.auth.user$.pipe(untilDestroyed(this)).subscribe(user => {
       if (user !== null && user !== undefined) {
         this.user = user;
       }
@@ -38,9 +38,7 @@ export class BuildRosterComponent {
 
   createRoster(): void {
     if (this.nationSelectValue === '') {
-      alert(
-        'You must select a nation or random nationalities before generating a team'
-      );
+      alert('You must select a nation or random nationalities before generating a team');
       // return;
     }
     // *** KEEP THIS COMMENTED FOR DEV BRANCH ***

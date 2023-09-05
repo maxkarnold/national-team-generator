@@ -58,4 +58,7 @@ input:disabled {
 
 .nation-flag {
   cursor: pointer;
+  border-radius: 5px;
+  object-fit: cover;
+  max-width: 5rem;
 }

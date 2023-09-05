@@ -1,17 +1,19 @@
 export interface Club {
-  club: string;
+  id: number;
+  clubName: string;
   logo: string;
   league: string;
+  leagueDifficulty: number;
+  clubRating: number;
+  marketValue: number;
+  gamesInSeason: number;
+  continent: Region;
 }
 
-export interface Clubs {
-  top50: Club[];
-  top200: Club[];
-  regularInternational: Club[];
-  averagePlayer: Club[];
-  championshipPlayer: Club[];
-  leagueOnePlayer: Club[];
-  leagueTwoPlayer: Club[];
-  fillerPlayer: Club[];
-  [key: string]: Club[];
+export enum Region {
+  UEFA = 'uefa',
+  CONMEBOL = 'conembol',
+  CONCACAF = 'concacaf',
+  CAF = 'caf',
+  AFC = 'afc',
 }

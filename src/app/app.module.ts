@@ -15,6 +15,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { BuildRosterComponent } from './pages/build-roster/build-roster.component';
 import { SimulationComponent } from './pages/simulation/simulation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CareerComponent } from './pages/career/career.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     BuildRosterComponent,
     SimulationComponent,
+    CareerComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule, CoreModule, CommonModule, BrowserAnimationsModule],
   providers: [],

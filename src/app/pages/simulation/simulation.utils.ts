@@ -156,32 +156,32 @@ function getRandomGoalTimes(forEventTimes: MatchEvent[], oppEventTimes: MatchEve
 }
 
 function calcScore(
-  team: GroupTeam,
-  opp: GroupTeam,
-  extraTime: boolean
+  team1: GroupTeam,
+  team2: GroupTeam,
+  canHaveExtraTime: boolean
 ): { goalsFor: number; goalsAg: number; isEtWin: boolean; forEventTimes: MatchEvent[]; oppEventTimes: MatchEvent[] } {
   // TODO: If team gets a red card, they need to have a lesser chance to score and an increased chance to concede
-  const timeIntervals = [15, 30, 45, 60, 75, 90];
-  if (extraTime) {
-    timeIntervals.push(105, 120);
+  const matchTimeIntervals = [15, 30, 45, 60, 75, 90];
+  if (canHaveExtraTime) {
+    matchTimeIntervals.push(105, 120);
   }
-  const gF = team.attRating + team.midRating / 2 - (opp.midRating / 2 + opp.defRating);
-  const gA = opp.attRating + opp.midRating / 2 - (team.midRating / 2 + team.defRating);
+  const team1ScoreRating = team1.attRating + team1.midRating / 2 - (team2.midRating / 2 + team2.defRating);
+  const team2ScoreRating = team2.attRating + team2.midRating / 2 - (team1.midRating / 2 + team1.defRating);
 
-  let teamMultiplier = ((gF + 80) / 160) * 50;
-  let oppMultiplier = ((gA + 80) / 160) * 50;
-  if (team.homeTeam) {
-    teamMultiplier += 2.5;
+  let team1Multiplier = ((team1ScoreRating + 80) / 160) * 50;
+  let team2Multiplier = ((team2ScoreRating + 80) / 160) * 50;
+  if (team1.homeTeam) {
+    team1Multiplier += 2.5;
   }
-  if (opp.homeTeam) {
-    oppMultiplier += 2.5;
+  if (team2.homeTeam) {
+    team2Multiplier += 2.5;
   }
 
-  if (team.coach?.rating && opp.coach?.rating) {
-    if (team.coach.rating > opp.coach.rating) {
-      teamMultiplier += (team.coach.rating - opp.coach.rating) / 10;
+  if (team1.coach?.rating && team2.coach?.rating) {
+    if (team1.coach.rating > team2.coach.rating) {
+      team1Multiplier += (team1.coach.rating - team2.coach.rating) / 10;
     } else {
-      oppMultiplier += (opp.coach.rating - team.coach.rating) / 10;
+      team2Multiplier += (team2.coach.rating - team1.coach.rating) / 10;
     }
   }
   let goalsFor = 0;
@@ -191,14 +191,14 @@ function calcScore(
   const forEventTimes: MatchEvent[] = [];
   const oppEventTimes: MatchEvent[] = [];
 
-  for (let i = 0; i < timeIntervals.length; i++) {
+  for (let i = 0; i < matchTimeIntervals.length; i++) {
     // teamMultiplier and oppMultiplier have range of (0 - 100) * 1.25
     const rand1 = getRandFloat(0, 100);
     const rand2 = getRandFloat(0, 100);
-    let teamAdv = teamMultiplier;
-    let oppAdv = oppMultiplier;
+    let teamAdv = team1Multiplier;
+    let oppAdv = team2Multiplier;
 
-    if (timeIntervals[i] < 90) {
+    if (matchTimeIntervals[i] < 90) {
       if (goalsFor === 0) {
         teamAdv -= 5;
       }
@@ -208,41 +208,45 @@ function calcScore(
       }
     }
 
-    if (goalsFor === goalsAg && timeIntervals[i] !== 90) {
+    if (goalsFor === goalsAg && matchTimeIntervals[i] !== 90) {
       teamAdv -= 5;
       oppAdv -= 5;
     }
 
     if (rand1 <= teamAdv) {
       goalsFor++;
-      forEventTimes.push(getRandomGoalTimes(forEventTimes, oppEventTimes, timeIntervals[i]));
+      forEventTimes.push(getRandomGoalTimes(forEventTimes, oppEventTimes, matchTimeIntervals[i]));
       if (teamAdv > 35 && getRandomInt(0, 10) < 6) {
         goalsFor++;
-        forEventTimes.push(getRandomGoalTimes(forEventTimes, oppEventTimes, timeIntervals[i]));
+        forEventTimes.push(getRandomGoalTimes(forEventTimes, oppEventTimes, matchTimeIntervals[i]));
       }
     }
 
     if (rand2 <= oppAdv) {
       goalsAg++;
-      oppEventTimes.push(getRandomGoalTimes(oppEventTimes, forEventTimes, timeIntervals[i]));
+      oppEventTimes.push(getRandomGoalTimes(oppEventTimes, forEventTimes, matchTimeIntervals[i]));
       if (oppAdv > 35 && getRandomInt(0, 10) < 6) {
         goalsAg++;
-        oppEventTimes.push(getRandomGoalTimes(oppEventTimes, forEventTimes, timeIntervals[i]));
+        oppEventTimes.push(getRandomGoalTimes(oppEventTimes, forEventTimes, matchTimeIntervals[i]));
       }
     }
 
-    forEventTimes.push(...getRandomCardTimes(forEventTimes, timeIntervals[i]));
-    oppEventTimes.push(...getRandomCardTimes(oppEventTimes, timeIntervals[i]));
+    forEventTimes.push(...getRandomCardTimes(forEventTimes, matchTimeIntervals[i]));
+    oppEventTimes.push(...getRandomCardTimes(oppEventTimes, matchTimeIntervals[i]));
 
-    if (timeIntervals[i] === 90 && goalsFor !== goalsAg) {
+    if (matchTimeIntervals[i] === 90 && goalsFor !== goalsAg) {
       break;
     }
 
-    if (timeIntervals[i] === 120 && goalsFor !== goalsAg) {
+    if (matchTimeIntervals[i] === 120 && goalsFor !== goalsAg) {
       isEtWin = true;
       break;
     }
   }
+
+  // if (goalsFor === goalsAg && canHaveExtraTime) {
+  //   getPenaltyResults()
+  // }
 
   forEventTimes.sort(sortEventTimes);
   oppEventTimes.sort(sortEventTimes);
@@ -491,7 +495,46 @@ export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: 
   };
 }
 
-export function getDisplayRating(rating: number) {
+export function getDisplayRating(rating: number, isGrade?: boolean) {
+  if (isGrade) {
+    if (rating > 96) {
+      return 'S+';
+    } else if (rating > 93) {
+      return 'S';
+    } else if (rating > 90) {
+      return 'S-';
+    } else if (rating > 86) {
+      return 'A+';
+    } else if (rating > 83) {
+      return 'A';
+    } else if (rating > 80) {
+      return 'A-';
+    } else if (rating > 76) {
+      return 'B+';
+    } else if (rating > 73) {
+      return 'B';
+    } else if (rating > 70) {
+      return 'B-';
+    } else if (rating > 66) {
+      return 'C+';
+    } else if (rating > 63) {
+      return 'C';
+    } else if (rating > 60) {
+      return 'C-';
+    } else if (rating > 56) {
+      return 'D+';
+    } else if (rating > 53) {
+      return 'D';
+    } else if (rating > 50) {
+      return 'D-';
+    } else if (rating > 46) {
+      return 'F+';
+    } else if (rating > 43) {
+      return 'F';
+    } else {
+      return 'F-';
+    }
+  }
   return Math.floor(rating);
 }
 
