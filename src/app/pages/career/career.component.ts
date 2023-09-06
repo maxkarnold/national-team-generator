@@ -3,9 +3,8 @@ import nationsJson from 'assets/json/nations.json';
 import clubsJson from 'assets/json/clubs.json';
 import { Nation } from 'app/models/nation.model';
 import { Club } from 'app/models/club.model';
-import { getRandomInts } from '@shared/utils';
-import { CareerStats, Season, TransferOption } from './career.constants';
-import { getEligibleClubs, newSeasonStr, simulateStats } from './career.utils';
+import { CareerOverview, CareerStats, Season, TransferOption } from './career.model';
+import { calcCareerRating, getEligibleClubs, newSeasonStr, simulateStats, tableHeaders, totalSeasonsStr } from './career.utils';
 import { originalOrder } from '@shared/utils';
 
 @Component({
@@ -15,13 +14,13 @@ import { originalOrder } from '@shared/utils';
 })
 export class CareerComponent implements OnInit {
   originalOrder = originalOrder;
-  tableHeaders = ['Year', 'Age', 'Team', 'Info (Transfer)', 'App', 'Goals', 'Assists', 'Avg Rating', 'Wage (£/week)', 'Player Role'];
+  tableHeaders = tableHeaders;
 
   currentTransferOptions: TransferOption[] = [];
   nationList: Nation[] = [];
   clubList: Club[] = clubsJson as Club[];
   seasons: Season[] = [];
-  finalStats: any[] = [];
+  finalStats: CareerOverview[] = [];
 
   currentCareerStats: CareerStats = {
     currentSeason: '2023/24',
@@ -36,6 +35,7 @@ export class CareerComponent implements OnInit {
     potentialAbility: 200,
     currentPlayTime: 'breakthrough prospect',
     currentWage: 150,
+    aggRating: 0,
   };
 
   constructor() {
@@ -45,9 +45,14 @@ export class CareerComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentTransferOptions = this.getTransferChoices(this.currentCareerStats);
+    const store = localStorage.getItem('career_overview');
+    if (store) {
+      this.finalStats = JSON.parse(store).slice(0, 4);
+    }
   }
 
   simulateSeason(transferChoice: TransferOption) {
+    const euro = new Intl.NumberFormat('en-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
     if (this.currentCareerStats.age > 39) {
       return;
     }
@@ -56,15 +61,21 @@ export class CareerComponent implements OnInit {
       year: this.currentCareerStats.currentSeason,
       age: this.currentCareerStats.age,
       team: transferChoice.club,
-      info: '',
+      info:
+        transferChoice.transferType === 'loan'
+          ? 'Loan'
+          : transferChoice.transferType === 'n/a'
+          ? ''
+          : euro.format(transferChoice.transferFee),
       appearances: this.currentCareerStats.seasonApps,
       goals: this.currentCareerStats.seasonGoals,
       assists: this.currentCareerStats.seasonAssists,
       avgRating: this.currentCareerStats.seasonRating,
       wage: transferChoice.wage,
       playTime: transferChoice.playingTime,
+      aggRating: this.currentCareerStats.aggRating,
     };
-    console.log('Age: ', this.currentCareerStats.age, 'Current Ability: ', this.currentCareerStats.currentAbility);
+    console.log('Age: ', this.currentCareerStats.age, 'Current Ability: ', this.currentCareerStats.currentAbility, this.currentCareerStats);
     this.seasons.push(season);
     this.currentCareerStats.age++;
     this.currentCareerStats.currentSeasonIndex++;
@@ -78,28 +89,31 @@ export class CareerComponent implements OnInit {
     const eligibleClubs = getEligibleClubs(careerStats, clubs);
 
     if (eligibleClubs.length < 1) {
-      this.finalStats = this.calcFinalStats();
+      this.finalStats.unshift(this.calcFinalStats());
+      localStorage.setItem('career_overview', JSON.stringify(this.finalStats));
     }
 
     return eligibleClubs;
   }
 
-  calcFinalStats() {
+  calcFinalStats(): CareerOverview {
     const totalApps = this.seasons.reduce((acc, s) => acc + s.appearances, 0);
     const teams = this.seasons.map(s => s.team);
+    const careerRating = calcCareerRating();
     const getLongestServedClub = (clubs: Club[]) => {
       // in the event of multiple clubs being the longest, the latest one is chosen
       return clubs.sort((a, b) => clubs.filter(v => v.id === a.id).length - clubs.filter(v => v.id === b.id).length).pop();
     };
-    return [
-      this.currentCareerStats.currentSeason,
-      this.currentCareerStats.age,
-      getLongestServedClub(teams),
+    return {
+      seasons: totalSeasonsStr('2023/24', this.currentCareerStats.currentSeason),
+      yearsActive: this.currentCareerStats.age - 14,
+      longestServedClub: getLongestServedClub(teams),
       totalApps,
-      this.seasons.reduce((acc, s) => acc + s.goals, 0),
-      this.seasons.reduce((acc, s) => acc + s.assists, 0),
-      (this.seasons.reduce((acc, s) => acc + s.avgRating, 0) / this.seasons.length).toFixed(2),
-      this.seasons.reduce((acc, s) => acc + s.wage * 52, 0),
-    ];
+      totalGoals: this.seasons.reduce((acc, s) => acc + s.goals, 0),
+      totalAssists: this.seasons.reduce((acc, s) => acc + s.assists, 0),
+      avgRating: (this.seasons.reduce((acc, s) => acc + s.aggRating, 0) / totalApps).toFixed(2),
+      totalEarnings: this.seasons.reduce((acc, s) => acc + s.wage * 52, 0),
+      careerRating,
+    };
   }
 }

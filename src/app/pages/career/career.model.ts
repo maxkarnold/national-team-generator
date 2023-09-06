@@ -11,9 +11,11 @@ export type PlayingTime =
 
 export type LeagueDifficulty = 'easy' | 'mediumEasy' | 'medium' | 'mediumHard' | 'hard';
 
+export type TransferType = 'loan' | 'transfer' | 'n/a';
+
 export interface TransferOption {
   club: Club;
-  transferType: 'loan' | 'transfer';
+  transferType: TransferType;
   transferFee: number;
   wage: number;
   playingTime: PlayingTime;
@@ -30,6 +32,7 @@ export interface Season {
   avgRating: number;
   wage: number;
   playTime: PlayingTime;
+  aggRating: number;
 }
 
 export interface CareerStats {
@@ -40,10 +43,23 @@ export interface CareerStats {
   seasonAssists: number;
   seasonRating: number;
   leagueDifficulty: LeagueDifficulty;
+  aggRating: number;
   age: number;
   currentAbility: number;
   potentialAbility: number;
   currentClub?: Club;
   currentPlayTime: PlayingTime;
   currentWage: number;
+}
+
+export interface CareerOverview {
+  seasons: string;
+  yearsActive: number;
+  longestServedClub?: Club;
+  totalApps: number;
+  totalGoals: number;
+  totalAssists: number;
+  avgRating: string;
+  totalEarnings: number;
+  careerRating: number;
 }

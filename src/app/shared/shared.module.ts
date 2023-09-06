@@ -6,6 +6,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { StarRatingModule } from 'angular-star-rating';
 
 import * as fromComponents from './components';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
@@ -26,6 +27,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     NgSelectModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    StarRatingModule.forRoot(),
   ],
   exports: [NgSelectModule, ReactiveFormsModule, FormsModule, MatSnackBarModule, MatProgressSpinnerModule, ...fromComponents.components],
 })

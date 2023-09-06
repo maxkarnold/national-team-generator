@@ -1,44 +1,113 @@
 import { Club } from 'app/models/club.model';
-import { CareerStats, LeagueDifficulty, PlayingTime, TransferOption } from './career.constants';
+import { CareerStats, LeagueDifficulty, PlayingTime, TransferOption, TransferType } from './career.model';
 import { getRandFloat, getRandomInt, getRandomInts, probability } from '@shared/utils';
 import { mean, round } from 'lodash';
 
 function getPlayingTime(club: Club, career: CareerStats): { wage: number; playingTime: PlayingTime } {
-  if (career.currentAbility < club.clubRating - 50) {
+  if ((career.currentAbility < club.clubRating - 60 || career.age < 18) && career.age < 22) {
     return {
       wage: 150,
       playingTime: 'breakthrough prospect',
     };
-  } else if (career.currentAbility < club.clubRating - 40) {
+  } else if (career.currentAbility < club.clubRating - 50) {
     return {
       wage: 1000,
       playingTime: 'fringe player',
     };
-  } else if (career.currentAbility < club.clubRating - 35) {
+  } else if (career.currentAbility < club.clubRating - 40) {
     return {
       wage: 2000,
       playingTime: 'impact sub',
     };
-  } else if (career.currentAbility < club.clubRating - 20) {
+  } else if (career.currentAbility < club.clubRating - 35) {
     return {
       wage: 4500,
       playingTime: 'squad player',
     };
-  } else if (career.currentAbility < club.clubRating - 10) {
+  } else if (career.currentAbility < club.clubRating - 20) {
     return {
       wage: 6000,
       playingTime: 'regular starter',
     };
-  } else if (career.currentAbility < club.clubRating + 5) {
+  } else if (career.currentAbility < club.clubRating) {
     return {
       wage: 9500,
       playingTime: 'important player',
     };
-  } else {
+  } else if (career.currentAbility >= club.clubRating + 10) {
     return {
       wage: 12000,
       playingTime: 'star player',
     };
+  } else {
+    return {
+      wage: 1000,
+      playingTime: 'fringe player',
+    };
+  }
+}
+
+function getTransferFee(club: Club, wage: number, playingTime: PlayingTime): { transferType: TransferType; transferFee: number } {
+  const getMarketValue = (c: Club): number => {
+    switch (c.league) {
+      case 'ksa1':
+        return c.marketValue * 1.35;
+      case 'eng1':
+        return c.marketValue * 1.1;
+      case 'usa1':
+        return c.marketValue * 1.05;
+      default:
+        return c.marketValue;
+    }
+  };
+
+  const fringeRoles: PlayingTime[] = ['breakthrough prospect', 'fringe player', 'impact sub'];
+  const squadRoles: PlayingTime[] = ['squad player', 'regular starter', 'important player', 'star player'];
+  // if playingTime is prospect, fringe or sub should be a transfer
+  // if playingTime is squad, regular, important, or star should be a loan or transfer
+
+  switch (playingTime) {
+    case 'breakthrough prospect':
+      return {
+        transferType: 'transfer',
+        transferFee: getMarketValue(club) * 9000,
+      };
+    case 'fringe player':
+    case 'impact sub':
+      return {
+        transferType: 'transfer',
+        transferFee: getMarketValue(club) * 15000,
+      };
+    case 'squad player':
+      return {
+        transferType: 'transfer',
+        transferFee: getMarketValue(club) * 40000,
+      };
+    case 'regular starter':
+      return {
+        transferType: 'transfer',
+        transferFee: getMarketValue(club) * 50000,
+      };
+    case 'regular starter':
+      return {
+        transferType: 'transfer',
+        transferFee: getMarketValue(club) * 60000,
+      };
+    case 'important player':
+      return {
+        transferType: 'transfer',
+        transferFee: getMarketValue(club) * 70000,
+      };
+    case 'star player':
+      return {
+        transferType: 'transfer',
+        transferFee: getMarketValue(club) * 80000,
+      };
+    default:
+      return {
+        transferType: 'transfer',
+        transferFee: 0,
+      };
   }
 }
 
@@ -120,6 +189,7 @@ function simulateApps(apps: number, transfer: TransferOption, careerStats: Caree
     seasonAssists: 0,
     seasonRating: 0,
     leagueDifficulty: leagueDiff,
+    aggRating: 0,
   };
 
   for (let i = 0; i < apps; i++) {
@@ -130,7 +200,8 @@ function simulateApps(apps: number, transfer: TransferOption, careerStats: Caree
     seasonStats.seasonAssists += assists;
     const gameRating = (goals + assists) * 1.25 + 6.2 > 10.0 ? 10.0 : (goals + assists) * 1.25 + 6.2;
     seasonRatings.push(gameRating);
-    console.log('GA', goals, assists, gameRating);
+    seasonStats.aggRating += gameRating;
+    console.log('GA', goals, assists);
   }
 
   seasonStats.seasonRating = apps > 0 ? round(mean(seasonRatings), 1) : 0;
@@ -187,30 +258,70 @@ function adjustCurrentAbility(career: CareerStats, apps: number, rating: number,
   }
 }
 
+function getAppsForProspect(club: TransferOption, career: CareerStats, gamesInSeason: number) {
+  if (career.currentAbility < club.club.clubRating - 50) {
+    return getRandomInt(0, 8);
+  } else if (career.currentAbility < club.club.clubRating - 35) {
+    return Math.round(gamesInSeason / 3 + getRandomInt(-5, 5));
+  } else if (career.currentAbility < club.club.clubRating - 20) {
+    return Math.round(gamesInSeason / 2 + getRandomInt(-5, 5));
+  } else if (career.currentAbility < club.club.clubRating - 10) {
+    return Math.round(gamesInSeason * 0.75 + getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
+  } else {
+    return Math.round(gamesInSeason * 0.9 + getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
+  }
+}
+
+export const tableHeaders = [
+  'Year',
+  'Age',
+  'Team',
+  'Info (Transfer)',
+  'App',
+  'Goals',
+  'Assists',
+  'Avg Rating',
+  'Wage (£/week)',
+  'Player Role',
+];
+
 export function newSeasonStr(year: string) {
   const [first, second] = year.split('/').map(Number);
   return `${first + 1}/${second + 1}`;
 }
 
+export function totalSeasonsStr(first: string, last: string) {
+  return first.slice(0, 4) + ' - 20' + last.slice(-2);
+}
+
+export function calcCareerRating() {
+  return 2;
+}
+
 export function simulateStats(transferChoice: TransferOption, careerStats: CareerStats): CareerStats {
   let seasonApps = 0;
+  const gamesInSeason = transferChoice.club.gamesInSeason;
 
   switch (transferChoice.playingTime) {
     case 'breakthrough prospect':
-      seasonApps = getRandomInt(0, 5);
+      seasonApps = getAppsForProspect(transferChoice, careerStats, gamesInSeason);
+      break;
+    case 'fringe player':
+    case 'impact sub':
+      seasonApps = Math.round(gamesInSeason / 3 + getRandomInt(-5, 5));
+      console.log(seasonApps);
       break;
     case 'squad player':
-      seasonApps = Math.round(transferChoice.club.gamesInSeason / 2 + getRandomInt(-5, 5));
+      seasonApps = Math.round(gamesInSeason / 2 + getRandomInt(-5, 5));
       break;
     case 'regular starter':
-      seasonApps = Math.round(transferChoice.club.gamesInSeason * 0.75 + getRandomInt(-10, 5));
-
+      seasonApps = Math.round(gamesInSeason * 0.75 + getRandomInt(-10, 5));
       break;
     case 'important player':
-      seasonApps = Math.round(transferChoice.club.gamesInSeason * 0.9 + getRandomInt(-10, 5));
+      seasonApps = Math.round(gamesInSeason * 0.9 + getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
       break;
     case 'star player':
-      seasonApps = Math.round(transferChoice.club.gamesInSeason - getRandomInt(0, 10));
+      seasonApps = Math.round(gamesInSeason - getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
       break;
     default:
       break;
@@ -220,7 +331,7 @@ export function simulateStats(transferChoice: TransferOption, careerStats: Caree
     seasonApps = transferChoice.club.gamesInSeason;
   }
 
-  const { seasonGoals, seasonAssists, seasonRating } = simulateApps(seasonApps, transferChoice, careerStats);
+  const { seasonGoals, seasonAssists, seasonRating, aggRating } = simulateApps(seasonApps, transferChoice, careerStats);
   const currentAbility = adjustCurrentAbility(careerStats, seasonApps, seasonRating, transferChoice);
 
   const checkCurrentAbility = (ability: number) => {
@@ -235,31 +346,66 @@ export function simulateStats(transferChoice: TransferOption, careerStats: Caree
 
   return {
     ...careerStats,
+    currentClub: transferChoice.club,
     currentAbility: checkCurrentAbility(currentAbility),
     seasonApps,
     seasonGoals,
     seasonAssists,
     seasonRating,
+    aggRating,
   };
 }
 
 export function getEligibleClubs(careerStats: CareerStats, clubs: Club[]): TransferOption[] {
   // get eligible clubs for the current player's currentAbility and a role that matches
   const transferChoices: TransferOption[] = [];
+  const ageFactor = (age: number) => {
+    if (age < 20) {
+      return 70;
+    } else {
+      return 40;
+    }
+  };
   // check each team for ability
-  const eligibleClubs = clubs.filter(c => c.clubRating < careerStats.currentAbility + 40 && c.clubRating > careerStats.currentAbility - 40);
+  const eligibleClubs = clubs.filter(
+    c =>
+      c.clubRating < careerStats.currentAbility + ageFactor(careerStats.age) &&
+      c.clubRating > careerStats.currentAbility - 30 &&
+      careerStats.currentClub?.id !== c.id
+  );
 
   if (eligibleClubs.length < 1) {
     return [];
   }
-  const teamIndexes = getRandomInts(3, 0, eligibleClubs.length - 1);
+  const getCurrentClub = (teams: Club[]) => {
+    const club = teams.find(c => c.id === careerStats.currentClub?.id);
+    console.log(careerStats, club);
+    return club;
+  };
+
+  const currentClub = getCurrentClub(clubs);
+
+  if (currentClub) {
+    const { wage, playingTime } = getPlayingTime(currentClub, careerStats);
+    transferChoices.push({
+      club: currentClub,
+      transferType: 'n/a',
+      transferFee: 0,
+      wage,
+      playingTime,
+    });
+  }
+
+  const teamIndexes = [...getRandomInts(3, 0, eligibleClubs.length - 1)];
 
   teamIndexes.forEach(n => {
-    const { wage, playingTime } = getPlayingTime(eligibleClubs[n], careerStats);
+    const club = eligibleClubs[n];
+    const { wage, playingTime } = getPlayingTime(club, careerStats);
+    const { transferType, transferFee } = getTransferFee(club, wage, playingTime);
     transferChoices.push({
-      club: eligibleClubs[n],
-      transferType: 'transfer',
-      transferFee: 0,
+      club,
+      transferType,
+      transferFee,
       wage,
       playingTime,
     });
