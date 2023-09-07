@@ -36,7 +36,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles"
+                "src/styles",
+                "./node_modules"
               ]
             },
             "webWorkerTsConfig": "tsconfig.worker.json"
@@ -137,8 +138,9 @@
       }
     }
   },
-  "defaultProject": "team-gen",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

@@ -105,7 +105,7 @@ export class NationDialogComponent {
       }
     }
     rankingTiers.every((r, i) => {
-      if (nation.ranking && (nation.ranking <= r || nation.tier === r || nation.pot === r)) {
+      if (nation.ranking && ((typeof r === 'number' && nation.ranking <= r) || nation.tier === r || nation.pot === r)) {
         const { grade, result } = this.calcGrade(nation, i);
         nation.reportCard.grade = grade;
         nation.reportCard.tournamentFinish = result;

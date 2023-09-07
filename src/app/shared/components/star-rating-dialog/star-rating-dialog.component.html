@@ -1,0 +1,56 @@
+<dialog #starRatingDialog class="modal" *ngIf="career">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3>Star Rating Details</h3>
+    <label>Ability</label>
+    <p>
+      <star-rating
+        [starType]="'svg'"
+        [rating]="career.score.abilityScore"
+        [readOnly]="true"
+        [getHalfStarVisible]="isHalfStar"
+        space="between"></star-rating>
+    </p>
+    <label>Club</label>
+    <p>
+      <star-rating
+        [starType]="'svg'"
+        [rating]="career.score.peakClubScore"
+        [readOnly]="true"
+        [getHalfStarVisible]="isHalfStar"
+        space="between"></star-rating>
+    </p>
+    <label>League</label>
+    <p>
+      <star-rating
+        [starType]="'svg'"
+        [rating]="career.score.avgLeagueScore"
+        [readOnly]="true"
+        [getHalfStarVisible]="isHalfStar"
+        space="between"></star-rating>
+    </p>
+    <label>Availability</label>
+    <p>
+      <star-rating
+        [starType]="'svg'"
+        [rating]="career.score.availabilityScore"
+        [readOnly]="true"
+        [getHalfStarVisible]="isHalfStar"
+        space="between"></star-rating>
+    </p>
+    <label>Scoring</label>
+    <p>
+      <star-rating
+        [starType]="'svg'"
+        [rating]="career.score.goalScore"
+        [readOnly]="true"
+        [getHalfStarVisible]="isHalfStar"
+        space="between"></star-rating>
+    </p>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

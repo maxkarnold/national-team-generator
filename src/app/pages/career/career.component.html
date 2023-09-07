@@ -1,6 +1,6 @@
 <div class="2xl:flex">
   <div class="m-8 overflow-x-auto" *ngIf="currentTransferOptions.length > 0">
-    <h2 class="text-2xl mb-4 text-center">Season {{ currentCareerStats.currentSeason }} Options</h2>
+    <h2 class="text-2xl mb-4 text-center">Season {{ currentSeason.year }} Options</h2>
     <legend>Click a club to choose them</legend>
     <table class="table table-compact table-zebra">
       <thead>
@@ -41,7 +41,7 @@
   </div>
 
   <div *ngIf="finalStats" class="flex-1 m-8 overflow-x-auto">
-    <h2 class="text-3xl mb-4 text-center">Final Career Stats</h2>
+    <h2 class="text-3xl mb-4 text-center">{{ finalStats.length > 1 ? 'Last 5 Careers' : 'Career Overview' }}</h2>
     <table class="table table-zebra table-compact m-8">
       <thead>
         <th>Years Active</th>
@@ -74,8 +74,19 @@
               </div>
             </div>
           </td>
-          <td>
-            <star-rating [starType]="'svg'" [rating]="2.63"></star-rating>
+          <td *ngIf="career.score">
+            <div class="cursor-pointer" (click)="myModal.showModal()">
+              <star-rating
+                [starType]="'svg'"
+                [rating]="career.score.totalScore"
+                [readOnly]="true"
+                [getHalfStarVisible]="isHalfStar"
+                space="between"></star-rating>
+            </div>
+            <dialog #myModal class="modal">
+              <div class="modal-box">test</div>
+            </dialog>
+            <!-- <app-star-rating-dialog [career]="career" #myModal></app-star-rating-dialog> -->
           </td>
           <td>
             {{ career.totalApps }}
@@ -97,7 +108,7 @@
     </table>
   </div>
   <div class="overflow-x-auto flex-1 m-8">
-    <table class="table table-compact table-zebra">
+    <table class="table table-xs xl:table-md table-zebra">
       <thead>
         <tr>
           <th>Career Stats</th>
@@ -114,22 +125,30 @@
             <div class="flex items-center space-x-3">
               <div class="avatar">
                 <div class="mask mask-square w-12 h-14">
-                  <img [src]="season.team.logo" [alt]="season.team.clubName" />
+                  <img [src]="season.currentTeam?.club?.logo" [alt]="season.currentTeam?.club?.clubName" />
                 </div>
               </div>
               <div>
-                <div class="font-bold capitalize">{{ season.team.clubName }}</div>
-                <div class="text-sm opacity-50 uppercase">{{ season.team.league }}</div>
+                <div class="font-bold capitalize">{{ season.currentTeam?.club?.clubName }}</div>
+                <div class="text-sm opacity-50 uppercase">{{ season.currentTeam?.club?.league }}</div>
               </div>
             </div>
           </td>
-          <td class="capitalize">{{ season.info }}</td>
+          <td class="capitalize">
+            {{
+              season.currentTeam?.transferType === 'transfer'
+                ? (season.currentTeam?.transferFee | currency: 'EUR':'symbol':'1.0-0')
+                : season.currentTeam?.transferType === 'loan'
+                ? 'loan'
+                : ''
+            }}
+          </td>
           <td>{{ season.appearances }}</td>
           <td>{{ season.goals }}</td>
           <td>{{ season.assists }}</td>
           <td>{{ season.avgRating === 0 ? 'N/A' : season.avgRating.toFixed(1) }}</td>
-          <td>{{ season.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
-          <td class="capitalize">{{ season.playTime }}</td>
+          <td>{{ season.currentTeam?.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
+          <td class="capitalize">{{ season.currentTeam?.playingTime }}</td>
         </tr>
       </tbody>
     </table>

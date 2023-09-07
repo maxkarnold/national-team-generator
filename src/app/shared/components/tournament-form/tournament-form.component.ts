@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';
@@ -57,7 +57,7 @@ export class TournamentFormComponent {
     qualifier: SimulationQualifiersService,
     auth: AuthService,
     leaderboard: LeaderboardService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private snackbar: MatSnackBar
   ) {
     this.simulator = simulator;

@@ -21,35 +21,28 @@ export interface TransferOption {
   playingTime: PlayingTime;
 }
 
+export interface CareerScore {
+  totalScore: number;
+  abilityScore: number;
+  peakClubScore: number;
+  avgLeagueScore: number;
+  availabilityScore: number;
+  goalScore: number;
+}
+
 export interface Season {
+  id: number;
   year: string;
   age: number;
-  team: Club;
-  info: string;
   appearances: number;
   goals: number;
   assists: number;
   avgRating: number;
-  wage: number;
-  playTime: PlayingTime;
   aggRating: number;
-}
-
-export interface CareerStats {
-  currentSeason: string;
-  currentSeasonIndex: number;
-  seasonApps: number;
-  seasonGoals: number;
-  seasonAssists: number;
-  seasonRating: number;
   leagueDifficulty: LeagueDifficulty;
-  aggRating: number;
-  age: number;
   currentAbility: number;
   potentialAbility: number;
-  currentClub?: Club;
-  currentPlayTime: PlayingTime;
-  currentWage: number;
+  currentTeam?: TransferOption;
 }
 
 export interface CareerOverview {
@@ -61,5 +54,9 @@ export interface CareerOverview {
   totalAssists: number;
   avgRating: string;
   totalEarnings: number;
-  careerRating: number;
+  score: CareerScore;
+  peakAbility: number;
+  peakClubAbility: number;
+  avgLeagueAbility: number;
+  totalPossibleApps: number;
 }

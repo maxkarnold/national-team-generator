@@ -6,7 +6,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { StarRatingModule } from 'angular-star-rating';
 
 import * as fromComponents from './components';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
@@ -14,10 +13,10 @@ import { MemoizerPipe } from './pipes/memoizer.pipe';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { StarRatingModule } from 'angular-star-rating';
 
 @NgModule({
-  declarations: [...fromComponents.components, ClickStopPropagationDirective, MemoizerPipe, DashboardComponent],
+  declarations: [...fromComponents.components, ClickStopPropagationDirective, MemoizerPipe],
   imports: [
     RouterModule,
     ReactiveFormsModule,
@@ -29,7 +28,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     MatProgressSpinnerModule,
     StarRatingModule.forRoot(),
   ],
-  exports: [NgSelectModule, ReactiveFormsModule, FormsModule, MatSnackBarModule, MatProgressSpinnerModule, ...fromComponents.components],
+  exports: [
+    NgSelectModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    StarRatingModule,
+    ...fromComponents.components,
+  ],
 })
 export class SharedModule {
   constructor(library: FaIconLibrary) {
