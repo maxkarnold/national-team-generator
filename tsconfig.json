@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "skipLibCheck": true,
     "baseUrl": "src",
     "paths": {
       "@env": [
@@ -12,7 +13,7 @@
       ],
       "@core/*": [
         "app/core/*"
-      ]
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

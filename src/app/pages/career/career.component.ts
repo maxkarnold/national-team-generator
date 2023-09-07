@@ -9,7 +9,6 @@ import { originalOrder } from '@shared/utils';
 import { StarRatingConfigService } from 'angular-star-rating';
 import { CustomStarRatingService } from './custom-star-rating.service';
 import { CareerService } from './career.service';
-import { StarRatingDialogComponent } from '@shared/components';
 
 @Component({
   selector: 'app-career',
@@ -23,7 +22,7 @@ import { StarRatingDialogComponent } from '@shared/components';
   ],
 })
 export class CareerComponent implements OnInit {
-  @ViewChild('myModal') myModal!: ElementRef<HTMLDialogElement>;
+  @ViewChild('starRatingModal') starRatingModal!: ElementRef<HTMLDialogElement>;
   originalOrder = originalOrder;
   isHalfStar = isHalfStar;
   tableHeaders = tableHeaders;
@@ -79,6 +78,10 @@ export class CareerComponent implements OnInit {
     if (store) {
       this.finalStats = JSON.parse(store).slice(0, 4);
     }
+  }
+
+  conFunc(career: CareerOverview) {
+    console.log(career);
   }
 
   simulateSeason(transferChoice: TransferOption) {
