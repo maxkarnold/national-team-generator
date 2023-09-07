@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { StarRatingConfigService } from 'angular-star-rating';
 import { CareerOverview } from 'app/pages/career/career.model';
 import { isHalfStar } from 'app/pages/career/career.utils';
@@ -15,18 +15,10 @@ import { CustomStarRatingService } from 'app/pages/career/custom-star-rating.ser
     },
   ],
 })
-export class StarRatingDialogComponent implements OnInit, OnDestroy {
+export class StarRatingDialogComponent {
   @Input() career!: CareerOverview;
   @ViewChild('starRatingDialog', { static: true }) dialog!: ElementRef<HTMLDialogElement>;
   isHalfStar = isHalfStar;
 
   constructor() {}
-
-  ngOnInit(): void {
-    // this.dialog.nativeElement.showModal();
-  }
-
-  ngOnDestroy(): void {
-    // this.dialog.nativeElement.close();
-  }
 }

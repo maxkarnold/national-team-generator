@@ -4,9 +4,15 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@env": ["environments/environment"],
-      "@shared/*": ["app/shared/*"],
-      "@core/*": ["app/core/*"]
+      "@env": [
+        "environments/environment"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@core/*": [
+        "app/core/*"
+      ]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -21,9 +27,14 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
-    "lib": ["es2018", "es2019", "dom"]
+    "lib": [
+      "es2018",
+      "es2019",
+      "dom"
+    ],
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
