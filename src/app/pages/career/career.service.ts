@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { getRandomInt, getRandomInts } from '@shared/utils';
 import { Club } from 'app/models/club.model';
-import { TransferOption, CareerOverview, Season } from './career.model';
+import { TransferOption, CareerOverview, Season, ClubStats } from './career.model';
 import {
   adjustCurrentAbility,
   calcScore,
@@ -18,7 +18,7 @@ import {
 export class CareerService {
   constructor() {}
 
-  simulateSeasonStats(transferChoice: TransferOption, season: Season): Season {
+  simulateSeasonStats(transferChoice: TransferOption, season: Season, career: CareerOverview): Season {
     let appearances = 0;
     const gamesInSeason = transferChoice.club.gamesInSeason;
 
@@ -51,7 +51,7 @@ export class CareerService {
       appearances = transferChoice.club.gamesInSeason;
     }
 
-    const { goals, assists, avgRating, aggRating } = simulateApps(appearances, transferChoice, season);
+    const { goals, assists, avgRating, aggRating } = simulateApps(appearances, transferChoice, season, career);
     const currentAbility = adjustCurrentAbility(season, appearances, avgRating, transferChoice);
 
     const checkCurrentAbility = (ability: number) => {
@@ -93,13 +93,14 @@ export class CareerService {
         c.clubRating > season.currentAbility - 30 &&
         season.currentTeam?.club?.id !== c.id
     );
+    console.log('test2')
 
     if (eligibleClubs.length < 1) {
       return [];
     }
+    console.log('test3')
     const getCurrentClub = (teams: Club[]) => {
       const club = teams.find(c => c.id === season.currentTeam?.club?.id);
-      console.log(season, club);
       return club;
     };
 
@@ -130,7 +131,6 @@ export class CareerService {
         playingTime,
       });
     });
-    console.log(eligibleClubs.length, transferChoices);
     return transferChoices;
   }
 
@@ -142,14 +142,13 @@ export class CareerService {
       avgLeagueAbility: seasons.reduce((acc, s) => acc + (s.currentTeam as TransferOption).club.leagueDifficulty, 0) / seasons.length,
     };
     const score = calcScore(teams, careerStats);
-    const getLongestServedClub = (clubs: Club[]) => {
-      // in the event of multiple clubs being the longest, the latest one is chosen
-      return clubs.sort((a, b) => clubs.filter(v => v.id === a.id).length - clubs.filter(v => v.id === b.id).length).pop();
+    const getLongestServedClub = (clubs: ClubStats[]) => {
+      return clubs.sort((a, b) => b.clubApps - a.clubApps)[0];
     };
     return {
       ...career,
       seasons: totalSeasonsStr('2023/24', lastSeason.year),
-      longestServedClub: getLongestServedClub(teams),
+      longestServedClub: getLongestServedClub(career.clubStats),
       avgRating: (seasons.reduce((acc, s) => acc + s.aggRating, 0) / totalApps).toFixed(2),
       score,
     };

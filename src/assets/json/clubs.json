@@ -1172,7 +1172,7 @@
     "league": "eng1",
     "leagueDifficulty": 172,
     "clubRating": 192,
-    "marketValue": "1,110",
+    "marketValue": 1110,
     "gamesInSeason": 38,
     "continent": "uefa"
   },
@@ -1304,7 +1304,7 @@
     "league": "eng1",
     "leagueDifficulty": 172,
     "clubRating": 197,
-    "marketValue": "1,180",
+    "marketValue": 1180,
     "gamesInSeason": 38,
     "continent": "uefa"
   },
@@ -2206,7 +2206,7 @@
     "league": "fra1",
     "leagueDifficulty": 138,
     "clubRating": 192,
-    "marketValue": "1,080",
+    "marketValue": 1080,
     "gamesInSeason": 34,
     "continent": "uefa"
   },

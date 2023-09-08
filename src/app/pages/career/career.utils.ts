@@ -1,6 +1,6 @@
 import { Club } from 'app/models/club.model';
-import { LeagueDifficulty, PlayingTime, TransferOption, TransferType, Season, CareerOverview, CareerScore } from './career.model';
-import { getRandFloat, getRandomInt, getRandomInts, probability } from '@shared/utils';
+import { LeagueDifficulty, PlayingTime, TransferOption, TransferType, Season, CareerOverview, CareerScore, ClubStats } from './career.model';
+import { getRandFloat, getRandomInt,   probability } from '@shared/utils';
 import { mean, round } from 'lodash';
 
 function calcLeagueDifficulty(clubRating: number, leagueRating: number, ability: number): LeagueDifficulty {
@@ -127,7 +127,7 @@ export function getTransferFee(club: Club, wage: number, playingTime: PlayingTim
   }
 }
 
-export function simulateApps(apps: number, transfer: TransferOption, season: Season) {
+export function simulateApps(apps: number, transfer: TransferOption, season: Season, career: CareerOverview) {
   // easyLeague 1.0 g/mp 0.5 a/mp
   // mediumEasyLeague 0.5 g/mp 0.2 a/mp
   // mediumLeague 0.35 g/mp 0.15 a/mp
@@ -135,50 +135,68 @@ export function simulateApps(apps: number, transfer: TransferOption, season: Sea
   // hardLeague 0.15 g/mp 0.1 a/mp
 
   const leagueDiff = calcLeagueDifficulty(transfer.club.clubRating, transfer.club.leagueDifficulty, season.currentAbility);
+  const currentClubApps = career.clubStats.find(c => c.id === transfer.club.id)?.currentClubStreak || 0;
 
   console.log('leagueDiff', leagueDiff);
 
-  const calculator = (a: number, b: number): number => {
-    if (probability(getRandFloat(a / 15, b / 15))) {
+  const calculator = (a: number, b: number, apps: number): number => {
+    let i = a;
+    let j = b;
+
+    if (apps > 4) {
+      i += 0.2;
+      j += 0.2;
+    } else if (apps > 2.25) {
+      i += 0.15;
+      j += 0.15;
+    } else if (apps > 1.5) {
+      i += 0.1;
+      j += 0.1;
+    } else if (apps > 0.4) {
+      i += 0.05;
+      j += 0.05;
+    }
+
+    if (probability(getRandFloat(i / 15, j / 15))) {
       return 3;
-    } else if (probability(getRandFloat(a / 6, b / 6))) {
+    } else if (probability(getRandFloat(i / 6, j / 6))) {
       return 2;
-    } else if (probability(getRandFloat(a * 0.8, b * 0.8))) {
+    } else if (probability(getRandFloat(i * 0.8, j * 0.8))) {
       return 1;
     } else {
       return 0;
     }
   };
 
-  const getSkewedGoals = () => {
-    switch (leagueDiff) {
+  const getSkewedGoals = (diff: LeagueDifficulty, apps: number) => {
+    switch (diff) {
       case 'easy':
-        return calculator(0.8, 1.2);
+        return calculator(0.8, 1.2, apps);
       case 'mediumEasy':
-        return calculator(0.4, 0.7);
+        return calculator(0.4, 0.7, apps);
       case 'medium':
-        return calculator(0.25, 0.5);
+        return calculator(0.25, 0.5, apps);
       case 'mediumHard':
-        return calculator(0.08, 0.25);
+        return calculator(0.08, 0.25, apps);
       case 'hard':
-        return calculator(0.05, 0.2);
+        return calculator(0.05, 0.2, apps);
       default:
         return 0;
     }
   };
 
-  const getSkewedAssists = () => {
-    switch (leagueDiff) {
+  const getSkewedAssists = (diff: LeagueDifficulty, apps: number) => {
+    switch (diff) {
       case 'easy':
-        return calculator(0.35, 0.7);
+        return calculator(0.35, 0.7, apps);
       case 'mediumEasy':
-        return calculator(0.1, 0.3);
+        return calculator(0.1, 0.3, apps);
       case 'medium':
-        return calculator(0.05, 0.25);
+        return calculator(0.05, 0.25, apps);
       case 'mediumHard':
-        return calculator(0.05, 0.25);
+        return calculator(0.05, 0.25, apps);
       case 'hard':
-        return calculator(0.025, 0.15);
+        return calculator(0.025, 0.15, apps);
       default:
         return 0;
     }
@@ -193,8 +211,8 @@ export function simulateApps(apps: number, transfer: TransferOption, season: Sea
   };
 
   for (let i = 0; i < apps; i++) {
-    const goals = getSkewedGoals();
-    const assists = getSkewedAssists();
+    const goals = getSkewedGoals(leagueDiff, currentClubApps);
+    const assists = getSkewedAssists(leagueDiff, currentClubApps);
 
     seasonStats.goals += goals;
     seasonStats.assists += assists;
@@ -294,8 +312,22 @@ export function totalSeasonsStr(first: string, last: string) {
   return first.slice(0, 4) + ' - 20' + last.slice(-2);
 }
 
-export function isHalfStar(rating: number): boolean {
-  return rating / 10 > 3 && rating / 10 < 8;
+export function isHalfStar(n: number): boolean {
+  const halfValues = [0.5, 1.5, 2.5, 3.5, 4.5];
+
+  // Calculate the absolute difference between n and each half value
+  const halfDifferences = halfValues.map((value) => Math.abs(n - value));
+
+  // Calculate the absolute difference between n and the nearest integer
+  const nearestIntegerDifference = Math.abs(n - Math.round(n));
+
+  // Find the minimum difference for half values
+  const minHalfDifference = Math.min(...halfDifferences);
+
+  // Check if the minimum half difference is less than or equal to the nearest integer difference
+  console.log(minHalfDifference, nearestIntegerDifference, minHalfDifference <= nearestIntegerDifference);
+  // return minHalfDifference <= nearestIntegerDifference;
+  return false;
 }
 
 export function calcScore(clubs: Club[], career: CareerOverview): CareerScore {
@@ -305,7 +337,7 @@ export function calcScore(clubs: Club[], career: CareerOverview): CareerScore {
   const clubScore = (career.peakClubAbility / 220) * 5;
   const leagueScore = (career.avgLeagueAbility / 200) * 5;
   // goal contribution per game should be around 0.25 - 1.5
-  const goalScore = ((career.totalGoals + career.totalAssists) / career.totalApps) * 3.25;
+  const goalScore = ((career.totalGoals + career.totalAssists) / career.totalApps) * 6;
   // availabilty should be 0.5 - 0.95
   const availabilityScore = (career.totalApps / career.totalPossibleApps) * 5.25;
   const totalScore = abilityScore / 5 + clubScore / 5 + leagueScore / 5 + goalScore / 5 + availabilityScore / 5;
@@ -320,4 +352,58 @@ export function calcScore(clubs: Club[], career: CareerOverview): CareerScore {
     availabilityScore: availabilityScore > 5 ? 5 : availabilityScore,
     totalScore: totalScore > 5 ? 5 : totalScore,
   };
+}
+
+export function adjustClubStats(clubStats: ClubStats[], season: Season): ClubStats[] {
+  const newClubStats = [...clubStats];
+  const currentClubIndex = newClubStats.findIndex(c => c.id === season.currentTeam?.club.id);
+  const club = newClubStats[currentClubIndex];
+
+  if (!season.currentTeam) {
+    console.log('ERROR WITH STATS');
+    return newClubStats;
+  }
+
+  if (currentClubIndex === -1) {
+    // if club not found in array & currentTeam exists
+    const isFirstClub = season.id === 0;
+    newClubStats.push({
+      ...season.currentTeam?.club,
+      clubApps: season.appearances,
+      clubGoals: season.goals,
+      clubAssists: season.assists,
+      aggRating: season.aggRating,
+      totalSeasons: 1,
+      currentClubStreak: season.appearances / season.currentTeam?.club.gamesInSeason,
+      isFirstClub,
+      seasonId: season.id,
+    });
+  } else if (season.id === club.seasonId + 1) {
+    // if the current season id is equal to the club's season id + 1
+    console.log(season.id, club.seasonId, newClubStats);
+    newClubStats[currentClubIndex] = {
+      ...club,
+      clubApps: club.clubApps + season.appearances,
+      clubGoals: club.clubGoals + season.goals,
+      clubAssists: club.clubAssists + season.assists,
+      aggRating: club.aggRating + season.aggRating,
+      totalSeasons: club.totalSeasons + 1,
+      currentClubStreak: club.currentClubStreak + season.appearances / season.currentTeam?.club.gamesInSeason,
+      seasonId: season.id,
+    }
+  } else {
+    // otherwise if the club is in the existing array but was not the last team
+    newClubStats[currentClubIndex] = {
+      ...club,
+      clubApps: club.clubApps + season.appearances,
+      clubGoals: club.clubGoals + season.goals,
+      clubAssists: club.clubAssists + season.assists,
+      aggRating: club.aggRating + season.aggRating,
+      totalSeasons: club.totalSeasons + 1,
+      currentClubStreak: season.appearances / season.currentTeam?.club.gamesInSeason,
+      seasonId: season.id,
+    }
+  }
+
+  return newClubStats;
 }

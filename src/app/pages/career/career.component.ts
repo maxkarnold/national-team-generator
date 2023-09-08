@@ -4,7 +4,7 @@ import clubsJson from 'assets/json/clubs.json';
 import { Nation } from 'app/models/nation.model';
 import { Club } from 'app/models/club.model';
 import { CareerOverview, Season, TransferOption } from './career.model';
-import { newSeasonStr, tableHeaders, isHalfStar } from './career.utils';
+import { newSeasonStr, tableHeaders, isHalfStar, adjustClubStats } from './career.utils';
 import { originalOrder } from '@shared/utils';
 import { StarRatingConfigService } from 'angular-star-rating';
 import { CustomStarRatingService } from './custom-star-rating.service';
@@ -52,6 +52,7 @@ export class CareerComponent implements OnInit {
     peakClubAbility: 0,
     avgLeagueAbility: 0,
     totalPossibleApps: 0,
+    clubStats: [],
   };
 
   currentSeason: Season = {
@@ -80,7 +81,7 @@ export class CareerComponent implements OnInit {
     }
   }
 
-  conFunc(career: CareerOverview) {
+  consoleLogCareer(career: CareerOverview) {
     console.log(career);
   }
 
@@ -88,13 +89,16 @@ export class CareerComponent implements OnInit {
     if (this.currentSeason.age > 39) {
       return;
     }
-    this.currentSeason = this.service.simulateSeasonStats(transferChoice, this.currentSeason);
+    this.currentSeason = this.service.simulateSeasonStats(transferChoice, this.currentSeason, this.currentCareerOverview);
     const season: Season = {
       ...this.currentSeason,
       currentTeam: transferChoice,
     };
+
+
     console.log('Age: ', this.currentSeason.age, 'Current Ability: ', this.currentSeason.currentAbility, this.currentSeason);
 
+    this.currentCareerOverview.clubStats = adjustClubStats(this.currentCareerOverview.clubStats, season);
     this.currentCareerOverview.yearsActive++;
     this.currentCareerOverview.totalApps += season.appearances;
     this.currentCareerOverview.totalGoals += season.goals;

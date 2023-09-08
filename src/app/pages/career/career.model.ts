@@ -13,6 +13,17 @@ export type LeagueDifficulty = 'easy' | 'mediumEasy' | 'medium' | 'mediumHard' |
 
 export type TransferType = 'loan' | 'transfer' | 'n/a';
 
+export interface ClubStats extends Club {
+  seasonId: number;
+  clubApps: number;
+  clubGoals: number;
+  clubAssists: number;
+  aggRating: number;
+  isFirstClub: boolean;
+  totalSeasons: number;
+  currentClubStreak: number;
+}
+
 export interface TransferOption {
   club: Club;
   transferType: TransferType;
@@ -48,7 +59,7 @@ export interface Season {
 export interface CareerOverview {
   seasons: string;
   yearsActive: number;
-  longestServedClub?: Club;
+  longestServedClub?: ClubStats;
   totalApps: number;
   totalGoals: number;
   totalAssists: number;
@@ -59,4 +70,5 @@ export interface CareerOverview {
   peakClubAbility: number;
   avgLeagueAbility: number;
   totalPossibleApps: number;
+  clubStats: ClubStats[];
 }
