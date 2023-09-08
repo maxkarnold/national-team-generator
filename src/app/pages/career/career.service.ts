@@ -93,9 +93,9 @@ export class CareerService {
         c.clubRating > season.currentAbility - 30 &&
         season.currentTeam?.club?.id !== c.id
     );
-    console.log('test2')
+    console.log('test2', eligibleClubs.length, eligibleClubs[0])
 
-    if (eligibleClubs.length < 1) {
+    if (eligibleClubs.length < 3) {
       return [];
     }
     console.log('test3')

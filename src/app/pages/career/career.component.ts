@@ -4,27 +4,18 @@ import clubsJson from 'assets/json/clubs.json';
 import { Nation } from 'app/models/nation.model';
 import { Club } from 'app/models/club.model';
 import { CareerOverview, Season, TransferOption } from './career.model';
-import { newSeasonStr, tableHeaders, isHalfStar, adjustClubStats } from './career.utils';
+import { newSeasonStr, tableHeaders, adjustClubStats } from './career.utils';
 import { originalOrder } from '@shared/utils';
-import { StarRatingConfigService } from 'angular-star-rating';
-import { CustomStarRatingService } from './custom-star-rating.service';
 import { CareerService } from './career.service';
 
 @Component({
   selector: 'app-career',
   templateUrl: './career.component.html',
   styleUrls: ['./career.component.scss'],
-  providers: [
-    {
-      provide: StarRatingConfigService,
-      useClass: CustomStarRatingService,
-    },
-  ],
 })
 export class CareerComponent implements OnInit {
   @ViewChild('starRatingModal') starRatingModal!: ElementRef<HTMLDialogElement>;
   originalOrder = originalOrder;
-  isHalfStar = isHalfStar;
   tableHeaders = tableHeaders;
 
   currentTransferOptions: TransferOption[] = [];

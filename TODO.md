@@ -2,6 +2,17 @@
 
 ## PRIORITIES
 
+- Continue work on Career page
+  - account for substitute appearances
+  - include games in cup and continental competitions
+  - adjust wage amounts offered to be more accurate
+  - choose a native country, preferably one of the countries that are available as leagues.
+    - this can be a different system where as a youngster you are locked to a certain club or nation
+  - fix star issue, where it doesn't round correctly to the nearest half integer, might need to change to a different star rating to display
+  - introduce loans as an option to get more game time
+  - add more teams to clubs.json so that I can add more playable leagues in the simulation
+  - maybe introduce a system that could relegate/promote a team or reflect their progress
+
 - Restore project to previous functionality on the same level as the deployed website
 - Make sure to keep code encapsulated / create more files like utils and consts to store reusable code / create services for different processes that should be removed from the front end as much as possible
 - Use eslint/prettier to rewrite the code

@@ -10,7 +10,7 @@ import { GroupStageComponent } from './group-stage/group-stage.component';
 import { KnockoutStageComponent } from './knockout-stage/knockout-stage.component';
 import { TournamentFormComponent } from './tournament-form/tournament-form.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { StarRatingDialogComponent } from './star-rating-dialog/star-rating-dialog.component';
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
 export const components = [
   LineupAccordionComponent,
@@ -25,7 +25,7 @@ export const components = [
   KnockoutStageComponent,
   TournamentFormComponent,
   DashboardComponent,
-  StarRatingDialogComponent,
+  StarRatingComponent
 ];
 
 export * from './lineup-accordion/lineup-accordion.component';
@@ -40,4 +40,4 @@ export * from './group-stage/group-stage.component';
 export * from './knockout-stage/knockout-stage.component';
 export * from './tournament-form/tournament-form.component';
 export * from './dashboard/dashboard.component';
-export * from './star-rating-dialog/star-rating-dialog.component';
+export * from './star-rating/star-rating.component';

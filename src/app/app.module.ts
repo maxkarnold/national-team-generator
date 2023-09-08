@@ -16,7 +16,6 @@ import { BuildRosterComponent } from './pages/build-roster/build-roster.componen
 import { SimulationComponent } from './pages/simulation/simulation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CareerComponent } from './pages/career/career.component';
-import { StarRatingModule } from 'angular-star-rating';
 
 @NgModule({
   declarations: [

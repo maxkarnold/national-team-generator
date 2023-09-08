@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faStar, faXmark, faStarHalf } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromComponents from './components';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
@@ -13,10 +13,10 @@ import { MemoizerPipe } from './pipes/memoizer.pipe';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { StarRatingModule } from 'angular-star-rating';
+import { StarRatingComponent } from './components/star-rating/star-rating.component';
 
 @NgModule({
-  declarations: [...fromComponents.components, ClickStopPropagationDirective, MemoizerPipe],
+  declarations: [...fromComponents.components, ClickStopPropagationDirective, MemoizerPipe, StarRatingComponent],
   imports: [
     RouterModule,
     ReactiveFormsModule,
@@ -26,7 +26,6 @@ import { StarRatingModule } from 'angular-star-rating';
     NgSelectModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    StarRatingModule.forRoot(),
   ],
   exports: [
     NgSelectModule,
@@ -34,12 +33,12 @@ import { StarRatingModule } from 'angular-star-rating';
     FormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    StarRatingModule,
+    MemoizerPipe,
     ...fromComponents.components,
   ],
 })
 export class SharedModule {
   constructor(library: FaIconLibrary) {
-    library.addIcons(faBars, faXmark);
+    library.addIcons(faBars, faXmark, faStar, faStarHalf);
   }
 }

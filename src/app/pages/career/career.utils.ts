@@ -56,6 +56,7 @@ export function getPlayingTime(club: Club, season: Season): { wage: number; play
       playingTime: 'star player',
     };
   } else {
+    console.log('getPlayingTime');
     return {
       wage: 1000,
       playingTime: 'fringe player',
@@ -227,6 +228,7 @@ export function simulateApps(apps: number, transfer: TransferOption, season: Sea
 }
 
 export function adjustCurrentAbility(season: Season, apps: number, rating: number, transfer: TransferOption): number {
+  console.log('adjustCurrentAbility')
   if (season.age > 33) {
     return season.currentAbility - 20;
   } else if (season.age > 31) {
@@ -312,22 +314,11 @@ export function totalSeasonsStr(first: string, last: string) {
   return first.slice(0, 4) + ' - 20' + last.slice(-2);
 }
 
-export function isHalfStar(n: number): boolean {
-  const halfValues = [0.5, 1.5, 2.5, 3.5, 4.5];
+export function checkStarRating(rating: number, star?: number) {
+  console.log(Math.round(rating * 2) / 2);
+  return Math.round(rating * 2) / 2;
+  // return Math.abs(n - star) <= 0.25;
 
-  // Calculate the absolute difference between n and each half value
-  const halfDifferences = halfValues.map((value) => Math.abs(n - value));
-
-  // Calculate the absolute difference between n and the nearest integer
-  const nearestIntegerDifference = Math.abs(n - Math.round(n));
-
-  // Find the minimum difference for half values
-  const minHalfDifference = Math.min(...halfDifferences);
-
-  // Check if the minimum half difference is less than or equal to the nearest integer difference
-  console.log(minHalfDifference, nearestIntegerDifference, minHalfDifference <= nearestIntegerDifference);
-  // return minHalfDifference <= nearestIntegerDifference;
-  return false;
 }
 
 export function calcScore(clubs: Club[], career: CareerOverview): CareerScore {
