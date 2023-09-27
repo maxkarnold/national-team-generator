@@ -1,4 +1,5 @@
 import { Club } from 'app/models/club.model';
+import { Nation } from 'app/models/nation.model';
 
 export type PlayingTime =
   | 'breakthrough prospect'
@@ -11,7 +12,7 @@ export type PlayingTime =
 
 export type LeagueDifficulty = 'easy' | 'mediumEasy' | 'medium' | 'mediumHard' | 'hard';
 
-export type TransferType = 'loan' | 'transfer' | 'n/a';
+export type TransferType = 'loan' | 'transfer' | 'stay' | 'transfer/loan' | 're-sign' | 'sign';
 
 export interface ClubStats extends Club {
   seasonId: number;
@@ -30,6 +31,7 @@ export interface TransferOption {
   transferFee: number;
   wage: number;
   playingTime: PlayingTime;
+  parentClub?: TransferOption;
 }
 
 export interface CareerScore {
@@ -53,13 +55,12 @@ export interface Season {
   leagueDifficulty: LeagueDifficulty;
   currentAbility: number;
   potentialAbility: number;
-  currentTeam?: TransferOption;
+  currentClub?: TransferOption;
 }
 
 export interface CareerOverview {
   seasons: string;
   yearsActive: number;
-  longestServedClub?: ClubStats;
   totalApps: number;
   totalGoals: number;
   totalAssists: number;
@@ -71,4 +72,6 @@ export interface CareerOverview {
   avgLeagueAbility: number;
   totalPossibleApps: number;
   clubStats: ClubStats[];
+  nationality: Nation | Partial<Nation>;
+  longestServedClub?: ClubStats;
 }

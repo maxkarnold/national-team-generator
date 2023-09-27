@@ -1,13 +1,14 @@
 export interface Club {
   id: number;
-  clubName: string;
+  name: string;
   logo: string;
   league: string;
+  continent: Region;
+  abbreviation: string | null;
   leagueDifficulty: number;
   clubRating: number;
   marketValue: number;
   gamesInSeason: number;
-  continent: Region;
 }
 
 export enum Region {

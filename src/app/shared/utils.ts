@@ -1,3 +1,5 @@
+import { round, sample } from 'lodash';
+
 export const originalOrder = (): number => 0;
 
 export const probability = (n: number) => {
@@ -12,6 +14,20 @@ export const pickSingleLastName = (names: string[]) => {
   }
   return '';
 };
+
+export function getAbbrevString(str: string): string {
+  return str.split(' ').join('').slice(0, 3);
+}
+
+export function getAbbrevNumber(n: number): string {
+  if (n >= 1000000) {
+    return '€' + round(n / 1000000, 1).toString() + ' mil';
+  } else if (n >= 1000) {
+    return '€' + round(n / 1000, 1).toString() + ' k';
+  } else {
+    return '€' + n.toString();
+  }
+}
 
 export function getRandomPersonality(): string {
   const personalities = [
@@ -54,7 +70,7 @@ export function getRandomPersonality(): string {
     'Low self-belief',
   ];
 
-  return personalities[Math.floor(Math.random() * personalities.length)];
+  return sample(personalities) || 'Balanced';
 }
 
 export function formatDecimal(num: number, decimals: number) {

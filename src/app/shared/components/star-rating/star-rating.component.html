@@ -1,17 +1,4 @@
-<!-- <div class="rating rating-half" [ngClass]="size">
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-1" aria-readonly="true" readonly [checked]="0.5 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-2" aria-readonly="true" readonly [checked]="1 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-1" aria-readonly="true" readonly [checked]="1.5 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-2" aria-readonly="true" readonly [checked]="2 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-1" aria-readonly="true" readonly [checked]="2.5 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-2" aria-readonly="true" readonly [checked]="3 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-1" aria-readonly="true" readonly [checked]="3.5 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-2" aria-readonly="true" readonly [checked]="4 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-1" aria-readonly="true" readonly [checked]="4.5 | memoizer : checkStarRating : rating"/>
-  <input type="radio" class="bg-yellow-600 mask mask-star-2 mask-half-2" aria-readonly="true" readonly [checked]="5 | memoizer : checkStarRating : rating"/>
-</div> -->
-
-<div class="text-2xl text-yellow-600">
-  <fa-icon icon="star"*ngFor="let star of stars"></fa-icon>
+<div class="sm:text-2xl text-yellow-600 flex flex-nowrap">
+  <fa-icon icon="star" *ngFor="let star of stars"></fa-icon>
   <fa-icon icon="star-half" *ngIf="adjustedRating % 1 !== 0"></fa-icon>
 </div>

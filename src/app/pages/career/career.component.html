@@ -1,77 +1,96 @@
-<div class="2xl:flex">
-  <div class="m-8 overflow-x-auto" *ngIf="currentTransferOptions.length > 0">
-    <h2 class="text-2xl mb-4 text-center">Season {{ currentSeason.year }} ( Age: {{ currentSeason.age }} )</h2>
+<div class="form-control w-full items-center" *ngIf="!hasNationality">
+  <div>
+    <label class="label">
+      <span class="label-text">Pick a Nationailty</span>
+    </label>
+    <select class="select select-bordered max-w-xs" [(ngModel)]="currentNationality" [compareWith]="compareFn">
+      <option selected [ngValue]="{ name: 'random' }">Random Nationality</option>
+      <option *ngFor="let nation of nationList" [ngValue]="nation">{{ nation.emoji }} {{ nation.name }}</option>
+    </select>
+  </div>
+  <button class="btn btn-primary m-4" (click)="pickNationality()">Start Career</button>
+</div>
+
+<div class="max-w-screen-xl mx-auto">
+  <h2 class="text-2xl mb-4 text-center" *ngIf="currentTransferOptions.length > 0 && currentNationality.name">
+    Season {{ currentSeason.year }} ( Age: {{ currentSeason.age }} ) {{ currentNationality.emoji }} {{ isLoanOption ? 'LOAN' : '' }}
+  </h2>
+  <div class="my-8 sm:mx-8 px-2 py-4 overflow-x-auto" *ngIf="currentTransferOptions.length > 0 && currentNationality.name">
     <legend>Click a club to choose them</legend>
     <table class="table table-xs xl:table-md table-zebra">
       <thead class="uppercase">
         <tr>
-          <th>Club</th>
-          <th>Play Time</th>
-          <th>Transfer Offer</th>
-          <th>Wage (per week)</th>
+          <th>club</th>
+          <th>{{ screenWidth < 640 ? 'offer' : 'transfer offer' }}</th>
+          <th>play time</th>
+          <th>{{ screenWidth < 640 ? 'wage' : 'weekly wage' }}</th>
         </tr>
       </thead>
-      <tr
-        *ngFor="let transfer of currentTransferOptions"
-        class="cursor-pointer capitalize hover:bg-base-200"
-        (click)="simulateSeason(transfer)">
+      <tr *ngFor="let transfer of currentTransferOptions" class="cursor-pointer hover:bg-base-200" (click)="simulateSeason(transfer)">
         <td>
           <div class="flex items-center space-x-3">
-            <div class="avatar">
-              <div class="mask mask-square w-12 h-16">
-                <img [src]="transfer.club.logo" [alt]="transfer.club.clubName" />
+            <div>
+              <div class="w-8 h-8 sm:w-16 sm:h-16">
+                <img [src]="transfer.club.logo" [alt]="transfer.club.name" class="h-full w-full object-contain rounded" />
               </div>
             </div>
             <div>
-              <div class="font-bold capitalize">{{ transfer.club.clubName }}</div>
-              <div class="text-sm opacity-50 uppercase">{{ transfer.club.league }}</div>
-              <app-star-rating [rating]="transfer.club.clubRating / 200 * 5"></app-star-rating>
+              <div class="text-sm sm:text-base">{{ transfer.club.name }}</div>
+              <div class="text-xs sm:text-sm opacity-50 uppercase">{{ transfer.club.league }}</div>
+              <app-star-rating [rating]="(transfer.club.clubRating / 450) * 5"></app-star-rating>
             </div>
           </div>
         </td>
-        <td>{{ transfer.playingTime }}</td>
         <td>
           <div class="flex flex-col">
-            <div class="font-bold">{{ transfer.transferFee | currency: 'EUR':'symbol':'1.0-0' }}</div>
+            <div *ngIf="screenWidth < 640">{{ getAbbrevNumber(transfer.transferFee) }}</div>
+            <div *ngIf="screenWidth >= 640">{{ transfer.transferFee | currency: 'EUR':'symbol':'1.0-0' }}</div>
             <div class="text-sm opacity-50 capitalize">{{ transfer.transferType }}</div>
           </div>
         </td>
+        <td class="capitalize">{{ transfer.playingTime }}</td>
         <td>{{ transfer.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
       </tr>
     </table>
   </div>
-
-  <div *ngIf="finalStats.length && currentTransferOptions.length < 1" class="flex-1 m-8 overflow-x-auto">
-    <h2 class="text-3xl mb-4 text-center">{{ finalStats.length > 1 ? 'Last 5 Careers' : 'Career Overview' }}</h2>
-    <table class="table table-zebra table-xs xl:table-md m-8">
+  <div>
+    <h2 *ngIf="finalStats.length && currentTransferOptions.length < 1" class="text-3xl mb-4 text-center">
+      {{ finalStats.length > 1 ? 'Last 5 Careers' : 'Career Overview' }}
+    </h2>
+  </div>
+  <div *ngIf="finalStats.length && currentTransferOptions.length < 1" class="flex-1 mx-2 sm:mx-8 overflow-x-auto">
+    <table class="table table-zebra table-xs xl:table-md">
       <thead class="uppercase">
-        <th>Years Active</th>
-        <th>Most Appearances</th>
-        <th>Rating</th>
-        <th>APP</th>
-        <th>GOALS</th>
-        <th>ASSISTS</th>
-        <th>AVG RATING</th>
-        <th>TOTAL EARNINGS (€)</th>
+        <th>{{ screenWidth < 640 ? 'age / years' : 'age / years active' }}</th>
+        <th>{{ screenWidth < 640 ? 'most apps' : 'most appearances' }}</th>
+        <th>{{ screenWidth < 640 ? 'grade' : 'career grade' }}</th>
+        <th *ngIf="screenWidth < 640">app/g/a</th>
+        <th *ngIf="screenWidth >= 640">app</th>
+        <th *ngIf="screenWidth >= 640">goals</th>
+        <th *ngIf="screenWidth >= 640">assists</th>
+        <th>{{ screenWidth < 640 ? 'rating' : 'avg rating' }}</th>
+        <th>{{ screenWidth < 640 ? 'earnings (€)' : 'total earnings (€)' }}</th>
       </thead>
       <tbody>
         <tr *ngFor="let career of finalStats">
           <td>
             <div class="flex flex-col">
-              <div class="font-bold">{{ career.seasons }}</div>
-              <div class="text-sm opacity-50 capitalize">{{ career.yearsActive }}</div>
+              <div>{{ career.seasons }}</div>
+              <div class="text-xs sm:text-sm opacity-50">{{ career.yearsActive }}</div>
             </div>
           </td>
-          <td class="flex items-center capitalize">
+          <td class="flex items-center">
             <div class="flex items-center space-x-3">
               <div class="avatar">
-                <div class="mask mask-square w-12 h-16">
-                  <img [src]="career.longestServedClub?.logo" [alt]="career.longestServedClub?.clubName" />
+                <div class="mask mask-square w-8 h-8 sm:w-14 sm:h-14">
+                  <img [src]="career.longestServedClub?.logo" [alt]="career.longestServedClub?.name" />
                 </div>
               </div>
               <div>
-                <div class="font-bold capitalize">{{ career.longestServedClub?.clubName }}</div>
-                <div class="text-sm opacity-50 uppercase">{{ career.longestServedClub?.league }} - {{ career.longestServedClub?.clubApps }}</div>
+                <div>{{ career.longestServedClub?.name }}</div>
+                <div class="text-sm opacity-50 uppercase">
+                  {{ career.longestServedClub?.clubApps }}
+                </div>
               </div>
             </div>
           </td>
@@ -111,13 +130,14 @@
               </form>
             </dialog>
           </td>
-          <td>
+          <td *ngIf="screenWidth < 640">{{ career.totalApps + '/' + career.totalGoals + '/' + career.totalAssists }}</td>
+          <td *ngIf="screenWidth >= 640">
             {{ career.totalApps }}
           </td>
-          <td>
+          <td *ngIf="screenWidth >= 640">
             {{ career.totalGoals }}
           </td>
-          <td>
+          <td *ngIf="screenWidth >= 640">
             {{ career.totalAssists }}
           </td>
           <td>
@@ -130,48 +150,108 @@
       </tbody>
     </table>
   </div>
-  <div class="overflow-x-auto flex-1 m-8">
+  <div *ngIf="currentTransferOptions.length > 0 && currentNationality.name" class="overflow-x-auto flex-1 m-8">
     <table class="table table-xs xl:table-md table-zebra">
       <thead class="uppercase">
         <tr>
           <th>Career Stats</th>
         </tr>
         <tr>
-          <th *ngFor="let header of tableHeaders">{{ header }}</th>
+          <th *ngIf="screenWidth >= 640">year</th>
+          <th>age</th>
+          <th>team</th>
+          <th>{{ screenWidth < 640 ? 'info' : 'info (transfer)' }}</th>
+          <th *ngIf="screenWidth < 640">app/g/a</th>
+          <th *ngIf="screenWidth >= 640">app</th>
+          <th *ngIf="screenWidth >= 640">goals</th>
+          <th *ngIf="screenWidth >= 640">assists</th>
+          <th>{{ screenWidth < 640 ? 'rating' : 'avg rating' }}</th>
+          <th>{{ screenWidth < 640 ? 'wage' : 'wage (€/week)' }}</th>
+          <th>{{ screenWidth < 640 ? 'role' : 'player role' }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let season of seasons">
-          <td>{{ season.year }}</td>
+          <td *ngIf="screenWidth >= 640">{{ season.year }}</td>
           <td>{{ season.age }}</td>
           <td>
-            <div class="flex items-center space-x-3">
-              <div class="avatar">
-                <div class="mask mask-square w-12 h-14">
-                  <img [src]="season.currentTeam?.club?.logo" [alt]="season.currentTeam?.club?.clubName" />
+            <div class="flex flex-row items-center space-x-3" *ngIf="season.currentClub">
+              <div class="flex items-center space-x-3">
+                <div *ngIf="season.currentClub?.parentClub && screenWidth >= 640">
+                  <div class="w-8 h-8 sm:w-14 sm:h-14">
+                    <img
+                      [src]="season.currentClub.parentClub?.club?.logo"
+                      [alt]="season.currentClub.parentClub?.club?.name"
+                      class="h-full w-full object-contain rounded" />
+                  </div>
+                </div>
+                <span *ngIf="season.currentClub?.parentClub && screenWidth >= 640" class="text-lg">/</span>
+                <div>
+                  <div class="w-6 h-6 sm:w-12 sm:h-12">
+                    <img
+                      [src]="season.currentClub.club.logo"
+                      [alt]="season.currentClub.club.name"
+                      class="h-full w-full object-contain rounded-full ring-2 ring-accent ring-offset-base-300 ring-offset-2" />
+                  </div>
                 </div>
               </div>
               <div>
-                <div class="font-bold capitalize">{{ season.currentTeam?.club?.clubName }}</div>
-                <div class="text-sm opacity-50 uppercase">{{ season.currentTeam?.club?.league }}</div>
+                <div>
+                  <span *ngIf="season.currentClub.parentClub && screenWidth >= 640" class="opacity-50">
+                    {{
+                      screenWidth < 768
+                        ? season.currentClub.parentClub.club.abbreviation?.toLocaleUpperCase() ||
+                          getAbbrevString(season.currentClub.club.name).toLocaleUpperCase()
+                        : season.currentClub.parentClub.club.name
+                    }}
+                  </span>
+                  <span *ngIf="season.currentClub.parentClub && screenWidth >= 640"> / </span>
+                  <span class="font-extrabold">
+                    {{
+                      (screenWidth < 768 && season.currentClub.parentClub) || screenWidth < 640
+                        ? season.currentClub.club.abbreviation?.toLocaleUpperCase() ||
+                          getAbbrevString(season.currentClub.club.name).toLocaleUpperCase()
+                        : season.currentClub.club.name
+                    }}
+                  </span>
+                </div>
+                <div class="text-xs uppercase">
+                  <span *ngIf="season.currentClub.parentClub && screenWidth >= 640" class="opacity-40">
+                    {{ season.currentClub.parentClub.club.league }}
+                  </span>
+                  <span *ngIf="season.currentClub.parentClub && screenWidth >= 640"> / </span>
+                  <span class="opacity-70">
+                    {{ season.currentClub.club.league }}
+                  </span>
+                </div>
               </div>
             </div>
           </td>
-          <td class="capitalize">
+          <td *ngIf="screenWidth < 640" class="capitalize">
             {{
-              season.currentTeam?.transferType === 'transfer'
-                ? (season.currentTeam?.transferFee | currency: 'EUR':'symbol':'1.0-0')
-                : season.currentTeam?.transferType === 'loan'
+              season.currentClub?.transferType === 'transfer' || season.currentClub?.transferType === 'transfer/loan'
+                ? getAbbrevNumber(season.currentClub?.transferFee || 0)
+                : season.currentClub?.transferType === 'loan'
                 ? 'loan'
                 : ''
             }}
           </td>
-          <td>{{ season.appearances }}</td>
-          <td>{{ season.goals }}</td>
-          <td>{{ season.assists }}</td>
+          <td *ngIf="screenWidth >= 640" class="capitalize">
+            {{
+              season.currentClub?.transferType === 'transfer' || season.currentClub?.transferType === 'transfer/loan'
+                ? (season.currentClub?.transferFee | currency: 'EUR':'symbol':'1.0-0')
+                : season.currentClub?.transferType === 'loan'
+                ? 'loan'
+                : ''
+            }}
+          </td>
+          <td *ngIf="screenWidth < 640">{{ season.appearances + '/' + season.goals + '/' + season.assists }}</td>
+          <td *ngIf="screenWidth >= 640">{{ season.appearances }}</td>
+          <td *ngIf="screenWidth >= 640">{{ season.goals }}</td>
+          <td *ngIf="screenWidth >= 640">{{ season.assists }}</td>
           <td>{{ season.avgRating === 0 ? 'N/A' : season.avgRating.toFixed(1) }}</td>
-          <td>{{ season.currentTeam?.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
-          <td class="capitalize">{{ season.currentTeam?.playingTime }}</td>
+          <td>{{ season.currentClub?.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
+          <td class="capitalize">{{ season.currentClub?.playingTime }}</td>
         </tr>
       </tbody>
     </table>

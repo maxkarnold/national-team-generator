@@ -3,13 +3,19 @@
 ## PRIORITIES
 
 - Continue work on Career page
+  - Small Changes:
+    <!-- - adjust numbers to the 400 percentage -->
+    <!-- - player should choose a nationality to be within the career and will be able to start at a club within that nation. -->
+    <!-- - player ability limitations should not be a factor for the starting club. -->
+    - player should receive injuries
+    - player progression should have more of a random factor and should improve faster at higher reputation clubs
   - account for substitute appearances
   - include games in cup and continental competitions
   - adjust wage amounts offered to be more accurate
-  - choose a native country, preferably one of the countries that are available as leagues.
-    - this can be a different system where as a youngster you are locked to a certain club or nation
-  - fix star issue, where it doesn't round correctly to the nearest half integer, might need to change to a different star rating to display
-  - introduce loans as an option to get more game time
+  <!-- - choose a native country, preferably one of the countries that are available as leagues.
+    - this can be a different system where as a youngster you are locked to a certain club or nation -->
+  <!-- - fix star issue, where it doesn't round correctly to the nearest half integer, might need to change to a different star rating to display -->
+  <!-- - introduce loans as an option to get more game time -->
   - add more teams to clubs.json so that I can add more playable leagues in the simulation
   - maybe introduce a system that could relegate/promote a team or reflect their progress
 
