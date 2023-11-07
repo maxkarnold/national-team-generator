@@ -44,8 +44,8 @@ export class CareerService {
       appearances = transferChoice.club.gamesInSeason;
     }
 
-    const { goals, assists, avgRating, aggRating } = simulateApps(appearances, transferChoice, season, career);
-    const currentAbility = adjustCurrentAbility(season, appearances, avgRating, transferChoice);
+    const { goals, assists, avgRating, aggRating, leagueDifficulty } = simulateApps(appearances, transferChoice, season, career);
+    const currentAbility = adjustCurrentAbility(season, appearances, avgRating, transferChoice, career, leagueDifficulty);
 
     const checkCurrentAbility = (ability: number) => {
       if (ability < 10) {
@@ -66,6 +66,7 @@ export class CareerService {
       assists,
       avgRating,
       aggRating,
+      leagueDifficulty,
     };
   }
 

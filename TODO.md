@@ -20,8 +20,6 @@
   - maybe introduce a system that could relegate/promote a team or reflect their progress
 
 - Restore project to previous functionality on the same level as the deployed website
-- Make sure to keep code encapsulated / create more files like utils and consts to store reusable code / create services for different processes that should be removed from the front end as much as possible
-- Use eslint/prettier to rewrite the code
 
 ## LONG TERM PLANS
 
