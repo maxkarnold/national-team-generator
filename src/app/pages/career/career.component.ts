@@ -74,7 +74,9 @@ export class CareerComponent implements OnInit {
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
     this.leagueList = [...new Set(this.clubList.map(a => a.league.slice(0, 3)))];
-    this.nationList = nationsJson.flatMap(tier => tier.nations).filter(n => this.leagueList.includes(n.abbreviation)) as Nation[];
+    this.nationList = nationsJson
+      .flatMap(tier => tier.nations as Nation[])
+      .filter(n => this.leagueList.includes(n.abbreviation)) as Nation[];
   }
 
   @HostListener('window:resize', ['$event'])

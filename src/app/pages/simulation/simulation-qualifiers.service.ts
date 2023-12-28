@@ -29,7 +29,11 @@ export class SimulationQualifiersService {
     // create a list of the teams from each region and choose random teams from each region
     // to take up all the spots that are alloted at the world cup for each region
     // this should be realistic based on the number of teams in the tournament
-    return this.tournament32Format(regionsSelected, nationsList, hostNations);
+    if (numberOfTeams === 32) {
+      return this.tournament32Format(regionsSelected, nationsList, hostNations);
+    } else {
+      return this.tournament48Format(regionsSelected, nationsList, hostNations);
+    }
   }
 
   organizeGroups(

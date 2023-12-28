@@ -1,9 +1,9 @@
-<div class="container" click-stop-propagation *ngIf="nation" [class.app]="isApp">
+<div class="container z-50" click-stop-propagation *ngIf="nation" [class.app]="isApp">
   <div class="header">
     <div class="name-row">
       <div class="nation">
-        <!-- <img class="nation-flag" [src]="nation.logo" [alt]="nation.name" /> -->
-        <span class="nation-flag">{{ nation.emoji }}</span>
+        <img class="w-16 h-16 rounded object-cover" [src]="nation.logo" [alt]="nation.name" />
+        <!-- <span class="nation-flag">{{ nation.emoji }}</span> -->
         <h2>
           {{ nation.name.length > 9 && screenWidth < 450 ? nation.abbreviation.toLocaleUpperCase() : nation.name }}
         </h2>

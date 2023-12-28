@@ -549,15 +549,18 @@ export function getHostNations(filteredNations: GroupTeam[], numOfTeams: number)
   // for 48 team tournament, the rules are unknown but you should have at least 14 stadiums with at least 40,000 capacity
   // must have one stadium at least about 80,000 capacity
   // up to 4 nations may host
-  if (numOfTeams === 32) {
+  if (numOfTeams < 33) {
     return filteredNations.filter(n => n.canSoloHost32 || n.cohosts32.length > 0);
+  } else if (numOfTeams > 32) {
+    return filteredNations.filter(n => n.cohosts48.length > 0);
   }
   return filteredNations;
 }
 
 export function validateHosts(control: AbstractControl) {
   const hosts: GroupTeam[] = control.value;
-  if (hosts.length < 2 && hosts.filter(h => h.canSoloHost32).length < 1) {
+  const numOfTeams = control.parent?.get('numOfTeams')?.value;
+  if ((numOfTeams === 32 && hosts.length < 2 && hosts.filter(h => h.canSoloHost32).length < 1) || (numOfTeams === 48 && hosts.length < 3)) {
     return { invalidHosts: true };
   }
   return null;

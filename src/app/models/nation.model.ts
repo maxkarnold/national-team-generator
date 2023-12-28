@@ -16,6 +16,7 @@ export interface Nation {
   abbreviation: string;
   canSoloHost32: boolean;
   cohosts32: string[];
+  cohosts48: string[];
   emoji: string;
 }
 
@@ -64,6 +65,7 @@ export interface GroupTeam {
   homeTeam: boolean;
   canSoloHost32: boolean;
   cohosts32: string[];
+  cohosts48: string[];
   coach?: Person;
   pot?: number;
   groupFinish?: string;
@@ -109,4 +111,5 @@ export const defaultHost: GroupTeam = {
   homeTeam: true,
   canSoloHost32: true,
   cohosts32: [],
+  cohosts48: [],
 };

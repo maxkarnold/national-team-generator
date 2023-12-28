@@ -5,15 +5,22 @@
     </label>
     <select class="select select-bordered max-w-xs" [(ngModel)]="currentNationality" [compareWith]="compareFn">
       <option selected [ngValue]="{ name: 'random' }">Random Nationality</option>
-      <option *ngFor="let nation of nationList" [ngValue]="nation">{{ nation.emoji }} {{ nation.name }}</option>
+      <option *ngFor="let nation of nationList" [ngValue]="nation">
+        <span>
+          <img class="h-4 w-6 object-cover" [src]="nation.logo" [alt]="nation.name" />
+          <span>{{ nation.name }}</span>
+        </span>
+      </option>
     </select>
   </div>
   <button class="btn btn-primary m-4" (click)="pickNationality()">Start Career</button>
 </div>
 
 <div class="max-w-screen-xl mx-auto">
-  <h2 class="text-2xl mb-4 text-center" *ngIf="currentTransferOptions.length > 0 && currentNationality.name">
-    Season {{ currentSeason.year }} ( Age: {{ currentSeason.age }} ) {{ currentNationality.emoji }} {{ isLoanOption ? 'LOAN' : '' }}
+  <h2 class="text-2xl mb-4 flex justify-center items-center" *ngIf="currentTransferOptions.length > 0 && currentNationality.name">
+    <span>Season {{ currentSeason.year }} ( Age: {{ currentSeason.age }} )</span>
+    <img class="h-6 w-8 object-cover mx-2" [src]="currentNationality.logo" [alt]="currentNationality.name" />
+    <span>{{ isLoanOption ? 'LOAN' : '' }}</span>
   </h2>
   <div class="my-8 sm:mx-8 px-2 py-4 overflow-x-auto" *ngIf="currentTransferOptions.length > 0 && currentNationality.name">
     <legend>Click a club to choose them</legend>

@@ -80,7 +80,6 @@ h3 {
           margin-right: 0.5rem;
 
           @media screen and (max-width: 600px) {
-            height: 2.5rem;
             font-size: 4rem;
           }
         }
@@ -291,18 +290,12 @@ h3 {
 
         .nation-flag {
           width: 3rem;
-          // max-height: 2.5rem;
           height: 3rem;
           margin-right: 1rem;
           cursor: pointer;
 
           &.disabled {
             cursor: not-allowed;
-          }
-
-          @media screen and (max-width: 1000px) {
-            width: 2rem;
-            max-height: 1.2rem;
           }
         }
       }

@@ -6,7 +6,7 @@ import { User } from '@core/services/firestore.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { getRandFloat, getRandomInt, getRandomPersonality, pickSingleLastName } from '@shared/utils';
 import { defaultCoaches } from 'app/models/default-coaches.model';
-import { defaultHost, GroupTeam } from 'app/models/nation.model';
+import { defaultHost, GroupTeam, Nation } from 'app/models/nation.model';
 import { Person } from 'app/models/player.model';
 import { LeaderboardItem, LeaderboardService } from 'app/pages/leaderboard/leaderboard.service';
 import { SimulationQualifiersService } from 'app/pages/simulation/simulation-qualifiers.service';
@@ -191,15 +191,20 @@ export class TournamentFormComponent {
 
   hostChanged(hosts: GroupTeam[]) {
     const numOfTeams: number = this.tournamentForm.value.numOfTeams;
-    const maxSelectedItems = 2;
+    const maxSelectedItems = numOfTeams > 32 ? 3 : 2;
     if (hosts.length === maxSelectedItems) {
       this.potentialHosts = [];
     } else if (hosts.length > 0) {
-      const cohosts = hosts.flatMap(h => h.cohosts32);
+      const cohosts = numOfTeams > 32 ? hosts.flatMap(h => h.cohosts48) : hosts.flatMap(h => h.cohosts32);
       this.potentialHosts = getHostNations(this.filteredNations, numOfTeams).filter(c => cohosts.includes(c.name));
     } else {
       this.potentialHosts = getHostNations(this.filteredNations, numOfTeams);
     }
+  }
+
+  numOfTeamsChanged(_value: number) {
+    this.tournamentForm.patchValue({ hostNations: [] });
+    this.hostChanged(this.tournamentForm.value.hostNations);
   }
 
   numOfGamesChanged(value: number) {
@@ -214,7 +219,7 @@ export class TournamentFormComponent {
     this.simulator.tournament$.next(null);
     this.nationsList = [];
     this.nations.forEach(tier => {
-      tier.nations.forEach(nation => {
+      for (const nation of tier.nations) {
         // random nation values
         let min = 0;
         let max = 0;
@@ -293,7 +298,7 @@ export class TournamentFormComponent {
           homeTeam: hostNations.map(t => t.name).includes(nation.name) ? true : false,
         };
         this.nationsList.push(team);
-      });
+      }
     });
   }
 
@@ -328,9 +333,9 @@ export class TournamentFormComponent {
       defRankings: [...nations.sort((a, b) => a.defRanking - b.defRanking)],
     };
     const teams = this.qualifier.chooseQualifyingTeams(availableRegions, numOfTeams, nations, hostNations);
-    const numOfGroups = teams.length / 4;
-    const extraTeams = numOfTeams % 4;
-    const teamsInGroup = teams.length / numOfGroups;
+    const numOfGroups = teams.length / 4; // groups of 4
+    const extraTeams = numOfTeams % 4; // N/A anymore since tournament is limited in size
+    const teamsInGroup = teams.length / numOfGroups; // always going to be 4
 
     // if (teams.length === 9) {
     //   teamsInGroup = 3;

@@ -7,6 +7,8 @@
     <!-- - adjust numbers to the 400 percentage -->
     <!-- - player should choose a nationality to be within the career and will be able to start at a club within that nation. -->
     <!-- - player ability limitations should not be a factor for the starting club. -->
+    - fix flag emojis for Windows
+    - add tournament format for 48 teams and allow for 3 nation host
     - player should receive injuries
     - player progression should have more of a random factor and should improve faster at higher reputation clubs
   - account for substitute appearances
