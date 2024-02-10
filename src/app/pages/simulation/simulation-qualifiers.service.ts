@@ -32,7 +32,8 @@ export class SimulationQualifiersService {
     if (numberOfTeams === 32) {
       return this.tournament32Format(regionsSelected, nationsList, hostNations);
     } else {
-      return this.tournament48Format(regionsSelected, nationsList, hostNations);
+      return this.tournament32Format(regionsSelected, nationsList, hostNations);
+      // return this.tournament48Format(regionsSelected, nationsList, hostNations);
     }
   }
 
