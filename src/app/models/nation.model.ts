@@ -1,10 +1,10 @@
-import { Match } from 'app/pages/simulation/simulation.model';
+import { Match, RegionName } from 'app/pages/simulation/simulation.model';
 import { Person } from './player.model';
 
 export interface Nation {
   name: string;
   logo: string;
-  region: 'uefa' | 'conmebol' | 'afc' | 'ofc' | 'concacaf' | 'caf';
+  region: RegionName;
   firstNameUsages: string[];
   lastNameUsages: string[];
   mainLeagues: string[];
@@ -24,7 +24,7 @@ export interface GroupTeam {
   name: string;
   logo: string;
   abbreviation: string;
-  region: string;
+  region: RegionName;
   matchesPlayed: number;
   points: number;
   gDiff: number;
@@ -32,10 +32,30 @@ export interface GroupTeam {
   gOpp: number;
   tier: string;
   nationTier: string;
-  attRating: number;
-  midRating: number;
-  defRating: number;
-  penRating: number;
+  startingRating: {
+    att: number;
+    mid: number;
+    def: number;
+    pen: number;
+  };
+  dynamicRating: {
+    att: number;
+    mid: number;
+    def: number;
+    pen: number;
+  };
+  isBuffed: {
+    att: boolean;
+    mid: boolean;
+    def: boolean;
+    pen: boolean;
+  };
+  isDebuffed: {
+    att: boolean;
+    mid: boolean;
+    def: boolean;
+    pen: boolean;
+  };
   rating: number;
   matchHistory: {
     qualifiers: {
@@ -75,22 +95,42 @@ export function isNation(value: any): value is Nation {
   return (<Nation>value).abbreviation !== undefined;
 }
 
-export const defaultHost: GroupTeam = {
+export const defaultHost32: GroupTeam = {
   name: 'Qatar',
   abbreviation: 'qat',
   logo: 'https://fmdataba.com/images/n/QAT.svg',
   emoji: '🇶🇦',
-  region: 'afc',
+  region: RegionName.afc,
   points: 0,
   gDiff: 0,
   gFor: 0,
   gOpp: 0,
   tier: 'j',
   nationTier: 'e',
-  attRating: 0,
-  midRating: 0,
-  defRating: 0,
-  penRating: 0,
+  startingRating: {
+    att: 0,
+    mid: 0,
+    def: 0,
+    pen: 0,
+  },
+  dynamicRating: {
+    att: 0,
+    mid: 0,
+    def: 0,
+    pen: 0,
+  },
+  isBuffed: {
+    att: false,
+    mid: false,
+    def: false,
+    pen: false,
+  },
+  isDebuffed: {
+    att: false,
+    mid: false,
+    def: false,
+    pen: false,
+  },
   rating: 0,
   matchesPlayed: 0,
   matchHistory: {
@@ -113,3 +153,180 @@ export const defaultHost: GroupTeam = {
   cohosts32: [],
   cohosts48: [],
 };
+
+export const defaultHosts48: GroupTeam[] = [
+  {
+    name: 'Mexico',
+    abbreviation: 'mex',
+    logo: 'https://fmdataba.com/images/n/MEX.svg',
+    emoji: '🇲🇽',
+    region: RegionName.concacaf,
+    points: 0,
+    gDiff: 0,
+    gFor: 0,
+    gOpp: 0,
+    tier: 'b',
+    nationTier: 'b',
+    startingRating: {
+      att: 0,
+      mid: 0,
+      def: 0,
+      pen: 0,
+    },
+    dynamicRating: {
+      att: 0,
+      mid: 0,
+      def: 0,
+      pen: 0,
+    },
+    isBuffed: {
+      att: false,
+      mid: false,
+      def: false,
+      pen: false,
+    },
+    isDebuffed: {
+      att: false,
+      mid: false,
+      def: false,
+      pen: false,
+    },
+    rating: 0,
+    matchesPlayed: 0,
+    matchHistory: {
+      qualifiers: [],
+      group: [],
+      bracket: [],
+    },
+    reportCard: {
+      grade: null,
+      gradeStyle: null,
+      gradeSummary: null,
+      tournamentFinish: null,
+    },
+    ranking: 0,
+    attRanking: 0,
+    midRanking: 0,
+    defRanking: 0,
+    homeTeam: true,
+    canSoloHost32: true,
+    cohosts32: ['United States'],
+    cohosts48: ['United States', 'Canada'],
+  },
+  {
+    name: 'United States',
+    abbreviation: 'usa',
+    logo: 'https://fmdataba.com/images/n/USA.svg',
+    emoji: '🇺🇸',
+    region: RegionName.concacaf,
+    points: 0,
+    gDiff: 0,
+    gFor: 0,
+    gOpp: 0,
+    tier: 'b',
+    nationTier: 'b',
+    startingRating: {
+      att: 0,
+      mid: 0,
+      def: 0,
+      pen: 0,
+    },
+    dynamicRating: {
+      att: 0,
+      mid: 0,
+      def: 0,
+      pen: 0,
+    },
+    isBuffed: {
+      att: false,
+      mid: false,
+      def: false,
+      pen: false,
+    },
+    isDebuffed: {
+      att: false,
+      mid: false,
+      def: false,
+      pen: false,
+    },
+    rating: 0,
+    matchesPlayed: 0,
+    matchHistory: {
+      qualifiers: [],
+      group: [],
+      bracket: [],
+    },
+    reportCard: {
+      grade: null,
+      gradeStyle: null,
+      gradeSummary: null,
+      tournamentFinish: null,
+    },
+    ranking: 0,
+    attRanking: 0,
+    midRanking: 0,
+    defRanking: 0,
+    homeTeam: true,
+    canSoloHost32: true,
+    cohosts32: ['Canada', 'Mexico'],
+    cohosts48: ['Canada', 'Mexico'],
+  },
+  {
+    name: 'Canada',
+    abbreviation: 'can',
+    logo: 'https://fmdataba.com/images/n/CAN.svg',
+    emoji: '🇨🇦',
+    region: RegionName.concacaf,
+    points: 0,
+    gDiff: 0,
+    gFor: 0,
+    gOpp: 0,
+    tier: 'd',
+    nationTier: 'd',
+    startingRating: {
+      att: 0,
+      mid: 0,
+      def: 0,
+      pen: 0,
+    },
+    dynamicRating: {
+      att: 0,
+      mid: 0,
+      def: 0,
+      pen: 0,
+    },
+    isBuffed: {
+      att: false,
+      mid: false,
+      def: false,
+      pen: false,
+    },
+    isDebuffed: {
+      att: false,
+      mid: false,
+      def: false,
+      pen: false,
+    },
+    rating: 0,
+    matchesPlayed: 0,
+    matchHistory: {
+      qualifiers: [],
+      group: [],
+      bracket: [],
+    },
+    reportCard: {
+      grade: null,
+      gradeStyle: null,
+      gradeSummary: null,
+      tournamentFinish: null,
+    },
+    ranking: 0,
+    attRanking: 0,
+    midRanking: 0,
+    defRanking: 0,
+    homeTeam: true,
+    canSoloHost32: true,
+    cohosts32: ['United States'],
+    cohosts48: ['Mexico', 'United States'],
+  },
+];

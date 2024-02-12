@@ -1,6 +1,6 @@
 import { compare } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { Region } from './simulation.model';
+import { Region, RegionName } from './simulation.model';
 
 export const compareFn = (first: string[], a: string, b: string) => {
   let returnValue;
@@ -51,7 +51,7 @@ export const draw = (
         if (failed) {
           return group.length < allTeams.length / nbrOfGroups && group.every(member => member.pot !== team.pot);
         }
-        if ((availableRegions.length > 4 && !regionValues.includes('ofc')) || availableRegions.length > 5) {
+        if ((availableRegions.length > 4 && !regionValues.includes(RegionName.ofc)) || availableRegions.length > 5) {
           // check the group has less teams than is needed in each group
           return (
             group.length < allTeams.length / nbrOfGroups &&
@@ -59,9 +59,9 @@ export const draw = (
               // console.log('MEMBER', member.region, member.pot);
               return (
                 member.pot !== team.pot &&
-                (team.region !== 'uefa'
+                (team.region !== RegionName.uefa
                   ? group.every(m => m.region !== team.region) // checking that every member of this group does not match region
-                  : group.filter(m => m.region === 'uefa').length < 2)
+                  : group.filter(m => m.region === RegionName.uefa).length < 2)
               );
             })
           ); // if team is uefa, the group can have a uefa team
@@ -135,7 +135,7 @@ export const backupDraw = (pts: GroupTeam[][], nbrOfGroups: number, availableReg
     const candidateGroups = groups.filter(
       // return each group that returns true to ...
       group => {
-        if ((availableRegions.length > 4 && !regionValues.includes('ofc')) || availableRegions.length > 5) {
+        if ((availableRegions.length > 4 && !regionValues.includes(RegionName.ofc)) || availableRegions.length > 5) {
           // check the group has less teams than is needed in each group
           return (
             group.length < allTeams.length / nbrOfGroups &&
@@ -143,9 +143,9 @@ export const backupDraw = (pts: GroupTeam[][], nbrOfGroups: number, availableReg
               // console.log('MEMBER', member.region, member.pot);
               return (
                 member.pot !== team.pot &&
-                (team.region !== 'uefa'
+                (team.region !== RegionName.uefa
                   ? group.every(m => m.region !== team.region) // checking that every member of this group does not match region
-                  : group.filter(m => m.region === 'uefa').length < 2)
+                  : group.filter(m => m.region === RegionName.uefa).length < 2)
               );
             })
           ); // if team is uefa, the group can have a uefa team

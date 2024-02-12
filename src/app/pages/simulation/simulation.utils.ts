@@ -1,8 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { getRandFloat, getRandomInt, getRandomInts } from '@shared/utils';
+import { compare, getRandFloat, getRandomInt, getRandomInts } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
 import { sum } from 'lodash';
-import { Match, Region, MatchEvent, EventEmoji } from './simulation.model';
+import { Match, Region, MatchEvent, EventEmoji, RegionName, KnockoutRound } from './simulation.model';
 
 const getAdjustedTime = (time: number) => {
   if (time > 120) {
@@ -43,7 +43,7 @@ function whoWon(
   };
   if (isPenaltyWin) {
     let rand = getRandFloat(0, 1);
-    const firstTeamAdvantage = team.penRating > otherTeam.penRating;
+    const firstTeamAdvantage = team.dynamicRating.pen > otherTeam.dynamicRating.pen;
 
     if (firstTeamAdvantage && rand > 0.25) {
       return firstTeamWin;
@@ -155,6 +155,43 @@ function getRandomGoalTimes(forEventTimes: MatchEvent[], oppEventTimes: MatchEve
   };
 }
 
+function getRandomInjuryTimes(events: MatchEvent[], time: number): MatchEvent[] {
+  // FOR SERIOUS INJURIES, WILL NEED TO REFACTOR FOR MINOR INJURIES
+  const injuries = events.filter(e => e.emoji === '🚑');
+  // this adds 5 mins to end of half times, to account for added time
+  const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
+
+  const newEventTimes: MatchEvent[] = [];
+  for (let i = time - 14; i < interval; i++) {
+    const rand = getRandomInt(0, 10000) + injuries.length * 100;
+    const newTimeStr = i > time ? `${time}+${i - time}` : i.toString();
+    let emoji: EventEmoji = '🚑';
+
+    if (events.map(e => e.time).includes(newTimeStr)) {
+      continue;
+    }
+
+    if (i < 50 && rand < 2) {
+      // first half probability
+      // 0.05% of 1st half red
+      emoji = '🚑';
+      newEventTimes.push({
+        time: newTimeStr,
+        emoji,
+      });
+    } else if (i > 49 && rand < 11) {
+      // second half probability
+      // 0.23% of 2nd half red
+      emoji = '🚑';
+      newEventTimes.push({
+        time: newTimeStr,
+        emoji,
+      });
+    }
+  }
+  return newEventTimes;
+}
+
 function calcScore(
   team1: GroupTeam,
   team2: GroupTeam,
@@ -165,8 +202,8 @@ function calcScore(
   if (canHaveExtraTime) {
     matchTimeIntervals.push(105, 120);
   }
-  const team1ScoreRating = team1.attRating + team1.midRating / 2 - (team2.midRating / 2 + team2.defRating);
-  const team2ScoreRating = team2.attRating + team2.midRating / 2 - (team1.midRating / 2 + team1.defRating);
+  const team1ScoreRating = team1.dynamicRating.att + team1.dynamicRating.mid / 2 - (team2.dynamicRating.mid / 2 + team2.dynamicRating.def);
+  const team2ScoreRating = team2.dynamicRating.att + team2.dynamicRating.mid / 2 - (team1.dynamicRating.mid / 2 + team1.dynamicRating.def);
 
   let team1Multiplier = ((team1ScoreRating + 80) / 160) * 50;
   let team2Multiplier = ((team2ScoreRating + 80) / 160) * 50;
@@ -234,6 +271,9 @@ function calcScore(
     forEventTimes.push(...getRandomCardTimes(forEventTimes, matchTimeIntervals[i]));
     oppEventTimes.push(...getRandomCardTimes(oppEventTimes, matchTimeIntervals[i]));
 
+    forEventTimes.push(...getRandomInjuryTimes(forEventTimes, matchTimeIntervals[i]));
+    oppEventTimes.push(...getRandomInjuryTimes(oppEventTimes, matchTimeIntervals[i]));
+
     if (matchTimeIntervals[i] === 90 && goalsFor !== goalsAg) {
       break;
     }
@@ -257,7 +297,7 @@ function calcScore(
 export const regions: Region[] = [
   {
     label: 'UEFA',
-    value: 'uefa',
+    value: RegionName.uefa,
     numOfTeams: 49,
     qualifiers: {
       auto: 0,
@@ -266,7 +306,7 @@ export const regions: Region[] = [
   },
   {
     label: 'CAF',
-    value: 'caf',
+    value: RegionName.caf,
     numOfTeams: 39,
     qualifiers: {
       auto: 0,
@@ -275,7 +315,7 @@ export const regions: Region[] = [
   },
   {
     label: 'AFC',
-    value: 'afc',
+    value: RegionName.afc,
     numOfTeams: 30,
     qualifiers: {
       auto: 0,
@@ -284,7 +324,7 @@ export const regions: Region[] = [
   },
   {
     label: 'CONCACAF',
-    value: 'concacaf',
+    value: RegionName.concacaf,
     numOfTeams: 22,
     qualifiers: {
       auto: 0,
@@ -293,7 +333,7 @@ export const regions: Region[] = [
   },
   {
     label: 'CONMEBOL',
-    value: 'conmebol',
+    value: RegionName.conmebol,
     numOfTeams: 10,
     qualifiers: {
       auto: 0,
@@ -302,7 +342,7 @@ export const regions: Region[] = [
   },
   {
     label: 'OFC',
-    value: 'ofc',
+    value: RegionName.ofc,
     numOfTeams: 6,
     qualifiers: {
       auto: 0,
@@ -368,21 +408,21 @@ export function regionsValidator(): ValidatorFn {
 export function addRankings(arr: GroupTeam[], hasCoaches?: boolean) {
   return arr
     .sort((a, b) => {
-      return b.attRating - a.attRating;
+      return b.dynamicRating.att - a.dynamicRating.att;
     })
     .map((team, i) => ({
       ...team,
       attRanking: i + 1,
     }))
     .sort((a, b) => {
-      return b.midRating - a.midRating;
+      return b.dynamicRating.mid - a.dynamicRating.mid;
     })
     .map((team, i) => ({
       ...team,
       midRanking: i + 1,
     }))
     .sort((a, b) => {
-      return b.defRating - a.defRating;
+      return b.dynamicRating.def - a.dynamicRating.def;
     })
     .map((team, i) => ({
       ...team,
@@ -392,7 +432,7 @@ export function addRankings(arr: GroupTeam[], hasCoaches?: boolean) {
       if (team.coach?.rating) {
         return {
           ...team,
-          rating: hasCoaches ? (team.attRating + team.defRating + team.midRating) / 3 : team.rating,
+          rating: hasCoaches ? (team.dynamicRating.att + team.dynamicRating.def + team.dynamicRating.mid) / 3 : team.rating,
         };
       }
       return team;
@@ -483,6 +523,8 @@ export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: 
     isPenaltyWin
   );
 
+  getTeamBuffs(team, otherTeam, winner, loser, forEventTimes, oppEventTimes);
+
   return {
     goalsFor,
     goalsAg,
@@ -495,44 +537,168 @@ export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: 
   };
 }
 
+function getTeamBuffs(
+  team: GroupTeam,
+  otherTeam: GroupTeam,
+  winner: GroupTeam,
+  loser: GroupTeam,
+  forEventTimes: MatchEvent[],
+  oppEventTimes: MatchEvent[]
+) {
+  // apply buffs to teams that win and half the teams that draw
+  // MIGHT WANT TO CHANGE LATER
+  const randBuff = getRandFloat(0, 2.5);
+  const buffedPos = getRandomInt(0, 2);
+  switch (buffedPos) {
+    case 0:
+      winner.dynamicRating.att += randBuff;
+      break;
+    case 1:
+      winner.dynamicRating.mid += randBuff;
+      break;
+    case 2:
+      winner.dynamicRating.def += randBuff;
+      break;
+    default:
+      winner.dynamicRating.pen += randBuff;
+      break;
+  }
+
+  // apply debuffs to teams that lose
+  // MIGHT WANT TO CHANGE LATER
+  const randDebuff = getRandFloat(0, 1.5);
+  const debuffedPos = getRandomInt(0, 2);
+  switch (debuffedPos) {
+    case 0:
+      loser.dynamicRating.att -= randDebuff;
+      break;
+    case 1:
+      loser.dynamicRating.mid -= randDebuff;
+      break;
+    case 2:
+      loser.dynamicRating.def -= randDebuff;
+      break;
+    default:
+      loser.dynamicRating.pen -= randDebuff;
+      break;
+  }
+
+  // apply injury debuffs to teams
+  const forTeamInjuries = forEventTimes.filter(e => e.emoji === '🚑').length;
+  const oppTeamInjuries = oppEventTimes.filter(e => e.emoji === '🚑').length;
+
+  for (let i = 0; i < forTeamInjuries; i++) {
+    const rand = getRandFloat(1, 5);
+    const randPos = getRandomInt(0, 2);
+    switch (randPos) {
+      case 0:
+        team.dynamicRating.att -= rand;
+        break;
+      case 1:
+        team.dynamicRating.mid -= rand;
+        break;
+      case 2:
+        team.dynamicRating.def -= rand;
+        break;
+      default:
+        team.dynamicRating.pen -= rand;
+        break;
+    }
+  }
+
+  for (let i = 0; i < oppTeamInjuries; i++) {
+    const rand = getRandFloat(1, 8);
+    const randPos = getRandomInt(0, 2);
+    switch (randPos) {
+      case 0:
+        otherTeam.dynamicRating.att -= rand;
+        break;
+      case 1:
+        otherTeam.dynamicRating.mid -= rand;
+        break;
+      case 2:
+        otherTeam.dynamicRating.def -= rand;
+        break;
+      default:
+        otherTeam.dynamicRating.pen -= rand;
+        break;
+    }
+  }
+
+  team.isDebuffed.att = team.dynamicRating.att < team.startingRating.att;
+  team.isBuffed.att = team.dynamicRating.att > team.startingRating.att;
+  team.isBuffed.mid = team.dynamicRating.mid > team.startingRating.mid;
+  team.isDebuffed.mid = team.dynamicRating.mid < team.startingRating.mid;
+  team.isDebuffed.def = team.dynamicRating.def < team.startingRating.def;
+  team.isBuffed.def = team.dynamicRating.def > team.startingRating.def;
+  team.isDebuffed.pen = team.dynamicRating.pen < team.startingRating.pen;
+  team.isBuffed.pen = team.dynamicRating.pen > team.startingRating.pen;
+
+  otherTeam.isDebuffed.att = otherTeam.dynamicRating.att < otherTeam.startingRating.att;
+  otherTeam.isBuffed.att = otherTeam.dynamicRating.att > otherTeam.startingRating.att;
+  otherTeam.isDebuffed.mid = otherTeam.dynamicRating.mid < otherTeam.startingRating.mid;
+  otherTeam.isBuffed.mid = otherTeam.dynamicRating.mid > otherTeam.startingRating.mid;
+  otherTeam.isDebuffed.def = otherTeam.dynamicRating.def < otherTeam.startingRating.def;
+  otherTeam.isBuffed.def = otherTeam.dynamicRating.def > otherTeam.startingRating.def;
+  otherTeam.isDebuffed.pen = otherTeam.dynamicRating.pen < otherTeam.startingRating.pen;
+  otherTeam.isBuffed.pen = otherTeam.dynamicRating.pen > otherTeam.startingRating.pen;
+}
+
 export function getDisplayRating(rating: number, isGrade?: boolean) {
   if (isGrade) {
-    if (rating > 96) {
-      return 'S+';
-    } else if (rating > 93) {
+    // ==== TWO OPTIONS
+    // ==== WITH PLUSES AND MINUSES
+
+    // if (rating > 96) {
+    //   return 'S+';
+    // } else if (rating > 93) {
+    //   return 'S';
+    // } else if (rating > 90) {
+    //   return 'S-';
+    // } else if (rating > 86) {
+    //   return 'A+';
+    // } else if (rating > 83) {
+    //   return 'A';
+    // } else if (rating > 80) {
+    //   return 'A-';
+    // } else if (rating > 76) {
+    //   return 'B+';
+    // } else if (rating > 73) {
+    //   return 'B';
+    // } else if (rating > 70) {
+    //   return 'B-';
+    // } else if (rating > 66) {
+    //   return 'C+';
+    // } else if (rating > 63) {
+    //   return 'C';
+    // } else if (rating > 60) {
+    //   return 'C-';
+    // } else if (rating > 56) {
+    //   return 'D+';
+    // } else if (rating > 53) {
+    //   return 'D';
+    // } else if (rating > 50) {
+    //   return 'D-';
+    // } else if (rating > 46) {
+    //   return 'F+';
+    // } else if (rating > 43) {
+    //   return 'F';
+    // } else {
+    //   return 'F-';
+    // }
+    // ==== OR WITHOUT
+    if (rating > 90) {
       return 'S';
-    } else if (rating > 90) {
-      return 'S-';
-    } else if (rating > 86) {
-      return 'A+';
-    } else if (rating > 83) {
-      return 'A';
     } else if (rating > 80) {
-      return 'A-';
-    } else if (rating > 76) {
-      return 'B+';
-    } else if (rating > 73) {
-      return 'B';
+      return 'A';
     } else if (rating > 70) {
-      return 'B-';
-    } else if (rating > 66) {
-      return 'C+';
-    } else if (rating > 63) {
-      return 'C';
+      return 'B';
     } else if (rating > 60) {
-      return 'C-';
-    } else if (rating > 56) {
-      return 'D+';
-    } else if (rating > 53) {
-      return 'D';
+      return 'C';
     } else if (rating > 50) {
-      return 'D-';
-    } else if (rating > 46) {
-      return 'F+';
-    } else if (rating > 43) {
-      return 'F';
+      return 'D';
     } else {
-      return 'F-';
+      return 'F';
     }
   }
   return Math.floor(rating);
@@ -564,4 +730,122 @@ export function validateHosts(control: AbstractControl) {
     return { invalidHosts: true };
   }
   return null;
+}
+
+export function regionQualifierHelper(
+  region: Region,
+  tournamentSize: 32 | 48,
+  hostNations: GroupTeam[]
+): { matches: number; matches2: number; alreadyQualified: number } {
+  const hasHosts = hostNations.length > 1;
+  let hasMultiHosts = hasHosts && hostNations.map(h => h.region).includes(region.value);
+
+  if (tournamentSize === 48) {
+    switch (region.value) {
+      case RegionName.uefa:
+        hasMultiHosts = hasHosts && hostNations.every(n => n.region === region.value);
+        return {
+          matches: hasMultiHosts ? 6 : 8,
+          matches2: hasMultiHosts ? 3 : 4,
+          alreadyQualified: 12,
+        };
+      case RegionName.caf:
+        return {
+          matches: 2,
+          matches2: 1,
+          alreadyQualified: 9,
+        };
+      case RegionName.afc:
+        return {
+          matches: 1,
+          matches2: 0,
+          alreadyQualified: 8,
+        };
+      case RegionName.ofc:
+        return {
+          matches: 2,
+          matches2: 1,
+          alreadyQualified: 0,
+        };
+      case RegionName.concacaf:
+        return {
+          matches: 0,
+          matches2: 0,
+          alreadyQualified: 3,
+        };
+      case RegionName.conmebol:
+        return {
+          matches: 0,
+          matches2: 0,
+          alreadyQualified: 6,
+        };
+      default:
+        return {
+          matches: 0,
+          matches2: 0,
+          alreadyQualified: 0,
+        };
+    }
+  } else {
+    return {
+      matches: 0,
+      matches2: 0,
+      alreadyQualified: 0,
+    };
+  }
+}
+
+export function roundOf32Helper(groups: GroupTeam[][]): { gWinners: GroupTeam[][]; roundOf32?: KnockoutRound } {
+  if (groups.length === 8) {
+    return { gWinners: groups.map(group => group.slice(0, 2)), roundOf32: undefined };
+  } else {
+    // TODO: Fix so that the same group teams can't be put together.
+    // group length is 12
+    // assign numbers to letter values, to improve readability of code
+    // CAN BE REMOVED
+    const [a, b, c, d, e, f, g, h, i, j, k, l] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+    const thirdPlaceTeams = groups
+      .flatMap(group => group[2])
+      .sort((x, y) => y.points - x.points || y.gDiff - x.gDiff || y.gFor - x.gFor || compare(x.name, y.name, true));
+    const knockoutCandidates = thirdPlaceTeams.slice(0, 8);
+    const gWinners = groups.map(group => group.slice(0, 2));
+    const roundOf32: KnockoutRound = [
+      [gWinners[a][0], knockoutCandidates[0], matchScore(gWinners[a][0], knockoutCandidates[0], true)],
+      [gWinners[c][0], knockoutCandidates[7], matchScore(gWinners[c][0], knockoutCandidates[7], true)],
+      [gWinners[b][0], gWinners[f][1], matchScore(gWinners[b][0], gWinners[f][1], true)],
+      [gWinners[d][1], gWinners[e][1], matchScore(gWinners[d][1], gWinners[e][1], true)],
+      [gWinners[g][0], knockoutCandidates[3], matchScore(gWinners[g][0], knockoutCandidates[3], true)],
+      [gWinners[h][0], knockoutCandidates[4], matchScore(gWinners[h][0], knockoutCandidates[4], true)],
+      [gWinners[i][0], gWinners[l][1], matchScore(gWinners[i][0], gWinners[l][1], true)],
+      [gWinners[j][1], gWinners[k][1], matchScore(gWinners[j][1], gWinners[k][1], true)],
+      [gWinners[l][0], knockoutCandidates[1], matchScore(gWinners[l][0], knockoutCandidates[1], true)],
+      [gWinners[k][0], knockoutCandidates[6], matchScore(gWinners[k][0], knockoutCandidates[6], true)],
+      [gWinners[j][0], gWinners[i][1], matchScore(gWinners[j][0], gWinners[i][1], true)],
+      [gWinners[g][1], gWinners[h][1], matchScore(gWinners[g][1], gWinners[h][1], true)],
+      [gWinners[b][1], gWinners[a][1], matchScore(gWinners[b][1], gWinners[a][1], true)],
+      [gWinners[d][0], gWinners[c][1], matchScore(gWinners[d][0], gWinners[c][1], true)],
+      [gWinners[e][0], knockoutCandidates[2], matchScore(gWinners[e][0], knockoutCandidates[2], true)],
+      [gWinners[f][0], knockoutCandidates[5], matchScore(gWinners[f][0], knockoutCandidates[5], true)],
+    ];
+
+    roundOf32.forEach(t => {
+      t[2].winner.matchHistory.bracket.push({ match: t[2], opp: t[2].loser });
+      t[2].loser.matchHistory.bracket.push({ match: t[2], opp: t[2].winner });
+    });
+
+    return {
+      gWinners: [
+        [roundOf32[0][2].winner, roundOf32[11][2].winner],
+        [roundOf32[10][2].winner, roundOf32[1][2].winner],
+        [roundOf32[2][2].winner, roundOf32[9][2].winner],
+        [roundOf32[8][2].winner, roundOf32[3][2].winner],
+        [roundOf32[4][2].winner, roundOf32[13][2].winner],
+        [roundOf32[12][2].winner, roundOf32[5][2].winner],
+        [roundOf32[6][2].winner, roundOf32[15][2].winner],
+        [roundOf32[14][2].winner, roundOf32[7][2].winner],
+      ],
+      roundOf32,
+    };
+  }
 }

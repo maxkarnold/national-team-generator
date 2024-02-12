@@ -7,8 +7,8 @@
     <!-- - adjust numbers to the 400 percentage -->
     <!-- - player should choose a nationality to be within the career and will be able to start at a club within that nation. -->
     <!-- - player ability limitations should not be a factor for the starting club. -->
-    - fix flag emojis for Windows
-    - add tournament format for 48 teams and allow for 3 nation host
+    <!-- - fix flag emojis for Windows -->
+
     - player should receive injuries
     - player progression should have more of a random factor and should improve faster at higher reputation clubs
   - account for substitute appearances
@@ -18,10 +18,10 @@
     - this can be a different system where as a youngster you are locked to a certain club or nation -->
   <!-- - fix star issue, where it doesn't round correctly to the nearest half integer, might need to change to a different star rating to display -->
   <!-- - introduce loans as an option to get more game time -->
+  - add tournament format for 48 teams and allow for 3 nation host
+  - like autoBracketQualifiers(), add additional functions for other formats like (round-robin groups and two leg playoff ties)
   - add more teams to clubs.json so that I can add more playable leagues in the simulation
   - maybe introduce a system that could relegate/promote a team or reflect their progress
-
-- Restore project to previous functionality on the same level as the deployed website
 
 ## LONG TERM PLANS
 

@@ -1,7 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { GroupTeam } from 'app/models/nation.model';
 import { originalOrder } from '@shared/utils';
-import { Tournament32 } from 'app/pages/simulation/simulation.model';
+import { RegionName, Tournament } from 'app/pages/simulation/simulation.model';
 import { findTeamInTournament, getDisplayRating, getGradeStyle, getGradeSummary } from 'app/pages/simulation/simulation.utils';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -13,11 +13,11 @@ import { combineLatest } from 'rxjs';
   templateUrl: './nation-dialog.component.html',
   styleUrls: ['./nation-dialog.component.scss'],
 })
-export class NationDialogComponent {
+export class NationDialogComponent implements OnInit {
   service: SimulationService;
   isApp = false;
   nation: GroupTeam | null = null;
-  tournament: Tournament32 | null = null;
+  tournament: Tournament | null = null;
   screenWidth: number;
   originalOrder = originalOrder;
   getDisplayRating = getDisplayRating;
@@ -57,6 +57,12 @@ export class NationDialogComponent {
       });
   }
 
+  ngOnInit(): void {
+    this.rounds = this.tournament?.bracket?.roundOf32
+      ? ['Round of 32', 'Round of 16', 'Quarter Finals', 'Semi Finals', 'Finals / Third Place Match']
+      : ['Round of 16', 'Quarter Finals', 'Semi Finals', 'Finals / Third Place Match'];
+  }
+
   @HostListener('window:resize', ['$event'])
   getScreenSize() {
     this.screenWidth = window.innerWidth;
@@ -89,15 +95,19 @@ export class NationDialogComponent {
       const availableRegions = tournament.availableRegions.map(r => r.value);
 
       if (availableRegions.length === 1) {
-        if (availableRegions[0] === 'uefa') {
+        if (availableRegions[0] === RegionName.uefa) {
           rankingTiers = [5, 10, 20, 35, 50, 80, 100, 400];
-        } else if (availableRegions[0] === 'caf') {
+        } else if (availableRegions[0] === RegionName.caf) {
           rankingTiers = [30, 60, 80, 110, 120, 130, 140, 400];
         }
       } else if (availableRegions.length < 5) {
-        if (!availableRegions.includes('uefa') && !availableRegions.includes('conmebol')) {
+        if (!availableRegions.includes(RegionName.uefa) && !availableRegions.includes(RegionName.conmebol)) {
           rankingTiers = [30, 60, 80, 110, 120, 130, 140, 400];
-        } else if (!availableRegions.includes('ofc') && !availableRegions.includes('afc') && !availableRegions.includes('concacaf')) {
+        } else if (
+          !availableRegions.includes(RegionName.afc) &&
+          !availableRegions.includes(RegionName.afc) &&
+          !availableRegions.includes(RegionName.concacaf)
+        ) {
           rankingTiers = [5, 10, 20, 35, 50, 80, 100, 400];
         } else {
           rankingTiers = [8, 18, 25, 32, 50, 70, 100, 400];

@@ -6,11 +6,11 @@ import { User } from '@core/services/firestore.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { getRandFloat, getRandomInt, getRandomPersonality, pickSingleLastName } from '@shared/utils';
 import { defaultCoaches } from 'app/models/default-coaches.model';
-import { defaultHost, GroupTeam, Nation } from 'app/models/nation.model';
+import { defaultHost32, defaultHosts48, GroupTeam, Nation } from 'app/models/nation.model';
 import { Person } from 'app/models/player.model';
 import { LeaderboardItem, LeaderboardService } from 'app/pages/leaderboard/leaderboard.service';
 import { SimulationQualifiersService } from 'app/pages/simulation/simulation-qualifiers.service';
-import { Region, Tournament32 } from 'app/pages/simulation/simulation.model';
+import { Region, RegionName, Tournament } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { addRankings, getHostNations, regions, regionsValidator, validateHosts } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
@@ -32,20 +32,20 @@ export class TournamentFormComponent {
   nations = nationsModule;
   nationsList: GroupTeam[] = [];
   filteredNations: GroupTeam[];
-  tournament: Tournament32 | null = {};
+  tournament: Tournament | null = {};
   cannotSave = true;
   localData: LeaderboardItem[] | null = null;
   drawData: GroupTeam[][] = [];
   coaches: Person[] = [];
 
-  hostNations: GroupTeam[] = [defaultHost];
+  hostNations: GroupTeam[] = [...defaultHosts48];
   potentialHosts: GroupTeam[];
   buttonDisplay = 'Setup Tournament and Save';
 
   tournamentForm = this.fb.group(
     {
       numOfGames: [1, Validators.required],
-      numOfTeams: [32, Validators.required],
+      numOfTeams: [48, Validators.required],
       availableRegions: [regions, Validators.required],
       hostNations: [this.hostNations, [Validators.required, validateHosts]],
     },
@@ -76,7 +76,7 @@ export class TournamentFormComponent {
 
     this.filteredNations = updatedNations.length === 156 ? updatedNations : this.nationsList;
 
-    const numOfTeams: number = this.tournamentForm.value.numOfTeams;
+    const numOfTeams: 32 | 48 = this.tournamentForm.value.numOfTeams;
     const numOfGames: number = this.tournamentForm.value.numOfGames;
     this.potentialHosts = [];
     this.coaches = this.leaderboard.fetchLocalNames() || [];
@@ -89,7 +89,7 @@ export class TournamentFormComponent {
       numOfTeams,
       availableRegions,
       hostNations,
-    }: { numOfGames: number; numOfTeams: number; availableRegions: Region[]; hostNations: GroupTeam[] } = this.tournamentForm.value;
+    }: { numOfGames: number; numOfTeams: 32 | 48; availableRegions: Region[]; hostNations: GroupTeam[] } = this.tournamentForm.value;
     this.setupTournament(numOfGames, numOfTeams, availableRegions, hostNations);
   }
 
@@ -138,7 +138,7 @@ export class TournamentFormComponent {
       numOfTeams,
       availableRegions,
       hostNations,
-    }: { numOfGames: number; numOfTeams: number; availableRegions: Region[]; hostNations: GroupTeam[] } = this.tournamentForm.value;
+    }: { numOfGames: number; numOfTeams: 32 | 48; availableRegions: Region[]; hostNations: GroupTeam[] } = this.tournamentForm.value;
 
     this.localData = this.leaderboard.fetchLocalStorage();
     if (this.user) {
@@ -202,8 +202,16 @@ export class TournamentFormComponent {
     }
   }
 
-  numOfTeamsChanged(_value: number) {
-    this.tournamentForm.patchValue({ hostNations: [] });
+  numOfTeamsChanged(str: string) {
+    const numOfTeams = parseInt(str, 10);
+    const hostNations = [];
+    if (numOfTeams === 48) {
+      const hosts48 = getHostNations(this.filteredNations, numOfTeams);
+      hostNations.push(...hosts48);
+    } else if (numOfTeams === 32) {
+      hostNations.push(defaultHost32);
+    }
+    this.tournamentForm.patchValue({ hostNations });
     this.hostChanged(this.tournamentForm.value.hostNations);
   }
 
@@ -275,10 +283,30 @@ export class TournamentFormComponent {
           points: 0,
           matchesPlayed: 0,
           tier: nation.nationTier,
-          attRating,
-          defRating,
-          midRating,
-          penRating,
+          startingRating: {
+            att: attRating,
+            mid: midRating,
+            def: defRating,
+            pen: penRating,
+          },
+          dynamicRating: {
+            att: attRating,
+            mid: midRating,
+            def: defRating,
+            pen: penRating,
+          },
+          isBuffed: {
+            att: false,
+            mid: false,
+            def: false,
+            pen: false,
+          },
+          isDebuffed: {
+            att: false,
+            mid: false,
+            def: false,
+            pen: false,
+          },
           rating: (attRating + midRating + defRating) / 3,
           ranking: 0,
           attRanking: 0,
@@ -296,13 +324,15 @@ export class TournamentFormComponent {
             tournamentFinish: null,
           },
           homeTeam: hostNations.map(t => t.name).includes(nation.name) ? true : false,
+          region: nation.region as RegionName,
         };
         this.nationsList.push(team);
       }
     });
   }
 
-  setupTournament(numOfGames: number, numOfTeams: number, availableRegions: Region[], hostNations: GroupTeam[], save?: boolean): void {
+  setupTournament(numOfGames: number, numOfTeams: 32 | 48, availableRegions: Region[], hostNations: GroupTeam[], save?: boolean): void {
+    // console.log('TESTS\n\n\n\n\n\n\n\n\n\n\nSETUP TOURNAMENT', numOfTeams);
     this.createTeams();
 
     if (this.coaches.length > 0) {
@@ -334,15 +364,9 @@ export class TournamentFormComponent {
     };
     const teams = this.qualifier.chooseQualifyingTeams(availableRegions, numOfTeams, nations, hostNations);
     const numOfGroups = teams.length / 4; // groups of 4
-    const extraTeams = numOfTeams % 4; // N/A anymore since tournament is limited in size
-    const teamsInGroup = teams.length / numOfGroups; // always going to be 4
+    const teamsInGroup = teams.length / numOfGroups; // usually going to be 4
 
-    // if (teams.length === 9) {
-    //   teamsInGroup = 3;
-    //   extraTeams = numOfTeams % teamsInGroup;
-    // }
-
-    this.qualifier.organizeGroups(teams, extraTeams, teamsInGroup, numOfTeams, hostNations, availableRegions);
+    this.qualifier.organizeGroups(teams, teamsInGroup, numOfTeams, hostNations, availableRegions);
 
     this.simulator.tournament$
       .pipe(
@@ -366,7 +390,7 @@ export class TournamentFormComponent {
       });
   }
 
-  simulateTournament(tournament: Tournament32, numOfGames: number, save?: boolean): void {
+  simulateTournament(tournament: Tournament, numOfGames: number, save?: boolean): void {
     const groupsArr = tournament.groups || [];
 
     const hostNations = tournament.hostNations;
@@ -386,6 +410,7 @@ export class TournamentFormComponent {
 
     this.simulator.tournament$.next(newTournament);
     this.tournament = newTournament;
+    console.log(this.tournament);
 
     if (save) {
       this.saveTournament(awards, groups, hostNations);

@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { originalOrder } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { Tournament32 } from 'app/pages/simulation/simulation.model';
+import { Tournament } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { filter } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import { filter } from 'rxjs/operators';
 export class KnockoutStageComponent {
   screenWidth: number;
   service: SimulationService;
-  tournament: Tournament32 | null = null;
+  tournament: Tournament | null = null;
   originalOrder = originalOrder;
 
   constructor(service: SimulationService) {

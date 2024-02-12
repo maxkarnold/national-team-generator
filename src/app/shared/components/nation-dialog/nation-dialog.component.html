@@ -23,19 +23,31 @@
         </div>
         <div>
           <span>ATT</span>
-          <h3>{{ getDisplayRating(nation.attRating, true) }}</h3>
+          <h3 [class.is-debuffed]="nation.isDebuffed.att" [class.is-buffed]="nation.isBuffed.att">
+            {{ getDisplayRating(nation.dynamicRating.att, true) }}
+          </h3>
+          <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.att, true) }}</span> -->
         </div>
         <div>
           <span>MID</span>
-          <h3>{{ getDisplayRating(nation.midRating, true) }}</h3>
+          <h3 [class.is-debuffed]="nation.isDebuffed.mid" [class.is-buffed]="nation.isBuffed.mid">
+            {{ getDisplayRating(nation.dynamicRating.mid, true) }}
+          </h3>
+          <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.mid, true) }}</span> -->
         </div>
         <div>
           <span>DEF</span>
-          <h3>{{ getDisplayRating(nation.defRating, true) }}</h3>
+          <h3 [class.is-debuffed]="nation.isDebuffed.def" [class.is-buffed]="nation.isBuffed.def">
+            {{ getDisplayRating(nation.dynamicRating.def, true) }}
+          </h3>
+          <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.def, true) }}</span> -->
         </div>
         <div>
           <span>PEN</span>
-          <h3>{{ getDisplayRating(nation.penRating, true) }}</h3>
+          <h3 [class.is-debuffed]="nation.isDebuffed.pen" [class.is-buffed]="nation.isBuffed.pen">
+            {{ getDisplayRating(nation.dynamicRating.pen, true) }}
+          </h3>
+          <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.pen, true) }}</span> -->
         </div>
       </div>
       <div class="right-side">

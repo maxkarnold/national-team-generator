@@ -158,6 +158,19 @@ h3 {
     }
   }
 
+  .is-debuffed {
+    color: #ef3f18;
+  }
+
+  .is-buffed {
+    color: #83e356;
+  }
+
+  .small-rating {
+    font-size: 0.8rem;
+    color: #ffffff80
+  }
+
   .body {
     display: flex;
     flex-direction: column;

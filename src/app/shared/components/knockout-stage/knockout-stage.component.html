@@ -1,10 +1,20 @@
 <div class="bracket" *ngIf="tournament?.bracket && tournament">
-  <ul class="headings">
+  <ul class="headings48" *ngIf="tournament.bracket?.roundOf32; else headings32">
+    <li>Round Of 32</li>
     <li>Round of 16</li>
     <li>Quarter Finals</li>
     <li>Semi Finals</li>
   </ul>
-  <div class="grid">
+
+  <ng-template #headings32>
+    <ul class="headings32">
+      <li>Round of 16</li>
+      <li>Quarter Finals</li>
+      <li>Semi Finals</li>
+    </ul>
+  </ng-template>
+
+  <div class="grid48" *ngIf="tournament.bracket?.roundOf32; else tournament32">
     <div class="round" *ngFor="let round of tournament?.bracket | keyvalue: originalOrder">
       <div class="match" *ngFor="let match of round.value; let i = index">
         <h3 *ngIf="round.key === 'finals'" [class]="i === 0 ? 'first' : 'second'">
@@ -12,7 +22,7 @@
         </h3>
         <div [class]="match[2].loser.name === match[0].name ? 'loser' : ''">
           <div (click)="openNationStats(match[0])" class="nation">
-            <span *ngIf="round.key === 'roundOf16'" class="group-finish">{{ match[0].groupFinish }}</span>
+            <span *ngIf="round.key === 'roundOf32'" class="group-finish">{{ match[0].groupFinish }}</span>
             <img class="nation-flag" [src]="match[0].logo" [alt]="match[0].name" />
             <span>
               {{ screenWidth < 600 ? match[0].abbreviation.toLocaleUpperCase() : match[0].name }}
@@ -35,7 +45,7 @@
         </div>
         <div [class]="match[2].loser.name === match[1].name ? 'loser' : ''">
           <div (click)="openNationStats(match[1])" class="nation">
-            <span *ngIf="round.key === 'roundOf16'" class="group-finish">{{ match[1].groupFinish }}</span>
+            <span *ngIf="round.key === 'roundOf32'" class="group-finish">{{ match[1].groupFinish }}</span>
             <img class="nation-flag" [src]="match[1].logo" [alt]="match[1].name" />
             <span>
               {{ screenWidth < 600 ? match[1].abbreviation.toLocaleUpperCase() : match[1].name }}
@@ -59,4 +69,61 @@
       </div>
     </div>
   </div>
+  <ng-template #tournament32>
+    <div class="grid32">
+      <div class="round" *ngFor="let round of tournament?.bracket | keyvalue: originalOrder">
+        <div class="match" *ngFor="let match of round.value; let i = index">
+          <h3 *ngIf="round.key === 'finals'" [class]="i === 0 ? 'first' : 'second'">
+            {{ i === 0 ? 'Finals' : '3rd Place' }}
+          </h3>
+          <div [class]="match[2].loser.name === match[0].name ? 'loser' : ''">
+            <div (click)="openNationStats(match[0])" class="nation">
+              <span *ngIf="round.key === 'roundOf16'" class="group-finish">{{ match[0].groupFinish }}</span>
+              <img class="nation-flag" [src]="match[0].logo" [alt]="match[0].name" />
+              <span>
+                {{ screenWidth < 600 ? match[0].abbreviation.toLocaleUpperCase() : match[0].name }}
+                {{ screenWidth > 350 ? '[' + match[0].ranking + ']' : '' }}
+              </span>
+            </div>
+            <div class="score">
+              <span
+                >{{ match[2].goalsFor }}
+                {{
+                  match[2].isPenaltyWin && match[0].name === match[2].winner.name
+                    ? '(P)'
+                    : match[2].isEtWin && match[0].name === match[2].winner.name
+                    ? '(AET)'
+                    : ''
+                }}</span
+              >
+              <span>{{ match[0].name === match[2].winner.name ? '◀' : '' }}</span>
+            </div>
+          </div>
+          <div [class]="match[2].loser.name === match[1].name ? 'loser' : ''">
+            <div (click)="openNationStats(match[1])" class="nation">
+              <span *ngIf="round.key === 'roundOf16'" class="group-finish">{{ match[1].groupFinish }}</span>
+              <img class="nation-flag" [src]="match[1].logo" [alt]="match[1].name" />
+              <span>
+                {{ screenWidth < 600 ? match[1].abbreviation.toLocaleUpperCase() : match[1].name }}
+                {{ screenWidth > 350 ? '[' + match[1].ranking + ']' : '' }}
+              </span>
+            </div>
+            <div class="score">
+              <span
+                >{{ match[2].goalsAg }}
+                {{
+                  match[2].isPenaltyWin && match[1].name === match[2].winner.name
+                    ? '(P)'
+                    : match[2].isEtWin && match[1].name === match[2].winner.name
+                    ? '(AET)'
+                    : ''
+                }}</span
+              >
+              <span>{{ match[1].name === match[2].winner.name ? '◀' : '' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>

@@ -3,7 +3,7 @@ import { groupLetters } from 'app/pages/simulation/simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Tournament32 } from 'app/pages/simulation/simulation.model';
+import { Tournament } from 'app/pages/simulation/simulation.model';
 
 @UntilDestroy()
 @Component({
@@ -14,7 +14,7 @@ import { Tournament32 } from 'app/pages/simulation/simulation.model';
 export class GroupStageComponent {
   service: SimulationService;
   screenWidth: number;
-  tournament: Tournament32 | null = null;
+  tournament: Tournament | null = null;
   groupLetters = groupLetters;
   headings = ['RNK', 'MP', 'PTS', 'GD', 'GS', 'GA'];
 

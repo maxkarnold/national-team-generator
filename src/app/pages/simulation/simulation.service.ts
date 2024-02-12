@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { compare } from '@shared/utils';
-import { findTeamInTournament, matchScore } from './simulation.utils';
+import { findTeamInTournament, matchScore, roundOf32Helper } from './simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { Match, Region, Tournament32 } from './simulation.model';
+import { KnockoutRound, Match, Region, Tournament } from './simulation.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CreatePlayerService } from '@core/services/create-player.service';
@@ -15,9 +15,9 @@ import { catchError, count, map, scan } from 'rxjs/operators';
 export class SimulationService {
   createPerson: CreatePlayerService;
   selectedNation$ = new BehaviorSubject<GroupTeam | null>(null);
-  tournament$ = new BehaviorSubject<Tournament32 | null>(null);
+  tournament$ = new BehaviorSubject<Tournament | null>(null);
   isLoading$ = new BehaviorSubject<boolean>(true);
-  tournament: Tournament32 | null = null;
+  tournament: Tournament | null = null;
   hostNations?: GroupTeam[];
 
   constructor(createPerson: CreatePlayerService) {
@@ -130,7 +130,7 @@ export class SimulationService {
       }
     }
     // assign group finishes to teams
-    const groupLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const groupLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'].slice(0, groups.length);
     for (let i = 0; i < groupLetters.length; i++) {
       for (let j = 0; j < g[i].length; j++) {
         g[i][j].groupFinish = groupLetters[i] + (j + 1).toString();
@@ -142,17 +142,20 @@ export class SimulationService {
   simulateBracket(groups: GroupTeam[][]): {
     groupWinners: GroupTeam[];
     bracket: {
-      roundOf16: [GroupTeam, GroupTeam, Match][];
-      quarterFinals: [GroupTeam, GroupTeam, Match][];
-      semiFinals: [GroupTeam, GroupTeam, Match][];
-      finals: [GroupTeam, GroupTeam, Match][];
+      roundOf16: KnockoutRound;
+      quarterFinals: KnockoutRound;
+      semiFinals: KnockoutRound;
+      finals: KnockoutRound;
+      roundOf32?: KnockoutRound;
     };
   } {
-    const gWinners = groups.map(group => group.slice(0, 2));
-    const [a, b, c, d, e, f, g, h] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-    // assign numbers to letter values, to improve readability of code
+    const { gWinners, roundOf32 } = roundOf32Helper(groups);
 
-    const roundOf16: [GroupTeam, GroupTeam, Match][] = [
+    // assign numbers to letter values, to improve readability of code
+    // CAN BE REMOVED
+    const [a, b, c, d, e, f, g, h] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+    const roundOf16: KnockoutRound = [
       [gWinners[a][0], gWinners[b][1], matchScore(gWinners[a][0], gWinners[b][1], true)],
       [gWinners[c][0], gWinners[d][1], matchScore(gWinners[c][0], gWinners[d][1], true)],
       [gWinners[e][0], gWinners[f][1], matchScore(gWinners[e][0], gWinners[f][1], true)],
@@ -168,7 +171,7 @@ export class SimulationService {
       t[2].loser.matchHistory.bracket.push({ match: t[2], opp: t[2].winner });
     });
 
-    const quarterFinals: [GroupTeam, GroupTeam, Match][] = [
+    const quarterFinals: KnockoutRound = [
       [roundOf16[0][2].winner, roundOf16[1][2].winner, matchScore(roundOf16[0][2].winner, roundOf16[1][2].winner, true)],
       [roundOf16[2][2].winner, roundOf16[3][2].winner, matchScore(roundOf16[2][2].winner, roundOf16[3][2].winner, true)],
       [roundOf16[4][2].winner, roundOf16[5][2].winner, matchScore(roundOf16[4][2].winner, roundOf16[5][2].winner, true)],
@@ -180,7 +183,7 @@ export class SimulationService {
       t[2].loser.matchHistory.bracket.push({ match: t[2], opp: t[2].winner });
     });
 
-    const semiFinals: [GroupTeam, GroupTeam, Match][] = [
+    const semiFinals: KnockoutRound = [
       [quarterFinals[0][2].winner, quarterFinals[1][2].winner, matchScore(quarterFinals[0][2].winner, quarterFinals[1][2].winner, true)],
       [quarterFinals[2][2].winner, quarterFinals[3][2].winner, matchScore(quarterFinals[2][2].winner, quarterFinals[3][2].winner, true)],
     ];
@@ -190,7 +193,7 @@ export class SimulationService {
       t[2].loser.matchHistory.bracket.push({ match: t[2], opp: t[2].winner });
     });
 
-    const finals: [GroupTeam, GroupTeam, Match][] = [
+    const finals: KnockoutRound = [
       [semiFinals[0][2].winner, semiFinals[1][2].winner, matchScore(semiFinals[0][2].winner, semiFinals[1][2].winner, true)],
       [semiFinals[0][2].loser, semiFinals[1][2].loser, matchScore(semiFinals[0][2].loser, semiFinals[1][2].loser, true)],
     ];
@@ -201,7 +204,21 @@ export class SimulationService {
 
     // console.log(groups.map(z => z.map(t => [t.name, t.ranking, `Pot${t.pot}`, t.tier, t.region])));
 
+    // TODO: groupWinners might need to change for 48 team tournament
     const groupWinners = gWinners.flat() as GroupTeam[];
+
+    if (roundOf32) {
+      return {
+        groupWinners,
+        bracket: {
+          roundOf32,
+          roundOf16,
+          quarterFinals,
+          semiFinals,
+          finals,
+        },
+      };
+    }
 
     return {
       groupWinners,
@@ -216,10 +233,11 @@ export class SimulationService {
 
   getTournamentAwards(
     bracket: {
-      roundOf16: [GroupTeam, GroupTeam, Match][];
-      quarterFinals: [GroupTeam, GroupTeam, Match][];
-      semiFinals: [GroupTeam, GroupTeam, Match][];
-      finals: [GroupTeam, GroupTeam, Match][];
+      roundOf32?: KnockoutRound;
+      roundOf16: KnockoutRound;
+      quarterFinals: KnockoutRound;
+      semiFinals: KnockoutRound;
+      finals: KnockoutRound;
     },
     groups: GroupTeam[][],
     availableRegions?: Region[]

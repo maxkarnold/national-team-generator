@@ -52,7 +52,7 @@
         <label for="numOfTeams">Number of Teams</label>
         <select formControlName="numOfTeams" (ngModelChange)="numOfTeamsChanged($event)" required class="border p-1 rounded w-full h-10">
           <option value="48">48 - World Cup (2026)</option>
-          <option value="32">32 - World Cup (1998-2022)</option>
+          <option value="32" disabled>32 - World Cup (1998-2022)</option>
           <option value="24" disabled>24 - EUROS, AFCON</option>
           <option value="12" disabled>12 - Copa América</option>
         </select>

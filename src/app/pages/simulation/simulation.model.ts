@@ -20,9 +20,10 @@ export interface MatchEvent {
   type?: string;
 }
 
-export type EventEmoji = '⚽' | '🟨' | '🟥' | '🟨🟥';
+export type EventEmoji = '⚽' | '🟨' | '🟥' | '🟨🟥' | '🚑';
+export type KnockoutRound = [GroupTeam, GroupTeam, Match][];
 
-export interface Tournament32 {
+export interface Tournament {
   availableRegions?: Region[];
   hostNations?: GroupTeam[];
   allTeams?: {
@@ -34,10 +35,11 @@ export interface Tournament32 {
   groups?: GroupTeam[][];
   groupWinners?: GroupTeam[];
   bracket?: {
-    roundOf16: [GroupTeam, GroupTeam, Match][];
-    quarterFinals: [GroupTeam, GroupTeam, Match][];
-    semiFinals: [GroupTeam, GroupTeam, Match][];
-    finals: [GroupTeam, GroupTeam, Match][];
+    roundOf32?: KnockoutRound;
+    roundOf16: KnockoutRound;
+    quarterFinals: KnockoutRound;
+    semiFinals: KnockoutRound;
+    finals: KnockoutRound;
   };
   awards?: [
     first: GroupTeam,
@@ -56,7 +58,7 @@ export interface Tournament32 {
 
 export interface Region {
   label: string;
-  value: string;
+  value: RegionName;
   numOfTeams: number;
   qualifiers: {
     auto: number;
@@ -71,4 +73,14 @@ export interface TeamsByRegion {
   concacaf?: GroupTeam[];
   conmebol?: GroupTeam[];
   ofc?: GroupTeam[];
+}
+
+// eslint-disable-next-line no-shadow
+export enum RegionName {
+  uefa = 'uefa',
+  afc = 'afc',
+  caf = 'caf',
+  concacaf = 'concacaf',
+  conmebol = 'conmebol',
+  ofc = 'ofc',
 }
