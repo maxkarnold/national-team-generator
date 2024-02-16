@@ -10,7 +10,7 @@ import {
   ClubStats,
 } from './career.model';
 import { getRandFloat, getRandomInt, probability } from '@shared/utils';
-import { mean, round } from 'lodash';
+import { mean, round } from 'lodash-es';
 import { playerToClubAbility } from './career.constants';
 
 function calcLeagueDifficulty(clubRating: number, leagueRating: number, ability: number): LeagueDifficulty {
