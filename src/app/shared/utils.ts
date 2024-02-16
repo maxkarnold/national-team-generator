@@ -1,4 +1,4 @@
-import { round, sample } from 'lodash';
+import { round, sample } from 'lodash-es';
 
 export const originalOrder = (): number => 0;
 

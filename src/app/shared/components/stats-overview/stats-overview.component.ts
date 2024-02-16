@@ -4,7 +4,7 @@ import { GroupTeam } from 'app/models/nation.model';
 import { Tournament } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { getDisplayRating } from 'app/pages/simulation/simulation.utils';
-import { get as _get } from 'lodash';
+import { get as _get } from 'lodash-es';
 
 interface RankingsRow {
   overall: GroupTeam;

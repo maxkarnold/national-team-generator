@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { compare, getRandFloat, getRandomInt, getRandomInts } from '@shared/utils';
 import { Buff, GroupTeam } from 'app/models/nation.model';
-import { sum } from 'lodash';
+import { sum } from 'lodash-es';
 import { Match, Region, MatchEvent, EventEmoji, RegionName, KnockoutRound } from './simulation.model';
 
 const getAdjustedTime = (time: number) => {

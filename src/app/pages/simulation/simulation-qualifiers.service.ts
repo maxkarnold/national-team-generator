@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { compare, getRandomInt, groupByProp } from '@shared/utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { drawAndSort } from './group-draw.utils';
 import { Match, Region, RegionName, TeamsByRegion, Tournament } from './simulation.model';
