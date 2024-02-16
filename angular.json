@@ -78,14 +78,14 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "publicHost": "localhost:4200",
-            "browserTarget": "test-app:build"
+            "buildTarget": "test-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "team-gen:build:production"
+              "buildTarget": "team-gen:build:production"
             },
             "development": {
-              "browserTarget": "team-gen:build:development"
+              "buildTarget": "team-gen:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -93,7 +93,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "team-gen:build"
+            "buildTarget": "team-gen:build"
           }
         },
         "test": {
