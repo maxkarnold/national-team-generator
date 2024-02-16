@@ -8,7 +8,7 @@ import { newSeasonStr, adjustClubStats } from './career.utils';
 import { getAbbrevNumber, getAbbrevString, originalOrder } from '@shared/utils';
 import { CareerService } from './career.service';
 import { fringeRoles, tableHeaders } from './career.constants';
-import { sample as _sample } from 'lodash';
+import { sample as _sample } from 'lodash-es';
 
 @Component({
   selector: 'app-career',
