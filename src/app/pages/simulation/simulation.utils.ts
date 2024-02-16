@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { compare, getRandFloat, getRandomInt, getRandomInts } from '@shared/utils';
-import { GroupTeam } from 'app/models/nation.model';
+import { Buff, GroupTeam } from 'app/models/nation.model';
 import { sum } from 'lodash';
 import { Match, Region, MatchEvent, EventEmoji, RegionName, KnockoutRound } from './simulation.model';
 
@@ -545,6 +545,21 @@ function getTeamBuffs(
   forEventTimes: MatchEvent[],
   oppEventTimes: MatchEvent[]
 ) {
+  // for each pos of current buffs
+  // iterate through each buff in the array, and subtract the numOfGames by 1
+  // if the numOfGames value is 0 then add/subtract the value of its property to the current iterated position and remove it from the array
+  // else continue to next buff
+  // for (const pos in team.currentBuffs) {
+  //   if (Object.prototype.hasOwnProperty.call(team.currentBuffs, pos)) {
+  //     const x: Buff[] =
+  //   }
+
+  // }
+
+  // team.currentBuffs.forEach((a, b) => {
+
+  // });
+
   // apply buffs to teams that win and half the teams that draw
   // MIGHT WANT TO CHANGE LATER
   const randBuff = getRandFloat(0, 2.5);

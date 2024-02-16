@@ -1,5 +1,6 @@
 import { Match, RegionName } from 'app/pages/simulation/simulation.model';
 import { Person } from './player.model';
+import { getRandFloat } from '@shared/utils';
 
 export interface Nation {
   name: string;
@@ -56,6 +57,12 @@ export interface GroupTeam {
     def: boolean;
     pen: boolean;
   };
+  currentBuffs: {
+    att: Buff[];
+    mid: Buff[];
+    def: Buff[];
+    pen: Buff[];
+  };
   rating: number;
   matchHistory: {
     qualifiers: {
@@ -91,9 +98,120 @@ export interface GroupTeam {
   groupFinish?: string;
 }
 
+export interface Buff {
+  numOfGames: number;
+  value: number;
+}
+
 export function isNation(value: any): value is Nation {
   return (<Nation>value).abbreviation !== undefined;
 }
+
+export const baseTeam = (hostNations: GroupTeam[], nation: Nation): GroupTeam => {
+  // random nation values
+  let min = 0;
+  let max = 0;
+
+  switch (nation.nationTier) {
+    case 's':
+      min = 80;
+      max = 100;
+      break;
+    case 'a':
+      min = 70;
+      max = 95;
+      break;
+    case 'b':
+      min = 65;
+      max = 88;
+      break;
+    case 'c':
+      min = 60;
+      max = 88;
+      break;
+    case 'd':
+      min = 55;
+      max = 80;
+      break;
+    case 'e':
+      min = 40;
+      max = 78;
+      break;
+    case 'f':
+      min = 30;
+      max = 70;
+      break;
+    case 'g':
+      min = 25;
+      max = 55;
+      break;
+    default:
+      min = 25;
+      max = 55;
+      break;
+  }
+  const attRating = getRandFloat(min, max);
+  const midRating = getRandFloat(min, max);
+  const defRating = getRandFloat(min, max);
+  const penRating = getRandFloat(min, max);
+  return {
+    ...nation,
+    gDiff: 0,
+    gFor: 0,
+    gOpp: 0,
+    points: 0,
+    matchesPlayed: 0,
+    tier: nation.nationTier,
+    startingRating: {
+      att: attRating,
+      mid: midRating,
+      def: defRating,
+      pen: penRating,
+    },
+    dynamicRating: {
+      att: attRating,
+      mid: midRating,
+      def: defRating,
+      pen: penRating,
+    },
+    isBuffed: {
+      att: false,
+      mid: false,
+      def: false,
+      pen: false,
+    },
+    isDebuffed: {
+      att: false,
+      mid: false,
+      def: false,
+      pen: false,
+    },
+    currentBuffs: {
+      att: [],
+      mid: [],
+      def: [],
+      pen: [],
+    },
+    rating: (attRating + midRating + defRating) / 3,
+    ranking: 0,
+    attRanking: 0,
+    midRanking: 0,
+    defRanking: 0,
+    matchHistory: {
+      qualifiers: [],
+      group: [],
+      bracket: [],
+    },
+    reportCard: {
+      grade: null,
+      gradeStyle: null,
+      gradeSummary: null,
+      tournamentFinish: null,
+    },
+    homeTeam: hostNations.map(t => t.name).includes(nation.name) ? true : false,
+    region: nation.region as RegionName,
+  };
+};
 
 export const defaultHost32: GroupTeam = {
   name: 'Qatar',
@@ -130,6 +248,12 @@ export const defaultHost32: GroupTeam = {
     mid: false,
     def: false,
     pen: false,
+  },
+  currentBuffs: {
+    att: [],
+    mid: [],
+    def: [],
+    pen: [],
   },
   rating: 0,
   matchesPlayed: 0,
@@ -191,6 +315,12 @@ export const defaultHosts48: GroupTeam[] = [
       def: false,
       pen: false,
     },
+    currentBuffs: {
+      att: [],
+      mid: [],
+      def: [],
+      pen: [],
+    },
     rating: 0,
     matchesPlayed: 0,
     matchHistory: {
@@ -249,6 +379,12 @@ export const defaultHosts48: GroupTeam[] = [
       def: false,
       pen: false,
     },
+    currentBuffs: {
+      att: [],
+      mid: [],
+      def: [],
+      pen: [],
+    },
     rating: 0,
     matchesPlayed: 0,
     matchHistory: {
@@ -306,6 +442,12 @@ export const defaultHosts48: GroupTeam[] = [
       mid: false,
       def: false,
       pen: false,
+    },
+    currentBuffs: {
+      att: [],
+      mid: [],
+      def: [],
+      pen: [],
     },
     rating: 0,
     matchesPlayed: 0,

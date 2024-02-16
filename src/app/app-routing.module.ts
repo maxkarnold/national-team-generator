@@ -11,7 +11,7 @@ import { CareerComponent } from './pages/career/career.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'career',
+    redirectTo: 'simulation',
     pathMatch: 'full',
   },
   {

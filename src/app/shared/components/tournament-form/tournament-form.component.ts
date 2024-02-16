@@ -5,12 +5,11 @@ import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { getRandFloat, getRandomInt, getRandomPersonality, pickSingleLastName } from '@shared/utils';
-import { defaultCoaches } from 'app/models/default-coaches.model';
-import { defaultHost32, defaultHosts48, GroupTeam, Nation } from 'app/models/nation.model';
+import { baseTeam, defaultHost32, defaultHosts48, GroupTeam, Nation } from 'app/models/nation.model';
 import { Person } from 'app/models/player.model';
 import { LeaderboardItem, LeaderboardService } from 'app/pages/leaderboard/leaderboard.service';
 import { SimulationQualifiersService } from 'app/pages/simulation/simulation-qualifiers.service';
-import { Region, RegionName, Tournament } from 'app/pages/simulation/simulation.model';
+import { Region, Tournament } from 'app/pages/simulation/simulation.model';
 import { SimulationService } from 'app/pages/simulation/simulation.service';
 import { addRankings, getHostNations, regions, regionsValidator, validateHosts } from 'app/pages/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
@@ -228,105 +227,7 @@ export class TournamentFormComponent {
     this.nationsList = [];
     this.nations.forEach(tier => {
       for (const nation of tier.nations) {
-        // random nation values
-        let min = 0;
-        let max = 0;
-
-        switch (nation.nationTier) {
-          case 's':
-            min = 80;
-            max = 100;
-            break;
-          case 'a':
-            min = 70;
-            max = 95;
-            break;
-          case 'b':
-            min = 65;
-            max = 88;
-            break;
-          case 'c':
-            min = 60;
-            max = 88;
-            break;
-          case 'd':
-            min = 55;
-            max = 80;
-            break;
-          case 'e':
-            min = 40;
-            max = 78;
-            break;
-          case 'f':
-            min = 30;
-            max = 70;
-            break;
-          case 'g':
-            min = 25;
-            max = 55;
-            break;
-          default:
-            min = 25;
-            max = 55;
-            break;
-        }
-        const attRating = getRandFloat(min, max);
-        const midRating = getRandFloat(min, max);
-        const defRating = getRandFloat(min, max);
-        const penRating = getRandFloat(min, max);
-        const hostNations: GroupTeam[] = this.tournamentForm.value.hostNations;
-        const team: GroupTeam = {
-          ...nation,
-          gDiff: 0,
-          gFor: 0,
-          gOpp: 0,
-          points: 0,
-          matchesPlayed: 0,
-          tier: nation.nationTier,
-          startingRating: {
-            att: attRating,
-            mid: midRating,
-            def: defRating,
-            pen: penRating,
-          },
-          dynamicRating: {
-            att: attRating,
-            mid: midRating,
-            def: defRating,
-            pen: penRating,
-          },
-          isBuffed: {
-            att: false,
-            mid: false,
-            def: false,
-            pen: false,
-          },
-          isDebuffed: {
-            att: false,
-            mid: false,
-            def: false,
-            pen: false,
-          },
-          rating: (attRating + midRating + defRating) / 3,
-          ranking: 0,
-          attRanking: 0,
-          midRanking: 0,
-          defRanking: 0,
-          matchHistory: {
-            qualifiers: [],
-            group: [],
-            bracket: [],
-          },
-          reportCard: {
-            grade: null,
-            gradeStyle: null,
-            gradeSummary: null,
-            tournamentFinish: null,
-          },
-          homeTeam: hostNations.map(t => t.name).includes(nation.name) ? true : false,
-          region: nation.region as RegionName,
-        };
-        this.nationsList.push(team);
+        this.nationsList.push(baseTeam(this.tournamentForm.value.hostNations, nation as Nation));
       }
     });
   }
