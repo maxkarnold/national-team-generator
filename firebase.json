@@ -29,11 +29,6 @@
           "destination": "/index.html"
         }
       ]
-    },
-    {
-      "target": "team-gen",
-      "source": ".",
-      "frameworksBackend": {}
     }
   ],
   "firestore": {
