@@ -261,20 +261,20 @@ export class SimulationService {
     return [first, second, third, underPerformer, overPerformer];
   }
 
-  getCoachInfo(nations: GroupTeam[]): Observable<{
-    nationality: string;
-    lastNames: string[];
-    lastNameUsage: string;
-    firstNames: string[];
-    firstInitial: string;
-    firstNameUsage: string;
-    totalLastNames: number;
-    totalFirstNames: number;
-  }>[] {
-    const updatedNations = [];
-    for (let i = 0; i < nations.length; i++) {
-      updatedNations.push(this.createPerson.getNames(nations[i].name).pipe(map(n => ({ ...n, nationality: nations[i].name }))));
-    }
-    return updatedNations;
-  }
+  // getCoachInfo(nations: GroupTeam[]): Observable<{
+  //   nationality: string;
+  //   lastNames: string[];
+  //   lastNameUsage: string;
+  //   firstNames: string[];
+  //   firstInitial: string;
+  //   firstNameUsage: string;
+  //   totalLastNames: number;
+  //   totalFirstNames: number;
+  // }>[] {
+  //   const updatedNations = [];
+  //   for (let i = 0; i < nations.length; i++) {
+  //     updatedNations.push(this.createPerson.getNames(nations[i].name).pipe(map(n => ({ ...n, nationality: nations[i].name }))));
+  //   }
+  //   return updatedNations;
+  // }
 }

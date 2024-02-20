@@ -72,9 +72,9 @@
 
     <div class="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-5 md:justify-center">
       <button type="submit" [disabled]="!tournamentForm.valid" class="btn disabled:btn-disabled">Setup Tournament</button>
-      <button type="button" *ngIf="user && coaches.length < 1" (click)="addCoaches()" class="btn disabled:btn-disabled">
+      <!-- <button type="button" *ngIf="user && coaches.length < 1" (click)="addCoaches()" class="btn disabled:btn-disabled">
         Add Coaches (Beta)
-      </button>
+      </button> -->
       <button
         type="button"
         [disabled]="!tournamentForm.valid || cannotSave"

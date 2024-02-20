@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { getRandomInt, shuffle, median } from '@shared/utils';
-import { GkAttributes, OutfieldAttributes } from 'app/models/player-attributes.model';
-import { Player } from 'app/models/player.model';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { getRandomInt } from '@shared/utils';
 import * as nationsModule from 'assets/json/nations.json';
 import { Nation } from 'app/models/nation.model';
-import { Name, FirstName, LastName } from './firestore.model';
 import { FirestoreService } from './firestore.service';
 
 @UntilDestroy()
@@ -25,121 +20,101 @@ export class CreatePlayerService {
     // console.log(this.nations);
   }
 
-  createPlayer(
-    nationOrTier: string,
-    count: [
-      playerCount: number,
-      first: number,
-      second: number,
-      third: number,
-      fourth: number,
-      fifth: number,
-      sixth: number,
-      seventh: number,
-      eighth: number
-    ]
-  ) {
-    // const { rating, clubRep } = this.getRatingAndClubRep(...count);
-    // const mainPositions = this.getMainPositions(rating);
-    // const foot = this.getFoot(mainPositions[0]);
-    // const { altPos, compPos, unconvincingPos } = this.getAltPositions(
-    //   mainPositions,
-    //   foot
-    // );
-    // const age = this.getAge(rating, mainPositions[0]);
-    // const { role, duty } = this.getPositionRole(
-    //   mainPositions,
-    //   altPos,
-    //   foot,
-    //   rating,
-    //   age
-    // );
-    // const { nationality, logo } = this.getNationOrTier(
-    //   nationOrTier,
-    //   'nationality',
-    //   rating
-    // );
-    // const { clubName, clubLogoUrl } = this.getClub(clubRep, nationality || '');
-    // const { height, weight, weakFoot, attributes } = this.getAttributes(
-    //   mainPositions[0],
-    //   altPos,
-    //   role,
-    //   duty,
-    //   rating,
-    //   age
-    // );
-    // let firstInitial = '';
-    // let firstNameUsage = '';
-    // let firstNames: string[] = [];
-    // let lastNameUsage = '';
-    // let lastNames: string[] = [];
-    // let singleLastName = '';
-    // this.getNames(nationality)
-    //   .pipe(untilDestroyed(this))
-    //   .subscribe((obj) => {
-    //     firstInitial = obj.firstInitial;
-    //     firstNameUsage = obj.firstNameUsage;
-    //     firstNames = obj.firstNames;
-    //     lastNameUsage = obj.lastNameUsage;
-    //     lastNames = obj.lastNames;
-    //     [singleLastName] = obj.lastNames;
-    //   });
-    // return {
-    //   rating,
-    //   mainPositions,
-    //   foot,
-    //   weakFoot,
-    //   height,
-    //   weight,
-    //   attributes,
-    //   altPositions: altPos,
-    //   competentPositions: compPos,
-    //   unconvincingPositions: unconvincingPos,
-    //   age,
-    //   preferredRole: role,
-    //   preferredDuty: duty,
-    //   nationality: nationality || '',
-    //   nationalityLogo: logo || '',
-    //   club: clubName,
-    //   clubLogo: clubLogoUrl,
-    //   firstNames,
-    //   firstNameUsage,
-    //   firstInitial,
-    //   lastNames,
-    //   lastNameUsage,
-    //   singleLastName,
-    // };
-  }
+  // createPlayer(
+  //   nationOrTier: string,
+  //   count: [
+  //     playerCount: number,
+  //     first: number,
+  //     second: number,
+  //     third: number,
+  //     fourth: number,
+  //     fifth: number,
+  //     sixth: number,
+  //     seventh: number,
+  //     eighth: number,
+  //   ]
+  // ) {
+  //   const { rating, clubRep } = this.getRatingAndClubRep(...count);
+  //   const mainPositions = this.getMainPositions(rating);
+  //   const foot = this.getFoot(mainPositions[0]);
+  //   const { altPos, compPos, unconvincingPos } = this.getAltPositions(mainPositions, foot);
+  //   const age = this.getAge(rating, mainPositions[0]);
+  //   const { role, duty } = this.getPositionRole(mainPositions, altPos, foot, rating, age);
+  //   const { nationality, logo } = this.getNationOrTier(nationOrTier, 'nationality', rating);
+  //   const { clubName, clubLogoUrl } = this.getClub(clubRep, nationality || '');
+  //   const { height, weight, weakFoot, attributes } = this.getAttributes(mainPositions[0], altPos, role, duty, rating, age);
+  //   let firstInitial = '';
+  //   let firstNameUsage = '';
+  //   let firstNames: string[] = [];
+  //   let lastNameUsage = '';
+  //   let lastNames: string[] = [];
+  //   let singleLastName = '';
+  //   this.getNames(nationality)
+  //     .pipe(untilDestroyed(this))
+  //     .subscribe(obj => {
+  //       firstInitial = obj.firstInitial;
+  //       firstNameUsage = obj.firstNameUsage;
+  //       firstNames = obj.firstNames;
+  //       lastNameUsage = obj.lastNameUsage;
+  //       lastNames = obj.lastNames;
+  //       [singleLastName] = obj.lastNames;
+  //     });
+  //   return {
+  //     rating,
+  //     mainPositions,
+  //     foot,
+  //     weakFoot,
+  //     height,
+  //     weight,
+  //     attributes,
+  //     altPositions: altPos,
+  //     competentPositions: compPos,
+  //     unconvincingPositions: unconvincingPos,
+  //     age,
+  //     preferredRole: role,
+  //     preferredDuty: duty,
+  //     nationality: nationality || '',
+  //     nationalityLogo: logo || '',
+  //     club: clubName,
+  //     clubLogo: clubLogoUrl,
+  //     firstNames,
+  //     firstNameUsage,
+  //     firstInitial,
+  //     lastNames,
+  //     lastNameUsage,
+  //     singleLastName,
+  //   };
+  // }
 
-  getNames(nationality: string): Observable<{
-    lastNames: string[];
-    lastNameUsage: string;
-    totalLastNames: number;
-    firstNames: string[];
-    firstInitial: string;
-    firstNameUsage: string;
-    totalFirstNames: number;
-  }> {
-    return this.afsService.getFullName(nationality).pipe(
-      untilDestroyed(this),
-      take(1),
-      map(([fNames, firstNameUsage, totalFirstNames, lNames, lastNameUsage, totalLastNames]) => {
-        const firstNames = fNames.map(fName => {
-          return fName.name;
-        });
-        const lastNames = lNames.map(lName => {
-          return lName.name;
-        });
-        return {
-          ...this.getFirstNames(firstNames, firstNameUsage, totalFirstNames),
-          ...this.getLastNames(lastNames, lastNameUsage, totalLastNames),
-        };
-      })
-    );
-    // add nickname based on nationality
-    // About 90% chance: Mozambique
-    // About 50% chance: Brazil, Spain, Portugal, Angola, Equatorial Guinea, Guinea-Bissau
-  }
+  // getNames(nationality: string): Observable<{
+  //   lastNames: string[];
+  //   lastNameUsage: string;
+  //   totalLastNames: number;
+  //   firstNames: string[];
+  //   firstInitial: string;
+  //   firstNameUsage: string;
+  //   totalFirstNames: number;
+  // }> {
+  //   return this.afsService.getFullName(nationality).pipe(
+  //     untilDestroyed(this),
+  //     take(1),
+  //     map(([fNames, firstNameUsage, totalFirstNames, lNames, lastNameUsage, totalLastNames]) => {
+  //       const firstNames = fNames.map(fName => {
+  //         return fName.name;
+  //       });
+  //       const lastNames = lNames.map(lName => {
+  //         return lName.name;
+  //       });
+  //       return {
+  //         ...this.getFirstNames(firstNames, firstNameUsage, totalFirstNames),
+  //         ...this.getLastNames(lastNames, lastNameUsage, totalLastNames),
+  //       };
+  //     })
+  //   );
+  //   // add nickname based on nationality
+  //   // About 90% chance: Mozambique
+  //   // About 50% chance: Brazil, Spain, Portugal, Angola, Equatorial Guinea, Guinea-Bissau
+  // }
 
   getFirstNames(
     fNames: string[],
@@ -292,11 +267,7 @@ export class CreatePlayerService {
     return { lastNames, lastNameUsage, totalLastNames };
   }
 
-  // getNationOrTier(
-  //   type: string,
-  //   nationOrTier: string,
-  //   rating?: number
-  // ): { tier: string; nationality: string; logo: string } {
+  // getNationOrTier(type: string, nationOrTier: string, rating?: number): { tier: string; nationality: string; logo: string } {
   //   if (type === 'tier') {
   //     const nationality: string = nationOrTier;
   //     let tier = '';
@@ -493,11 +464,7 @@ export class CreatePlayerService {
   // getAltPositions(mainPositions: string[], mainFoot: string) {
   //   const altPosCount = Math.min(getRandomInt(1, 3), getRandomInt(0, 3));
   //   const compPosCount = Math.min(getRandomInt(0, 2), getRandomInt(0, 2));
-  //   const unPosCount = Math.min(
-  //     getRandomInt(0, 2),
-  //     getRandomInt(0, 2),
-  //     getRandomInt(0, 2)
-  //   );
+  //   const unPosCount = Math.min(getRandomInt(0, 2), getRandomInt(0, 2), getRandomInt(0, 2));
 
   //   let altPos: string[] = [];
   //   const compPos: string[] = [];
@@ -1373,13 +1340,7 @@ export class CreatePlayerService {
   //   };
   // }
 
-  // getPositionRole(
-  //   mainPosArr: string[],
-  //   altPosArr: string[],
-  //   foot: string,
-  //   rating: number,
-  //   age: number
-  // ) {
+  // getPositionRole(mainPosArr: string[], altPosArr: string[], foot: string, rating: number, age: number) {
   //   let num1;
   //   let num2;
   //   let roles: string[];
@@ -1409,10 +1370,7 @@ export class CreatePlayerService {
 
   //       if (rating > 64) {
   //         chance = getRandomInt(1, 4);
-  //         if (
-  //           (pos === 'RB' && foot === 'left') ||
-  //           (pos === 'LB' && foot === 'right')
-  //         ) {
+  //         if ((pos === 'RB' && foot === 'left') || (pos === 'LB' && foot === 'right')) {
   //           num1 = 0;
   //         } else if (mainPosArr.includes('CB')) {
   //           num1 = chance > 1 ? 2 : 1;
@@ -1440,19 +1398,13 @@ export class CreatePlayerService {
   //     case 'LWB': // roles = ['IWB', 'WB', 'CWB'];
   //       roles = ['IWB', 'WB', 'CWB'];
   //       if (rating > 64) {
-  //         if (
-  //           (pos === 'RWB' && foot === 'left') ||
-  //           (pos === 'LWB' && foot === 'right')
-  //         ) {
+  //         if ((pos === 'RWB' && foot === 'left') || (pos === 'LWB' && foot === 'right')) {
   //           num1 = 0;
   //         } else {
   //           chance = getRandomInt(1, 4);
   //           num1 = chance > 1 ? 1 : 2;
   //         }
-  //       } else if (
-  //         (pos === 'RWB' && foot === 'left') ||
-  //         (pos === 'LWB' && foot === 'right')
-  //       ) {
+  //       } else if ((pos === 'RWB' && foot === 'left') || (pos === 'LWB' && foot === 'right')) {
   //         num1 = 0;
   //       } else {
   //         num1 = 1;
@@ -1610,18 +1562,12 @@ export class CreatePlayerService {
   //       chance = getRandomInt(1, 10);
   //       if (rating > 64) {
   //         num1 = 0;
-  //         if (
-  //           (foot === 'right' && pos === 'ML') ||
-  //           (foot === 'left' && pos === 'MR')
-  //         ) {
+  //         if ((foot === 'right' && pos === 'ML') || (foot === 'left' && pos === 'MR')) {
   //           num1 = 1;
   //         }
   //       } else {
   //         num1 = chance > 1 ? 0 : 4;
-  //         if (
-  //           (foot === 'right' && pos === 'ML') ||
-  //           (foot === 'left' && pos === 'MR')
-  //         ) {
+  //         if ((foot === 'right' && pos === 'ML') || (foot === 'left' && pos === 'MR')) {
   //           num1 = 1;
   //         }
   //       }
@@ -1640,10 +1586,7 @@ export class CreatePlayerService {
   //       duties = ['Su', 'At'];
   //       chance = getRandomInt(1, 20);
 
-  //       if (
-  //         (pos === 'AMR' && foot === 'left') ||
-  //         (pos === 'AML' && foot === 'right')
-  //       ) {
+  //       if ((pos === 'AMR' && foot === 'left') || (pos === 'AML' && foot === 'right')) {
   //         num1 = chance > 1 ? 1 : 3;
   //       } else {
   //         num1 = chance > 1 ? 0 : 2;
@@ -1752,11 +1695,7 @@ export class CreatePlayerService {
   //     if (chance > 1) {
   //       rating = Math.min(getRandomInt(82, 89), getRandomInt(82, 89));
   //     } else {
-  //       rating = Math.min(
-  //         getRandomInt(88, 99),
-  //         getRandomInt(88, 99),
-  //         getRandomInt(88, 99)
-  //       );
+  //       rating = Math.min(getRandomInt(88, 99), getRandomInt(88, 99), getRandomInt(88, 99));
   //     }
   //     clubRep = 'top50';
   //   } else if (i < first + second) {
@@ -1777,10 +1716,7 @@ export class CreatePlayerService {
   //   } else if (i < first + second + third + fourth + fifth + sixth + seventh) {
   //     rating = getRandomInt(48, 54);
   //     clubRep = 'leagueTwoPlayer';
-  //   } else if (
-  //     i <
-  //     first + second + third + fourth + fifth + sixth + seventh + eighth
-  //   ) {
+  //   } else if (i < first + second + third + fourth + fifth + sixth + seventh + eighth) {
   //     rating = getRandomInt(30, 47);
   //     clubRep = 'fillerPlayer';
   //   }
@@ -1845,22 +1781,8 @@ export class CreatePlayerService {
   //       ];
   //       attr09 = ['throwing', 'acceleration', 'strength'];
   //       attr06 = ['weakFoot'];
-  //       attr04 = [
-  //         'anticipation',
-  //         'composure',
-  //         'leadership',
-  //         'teamwork',
-  //         'balance',
-  //         'pace',
-  //       ];
-  //       attr01 = [
-  //         'firstTouch',
-  //         'vision',
-  //         'workRate',
-  //         'jumpingReach',
-  //         'stamina',
-  //         'technique',
-  //       ];
+  //       attr04 = ['anticipation', 'composure', 'leadership', 'teamwork', 'balance', 'pace'];
+  //       attr01 = ['firstTouch', 'vision', 'workRate', 'jumpingReach', 'stamina', 'technique'];
   //       attr0 = [
   //         'eccentricity',
   //         'freeKickTaking',
@@ -1879,30 +1801,12 @@ export class CreatePlayerService {
   //       ability = 0;
   //       while (ability < currentAbility) {
   //         // green attributes
-  //         gkAttributes.reflexes = Math.max(
-  //           getRandomInt(5, 20),
-  //           getRandomInt(5, 20)
-  //         );
-  //         gkAttributes.kicking = Math.max(
-  //           getRandomInt(5, 20),
-  //           getRandomInt(5, 20)
-  //         );
-  //         gkAttributes.commandOfArea = Math.max(
-  //           getRandomInt(5, 20),
-  //           getRandomInt(5, 20)
-  //         );
-  //         gkAttributes.concentration = Math.max(
-  //           getRandomInt(5, 20),
-  //           getRandomInt(5, 20)
-  //         );
-  //         gkAttributes.positioning = Math.max(
-  //           getRandomInt(5, 20),
-  //           getRandomInt(5, 20)
-  //         );
-  //         gkAttributes.agility = Math.max(
-  //           getRandomInt(5, 20),
-  //           getRandomInt(5, 20)
-  //         );
+  //         gkAttributes.reflexes = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //         gkAttributes.kicking = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //         gkAttributes.commandOfArea = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //         gkAttributes.concentration = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //         gkAttributes.positioning = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //         gkAttributes.agility = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
   //         // blue attributes
   //         gkAttributes.throwing = getRandomInt(5, 20);
   //         gkAttributes.decisions = getRandomInt(5, 20);
@@ -1911,18 +1815,9 @@ export class CreatePlayerService {
   //         gkAttributes.punchingTendency = getRandomInt(1, 20);
   //         if (role === 'GK') {
   //           // green attributes
-  //           gkAttributes.aerialReach = Math.max(
-  //             getRandomInt(5, 20),
-  //             getRandomInt(5, 20)
-  //           );
-  //           gkAttributes.communication = Math.max(
-  //             getRandomInt(5, 20),
-  //             getRandomInt(5, 20)
-  //           );
-  //           gkAttributes.handling = Math.max(
-  //             getRandomInt(5, 20),
-  //             getRandomInt(5, 20)
-  //           );
+  //           gkAttributes.aerialReach = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //           gkAttributes.communication = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //           gkAttributes.handling = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
   //           // blue attributes
   //           gkAttributes.oneOnOnes = getRandomInt(5, 20);
   //           gkAttributes.anticipation = getRandomInt(5, 20);
@@ -1935,22 +1830,10 @@ export class CreatePlayerService {
   //           gkAttributes.acceleration = getRandomInt(1, 20);
   //         } else if (role === 'SK') {
   //           // green attributes
-  //           gkAttributes.oneOnOnes = Math.max(
-  //             getRandomInt(5, 20),
-  //             getRandomInt(5, 20)
-  //           );
-  //           gkAttributes.rushingOutTendency = Math.max(
-  //             getRandomInt(5, 20),
-  //             getRandomInt(5, 20)
-  //           );
-  //           gkAttributes.anticipation = Math.max(
-  //             getRandomInt(5, 20),
-  //             getRandomInt(5, 20)
-  //           );
-  //           gkAttributes.composure = Math.max(
-  //             getRandomInt(5, 20),
-  //             getRandomInt(5, 20)
-  //           );
+  //           gkAttributes.oneOnOnes = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //           gkAttributes.rushingOutTendency = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //           gkAttributes.anticipation = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
+  //           gkAttributes.composure = Math.max(getRandomInt(5, 20), getRandomInt(5, 20));
   //           // blue attributes
   //           gkAttributes.aerialReach = getRandomInt(5, 20);
   //           gkAttributes.communication = getRandomInt(5, 20);
@@ -2003,9 +1886,7 @@ export class CreatePlayerService {
   // getClub(clubRep: string, playerNation: string) {
   //   const clubArr = this.clubs[clubRep];
 
-  //   const nationObj = this.nationsList.find(
-  //     (nation) => nation.name === playerNation
-  //   );
+  //   const nationObj = this.nationsList.find(nation => nation.name === playerNation);
   //   let clubName = '';
   //   let clubLogoUrl = '';
 
@@ -2098,11 +1979,7 @@ export class CreatePlayerService {
   //   // Average ages are based on this website https://football-observatory.com/IMG/sites/mr/mr49/en/
   //   let ageIndex: number;
   //   if (rating > 84) {
-  //     const arr = [
-  //       getRandomInt(0, 1000),
-  //       getRandomInt(0, 1000),
-  //       getRandomInt(0, 1000),
-  //     ];
+  //     const arr = [getRandomInt(0, 1000), getRandomInt(0, 1000), getRandomInt(0, 1000)];
   //     ageIndex = median(arr);
   //   } else if (rating > 76) {
   //     const sum = getRandomInt(0, 1000) + getRandomInt(0, 1000);
@@ -2347,25 +2224,8 @@ export class CreatePlayerService {
   //       }
   //     }
   //   } else {
-  //     const arr = [
-  //       's',
-  //       'a',
-  //       'b',
-  //       'c',
-  //       'd',
-  //       'e',
-  //       'f',
-  //       'g',
-  //       'h',
-  //       'i',
-  //       'j',
-  //       'k',
-  //       'l',
-  //     ];
-  //     const i = Math.min(
-  //       getRandomInt(0, arr.length - 1),
-  //       getRandomInt(0, arr.length - 1)
-  //     );
+  //     const arr = ['s', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'];
+  //     const i = Math.min(getRandomInt(0, arr.length - 1), getRandomInt(0, arr.length - 1));
   //     tier = arr[i];
   //   }
   //   tier += ' tier';

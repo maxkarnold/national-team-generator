@@ -1,23 +1,36 @@
-import { Injectable } from '@angular/core';
-import { forkJoin, Observable, of } from 'rxjs';
-import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
-import { WhereFilterOp } from '@firebase/firestore-types/';
+import { inject, Injectable } from '@angular/core';
 import { getRandomInt } from '@shared/utils';
 import { Nation } from 'app/models/nation.model';
-import { catchError, map, take, takeWhile } from 'rxjs/operators';
 import { Player } from '../../models/player.model';
 import { Roster } from '../../models/roster.model';
 import * as nationsJson from '../../../assets/json/nations.json';
-import { Name } from './firestore.model';
+import {
+  addDoc,
+  collection,
+  CollectionReference,
+  doc,
+  DocumentData,
+  DocumentReference,
+  Firestore,
+  limit,
+  orderBy,
+  Query,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+  WhereFilterOp,
+} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirestoreService {
+  db = inject(Firestore);
   nations = nationsJson;
   nationsList: Nation[];
 
-  constructor(public afs: AngularFirestore) {
+  constructor() {
     this.nationsList = [];
     Object.values(this.nations).forEach(t => {
       if (t.nations) {
@@ -26,22 +39,14 @@ export class FirestoreService {
     });
   }
 
-  getFullName(nationality: string): Observable<[Name[], string, number, Name[], string, number]> {
+  getFullName(nationality: string): (string | number | Query<DocumentData, DocumentData>)[] {
     const firstNameObj = this.getFirstNames(nationality);
     const lastNameObj = this.getLastNames(nationality, firstNameObj.ethnicity);
-
-    return forkJoin([
-      firstNameObj.request$,
-      of(firstNameObj.ethnicity),
-      of(firstNameObj.totalNames),
-      lastNameObj.request$,
-      of(lastNameObj.ethnicity),
-      of(lastNameObj.totalNames),
-    ]);
+    return [...Object.values(firstNameObj), ...Object.values(lastNameObj)];
   }
 
   getFirstNames(nation: string): {
-    request$: Observable<Name[]>;
+    nameQuery: Query<DocumentData, DocumentData>;
     ethnicity: string;
     totalNames: number;
   } {
@@ -154,7 +159,7 @@ export class FirestoreService {
     nation: string,
     ethnicity: string
   ): {
-    request$: Observable<Name[]>;
+    nameQuery: Query<DocumentData, DocumentData>;
     ethnicity: string;
     totalNames: number;
   } {
@@ -232,53 +237,24 @@ export class FirestoreService {
 
   nameRequest(
     totalNames: number,
-    collection: string,
-    ethnicity: string
+    nameCollection: string,
+    ethnicity: string,
+    operator: WhereFilterOp = '>='
   ): {
-    request$: Observable<Name[]>;
+    nameQuery: Query<DocumentData, DocumentData>;
     ethnicity: string;
     totalNames: number;
   } {
     const randomIndex = getRandomInt(1, 5);
     // changed this to 5,000 from 0, 50,000 in order to fix, need to change back
     const randomQuery = getRandomInt(0, 50000);
-
-    const request$ = this.newRequest(totalNames, collection, ethnicity, randomIndex, randomQuery, '>=').pipe(
-      catchError(err => {
-        console.log(err);
-        return this.newRequest(totalNames, collection, ethnicity, randomIndex, randomQuery, '<=');
-      })
-    );
-    return { request$, ethnicity, totalNames };
-  }
-
-  newRequest(totalNames: number, collection: string, ethnicity: string, randomIndex: number, randomQuery: number, operator: WhereFilterOp) {
-    if (!totalNames || !collection || !ethnicity || !randomIndex || !randomQuery || !operator) {
-      console.log('error calling new request', totalNames, collection, ethnicity, randomIndex, randomQuery, operator);
-    }
-    return this.afs
-      .collection<Name>(collection, ref =>
-        ref
-          .where(`randomNum.${randomIndex}`, operator, randomQuery)
-          .where('usages', 'array-contains-any', [ethnicity])
-          .orderBy(`randomNum.${randomIndex}`)
-          .limit(totalNames)
-      )
-      .snapshotChanges()
-      .pipe(
-        map(actions =>
-          actions.map(a => {
-            return {
-              ...(a.payload.doc.data() as Name),
-            };
-          })
-        ),
-        take(1)
-      );
+    const nameQuery = this.newRequest(totalNames, nameCollection, ethnicity, randomIndex, randomQuery, operator);
+    return { nameQuery, ethnicity, totalNames };
   }
 
   saveRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], nationOrTier: string) {
-    return this.afs.collection('users').doc(uid).collection('savedRosters').add({
+    const rosterRef = doc(this.db, 'users', uid, 'savedRosters');
+    return setDoc(rosterRef, {
       benchReserves,
       starters,
       nationOrTier,
@@ -287,37 +263,34 @@ export class FirestoreService {
   }
 
   updateRoster(uid: string, saveName: string, benchReserves: Player[], starters: Player[], firestoreId: string) {
-    const docRef = this.afs.collection('users').doc(uid).collection('savedRosters').doc(firestoreId);
-    docRef
-      .update({
-        saveName,
-        benchReserves,
-        starters,
-      })
-      .then(() => {
-        console.log('Document Updated');
-      });
+    const rosterRef = doc(this.db, 'users', uid, 'savedRosters', firestoreId);
+    updateDoc(rosterRef, {
+      saveName,
+      benchReserves,
+      starters,
+    }).then(() => {
+      console.log('Document Updated');
+    });
   }
 
   submitRoster(roster: Roster) {
     if (roster.id === '') {
-      this.afs
-        .collection('submittedRosters')
-        .add({
-          user: roster.user,
-          roster: roster.players,
-          tier: roster.tier,
-          nation: roster.nation,
-          squadRating: roster.squadRating,
-          startersRating: roster.startersRating,
-          formation: roster.formation,
-        })
-        .then((docRef: DocumentReference<unknown>) => {
-          console.log('New firestore id', docRef.id);
-          return docRef.id;
-        });
+      const rostersCollection = collection(this.db, 'submittedRosters');
+      addDoc(rostersCollection, {
+        user: roster.user,
+        roster: roster.players,
+        tier: roster.tier,
+        nation: roster.nation,
+        squadRating: roster.squadRating,
+        startersRating: roster.startersRating,
+        formation: roster.formation,
+      }).then(docRef => {
+        console.log('New firestore id', docRef.id);
+        return docRef.id;
+      });
     } else {
-      this.afs.collection('submittedRosters').doc(roster.id).set({
+      const rosterRef = doc(this.db, 'submittedRosters', roster.id);
+      setDoc(rosterRef, {
         user: roster.user,
         roster: roster.players,
         tier: roster.tier,
@@ -327,19 +300,43 @@ export class FirestoreService {
         formation: roster.formation,
       });
     }
-    console.log('Function is still working');
   }
 
-  getSubmittedRosters() {
-    const rostersCollection = this.afs.collection('submittedRosters', ref => ref.orderBy('startersRating', 'desc').limit(50));
-    return rostersCollection.snapshotChanges();
+  // ============ THE BELOW FUNCTIONS NEED TO BE LISTENED TO USING THE onSnapshot() function
+
+  newRequest(
+    totalNames: number,
+    collectionPath: string,
+    ethnicity: string,
+    randomIndex: number,
+    randomQuery: number,
+    operator: WhereFilterOp
+  ): Query<DocumentData, DocumentData> {
+    if (!totalNames || !collectionPath || !ethnicity || !randomIndex || !randomQuery || !operator) {
+      console.log('error calling new request', totalNames, collectionPath, ethnicity, randomIndex, randomQuery, operator);
+    }
+    const collectionRef = collection(this.db, collectionPath);
+    const nameQuery = query(
+      collectionRef,
+      where(`randomNum.${randomIndex}`, operator, randomQuery),
+      where('usages', 'array-contains-any', [ethnicity]),
+      orderBy(`randomNum.${randomIndex}`),
+      limit(totalNames)
+    );
+    return nameQuery;
   }
 
-  getRosterId(uid: string) {
-    return this.afs.collection('users').doc(uid).collection('savedRosters').snapshotChanges();
+  getSubmittedRosters(): Query<DocumentData, DocumentData> {
+    const collectionRef = collection(this.db, 'submittedRosters');
+    const top50Rosters = query(collectionRef, orderBy('startersRating', 'desc'), limit(50));
+    return top50Rosters;
   }
 
-  getRoster(uid: string, rosterId: string) {
-    return this.afs.collection('users').doc(uid).collection('savedRosters').doc(rosterId).snapshotChanges();
+  getRosterId(uid: string): CollectionReference<DocumentData, DocumentData> {
+    return collection(this.db, 'users', uid, 'savedRosters');
+  }
+
+  getRoster(uid: string, rosterId: string): DocumentReference<DocumentData, DocumentData> {
+    return doc(this.db, 'users', uid, 'savedRosters', rosterId);
   }
 }

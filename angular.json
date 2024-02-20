@@ -122,7 +122,20 @@
         },
         "deploy": {
           "builder": "@angular/fire:deploy",
-          "options": {}
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "team-gen:build:production",
+              "serveTarget": "team-gen:serve:production"
+            },
+            "development": {
+              "buildTarget": "team-gen:build:development",
+              "serveTarget": "team-gen:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",

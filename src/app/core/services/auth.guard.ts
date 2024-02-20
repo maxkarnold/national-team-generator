@@ -10,7 +10,10 @@ import { User } from './firestore.model';
 })
 export class AuthGuard {
   user: User | null = null;
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {
     this.auth.user$.pipe(untilDestroyed(this)).subscribe(user => {
       if (user) {
         this.user = user;

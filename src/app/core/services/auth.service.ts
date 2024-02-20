@@ -1,34 +1,40 @@
-import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { Injectable, inject } from '@angular/core';
+import {
+  Auth,
+  authState,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  GoogleAuthProvider,
+} from '@angular/fire/auth';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FirebaseError } from 'firebase/app';
-import { GoogleAuthProvider } from 'firebase/auth';
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
 import { User } from './firestore.model';
+import { FirebaseError } from '@angular/fire/app';
 
-@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  public user$: Observable<User | null> = of(null);
-  user: User | null = null;
+  user$: Observable<User | null> = EMPTY;
+  auth = inject(Auth);
+  firestore = inject(Firestore);
 
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router, private snackbar: MatSnackBar) {
-    this.user$ = afAuth.user;
-    this.user$.pipe(untilDestroyed(this)).subscribe(u => {
-      this.user = u;
-    });
+  constructor(
+    private router: Router,
+    private snackbar: MatSnackBar
+  ) {
+    if (this.auth) {
+      this.user$ = authState(this.auth);
+    }
   }
 
   googleSignin() {
     const provider = new GoogleAuthProvider();
-    this.afAuth
-      .signInWithPopup(provider)
+    signInWithPopup(this.auth, provider)
       .then(credential => {
         if (credential.user) {
           this.updateUserData(credential.user);
@@ -42,12 +48,10 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredential => {
+    signInWithEmailAndPassword(this.auth, email, password)
+      .then(() => {
         this.snackbar.open('Successfully logged in!', 'Dismiss');
         this.router.navigate(['/simulation']);
-        this.user$ = of(userCredential.user);
       })
       .catch((err: FirebaseError) => {
         this.snackbar.open(`ERROR ${(err.code, err.message, err.name)}`);
@@ -55,7 +59,7 @@ export class AuthService {
   }
 
   register(email: string, password: string) {
-    this.afAuth.createUserWithEmailAndPassword(email, password).then(userCredential => {
+    createUserWithEmailAndPassword(this.auth, email, password).then(userCredential => {
       if (userCredential.user) {
         this.updateUserData(userCredential.user);
       }
@@ -63,15 +67,14 @@ export class AuthService {
   }
 
   signOut() {
-    this.afAuth.signOut().then(_ => {
-      this.user$ = of(null);
+    signOut(this.auth).then(() => {
       this.snackbar.open('Successfully logged out!', 'Dismiss');
       this.router.navigate(['/']);
     });
   }
 
   private updateUserData({ uid, email, displayName, savedRosters, submittedRosters }: User) {
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${uid}`);
+    const userRef = doc(this.firestore, `users/${uid}`);
 
     const data = {
       uid,
@@ -81,6 +84,6 @@ export class AuthService {
       submittedRosters,
     };
 
-    return userRef.set(data, { merge: true });
+    return setDoc(userRef, data, { merge: true });
   }
 }

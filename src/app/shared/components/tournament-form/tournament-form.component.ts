@@ -99,37 +99,37 @@ export class TournamentFormComponent {
     this.simulateTournament(this.tournament, this.tournamentForm.value.numOfGames);
   }
 
-  addCoaches() {
-    if (!window.confirm('This may take a minute. Are you sure?')) {
-      return;
-    }
-    this.simulator.isLoading$.next(true);
-    forkJoin(this.simulator.getCoachInfo(this.nationsList))
-      .pipe(untilDestroyed(this))
-      .subscribe(names => {
-        const coachesArr: Person[] = names.map(n => {
-          const potentialAges = [getRandomInt(35, 75), getRandomInt(45, 65), getRandomInt(45, 65)];
-          const age = potentialAges[getRandomInt(0, 2)];
-          const { firstNames, lastNames, firstNameUsage, lastNameUsage, nationality } = n;
-          return {
-            ...n,
-            firstNames: firstNames,
-            lastNames: lastNames,
-            singleLastName: pickSingleLastName(lastNames),
-            origin: nationality,
-            personality: getRandomPersonality(),
-            firstNameUsage,
-            lastNameUsage,
-            nationality,
-            age,
-          };
-        });
-        this.leaderboard.saveLocalStorage('names', coachesArr);
-        this.coaches = coachesArr;
-        this.simulator.isLoading$.next(false);
-        this.snackbar.open('Coaches successfully added. Setup new tournament to see coaches.', 'Dismiss');
-      });
-  }
+  // addCoaches() {
+  //   if (!window.confirm('This may take a minute. Are you sure?')) {
+  //     return;
+  //   }
+  //   this.simulator.isLoading$.next(true);
+  //   forkJoin(this.simulator.getCoachInfo(this.nationsList))
+  //     .pipe(untilDestroyed(this))
+  //     .subscribe(names => {
+  //       const coachesArr: Person[] = names.map(n => {
+  //         const potentialAges = [getRandomInt(35, 75), getRandomInt(45, 65), getRandomInt(45, 65)];
+  //         const age = potentialAges[getRandomInt(0, 2)];
+  //         const { firstNames, lastNames, firstNameUsage, lastNameUsage, nationality } = n;
+  //         return {
+  //           ...n,
+  //           firstNames: firstNames,
+  //           lastNames: lastNames,
+  //           singleLastName: pickSingleLastName(lastNames),
+  //           origin: nationality,
+  //           personality: getRandomPersonality(),
+  //           firstNameUsage,
+  //           lastNameUsage,
+  //           nationality,
+  //           age,
+  //         };
+  //       });
+  //       this.leaderboard.saveLocalStorage('names', coachesArr);
+  //       this.coaches = coachesArr;
+  //       this.simulator.isLoading$.next(false);
+  //       this.snackbar.open('Coaches successfully added. Setup new tournament to see coaches.', 'Dismiss');
+  //     });
+  // }
 
   setupAndSaveTournament() {
     const {
