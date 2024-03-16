@@ -1,14 +1,12 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { compare } from '@shared/utils';
 import { findTeamInTournament, matchScore, roundOf32Helper } from './simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { KnockoutRound, Match, Region, Tournament } from './simulation.model';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { KnockoutRound, Region, Tournament } from './simulation.model';
+import { BehaviorSubject } from 'rxjs';
 import { CreatePlayerService } from '@core/services/create-player.service';
-import { catchError, count, map, scan } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -19,9 +17,10 @@ export class SimulationService {
   isLoading$ = new BehaviorSubject<boolean>(true);
   tournament: Tournament | null = null;
   hostNations?: GroupTeam[];
+  destroyRef = inject(DestroyRef);
 
   constructor(createPerson: CreatePlayerService) {
-    this.tournament$.pipe(untilDestroyed(this)).subscribe(t => {
+    this.tournament$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(t => {
       this.tournament = t;
       this.hostNations = t?.hostNations;
     });
@@ -31,6 +30,7 @@ export class SimulationService {
 
   checkForApp() {
     // not ideal to type this as any, but no choice until I find a better solution
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((window.navigator as any).standalone === true) {
       console.log('iOS app');
       return true;

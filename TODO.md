@@ -4,24 +4,26 @@
 
 - Continue work on Career page
   - Small Changes:
-    <!-- - adjust numbers to the 400 percentage -->
-    <!-- - player should choose a nationality to be within the career and will be able to start at a club within that nation. -->
-    <!-- - player ability limitations should not be a factor for the starting club. -->
-    <!-- - fix flag emojis for Windows -->
-
     - player should receive injuries
     - player progression should have more of a random factor and should improve faster at higher reputation clubs
   - account for substitute appearances
   - include games in cup and continental competitions
   - adjust wage amounts offered to be more accurate
-  <!-- - choose a native country, preferably one of the countries that are available as leagues.
-    - this can be a different system where as a youngster you are locked to a certain club or nation -->
-  <!-- - fix star issue, where it doesn't round correctly to the nearest half integer, might need to change to a different star rating to display -->
-  <!-- - introduce loans as an option to get more game time -->
-  - add tournament format for 48 teams and allow for 3 nation host
-  - like autoBracketQualifiers(), add additional functions for other formats like (round-robin groups and two leg playoff ties)
   - add more teams to clubs.json so that I can add more playable leagues in the simulation
   - maybe introduce a system that could relegate/promote a team or reflect their progress
+- Tournament simulation page
+  <!-- - add tournament format for 48 teams and allow for 3 nation host -->
+  - FIXES
+    <!-- - fix so that 32 team format is playable again -->
+    <!-- - enable different hosts for 48 team world cup -->
+    - when switching from 32 teams to 48, there's a bug where the draw doesn't work and it uses 34 teams; also uses 32 team function.
+    - re-enable regions so that they can be selected for all formats
+  - OPTIMIZATION
+    - like autoBracketQualifiers(), add additional functions for other formats like (round-robin groups and two leg playoff ties)
+  - Create a popup when creating a new tournament/simulating
+    - user can choose a nation of those that qualified and the simulation will continue and show that nation
+    - nations should appear as a list of buttons in ranked order
+    - To make this easier: this can be enabled for only hitting the 'simulate' button first, then later on add the functionality for all simulations
 
 ## LONG TERM PLANS
 

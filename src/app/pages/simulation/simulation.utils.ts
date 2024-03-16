@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { compare, getRandFloat, getRandomInt, getRandomInts } from '@shared/utils';
-import { Buff, GroupTeam } from 'app/models/nation.model';
+import { GroupTeam } from 'app/models/nation.model';
 import { sum } from 'lodash-es';
 import { Match, Region, MatchEvent, EventEmoji, RegionName, KnockoutRound } from './simulation.model';
 
@@ -79,7 +79,7 @@ function getRandomCardTimes(events: MatchEvent[], time: number): MatchEvent[] {
     return firstYellows.length < secondYellows.length;
   };
   const yellowCards = events.filter(e => e.emoji === '🟨');
-  const redCards = events.filter(e => e.emoji === '🟥' || e.emoji === '🟨🟥');
+  // const redCards = events.filter(e => e.emoji === '🟥' || e.emoji === '🟨🟥');s
   // https://football-observatory.com/IMG/sites/mr/mr57/en/
   const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
 
@@ -508,35 +508,6 @@ export function getGradeStyle(grade: string | undefined): '' | 'good-grade' | 'o
   return '';
 }
 
-export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: boolean): Match {
-  const { goalsFor, goalsAg, isEtWin, forEventTimes, oppEventTimes } = calcScore(team, otherTeam, hasExtraTime);
-
-  const isPenaltyWin = goalsFor === goalsAg;
-
-  const { winner, loser, score, adjustedEventTimes } = whoWon(
-    goalsFor,
-    goalsAg,
-    forEventTimes,
-    oppEventTimes,
-    team,
-    otherTeam,
-    isPenaltyWin
-  );
-
-  getTeamBuffs(team, otherTeam, winner, loser, forEventTimes, oppEventTimes);
-
-  return {
-    goalsFor,
-    goalsAg,
-    isEtWin,
-    isPenaltyWin,
-    winner,
-    loser,
-    score,
-    eventTimes: adjustedEventTimes,
-  };
-}
-
 function getTeamBuffs(
   team: GroupTeam,
   otherTeam: GroupTeam,
@@ -659,6 +630,35 @@ function getTeamBuffs(
   otherTeam.isBuffed.pen = otherTeam.dynamicRating.pen > otherTeam.startingRating.pen;
 }
 
+export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: boolean): Match {
+  const { goalsFor, goalsAg, isEtWin, forEventTimes, oppEventTimes } = calcScore(team, otherTeam, hasExtraTime);
+
+  const isPenaltyWin = goalsFor === goalsAg;
+
+  const { winner, loser, score, adjustedEventTimes } = whoWon(
+    goalsFor,
+    goalsAg,
+    forEventTimes,
+    oppEventTimes,
+    team,
+    otherTeam,
+    isPenaltyWin
+  );
+
+  getTeamBuffs(team, otherTeam, winner, loser, forEventTimes, oppEventTimes);
+
+  return {
+    goalsFor,
+    goalsAg,
+    isEtWin,
+    isPenaltyWin,
+    winner,
+    loser,
+    score,
+    eventTimes: adjustedEventTimes,
+  };
+}
+
 export function getDisplayRating(rating: number, isGrade?: boolean) {
   if (isGrade) {
     // ==== TWO OPTIONS
@@ -733,15 +733,26 @@ export function getHostNations(filteredNations: GroupTeam[], numOfTeams: number)
   if (numOfTeams < 33) {
     return filteredNations.filter(n => n.canSoloHost32 || n.cohosts32.length > 0);
   } else if (numOfTeams > 32) {
-    return filteredNations.filter(n => n.cohosts48.length > 0);
+    return filteredNations.filter(n => n.canSoloHost48 || n.cohosts48.length > 0 || n.triHosts48.length > 0 || n.quadHosts48.length > 0);
   }
   return filteredNations;
 }
 
 export function validateHosts(control: AbstractControl) {
   const hosts: GroupTeam[] = control.value;
-  const numOfTeams = control.parent?.get('numOfTeams')?.value;
-  if ((numOfTeams === 32 && hosts.length < 2 && hosts.filter(h => h.canSoloHost32).length < 1) || (numOfTeams === 48 && hosts.length < 3)) {
+  const numOfTeams: number = parseInt(control.parent?.get('numOfTeams')?.value, 10);
+  const cannotHost32 = numOfTeams === 32 && hosts.length < 2 && hosts.filter(h => h.canSoloHost32).length < 1;
+  const hostNamesArr = hosts.map(h => h.name);
+  const cannotHost48 =
+    numOfTeams === 48 &&
+    ((hosts.length === 1 && hosts.filter(h => h.canSoloHost48).length < 1) ||
+      (hosts.length === 2 &&
+        hosts.filter(h => hostNamesArr.every(name => (name === h.name ? true : h.cohosts48.includes(name)))).length < 2) ||
+      (hosts.length === 3 &&
+        hosts.filter(h => hostNamesArr.every(name => (name === h.name ? true : h.triHosts48.includes(name)))).length < 3) ||
+      (hosts.length === 4 &&
+        hosts.filter(h => hostNamesArr.every(name => (name === h.name ? true : h.quadHosts48.includes(name)))).length < 4));
+  if (cannotHost32 || cannotHost48) {
     return { invalidHosts: true };
   }
   return null;
@@ -751,61 +762,51 @@ export function regionQualifierHelper(
   region: Region,
   tournamentSize: 32 | 48,
   hostNations: GroupTeam[]
-): { matches: number; matches2: number; alreadyQualified: number } {
-  const hasHosts = hostNations.length > 1;
-  let hasMultiHosts = hasHosts && hostNations.map(h => h.region).includes(region.value);
+): { matches: number; matches2: number } {
+  const hostsFromRegion = hostNations.filter(n => n.region === region.value);
 
   if (tournamentSize === 48) {
     switch (region.value) {
       case RegionName.uefa:
-        hasMultiHosts = hasHosts && hostNations.every(n => n.region === region.value);
         return {
-          matches: hasMultiHosts ? 6 : 8,
-          matches2: hasMultiHosts ? 3 : 4,
-          alreadyQualified: 12,
+          matches: 8,
+          matches2: 4,
         };
       case RegionName.caf:
         return {
           matches: 2,
           matches2: 1,
-          alreadyQualified: 9,
         };
       case RegionName.afc:
         return {
           matches: 1,
           matches2: 0,
-          alreadyQualified: 8,
         };
       case RegionName.ofc:
         return {
-          matches: 2,
-          matches2: 1,
-          alreadyQualified: 0,
+          matches: hostsFromRegion.length > 1 ? 0 : 2,
+          matches2: hostsFromRegion.length > 1 ? 0 : 1,
         };
       case RegionName.concacaf:
         return {
           matches: 0,
           matches2: 0,
-          alreadyQualified: 3,
         };
       case RegionName.conmebol:
         return {
           matches: 0,
           matches2: 0,
-          alreadyQualified: 6,
         };
       default:
         return {
           matches: 0,
           matches2: 0,
-          alreadyQualified: 0,
         };
     }
   } else {
     return {
       matches: 0,
       matches2: 0,
-      alreadyQualified: 0,
     };
   }
 }

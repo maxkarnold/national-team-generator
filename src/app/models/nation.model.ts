@@ -16,8 +16,11 @@ export interface Nation {
   nationTier: string;
   abbreviation: string;
   canSoloHost32: boolean;
+  canSoloHost48: boolean;
   cohosts32: string[];
   cohosts48: string[];
+  triHosts48: string[];
+  quadHosts48: string[];
   emoji: string;
 }
 
@@ -91,8 +94,11 @@ export interface GroupTeam {
   emoji: string;
   homeTeam: boolean;
   canSoloHost32: boolean;
+  canSoloHost48: boolean;
   cohosts32: string[];
   cohosts48: string[];
+  triHosts48: string[];
+  quadHosts48: string[];
   coach?: Person;
   pot?: number;
   groupFinish?: string;
@@ -103,7 +109,7 @@ export interface Buff {
   value: number;
 }
 
-export function isNation(value: any): value is Nation {
+export function isNation(value: unknown): value is Nation {
   return (<Nation>value).abbreviation !== undefined;
 }
 
@@ -274,8 +280,11 @@ export const defaultHost32: GroupTeam = {
   defRanking: 0,
   homeTeam: true,
   canSoloHost32: true,
+  canSoloHost48: false,
   cohosts32: [],
   cohosts48: [],
+  triHosts48: [],
+  quadHosts48: [],
 };
 
 export const defaultHosts48: GroupTeam[] = [
@@ -341,7 +350,10 @@ export const defaultHosts48: GroupTeam[] = [
     homeTeam: true,
     canSoloHost32: true,
     cohosts32: ['United States'],
-    cohosts48: ['United States', 'Canada'],
+    cohosts48: ['United States'],
+    canSoloHost48: false,
+    triHosts48: ['United States', 'Canada'],
+    quadHosts48: [],
   },
   {
     name: 'United States',
@@ -405,7 +417,10 @@ export const defaultHosts48: GroupTeam[] = [
     homeTeam: true,
     canSoloHost32: true,
     cohosts32: ['Canada', 'Mexico'],
-    cohosts48: ['Canada', 'Mexico'],
+    cohosts48: ['Mexico'],
+    canSoloHost48: false,
+    triHosts48: ['Canada', 'Mexico'],
+    quadHosts48: [],
   },
   {
     name: 'Canada',
@@ -469,6 +484,9 @@ export const defaultHosts48: GroupTeam[] = [
     homeTeam: true,
     canSoloHost32: true,
     cohosts32: ['United States'],
-    cohosts48: ['Mexico', 'United States'],
+    cohosts48: [],
+    canSoloHost48: false,
+    triHosts48: ['Mexico', 'United States'],
+    quadHosts48: [],
   },
 ];

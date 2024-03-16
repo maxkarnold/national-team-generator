@@ -19,7 +19,10 @@
         "emoji": "🇫🇷",
         "cohosts32": ["Italy", "Germany", "Spain", "Belgium", "Switzerland"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Brazil",
@@ -54,7 +57,10 @@
         "emoji": "🇧🇷",
         "cohosts32": ["Venezuela", "Colombia", "Peru", "Paraguay", "Uruguay", "Argentina"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Germany",
@@ -73,7 +79,10 @@
         "emoji": "🇩🇪",
         "cohosts32": ["Poland", "France", "Denmark", "Austria", "Switzerland", "Netherlands", "Belgium"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Spain",
@@ -92,7 +101,10 @@
         "emoji": "🇪🇸",
         "cohosts32": ["Portugal", "France", "Morocco"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Portugal", "Morocco"],
+        "quadHosts48": []
       },
       {
         "name": "England",
@@ -111,7 +123,10 @@
         "emoji": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
         "cohosts32": ["Scotland", "Ireland", "Wales"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": true,
+        "triHosts48": ["Scotland", "Ireland"],
+        "quadHosts48": []
       },
       {
         "name": "Argentina",
@@ -130,7 +145,10 @@
         "emoji": "🇦🇷",
         "cohosts32": ["Brazil", "Chile", "Uruguay", "Paraguay"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": ["Uruguay"],
+        "canSoloHost48": false,
+        "triHosts48": ["Uruguay", "Paraguay"],
+        "quadHosts48": []
       }
     ]
   },
@@ -154,7 +172,10 @@
         "emoji": "🇮🇹",
         "cohosts32": ["Greece", "Croatia", "Switzerland", "France"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Portugal",
@@ -173,7 +194,10 @@
         "emoji": "🇵🇹",
         "cohosts32": ["Spain", "Morocco"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Spain", "Morocco"],
+        "quadHosts48": []
       },
       {
         "name": "Netherlands",
@@ -192,7 +216,10 @@
         "emoji": "🇳🇱",
         "cohosts32": ["Germany"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -216,7 +243,10 @@
         "emoji": "🇧🇪",
         "cohosts32": ["Germany", "France"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Uruguay",
@@ -235,7 +265,10 @@
         "emoji": "🇺🇾",
         "cohosts32": ["Brazil", "Argentina"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": ["Argentina"],
+        "canSoloHost48": false,
+        "triHosts48": ["Argentina", "Paraguay"],
+        "quadHosts48": []
       },
       {
         "name": "Mexico",
@@ -254,7 +287,10 @@
         "emoji": "🇲🇽",
         "cohosts32": ["United States"],
         "canSoloHost32": true,
-        "cohosts48": ["United States", "Canada"]
+        "cohosts48": ["United States"],
+        "canSoloHost48": false,
+        "triHosts48": ["United States", "Canada"],
+        "quadHosts48": []
       },
       {
         "name": "Colombia",
@@ -273,7 +309,10 @@
         "emoji": "🇨🇴",
         "cohosts32": ["Peru", "Brazil"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -297,7 +336,10 @@
         "emoji": "🇩🇰",
         "cohosts32": ["Germany"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Croatia",
@@ -316,7 +358,10 @@
         "emoji": "🇭🇷",
         "cohosts32": ["Italy"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Sweden",
@@ -335,7 +380,10 @@
         "emoji": "🇸🇪",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Chile",
@@ -354,7 +402,10 @@
         "emoji": "🇨🇱",
         "cohosts32": ["Argentina", "Peru"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Serbia",
@@ -373,7 +424,10 @@
         "emoji": "🇷🇸",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": ["Greece", "Romania", "Bulgaria"]
       },
       {
         "name": "Nigeria",
@@ -392,7 +446,10 @@
         "emoji": "🇳🇬",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Russia",
@@ -411,7 +468,10 @@
         "emoji": "🇷🇺",
         "cohosts32": ["Finland", "Azerbaijan", "Kazakhstan", "China PR"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Ukraine",
@@ -430,7 +490,10 @@
         "emoji": "🇺🇦",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Austria",
@@ -449,7 +512,10 @@
         "emoji": "🇦🇹",
         "cohosts32": ["Germany"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Switzerland",
@@ -468,7 +534,10 @@
         "emoji": "🇨🇭",
         "cohosts32": ["Italy", "France", "Germany"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Côte d'Ivoire",
@@ -487,7 +556,10 @@
         "emoji": "🇨🇮",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -511,7 +583,10 @@
         "emoji": "🇵🇱",
         "cohosts32": ["Germany"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Norway",
@@ -530,7 +605,10 @@
         "emoji": "🇳🇴",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Peru",
@@ -549,7 +627,10 @@
         "emoji": "🇵🇪",
         "cohosts32": ["Colombia", "Ecuador", "Chile", "Brazil"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Paraguay",
@@ -568,7 +649,10 @@
         "emoji": "🇵🇾",
         "cohosts32": ["Brazil", "Argentina"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Argentina", "Uruguay"],
+        "quadHosts48": []
       },
       {
         "name": "United States",
@@ -587,7 +671,10 @@
         "emoji": "🇺🇸",
         "cohosts32": ["Canada", "Mexico"],
         "canSoloHost32": true,
-        "cohosts48": ["Canada", "Mexico"]
+        "cohosts48": ["Mexico"],
+        "canSoloHost48": false,
+        "triHosts48": ["Canada", "Mexico"],
+        "quadHosts48": []
       },
       {
         "name": "Ecuador",
@@ -606,7 +693,10 @@
         "emoji": "🇪🇨",
         "cohosts32": ["Peru"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Turkey",
@@ -625,7 +715,10 @@
         "emoji": "🇹🇷",
         "cohosts32": ["Georgia", "Bulgaria", "Iraq"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Czech Republic",
@@ -644,7 +737,10 @@
         "emoji": "🇨🇿",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -668,7 +764,10 @@
         "emoji": "🇬🇭",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Scotland",
@@ -687,7 +786,10 @@
         "emoji": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
         "cohosts32": ["Ireland", "England"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["England", "Ireland"],
+        "quadHosts48": []
       },
       {
         "name": "Senegal",
@@ -706,7 +808,10 @@
         "emoji": "🇸🇳",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Romania",
@@ -725,7 +830,10 @@
         "emoji": "🇷🇴",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": ["Bulgaria", "Serbia", "Greece"]
       },
       {
         "name": "Morocco",
@@ -744,7 +852,10 @@
         "emoji": "🇲🇦",
         "cohosts32": ["Portugal", "Spain"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Portugal", "Spain", "Algeria", "Tunisia"],
+        "quadHosts48": []
       },
       {
         "name": "Ireland",
@@ -763,7 +874,10 @@
         "emoji": "🇮🇪",
         "cohosts32": ["Scotland", "Wales", "England"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["England", "Scotland"],
+        "quadHosts48": []
       },
       {
         "name": "South Korea",
@@ -782,7 +896,10 @@
         "emoji": "🇰🇷",
         "cohosts32": ["Japan"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Japan",
@@ -801,7 +918,10 @@
         "emoji": "🇯🇵",
         "cohosts32": ["South Korea"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Bosnia & Herzegovina",
@@ -820,7 +940,10 @@
         "emoji": "🇧🇦",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Algeria",
@@ -839,7 +962,10 @@
         "emoji": "🇩🇿",
         "cohosts32": ["Tunisia", "Libya"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Morocco", "Tunisia"],
+        "quadHosts48": []
       },
       {
         "name": "Greece",
@@ -858,7 +984,10 @@
         "emoji": "🇬🇷",
         "cohosts32": ["Italy"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Egypt", "Saudi Arabia"],
+        "quadHosts48": ["Romania", "Bulgaria", "Serbia"]
       },
       {
         "name": "Venezuela",
@@ -877,7 +1006,10 @@
         "emoji": "🇻🇪",
         "cohosts32": ["Brazil"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Cameroon",
@@ -896,7 +1028,10 @@
         "emoji": "🇨🇲",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -920,7 +1055,10 @@
         "emoji": "🇧🇴",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Slovakia",
@@ -939,7 +1077,10 @@
         "emoji": "🇸🇰",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Iran",
@@ -958,7 +1099,10 @@
         "emoji": "🇮🇷",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Tunisia",
@@ -977,7 +1121,10 @@
         "emoji": "🇹🇳",
         "cohosts32": ["Algeria"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Morocco", "Algeria"],
+        "quadHosts48": []
       },
       {
         "name": "Slovenia",
@@ -996,7 +1143,10 @@
         "emoji": "🇸🇮",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Hungary",
@@ -1015,7 +1165,10 @@
         "emoji": "🇭🇺",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Mali",
@@ -1034,7 +1187,10 @@
         "emoji": "🇲🇱",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "South Africa",
@@ -1053,7 +1209,10 @@
         "emoji": "🇿🇦",
         "cohosts32": ["Mozambique", "Zimbabwe"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Congo DR",
@@ -1072,7 +1231,10 @@
         "emoji": "🇨🇩",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Australia",
@@ -1091,7 +1253,10 @@
         "emoji": "🇦🇺",
         "cohosts32": ["New Zealand"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -1115,7 +1280,10 @@
         "emoji": "🇽🇰",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Wales",
@@ -1134,7 +1302,10 @@
         "emoji": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
         "cohosts32": ["Ireland", "England"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Iceland",
@@ -1153,7 +1324,10 @@
         "emoji": "🇮🇸",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Egypt",
@@ -1172,7 +1346,10 @@
         "emoji": "🇪🇬",
         "cohosts32": ["Libya", "Sudan"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Saudi Arabia", "Greece"],
+        "quadHosts48": []
       },
       {
         "name": "Costa Rica",
@@ -1191,7 +1368,10 @@
         "emoji": "🇨🇷",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Albania",
@@ -1210,7 +1390,10 @@
         "emoji": "🇦🇱",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Finland",
@@ -1229,7 +1412,10 @@
         "emoji": "🇫🇮",
         "cohosts32": ["Russia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Montenegro",
@@ -1248,7 +1434,10 @@
         "emoji": "🇲🇪",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Israel",
@@ -1267,7 +1456,10 @@
         "emoji": "🇮🇱",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Bulgaria",
@@ -1286,7 +1478,10 @@
         "emoji": "🇧🇬",
         "cohosts32": ["Turkey"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": ["Romania", "Greece", "Serbia"]
       }
     ]
   },
@@ -1310,7 +1505,10 @@
         "emoji": "🇰🇿",
         "cohosts32": ["Russia", "China PR"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Panama",
@@ -1329,7 +1527,10 @@
         "emoji": "🇵🇦",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Georgia",
@@ -1348,7 +1549,10 @@
         "emoji": "🇬🇪",
         "cohosts32": ["Turkey"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Northern Ireland",
@@ -1367,7 +1571,10 @@
         "emoji": "🇬🇧",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Guinea",
@@ -1386,7 +1593,10 @@
         "emoji": "🇬🇳",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Jamaica",
@@ -1405,7 +1615,10 @@
         "emoji": "🇯🇲",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Cabo Verde",
@@ -1424,7 +1637,10 @@
         "emoji": "🇨🇻",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Belarus",
@@ -1443,7 +1659,10 @@
         "emoji": "🇧🇾",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Honduras",
@@ -1462,7 +1681,10 @@
         "emoji": "🇭🇳",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Angola",
@@ -1481,7 +1703,10 @@
         "emoji": "🇦🇴",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Saudi Arabia",
@@ -1500,7 +1725,10 @@
         "emoji": "🇸🇦",
         "cohosts32": ["United Arab Emirates", "Bahrain", "Iraq", "Kuwait", "Oman"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": true,
+        "triHosts48": ["Egypt", "Greece"],
+        "quadHosts48": []
       },
       {
         "name": "Canada",
@@ -1519,7 +1747,10 @@
         "emoji": "🇨🇦",
         "cohosts32": ["United States"],
         "canSoloHost32": false,
-        "cohosts48": ["Mexico", "United States"]
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": ["Mexico", "United States"],
+        "quadHosts48": []
       },
       {
         "name": "North Macedonia",
@@ -1538,7 +1769,10 @@
         "emoji": "🇲🇰",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -1562,7 +1796,10 @@
         "emoji": "🇦🇿",
         "cohosts32": ["Russia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Gambia",
@@ -1581,7 +1818,10 @@
         "emoji": "🇬🇲",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Zimbabwe",
@@ -1600,7 +1840,10 @@
         "emoji": "🇿🇼",
         "cohosts32": ["South Africa"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Burkina Faso",
@@ -1619,7 +1862,10 @@
         "emoji": "🇧🇫",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Iraq",
@@ -1638,7 +1884,10 @@
         "emoji": "🇮🇶",
         "cohosts32": ["Turkey", "Saudi Arabia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Uzbekistan",
@@ -1657,7 +1906,10 @@
         "emoji": "🇺🇿",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Zambia",
@@ -1676,7 +1928,10 @@
         "emoji": "🇿🇲",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Togo",
@@ -1695,7 +1950,10 @@
         "emoji": "🇹🇬",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Guinea-Bissau",
@@ -1714,7 +1972,10 @@
         "emoji": "🇬🇼",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Congo",
@@ -1733,7 +1994,10 @@
         "emoji": "🇨🇬",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Gabon",
@@ -1752,7 +2016,10 @@
         "emoji": "🇬🇦",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Syria",
@@ -1771,7 +2038,10 @@
         "emoji": "🇸🇾",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -1780,7 +2050,7 @@
     "nations": [
       {
         "name": "Libya",
-        "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Libya_%281951%E2%80%931969%29.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Libya.svg",
         "region": "caf",
         "firstNameUsages": ["Northern African", "Arabic"],
         "lastNameUsages": ["Northern African", "Arabic"],
@@ -1795,7 +2065,10 @@
         "emoji": "🇱🇾",
         "cohosts32": ["Egypt", "Algeria"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Sudan",
@@ -1814,7 +2087,10 @@
         "emoji": "🇸🇩",
         "cohosts32": ["Egypt"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Guatemala",
@@ -1833,7 +2109,10 @@
         "emoji": "🇬🇹",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Faroe Islands",
@@ -1852,7 +2131,10 @@
         "emoji": "🇫🇴",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Latvia",
@@ -1871,7 +2153,10 @@
         "emoji": "🇱🇻",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Korea DPR",
@@ -1890,7 +2175,10 @@
         "emoji": "🇰🇵",
         "cohosts32": ["China PR"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Equatorial Guinea",
@@ -1909,7 +2197,10 @@
         "emoji": "🇬🇶",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Madagascar",
@@ -1928,7 +2219,10 @@
         "emoji": "🇲🇬",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Martinique",
@@ -1947,7 +2241,10 @@
         "emoji": "🇲🇶",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Suriname",
@@ -1966,7 +2263,10 @@
         "emoji": "🇸🇷",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "China PR",
@@ -1985,7 +2285,10 @@
         "emoji": "🇨🇳",
         "cohosts32": ["Korea DPR", "Kazakhstan"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Qatar",
@@ -2004,7 +2307,10 @@
         "emoji": "🇶🇦",
         "cohosts32": [],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Curaçao",
@@ -2023,7 +2329,10 @@
         "emoji": "🇨🇼",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Armenia",
@@ -2042,7 +2351,10 @@
         "emoji": "🇦🇲",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "New Zealand",
@@ -2061,7 +2373,10 @@
         "emoji": "🇳🇿",
         "cohosts32": ["Australia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Benin",
@@ -2080,7 +2395,10 @@
         "emoji": "🇧🇯",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Trinidad & Tobago",
@@ -2099,7 +2417,10 @@
         "emoji": "🇹🇹",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Sierra Leone",
@@ -2118,7 +2439,10 @@
         "emoji": "🇸🇱",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Cyprus",
@@ -2137,7 +2461,10 @@
         "emoji": "🇨🇾",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Estonia",
@@ -2156,7 +2483,10 @@
         "emoji": "🇪🇪",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "United Arab Emirates",
@@ -2175,7 +2505,10 @@
         "emoji": "🇦🇪",
         "cohosts32": ["Saudi Arabia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Lithuania",
@@ -2194,7 +2527,10 @@
         "emoji": "🇱🇹",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Mozambique",
@@ -2213,7 +2549,10 @@
         "emoji": "🇲🇿",
         "cohosts32": ["South Africa"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "El Salvador",
@@ -2232,7 +2571,10 @@
         "emoji": "🇸🇻",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Luxembourg",
@@ -2251,7 +2593,10 @@
         "emoji": "🇱🇺",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Uganda",
@@ -2270,7 +2615,10 @@
         "emoji": "🇺🇬",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Haiti",
@@ -2289,7 +2637,10 @@
         "emoji": "🇭🇹",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Jordan",
@@ -2308,7 +2659,10 @@
         "emoji": "🇯🇴",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -2332,7 +2686,10 @@
         "emoji": "🇴🇲",
         "cohosts32": ["Saudi Arabia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Kenya",
@@ -2351,7 +2708,10 @@
         "emoji": "🇰🇪",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Mauritania",
@@ -2370,7 +2730,10 @@
         "emoji": "🇲🇷",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Namibia",
@@ -2389,7 +2752,10 @@
         "emoji": "🇳🇦",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Niger",
@@ -2408,7 +2774,10 @@
         "emoji": "🇳🇪",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Malawi",
@@ -2427,7 +2796,10 @@
         "emoji": "🇲🇼",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Tanzania",
@@ -2446,7 +2818,10 @@
         "emoji": "🇹🇿",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Nicaragua",
@@ -2465,7 +2840,10 @@
         "emoji": "🇳🇮",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Thailand",
@@ -2484,7 +2862,10 @@
         "emoji": "🇹🇭",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Kuwait",
@@ -2503,7 +2884,10 @@
         "emoji": "🇰🇼",
         "cohosts32": ["Saudi Arabia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Bahrain",
@@ -2522,7 +2906,10 @@
         "emoji": "🇧🇭",
         "cohosts32": ["Saudi Arabia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Lebanon",
@@ -2541,7 +2928,10 @@
         "emoji": "🇱🇧",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "French Guiana",
@@ -2560,7 +2950,10 @@
         "emoji": "🇬🇫",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Central African Republic",
@@ -2579,7 +2972,10 @@
         "emoji": "🇨🇫",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Philippines",
@@ -2598,7 +2994,10 @@
         "emoji": "🇵🇭",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Dominican Republic",
@@ -2617,7 +3016,10 @@
         "emoji": "🇩🇴",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   },
@@ -2641,7 +3043,10 @@
         "emoji": "🇰🇬",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Grenada",
@@ -2660,7 +3065,10 @@
         "emoji": "🇬🇩",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Chad",
@@ -2679,7 +3087,10 @@
         "emoji": "🇹🇩",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Antigua & Barbuda",
@@ -2698,7 +3109,10 @@
         "emoji": "🇦🇬",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "St Kitts & Nevis",
@@ -2717,7 +3131,10 @@
         "emoji": "🇰🇳",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Barbados",
@@ -2736,7 +3153,10 @@
         "emoji": "🇧🇧",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Bermuda",
@@ -2755,7 +3175,10 @@
         "emoji": "🇧🇲",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Solomon Islands",
@@ -2774,7 +3197,10 @@
         "emoji": "🇸🇧",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Palestine",
@@ -2793,7 +3219,10 @@
         "emoji": "🇵🇸",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Vietnam",
@@ -2812,7 +3241,10 @@
         "emoji": "🇻🇳",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "India",
@@ -2831,7 +3263,10 @@
         "emoji": "🇮🇳",
         "cohosts32": ["Sri Lanka"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Tajikistan",
@@ -2850,7 +3285,10 @@
         "emoji": "🇹🇯",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Turkmenistan",
@@ -2869,7 +3307,10 @@
         "emoji": "🇹🇲",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Chinese Taipei",
@@ -2888,7 +3329,10 @@
         "emoji": "🇹🇼",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Singapore",
@@ -2907,7 +3351,10 @@
         "emoji": "🇸🇬",
         "cohosts32": ["Malaysia"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Tahiti",
@@ -2926,7 +3373,10 @@
         "emoji": "🇵🇫",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Malaysia",
@@ -2945,7 +3395,10 @@
         "emoji": "🇲🇾",
         "cohosts32": ["Singapore"],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Fiji",
@@ -2964,7 +3417,10 @@
         "emoji": "🇫🇯",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "New Caledonia",
@@ -2983,7 +3439,10 @@
         "emoji": "🇳🇨",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Indonesia",
@@ -3002,7 +3461,10 @@
         "emoji": "🇮🇩",
         "cohosts32": [],
         "canSoloHost32": true,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Papua New Guinea",
@@ -3021,7 +3483,10 @@
         "emoji": "🇵🇬",
         "cohosts32": [],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       },
       {
         "name": "Sri Lanka",
@@ -3040,7 +3505,10 @@
         "emoji": "🇱🇰",
         "cohosts32": ["India"],
         "canSoloHost32": false,
-        "cohosts48": []
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   }

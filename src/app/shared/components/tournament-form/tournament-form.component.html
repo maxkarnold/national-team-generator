@@ -1,5 +1,5 @@
 <div class="flex flex-col mx-8 py-8">
-  <form class="flex flex-col" [formGroup]="tournamentForm" novalidate (ngSubmit)="checkTournamentForm()">
+  <form class="flex flex-col" [formGroup]="tournamentForm" (ngSubmit)="checkTournamentForm()">
     <div class="flex flex-col justify-center text-xl items-center">
       <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
         <label for="hostNations">Host Nation(s)</label>
@@ -71,17 +71,21 @@
     </div>
 
     <div class="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-5 md:justify-center">
-      <button type="submit" [disabled]="!tournamentForm.valid" class="btn disabled:btn-disabled">Setup Tournament</button>
-      <!-- <button type="button" *ngIf="user && coaches.length < 1" (click)="addCoaches()" class="btn disabled:btn-disabled">
+      <div *ngIf="!tournamentForm.valid" class="tooltip" data-tip="Invalid hosts; please select different host(s) to setup.">
+        <button type="submit" disabled class="btn btn-disabled">Setup Tournament</button>
+      </div>
+      <button *ngIf="tournamentForm.valid" type="submit" class="btn">Setup Tournament</button>
+
+      <!-- <button type="button" *ngIf="user() && coaches.length < 1" (click)="addCoaches()" class="btn disabled:btn-disabled">
         Add Coaches (Beta)
       </button> -->
-      <button
+      <!-- <button
         type="button"
         [disabled]="!tournamentForm.valid || cannotSave"
         (click)="setupAndSaveTournament()"
         class="btn disabled:btn-disabled">
         {{ buttonDisplay }}
-      </button>
+      </button> -->
     </div>
   </form>
   <button
