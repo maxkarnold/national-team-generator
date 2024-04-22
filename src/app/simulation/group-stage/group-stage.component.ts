@@ -1,9 +1,9 @@
 import { Component, HostListener } from '@angular/core';
-import { groupLetters } from 'app/pages/simulation/simulation.utils';
+import { groupLetters } from 'app/simulation/simulation.utils';
 import { GroupTeam } from 'app/models/nation.model';
-import { SimulationService } from 'app/pages/simulation/simulation.service';
+import { SimulationService } from 'app/simulation/simulation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Tournament } from 'app/pages/simulation/simulation.model';
+import { Tournament } from 'app/simulation/simulation.model';
 
 @UntilDestroy()
 @Component({

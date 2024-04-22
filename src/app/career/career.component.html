@@ -51,12 +51,12 @@
         <td>
           <div class="flex flex-col">
             <div *ngIf="screenWidth < 640">{{ getAbbrevNumber(transfer.transferFee) }}</div>
-            <div *ngIf="screenWidth >= 640">{{ transfer.transferFee | currency: 'EUR':'symbol':'1.0-0' }}</div>
+            <div *ngIf="screenWidth >= 640">{{ transfer.transferFee | currency: 'EUR' : 'symbol' : '1.0-0' }}</div>
             <div class="text-sm opacity-50 capitalize">{{ transfer.transferType }}</div>
           </div>
         </td>
         <td class="capitalize">{{ transfer.playingTime }}</td>
-        <td>{{ transfer.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
+        <td>{{ transfer.wage | currency: 'EUR' : 'symbol' : '1.0-0' }}</td>
       </tr>
     </table>
   </div>
@@ -151,7 +151,7 @@
             {{ career.avgRating }}
           </td>
           <td>
-            {{ career.totalEarnings | currency: 'EUR':'symbol':'1.0-0' }}
+            {{ career.totalEarnings | currency: 'EUR' : 'symbol' : '1.0-0' }}
           </td>
         </tr>
       </tbody>
@@ -239,17 +239,17 @@
               season.currentClub?.transferType === 'transfer' || season.currentClub?.transferType === 'transfer/loan'
                 ? getAbbrevNumber(season.currentClub?.transferFee || 0)
                 : season.currentClub?.transferType === 'loan'
-                ? 'loan'
-                : ''
+                  ? 'loan'
+                  : ''
             }}
           </td>
           <td *ngIf="screenWidth >= 640" class="capitalize">
             {{
               season.currentClub?.transferType === 'transfer' || season.currentClub?.transferType === 'transfer/loan'
-                ? (season.currentClub?.transferFee | currency: 'EUR':'symbol':'1.0-0')
+                ? (season.currentClub?.transferFee | currency: 'EUR' : 'symbol' : '1.0-0')
                 : season.currentClub?.transferType === 'loan'
-                ? 'loan'
-                : ''
+                  ? 'loan'
+                  : ''
             }}
           </td>
           <td *ngIf="screenWidth < 640">{{ season.appearances + '/' + season.goals + '/' + season.assists }}</td>
@@ -257,7 +257,7 @@
           <td *ngIf="screenWidth >= 640">{{ season.goals }}</td>
           <td *ngIf="screenWidth >= 640">{{ season.assists }}</td>
           <td>{{ season.avgRating === 0 ? 'N/A' : season.avgRating.toFixed(1) }}</td>
-          <td>{{ season.currentClub?.wage | currency: 'EUR':'symbol':'1.0-0' }}</td>
+          <td>{{ season.currentClub?.wage | currency: 'EUR' : 'symbol' : '1.0-0' }}</td>
           <td class="capitalize">{{ season.currentClub?.playingTime }}</td>
         </tr>
       </tbody>

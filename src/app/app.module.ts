@@ -13,22 +13,10 @@ import { LineupComponent } from './pages/lineup/lineup.component';
 import { RosterComponent } from './pages/roster/roster.component';
 import { LoginComponent } from './pages/login/login.component';
 import { BuildRosterComponent } from './pages/build-roster/build-roster.component';
-import { SimulationComponent } from './pages/simulation/simulation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CareerComponent } from './pages/career/career.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LeaderboardComponent,
-    LineupComponent,
-    RosterComponent,
-    LoginComponent,
-    BuildRosterComponent,
-    SimulationComponent,
-    CareerComponent,
-  ],
+  declarations: [AppComponent, HomeComponent, LeaderboardComponent, LineupComponent, RosterComponent, LoginComponent, BuildRosterComponent],
   imports: [BrowserModule, AppRoutingModule, SharedModule, CoreModule, CommonModule, BrowserAnimationsModule],
   providers: [],
   bootstrap: [AppComponent],

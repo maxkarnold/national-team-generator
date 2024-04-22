@@ -1,7 +1,7 @@
 // eslint-disable-next-line spaced-comment
 /// <reference lib="webworker" />
 
-import { GroupTeam } from '../../models/nation.model';
+import { GroupTeam } from '../models/nation.model';
 import { drawAndSort } from './group-draw.utils';
 
 // ======= draw teams into groups ===========

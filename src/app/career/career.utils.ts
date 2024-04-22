@@ -1,17 +1,10 @@
 import { Club } from 'app/models/club.model';
-import {
-  LeagueDifficulty,
-  PlayingTime,
-  TransferOption,
-  TransferType,
-  Season,
-  CareerOverview,
-  CareerScore,
-  ClubStats,
-} from './career.model';
-import { getRandFloat, getRandomInt, probability } from '@shared/utils';
+import { getRandomInt } from '@shared/utils';
 import { mean, round } from 'lodash-es';
 import { playerToClubAbility } from './career.constants';
+import { LeagueDifficulty, TransferOption, TransferType, ClubStats } from './club/club.model';
+import { Season, PlayingTime, CareerOverview, CareerScore, SeasonStats } from './player/player.model';
+import { getSkewedAssists, getSkewedGoals } from './simulation/simulation.utils';
 
 function calcLeagueDifficulty(clubRating: number, leagueRating: number, ability: number): LeagueDifficulty {
   const teamDiff = (clubRating + ability * 3) / 2 - leagueRating;
@@ -29,7 +22,7 @@ function calcLeagueDifficulty(clubRating: number, leagueRating: number, ability:
   }
 }
 
-export function getPlayingTime(club: Club, season: Season): PlayingTime {
+export function getPlayingTime(club: Partial<ClubStats>, season: Season): PlayingTime {
   const ability = playerToClubAbility(season.currentAbility);
   console.log('adjustedAbility for playing time', ability, 'clubRating', club.clubRating);
   if (ability < club.clubRating - 40 && season.age < 22) {
@@ -154,7 +147,12 @@ export function getTransferFee(
   }
 }
 
-export function simulateApps(appearances: number, transfer: TransferOption, season: Season, career: CareerOverview) {
+export function simulateApps(
+  appearances: SeasonStats,
+  transfer: TransferOption,
+  season: Season,
+  career: CareerOverview
+): { leagueDifficulty: LeagueDifficulty; stats: SeasonStats } {
   // easyLeague 1.0 g/mp 0.5 a/mp
   // mediumEasyLeague 0.5 g/mp 0.2 a/mp
   // mediumLeague 0.35 g/mp 0.15 a/mp
@@ -166,68 +164,6 @@ export function simulateApps(appearances: number, transfer: TransferOption, seas
 
   console.log('leagueDiff', leagueDiff);
 
-  const calculator = (a: number, b: number, seasons: number): number => {
-    let i = a;
-    let j = b;
-
-    if (seasons > 4) {
-      i += 0.2;
-      j += 0.2;
-    } else if (seasons > 2.25) {
-      i += 0.15;
-      j += 0.15;
-    } else if (seasons > 1.5) {
-      i += 0.1;
-      j += 0.1;
-    } else if (seasons > 0.4) {
-      i += 0.05;
-      j += 0.05;
-    }
-
-    if (probability(getRandFloat(i / 15, j / 15))) {
-      return 3;
-    } else if (probability(getRandFloat(i / 6, j / 6))) {
-      return 2;
-    } else if (probability(getRandFloat(i * 0.8, j * 0.8))) {
-      return 1;
-    } else {
-      return 0;
-    }
-  };
-
-  const getSkewedGoals = (diff: LeagueDifficulty, apps: number) => {
-    switch (diff) {
-      case 'easy':
-        return calculator(0.8, 1.2, apps);
-      case 'mediumEasy':
-        return calculator(0.4, 0.7, apps);
-      case 'medium':
-        return calculator(0.25, 0.5, apps);
-      case 'mediumHard':
-        return calculator(0.08, 0.25, apps);
-      case 'hard':
-        return calculator(0.05, 0.2, apps);
-      default:
-        return 0;
-    }
-  };
-
-  const getSkewedAssists = (diff: LeagueDifficulty, apps: number) => {
-    switch (diff) {
-      case 'easy':
-        return calculator(0.35, 0.7, apps);
-      case 'mediumEasy':
-        return calculator(0.1, 0.3, apps);
-      case 'medium':
-        return calculator(0.05, 0.25, apps);
-      case 'mediumHard':
-        return calculator(0.05, 0.25, apps);
-      case 'hard':
-        return calculator(0.025, 0.15, apps);
-      default:
-        return 0;
-    }
-  };
   const seasonRatings = [];
   const seasonStats = {
     goals: 0,
@@ -237,6 +173,7 @@ export function simulateApps(appearances: number, transfer: TransferOption, seas
     aggRating: 0,
   };
 
+  // ITERATES OVER APPS to calculate stats per game for an entire season
   for (let i = 0; i < appearances; i++) {
     const goals = getSkewedGoals(leagueDiff, currentClubApps);
     const assists = getSkewedAssists(leagueDiff, currentClubApps);
@@ -251,115 +188,6 @@ export function simulateApps(appearances: number, transfer: TransferOption, seas
 
   seasonStats.avgRating = appearances > 0 ? round(mean(seasonRatings), 1) : 0;
   return seasonStats;
-}
-
-export function adjustCurrentAbility(
-  season: Season,
-  apps: number,
-  rating: number,
-  transfer: TransferOption,
-  career: CareerOverview,
-  leagueDiff: LeagueDifficulty
-): number {
-  console.log('adjustCurrentAbility');
-  if (season.age > 34) {
-    return season.currentAbility - 20;
-  } else if (season.age > 31) {
-    return season.currentAbility - 15;
-  } else if (season.age > 29) {
-    return season.currentAbility;
-  }
-
-  const totalGames = transfer.club.gamesInSeason;
-  const youthFactor = ({ age, potentialAbility, currentAbility }: Season): number => {
-    const potDiff = potentialAbility - currentAbility;
-    if (age < 18) {
-      return potDiff / 10 - 4;
-    } else if (age < 24) {
-      return potDiff / 20;
-    } else if (age < 32) {
-      return potDiff / 30;
-    } else {
-      return -potDiff / 10;
-    }
-  };
-
-  const challengeFactor = (leagueDifficulty: LeagueDifficulty): number => {
-    switch (leagueDifficulty) {
-      case 'hard':
-        return 2;
-      case 'mediumHard':
-        return 1;
-      case 'medium':
-        return -1;
-      case 'mediumEasy':
-        return -3;
-      case 'easy':
-        return -5;
-      default:
-        return 0;
-    }
-  };
-
-  const performanceFactor = (app: number, gamesInSeason: number, avgRating: number): number => {
-    // more games in a season provides a high floor to the ability gain while
-    // higher rating provides a higher ceiling of ability gain
-    if (app / gamesInSeason > 0.8) {
-      if (avgRating > 7.5) {
-        return getRandomInt(6, 10);
-      } else if (avgRating > 7.0) {
-        return getRandomInt(6, 8);
-      } else if (avgRating > 6.5) {
-        return getRandomInt(5, 6);
-      } else {
-        return getRandomInt(4, 5);
-      }
-    } else if (app / gamesInSeason > 0.4) {
-      if (avgRating > 7.5) {
-        return getRandomInt(3, 9);
-      } else if (avgRating > 7.0) {
-        return getRandomInt(3, 7);
-      } else if (avgRating > 6.5) {
-        return getRandomInt(3, 5);
-      } else {
-        return getRandomInt(2, 4);
-      }
-    } else if (app / gamesInSeason > 0.2) {
-      if (avgRating > 7.5) {
-        return getRandomInt(1, 6);
-      } else if (avgRating > 7.0) {
-        return getRandomInt(1, 5);
-      } else if (avgRating > 6.5) {
-        return getRandomInt(0, 4);
-      } else {
-        return getRandomInt(0, 3);
-      }
-    } else {
-      return getRandomInt(-8, 0);
-    }
-  };
-
-  const consistencyFactor = (ca: CareerOverview) => {
-    const currentClubApps = ca.clubStats.find(c => c.id === transfer.club.id)?.currentClubStreak || 0;
-
-    if (currentClubApps > 4) {
-      return 3;
-    } else if (currentClubApps > 2.25) {
-      return 2;
-    } else if (currentClubApps > 1.5) {
-      return 1;
-    } else if (currentClubApps > 0.4) {
-      return 0;
-    } else {
-      return -1;
-    }
-  };
-
-  const performance = performanceFactor(apps, totalGames, rating);
-
-  console.log(season, 'ability calc', consistencyFactor(career), performance, challengeFactor(leagueDiff), youthFactor(season));
-
-  return consistencyFactor(career) + performance + challengeFactor(leagueDiff) + youthFactor(season) + season.currentAbility;
 }
 
 export function getAppsForProspect(club: TransferOption, season: Season, gamesInSeason: number) {
@@ -390,7 +218,7 @@ export function checkHalfStar(rating: number) {
   return Math.round(rating * 2) / 2;
 }
 
-export function calcScore(clubs: Club[], career: CareerOverview): CareerScore {
+export function calcCareerScore(clubs: Club[], career: CareerOverview): CareerScore {
   // based on peakAbility, peakClubAbility, avgLeagueAbility, and goal involvements
   // peakAbility 130-170
   const abilityScore = (career.peakAbility / 220) * 5;
@@ -467,3 +295,12 @@ export function adjustClubStats(clubStats: ClubStats[], season: Season): ClubSta
 
   return newClubStats;
 }
+
+// STEPS:
+// 1. Check for team's previous place in standings
+// 2. Determine if team has been relegated/promoted/qualified for Competitions
+// 3. Simulate games with player in each competition
+// 4. Simulate league games
+// 5. Simulate cup games
+// 6. Simulate continental games
+// 7. save stats from season, including the standing for the club in each competition

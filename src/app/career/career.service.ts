@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { getRandomInt, getRandomInts } from '@shared/utils';
+import { getRandomInts } from '@shared/utils';
 import { Club } from 'app/models/club.model';
-import { TransferOption, CareerOverview, Season, ClubStats } from './career.model';
-import { adjustCurrentAbility, calcScore, getPlayingTime, getTransferFee, getWage, simulateApps, totalSeasonsStr } from './career.utils';
-import { ageFactor, getCurrentClub } from './career.constants';
+import { calcCareerScore, getPlayingTime, getTransferFee, getWage, simulateApps, totalSeasonsStr } from './career.utils';
+import { ageFactor } from './career.constants';
+import { generateNewClubStandings, getAppsForSeason, getCurrentClub, getCurrentClubAsTransfer } from './club/club.utils';
+import { TransferOption, ClubStats } from './club/club.model';
+import { Season, CareerOverview } from './player/player.model';
+import { adjustCurrentAbility } from './player/player.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -12,60 +15,17 @@ export class CareerService {
   constructor() {}
 
   simulateSeasonStats(transferChoice: TransferOption, season: Season, career: CareerOverview): Season {
-    let appearances = 0;
-    const gamesInSeason = transferChoice.club.gamesInSeason;
+    const seasonStats = getAppsForSeason(transferChoice);
 
-    switch (transferChoice.playingTime) {
-      case 'breakthrough prospect':
-      case 'fringe player':
-        appearances = Math.abs(Math.round(gamesInSeason / 10 + getRandomInt(-5, 5)));
-        break;
-      case 'impact sub':
-        appearances = Math.abs(Math.round(gamesInSeason / 3 + getRandomInt(-5, 5)));
-        console.log(appearances);
-        break;
-      case 'squad player':
-        appearances = Math.round(gamesInSeason / 2 + getRandomInt(-5, 5));
-        break;
-      case 'regular starter':
-        appearances = Math.round(gamesInSeason * 0.75 + getRandomInt(-10, 5));
-        break;
-      case 'important player':
-        appearances = Math.round(gamesInSeason * 0.9 + getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
-        break;
-      case 'star player':
-        appearances = Math.round(gamesInSeason - getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
-        break;
-      default:
-        break;
-    }
+    const { stats, leagueDifficulty } = simulateApps(seasonStats, transferChoice, season, career);
 
-    if (appearances > transferChoice.club.gamesInSeason) {
-      appearances = transferChoice.club.gamesInSeason;
-    }
-
-    const { goals, assists, avgRating, aggRating, leagueDifficulty } = simulateApps(appearances, transferChoice, season, career);
-    const currentAbility = adjustCurrentAbility(season, appearances, avgRating, transferChoice, career, leagueDifficulty);
-
-    const checkCurrentAbility = (ability: number) => {
-      if (ability < 10) {
-        return 10;
-      } else if (ability > 200) {
-        return 200;
-      } else {
-        return ability;
-      }
-    };
+    const currentAbility = adjustCurrentAbility(season, stats, transferChoice, career, leagueDifficulty);
 
     return {
       ...season,
       currentClub: transferChoice,
-      currentAbility: checkCurrentAbility(currentAbility),
-      appearances,
-      goals,
-      assists,
-      avgRating,
-      aggRating,
+      currentAbility: currentAbility,
+      stats,
       leagueDifficulty,
     };
   }
@@ -117,21 +77,16 @@ export class CareerService {
     const currentClub = getCurrentClub(clubs, season, parentClub);
 
     if (currentClub) {
-      const playingTime = getPlayingTime(currentClub, season);
-      const wage = getWage(playingTime, parentClub, hasLoanOption);
-      transferChoices.push({
-        club: currentClub,
-        transferType: hasLoanOption ? 'stay' : 're-sign',
-        transferFee: 0,
-        wage,
-        playingTime,
-      });
+      transferChoices.push(getCurrentClubAsTransfer(currentClub, season, parentClub, hasLoanOption));
     }
 
     const teamIndexes = [...getRandomInts(3, 0, eligibleTransferClubs.length - 1)];
 
     teamIndexes.forEach(n => {
-      const club = eligibleTransferClubs[n];
+      const club: Partial<ClubStats> = {
+        previousStandings: generateNewClubStandings(eligibleTransferClubs[n]),
+        ...eligibleTransferClubs[n],
+      };
       const playingTime = getPlayingTime(club, season);
       const wage = getWage(playingTime, parentClub, hasLoanOption);
       const { transferType, transferFee } = getTransferFee(club, parentClub, hasLoanOption, playingTime, season);
@@ -154,7 +109,7 @@ export class CareerService {
       ...career,
       avgLeagueAbility: seasons.reduce((acc, s) => acc + (s.currentClub as TransferOption).club.leagueDifficulty, 0) / seasons.length,
     };
-    const score = calcScore(teams, careerStats);
+    const score = calcCareerScore(teams, careerStats);
     const getLongestServedClub = (clubs: ClubStats[]) => {
       return clubs.sort((a, b) => b.clubApps - a.clubApps)[0];
     };

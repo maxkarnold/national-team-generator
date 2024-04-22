@@ -1,9 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { GroupTeam } from 'app/models/nation.model';
-import { Tournament } from 'app/pages/simulation/simulation.model';
-import { SimulationService } from 'app/pages/simulation/simulation.service';
-import { getDisplayRating } from 'app/pages/simulation/simulation.utils';
+import { Tournament } from 'app/simulation/simulation.model';
+import { SimulationService } from 'app/simulation/simulation.service';
+import { getDisplayRating } from 'app/simulation/simulation.utils';
 import { get as _get } from 'lodash-es';
 
 interface RankingsRow {

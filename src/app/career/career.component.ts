@@ -3,12 +3,14 @@ import nationsJson from 'assets/json/nations.json';
 import clubsJson from 'assets/json/clubs.json';
 import { Nation } from 'app/models/nation.model';
 import { Club } from 'app/models/club.model';
-import { CareerOverview, Season, TransferOption } from './career.model';
 import { newSeasonStr, adjustClubStats } from './career.utils';
 import { getAbbrevNumber, getAbbrevString, originalOrder } from '@shared/utils';
 import { CareerService } from './career.service';
 import { fringeRoles, tableHeaders } from './career.constants';
 import { sample as _sample } from 'lodash-es';
+import { TransferOption } from './club/club.model';
+import { CareerOverview, Season } from './player/player.model';
+import { defaultCompStats } from './career.model';
 
 @Component({
   selector: 'app-career',
@@ -35,10 +37,7 @@ export class CareerComponent implements OnInit {
   currentCareerOverview: CareerOverview = {
     seasons: '',
     yearsActive: 0,
-    totalApps: 0,
-    totalGoals: 0,
-    totalAssists: 0,
-    avgRating: '',
+    totalStats: defaultCompStats,
     totalEarnings: 0,
     score: {
       totalScore: 0,
@@ -59,15 +58,16 @@ export class CareerComponent implements OnInit {
   currentSeason: Season = {
     year: '2023/24',
     id: 0,
-    appearances: 0,
-    goals: 0,
-    assists: 0,
-    avgRating: 6.0,
+    stats: {
+      allComps: defaultCompStats,
+      league: defaultCompStats,
+      cup: defaultCompStats,
+      continental: defaultCompStats,
+    },
     leagueDifficulty: 'medium',
     age: 14,
     currentAbility: 65,
     potentialAbility: 200,
-    aggRating: 0,
   };
 
   constructor(private service: CareerService) {
@@ -125,11 +125,12 @@ export class CareerComponent implements OnInit {
 
     console.log('Age: ', this.currentSeason.age, 'Current Ability: ', this.currentSeason.currentAbility, this.currentSeason);
 
+    // Take the currentSeason and adjust the club stats for that club, will either add a new club to clubStats array or update an existing club
     this.currentCareerOverview.clubStats = adjustClubStats(this.currentCareerOverview.clubStats, season);
     this.currentCareerOverview.yearsActive++;
-    this.currentCareerOverview.totalApps += season.appearances;
-    this.currentCareerOverview.totalGoals += season.goals;
-    this.currentCareerOverview.totalAssists += season.assists;
+    this.currentCareerOverview.totalStats.appearances.starts += season.stats.allComps.appearances.starts;
+    this.currentCareerOverview.totalStats.goals += season.stats.allComps.goals;
+    this.currentCareerOverview.totalStats.assists += season.stats.allComps.assists;
     this.currentCareerOverview.totalEarnings += (season.currentClub?.wage || 0) * 52;
     this.currentCareerOverview.totalPossibleApps += season.currentClub?.club.gamesInSeason || 0;
 

@@ -9,6 +9,7 @@ export interface Club {
   clubRating: number;
   marketValue: number;
   gamesInSeason: number;
+  leagueTeams: number;
 }
 
 export enum Region {
