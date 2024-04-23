@@ -10,5 +10,24 @@ export class NavBarComponent {
   loginOverlayOpen = false;
   navToggle = false;
   isLoggedIn = false;
+
+  navigationItems = [
+    {
+      routerLink: '/simulation',
+      displayName: 'Simulation',
+    },
+    {
+      routerLink: '/career',
+      displayName: 'Career',
+    },
+    // {
+    //   routerLink: '/leaderboard',
+    //   displayName: 'Leaderboard',
+    // },
+    {
+      routerLink: '/moba',
+      displayName: 'MOBA',
+    },
+  ];
   constructor(public auth: AuthService) {}
 }

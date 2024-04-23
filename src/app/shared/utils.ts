@@ -1,4 +1,4 @@
-import { round, sample } from 'lodash-es';
+import { round, sample, sum } from 'lodash-es';
 
 export const originalOrder = (): number => 0;
 
@@ -128,6 +128,29 @@ export function getRandomInt(mn: number, mx: number): number {
   // The maximum is inclusive and the minimum is inclusive
 }
 
+export function getRandomIntBC(min: number, max: number, skew: number) {
+  let u = 0,
+    v = 0;
+  while (u === 0) {
+    u = Math.random();
+  } // Converting [0,1) to (0,1)
+  while (v === 0) {
+    v = Math.random();
+  }
+  let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+
+  num = num / 10.0 + 0.5; // Translate to 0 -> 1
+  if (num > 1 || num < 0) {
+    num = getRandomIntBC(min, max, skew);
+  } // resample between 0 and 1 if out of range
+  else {
+    num = Math.pow(num, skew); // Skew
+    num *= max - min; // Stretch to fill range
+    num += min; // offset to min
+  }
+  return round(num);
+}
+
 export function getRandomInts(quantity: number, min: number, max: number): Set<number> {
   const set = new Set<number>();
   while (set.size < quantity) {
@@ -143,8 +166,7 @@ export function getRandFloat(min: number, max: number, decimalPlaces = 2): numbe
 }
 
 export function calcSumRating(arr: number[]): number {
-  const sum = arr.reduce((partialSum, a) => partialSum + a, 0);
-  const avg = sum / arr.length;
+  const avg = sum(arr) / arr.length;
   return Math.round(avg * 10) / 10;
 }
 
@@ -166,4 +188,22 @@ export function groupByProp(arr: Record<string, any>[], prop: string) {
     memo[x[prop]].push(x);
     return memo;
   }, {});
+}
+
+export function isTopNumOfMap<T>(map: Map<string, T>, searchString: string, topBy: number): boolean {
+  let count = 0;
+  for (const key of map.keys()) {
+    if (count >= topBy) {
+      break;
+    }
+    if (key.includes(searchString)) {
+      return true;
+    }
+    count++;
+  }
+  return false;
+}
+
+export function calcWeightedSumRating(arr: number[], weight: number) {
+  return sum(arr) * weight;
 }

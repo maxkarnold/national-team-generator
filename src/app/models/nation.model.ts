@@ -1,6 +1,20 @@
 import { Match, RegionName } from 'app/simulation/simulation.model';
 import { Person } from './player.model';
 import { getRandFloat } from '@shared/utils';
+import * as nationsJson from 'assets/json/nations.json';
+
+export const allNations = () => {
+  const newArr = nationsJson;
+  const nations: Nation[] = [];
+
+  Object.values(newArr).forEach(t => {
+    if (t.nations) {
+      nations.push(...(t.nations as Nation[]));
+    }
+  });
+
+  return nations;
+};
 
 export interface Nation {
   name: string;

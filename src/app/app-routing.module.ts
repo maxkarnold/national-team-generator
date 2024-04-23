@@ -7,7 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'career',
+    redirectTo: 'moba',
     pathMatch: 'full',
   },
   {
@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'career',
     loadChildren: () => import('./career/career.module').then(m => m.CareerModule),
+  },
+  {
+    path: 'moba',
+    loadChildren: () => import('./moba/moba.module').then(m => m.MobaModule),
   },
   { path: '**', redirectTo: '/simulation/group-stage' },
 ];

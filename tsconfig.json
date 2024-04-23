@@ -33,6 +33,7 @@
     "lib": [
       "es2018",
       "es2019",
+      "ES2021",
       "dom"
     ],
     "useDefineForClassFields": false

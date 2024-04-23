@@ -12,7 +12,6 @@ import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { EMPTY, Observable } from 'rxjs';
 import { User } from './firestore.model';
-import { FirebaseError } from '@angular/fire/app';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +48,7 @@ export class AuthService {
         // this.snackbar.open('Successfully logged in!', 'Dismiss');
         // this.router.navigate(['/simulation']);
       })
-      .catch((err: FirebaseError) => {
+      .catch(() => {
         // this.snackbar.open(`ERROR ${(err.code, err.message, err.name)}`);
       });
   }

@@ -1,0 +1,362 @@
+[
+  {
+    "id": 0,
+    "name": "Rek'Sai",
+    "roles": ["jungle", "top"],
+    "gameStateStrength": "early-game",
+    "img": "https://gol.gg/_img/champions_icon/RekSai.png",
+    "dmgType": "ad",
+    "archetypes": ["bruiser"]
+  },
+  {
+    "id": 1,
+    "name": "K'Sante",
+    "roles": ["top"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/KSante.png",
+    "dmgType": "ad",
+    "archetypes": ["bruiser"]
+  },
+  {
+    "id": 2,
+    "name": "Rumble",
+    "roles": ["top", "jungle"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Rumble.png",
+    "dmgType": "ap",
+    "archetypes": ["bruiser", "mage"]
+  },
+  {
+    "id": 3,
+    "name": "Aatrox",
+    "roles": ["top"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Aatrox.png",
+    "dmgType": "ad",
+    "archetypes": ["fighter"]
+  },
+  {
+    "id": 4,
+    "name": "Jax",
+    "roles": ["top", "jungle"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Jax.png",
+    "dmgType": "ad",
+    "archetypes": ["fighter"]
+  },
+  {
+    "id": 5,
+    "name": "Twisted Fate",
+    "roles": ["top", "mid"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/TwistedFate.png",
+    "dmgType": "mix",
+    "archetypes": ["mage", "crit-marksman"]
+  },
+  {
+    "id": 6,
+    "name": "Udyr",
+    "roles": ["top"],
+    "gameStateStrength": "early-game",
+    "img": "https://gol.gg/_img/champions_icon/Udyr.png",
+    "dmgType": "ap",
+    "archetypes": ["bruiser"]
+  },
+  {
+    "id": 7,
+    "name": "Renekton",
+    "roles": ["top"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Renekton.png",
+    "dmgType": "ad",
+    "archetypes": ["bruiser"]
+  },
+  {
+    "id": 8,
+    "name": "Poppy",
+    "roles": ["top", "jungle"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Poppy.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 9,
+    "name": "Vi",
+    "roles": ["jungle"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Vi.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 10,
+    "name": "Xin Zhao",
+    "roles": ["jungle"],
+    "gameStateStrength": "early-game",
+    "img": "https://gol.gg/_img/champions_icon/XinZhao.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 11,
+    "name": "Maokai",
+    "roles": ["jungle", "support"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Maokai.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 12,
+    "name": "Rell",
+    "roles": ["jungle", "support"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Rell.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 13,
+    "name": "Nocturne",
+    "roles": ["jungle"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Nocturne.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 14,
+    "name": "Lee Sin",
+    "roles": ["jungle"],
+    "gameStateStrength": "early-game",
+    "img": "https://gol.gg/_img/champions_icon/LeeSin.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 15,
+    "name": "Orianna",
+    "roles": ["mid"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Orianna.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 16,
+    "name": "Azir",
+    "roles": ["mid"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Azir.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 17,
+    "name": "Karma",
+    "roles": ["mid", "support"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Karma.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 18,
+    "name": "Taliyah",
+    "roles": ["mid", "jungle"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Taliyah.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 19,
+    "name": "Hwei",
+    "roles": ["mid", "support"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Hwei.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 20,
+    "name": "Neeko",
+    "roles": ["mid", "support"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Neeko.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 21,
+    "name": "Tristana",
+    "roles": ["mid", "adc"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Tristana.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 22,
+    "name": "Akali",
+    "roles": ["mid"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Akali.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 23,
+    "name": "Varus",
+    "roles": ["adc"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Varus.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 24,
+    "name": "Kalista",
+    "roles": ["adc"],
+    "gameStateStrength": "early-game",
+    "img": "https://gol.gg/_img/champions_icon/Kalista.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 25,
+    "name": "Ashe",
+    "roles": ["adc", "support"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Ashe.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 26,
+    "name": "Senna",
+    "roles": ["adc", "support"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Senna.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 27,
+    "name": "Lucian",
+    "roles": ["adc"],
+    "gameStateStrength": "early-game",
+    "img": "https://gol.gg/_img/champions_icon/Lucian.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 28,
+    "name": "Smolder",
+    "roles": ["adc"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Smolder.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 29,
+    "name": "Zeri",
+    "roles": ["adc"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Zeri.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 30,
+    "name": "Xayah",
+    "roles": ["adc"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Xayah.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 31,
+    "name": "Aphelios",
+    "roles": ["adc"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Aphelios.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 32,
+    "name": "Draven",
+    "roles": ["adc"],
+    "gameStateStrength": "early-game",
+    "img": "https://gol.gg/_img/champions_icon/Draven.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 33,
+    "name": "Ezreal",
+    "roles": ["adc"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Ezreal.png",
+    "dmgType": "mix"
+  },
+  {
+    "id": 34,
+    "name": "Kai'Sa",
+    "roles": ["adc"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Kaisa.png",
+    "dmgType": "mix"
+  },
+  {
+    "id": 35,
+    "name": "Jinx",
+    "roles": ["adc"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Jinx.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 36,
+    "name": "Nautilus",
+    "roles": ["support"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/Nautilus.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 37,
+    "name": "Rakan",
+    "roles": ["support"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Rakan.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 38,
+    "name": "Renata Glasc",
+    "roles": ["support"],
+    "gameStateStrength": "late-game",
+    "img": "https://gol.gg/_img/champions_icon/RenataGlasc.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 39,
+    "name": "Milio",
+    "roles": ["support"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Milio.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 40,
+    "name": "Alistar",
+    "roles": ["support"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Alistar.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 40,
+    "name": "Nami",
+    "roles": ["support"],
+    "gameStateStrength": "early-game",
+    "img": "https://gol.gg/_img/champions_icon/Nami.png",
+    "dmgType": "ap"
+  },
+  {
+    "id": 41,
+    "name": "Viego",
+    "roles": ["jungle"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Viego.png",
+    "dmgType": "ad"
+  },
+  {
+    "id": 42,
+    "name": "Sejuani",
+    "roles": ["jungle"],
+    "gameStateStrength": "mid-game",
+    "img": "https://gol.gg/_img/champions_icon/Sejuani.png",
+    "dmgType": "mix"
+  }
+]

@@ -1,0 +1,362 @@
+[
+  {
+    "id": 0,
+    "name": "Thor",
+    "nationality": "usa"
+  },
+  {
+    "id": 1,
+    "name": "Crimsix",
+    "nationality": "usa"
+  },
+  {
+    "id": 2,
+    "name": "JJoNak",
+    "nationality": "kor"
+  },
+  {
+    "id": 3,
+    "name": "Seagull",
+    "nationality": "usa"
+  },
+  {
+    "id": 4,
+    "name": "sinatraa",
+    "nationality": "usa"
+  },
+  {
+    "id": 5,
+    "name": "xQc",
+    "nationality": "can"
+  },
+  {
+    "id": 6,
+    "name": "Scarlett",
+    "nationality": "can"
+  },
+  {
+    "id": 7,
+    "name": "Park Se-jun",
+    "nationality": "kor"
+  },
+  {
+    "id": 8,
+    "name": "Svenskeren",
+    "nationality": "den"
+  },
+  {
+    "id": 9,
+    "name": "Dardoch",
+    "nationality": "usa"
+  },
+  {
+    "id": 10,
+    "name": "Aphromoo",
+    "nationality": "usa"
+  },
+  {
+    "id": 11,
+    "name": "Nadeshot",
+    "nationality": "usa"
+  },
+  {
+    "id": 12,
+    "name": "JJu",
+    "nationality": "kor"
+  },
+  {
+    "id": 13,
+    "name": "KilllCreek",
+    "nationality": "usa"
+  },
+  {
+    "id": 14,
+    "name": "FreedoM",
+    "nationality": "kor"
+  },
+  {
+    "id": 15,
+    "name": "HeatoN",
+    "nationality": "swe"
+  },
+  {
+    "id": 16,
+    "name": "Ayu",
+    "nationality": "bra"
+  },
+  {
+    "id": 17,
+    "name": "knight",
+    "nationality": "chn"
+  },
+  {
+    "id": 18,
+    "name": "Tutsz",
+    "nationality": "bra"
+  },
+  {
+    "id": 19,
+    "name": "Lost",
+    "nationality": "nzl"
+  },
+  {
+    "id": 20,
+    "name": "Faker",
+    "nationality": "kor"
+  },
+  {
+    "id": 21,
+    "name": "Khan",
+    "nationality": "kor"
+  },
+  {
+    "id": 22,
+    "name": "Peanut",
+    "nationality": "kor"
+  },
+  {
+    "id": 23,
+    "name": "Bang",
+    "nationality": "kor"
+  },
+  {
+    "id": 24,
+    "name": "Bdd",
+    "nationality": "kor"
+  },
+  {
+    "id": 25,
+    "name": "Spirit",
+    "nationality": "kor"
+  },
+  {
+    "id": 26,
+    "name": "Ambition",
+    "nationality": "kor"
+  },
+  {
+    "id": 27,
+    "name": "Deft",
+    "nationality": "kor"
+  },
+  {
+    "id": 28,
+    "name": "Smeb",
+    "nationality": "kor"
+  },
+  {
+    "id": 29,
+    "name": "Mata",
+    "nationality": "kor"
+  },
+  {
+    "id": 30,
+    "name": "Ucal",
+    "nationality": "kor"
+  },
+  {
+    "id": 31,
+    "name": "Score",
+    "nationality": "kor"
+  },
+  {
+    "id": 32,
+    "name": "PraY",
+    "nationality": "kor"
+  },
+  {
+    "id": 33,
+    "name": "GorillA",
+    "nationality": "kor"
+  },
+  {
+    "id": 34,
+    "name": "Impact",
+    "nationality": "kor"
+  },
+  {
+    "id": 35,
+    "name": "Huni",
+    "nationality": "kor"
+  },
+  {
+    "id": 36,
+    "name": "Levi",
+    "nationality": "vie"
+  },
+  {
+    "id": 37,
+    "name": "Zven",
+    "nationality": "den"
+  },
+  {
+    "id": 38,
+    "name": "Febiven",
+    "nationality": "ned"
+  },
+  {
+    "id": 39,
+    "name": "Jensen",
+    "nationality": "den"
+  },
+  {
+    "id": 40,
+    "name": "Bjergsen",
+    "nationality": "den"
+  },
+  {
+    "id": 41,
+    "name": "Tactical",
+    "nationality": "usa"
+  },
+  {
+    "id": 42,
+    "name": "Smoothie",
+    "nationality": "can"
+  },
+  {
+    "id": 43,
+    "name": "Blaber",
+    "nationality": "usa"
+  },
+  {
+    "id": 44,
+    "name": "Palafox",
+    "nationality": "usa"
+  },
+  {
+    "id": 45,
+    "name": "Pobelter",
+    "nationality": "usa"
+  },
+  {
+    "id": 46,
+    "name": "FakeGod",
+    "nationality": "usa"
+  },
+  {
+    "id": 47,
+    "name": "Caps",
+    "nationality": "den"
+  },
+  {
+    "id": 48,
+    "name": "Rekkles",
+    "nationality": "swe"
+  },
+  {
+    "id": 49,
+    "name": "Perkz",
+    "nationality": "cro"
+  },
+  {
+    "id": 50,
+    "name": "Hylissang",
+    "nationality": "bul"
+  },
+  {
+    "id": 51,
+    "name": "Odamne",
+    "nationality": "rou"
+  },
+  {
+    "id": 52,
+    "name": "Alphari",
+    "nationality": "eng"
+  },
+  {
+    "id": 53,
+    "name": "Upset",
+    "nationality": "ger"
+  },
+  {
+    "id": 54,
+    "name": "Humanoid",
+    "nationality": "cze"
+  },
+  {
+    "id": 55,
+    "name": "Jankos",
+    "nationality": "pol"
+  },
+  {
+    "id": 56,
+    "name": "Wunder",
+    "nationality": "den"
+  },
+  {
+    "id": 57,
+    "name": "Hans Sama",
+    "nationality": "fra"
+  },
+  {
+    "id": 58,
+    "name": "nukeduck",
+    "nationality": "nor"
+  },
+  {
+    "id": 59,
+    "name": "SwordArt",
+    "nationality": "tpe"
+  },
+  {
+    "id": 60,
+    "name": "Chawy",
+    "nationality": "sin"
+  },
+  {
+    "id": 61,
+    "name": "Uzi",
+    "nationality": "chn"
+  },
+  {
+    "id": 62,
+    "name": "Xiaohu",
+    "nationality": "chn"
+  },
+  {
+    "id": 63,
+    "name": "JackeyLove",
+    "nationality": "chn"
+  },
+  {
+    "id": 64,
+    "name": "TheShy",
+    "nationality": "kor"
+  },
+  {
+    "id": 65,
+    "name": "RooKie",
+    "nationality": "kor"
+  },
+  {
+    "id": 66,
+    "name": "Mystic",
+    "nationality": "kor"
+  },
+  {
+    "id": 67,
+    "name": "mlxg",
+    "nationality": "chn"
+  },
+  {
+    "id": 68,
+    "name": "Clearlove",
+    "nationality": "chn"
+  },
+  {
+    "id": 69,
+    "name": "Fudge",
+    "nationality": "aus"
+  },
+  {
+    "id": 70,
+    "name": "FBI",
+    "nationality": "aus"
+  },
+  {
+    "id": 71,
+    "name": "Diamondprox",
+    "nationality": "rus"
+  }
+]
