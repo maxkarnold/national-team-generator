@@ -1,12 +1,9 @@
 import { Club } from 'app/models/club.model';
-import { getRandomInt } from '@shared/utils';
-import { mean, round } from 'lodash-es';
 import { playerToClubAbility } from './career.constants';
 import { LeagueDifficulty, TransferOption, TransferType, ClubStats } from './club/club.model';
-import { Season, PlayingTime, CareerOverview, CareerScore, SeasonStats } from './player/player.model';
-import { getSkewedAssists, getSkewedGoals } from './simulation/simulation.utils';
+import { Season, PlayingTime, CareerOverview, CareerScore, defaultCompStats } from './player/player.model';
 
-function calcLeagueDifficulty(clubRating: number, leagueRating: number, ability: number): LeagueDifficulty {
+export function calcLeagueDifficulty(clubRating: number, leagueRating: number, ability: number): LeagueDifficulty {
   const teamDiff = (clubRating + ability * 3) / 2 - leagueRating;
   console.log('teamDiff', teamDiff, 'avg', (clubRating + ability * 3) / 2, 'leagueRating', leagueRating);
   if (teamDiff > 39) {
@@ -22,9 +19,8 @@ function calcLeagueDifficulty(clubRating: number, leagueRating: number, ability:
   }
 }
 
-export function getPlayingTime(club: Partial<ClubStats>, season: Season): PlayingTime {
+export function getPlayingTime(club: Club | ClubStats, season: Season): PlayingTime {
   const ability = playerToClubAbility(season.currentAbility);
-  console.log('adjustedAbility for playing time', ability, 'clubRating', club.clubRating);
   if (ability < club.clubRating - 40 && season.age < 22) {
     return 'breakthrough prospect';
   } else if (ability < club.clubRating - 30) {
@@ -147,64 +143,6 @@ export function getTransferFee(
   }
 }
 
-export function simulateApps(
-  appearances: SeasonStats,
-  transfer: TransferOption,
-  season: Season,
-  career: CareerOverview
-): { leagueDifficulty: LeagueDifficulty; stats: SeasonStats } {
-  // easyLeague 1.0 g/mp 0.5 a/mp
-  // mediumEasyLeague 0.5 g/mp 0.2 a/mp
-  // mediumLeague 0.35 g/mp 0.15 a/mp
-  // mediumHardLeague 0.18 g/mp 0.15 a/mp
-  // hardLeague 0.15 g/mp 0.1 a/mp
-
-  const leagueDiff = calcLeagueDifficulty(transfer.club.clubRating, transfer.club.leagueDifficulty, season.currentAbility);
-  const currentClubApps = career.clubStats.find(c => c.id === transfer.club.id)?.currentClubStreak || 0;
-
-  console.log('leagueDiff', leagueDiff);
-
-  const seasonRatings = [];
-  const seasonStats = {
-    goals: 0,
-    assists: 0,
-    avgRating: 0,
-    leagueDifficulty: leagueDiff,
-    aggRating: 0,
-  };
-
-  // ITERATES OVER APPS to calculate stats per game for an entire season
-  for (let i = 0; i < appearances; i++) {
-    const goals = getSkewedGoals(leagueDiff, currentClubApps);
-    const assists = getSkewedAssists(leagueDiff, currentClubApps);
-
-    seasonStats.goals += goals;
-    seasonStats.assists += assists;
-    const gameRating = (goals + assists) * 1.25 + 6.2 > 10.0 ? 10.0 : (goals + assists) * 1.25 + 6.2;
-    seasonRatings.push(gameRating);
-    seasonStats.aggRating += gameRating;
-    console.log('GA', goals, assists);
-  }
-
-  seasonStats.avgRating = appearances > 0 ? round(mean(seasonRatings), 1) : 0;
-  return seasonStats;
-}
-
-export function getAppsForProspect(club: TransferOption, season: Season, gamesInSeason: number) {
-  // const currentAbility = season.currentAbility * CLUB_MULTIPLIER;
-  // if (currentAbility < club.club.clubRating - 50) {
-  //   return getRandomInt(0, 8);
-  // } else if (currentAbility < club.club.clubRating - 35) {
-  //   return Math.round(gamesInSeason / 3 + getRandomInt(-5, 5));
-  // } else if (currentAbility < club.club.clubRating - 20) {
-  //   return Math.round(gamesInSeason / 2 + getRandomInt(-5, 5));
-  // } else if (currentAbility < club.club.clubRating - 10) {
-  //   return Math.round(gamesInSeason * 0.75 + getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
-  // } else {
-  //   return Math.round(gamesInSeason * 0.9 + getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
-  // }
-}
-
 export function newSeasonStr(year: string) {
   const [first, second] = year.split('/').map(Number);
   return `${first + 1}/${second + 1}`;
@@ -225,9 +163,10 @@ export function calcCareerScore(clubs: Club[], career: CareerOverview): CareerSc
   const clubScore = (career.peakClubAbility / 420) * 5;
   const leagueScore = (career.avgLeagueAbility / 400) * 5;
   // goal contribution per game should be around 0.25 - 1.5
-  const goalScore = ((career.totalGoals + career.totalAssists) / career.totalApps) * 6;
-  // availabilty should be 0.5 - 0.95
-  const availabilityScore = (career.totalApps / career.totalPossibleApps) * 5.25;
+  const goalScore =
+    ((career.totalStats.allComps.goals + career.totalStats.allComps.goals) / career.totalStats.allComps.appearances.total) * 6;
+  // availability should be 0.5 - 0.95
+  const availabilityScore = (career.totalStats.allComps.appearances.total / career.totalPossibleApps) * 5.25;
   const totalScore = abilityScore / 5 + clubScore / 5 + leagueScore / 5 + goalScore / 5 + availabilityScore / 5;
 
   console.log(abilityScore, clubScore, leagueScore, goalScore, availabilityScore, totalScore);
@@ -255,40 +194,71 @@ export function adjustClubStats(clubStats: ClubStats[], season: Season): ClubSta
   if (currentClubIndex === -1) {
     // if club not found in array & currentTeam exists
     const isFirstClub = season.id === 0;
-    newClubStats.push({
+    const newClub: ClubStats = {
       ...season.currentClub?.club,
-      clubApps: season.appearances,
-      clubGoals: season.goals,
-      clubAssists: season.assists,
-      aggRating: season.aggRating,
+      clubStats: season.stats,
       totalSeasons: 1,
-      currentClubStreak: season.appearances / season.currentClub?.club.gamesInSeason,
+      currentClubStreak: season.stats.allComps.appearances.total / season.currentClub?.club.gamesInSeason,
       isFirstClub,
       seasonId: season.id,
-    });
+      previousStandings: {
+        league: 0,
+        cup: 0,
+        continental: 0,
+      },
+    };
+    newClubStats.push(newClub);
   } else if (season.id === club.seasonId + 1) {
     // if the current season id is equal to the club's season id + 1
     console.log(season.id, club.seasonId, newClubStats);
     newClubStats[currentClubIndex] = {
       ...club,
-      clubApps: club.clubApps + season.appearances,
-      clubGoals: club.clubGoals + season.goals,
-      clubAssists: club.clubAssists + season.assists,
-      aggRating: club.aggRating + season.aggRating,
+      clubStats: {
+        allComps: {
+          appearances: {
+            total: club.clubStats.allComps.appearances.total + season.stats.allComps.appearances.total,
+            sub: club.clubStats.allComps.appearances.sub + season.stats.allComps.appearances.sub,
+            starts: club.clubStats.allComps.appearances.starts + season.stats.allComps.appearances.starts,
+          },
+          goals: club.clubStats.allComps.goals + season.stats.allComps.goals,
+          assists: club.clubStats.allComps.assists + season.stats.allComps.assists,
+          aggRating: club.clubStats.allComps.aggRating + season.stats.allComps.aggRating,
+          avgRating:
+            (club.clubStats.allComps.aggRating + season.stats.allComps.aggRating) /
+            (club.clubStats.allComps.appearances.total + season.stats.allComps.appearances.total),
+        },
+        league: { ...defaultCompStats },
+        cup: { ...defaultCompStats },
+        continental: { ...defaultCompStats },
+      },
       totalSeasons: club.totalSeasons + 1,
-      currentClubStreak: club.currentClubStreak + season.appearances / season.currentClub?.club.gamesInSeason,
+      currentClubStreak: club.currentClubStreak + season.stats.allComps.appearances.total / season.currentClub?.club.gamesInSeason,
       seasonId: season.id,
     };
   } else {
     // otherwise if the club is in the existing array but was not the last team
     newClubStats[currentClubIndex] = {
       ...club,
-      clubApps: club.clubApps + season.appearances,
-      clubGoals: club.clubGoals + season.goals,
-      clubAssists: club.clubAssists + season.assists,
-      aggRating: club.aggRating + season.aggRating,
+      clubStats: {
+        allComps: {
+          appearances: {
+            total: club.clubStats.allComps.appearances.total + season.stats.allComps.appearances.total,
+            sub: club.clubStats.allComps.appearances.sub + season.stats.allComps.appearances.sub,
+            starts: club.clubStats.allComps.appearances.starts + season.stats.allComps.appearances.starts,
+          },
+          goals: club.clubStats.allComps.goals + season.stats.allComps.goals,
+          assists: club.clubStats.allComps.assists + season.stats.allComps.assists,
+          aggRating: club.clubStats.allComps.aggRating + season.stats.allComps.aggRating,
+          avgRating:
+            (club.clubStats.allComps.aggRating + season.stats.allComps.aggRating) /
+            (club.clubStats.allComps.appearances.total + season.stats.allComps.appearances.total),
+        },
+        league: { ...defaultCompStats },
+        cup: { ...defaultCompStats },
+        continental: { ...defaultCompStats },
+      },
       totalSeasons: club.totalSeasons + 1,
-      currentClubStreak: season.appearances / season.currentClub?.club.gamesInSeason,
+      currentClubStreak: season.stats.allComps.appearances.total / season.currentClub?.club.gamesInSeason,
       seasonId: season.id,
     };
   }

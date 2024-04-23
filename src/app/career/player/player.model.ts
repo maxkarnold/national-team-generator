@@ -33,7 +33,7 @@ export type PlayingTime =
 export interface CareerOverview {
   seasons: string;
   yearsActive: number;
-  totalStats: CompetitionStats;
+  totalStats: SeasonStats;
   totalEarnings: number;
   score: CareerScore;
   peakAbility: number;
@@ -72,21 +72,11 @@ export interface SeasonStats {
   continental: CompetitionStats;
 }
 
-export const defaultCompStats: CompetitionStats = {
-  appearances: {
-    starts: 0,
-    sub: 0,
-  },
-  goals: 0,
-  assists: 0,
-  avgRating: 6.0,
-  aggRating: 0,
-};
-
 export interface AppearanceStats {
   appearances: {
     starts: number;
     sub: number;
+    total: number;
   };
 }
 
@@ -96,3 +86,22 @@ export interface CompetitionStats extends AppearanceStats {
   avgRating: number;
   aggRating: number;
 }
+
+export const defaultCompStats: CompetitionStats = {
+  appearances: {
+    starts: 0,
+    sub: 0,
+    total: 0,
+  },
+  goals: 0,
+  assists: 0,
+  avgRating: 6.0,
+  aggRating: 0,
+};
+
+export const defaultSeasonStats: SeasonStats = {
+  allComps: { ...defaultCompStats },
+  league: { ...defaultCompStats },
+  cup: { ...defaultCompStats },
+  continental: { ...defaultCompStats },
+};

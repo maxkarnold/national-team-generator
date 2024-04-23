@@ -96,7 +96,7 @@
               <div>
                 <div>{{ career.longestServedClub?.name }}</div>
                 <div class="text-sm opacity-50 uppercase">
-                  {{ career.longestServedClub?.clubApps }}
+                  {{ career.longestServedClub?.clubStats?.allComps?.appearances }}
                 </div>
               </div>
             </div>
@@ -137,18 +137,26 @@
               </form>
             </dialog>
           </td>
-          <td *ngIf="screenWidth < 640">{{ career.totalApps + '/' + career.totalGoals + '/' + career.totalAssists }}</td>
-          <td *ngIf="screenWidth >= 640">
-            {{ career.totalApps }}
+          <td *ngIf="screenWidth < 640">
+            {{
+              career.totalStats.allComps.appearances.total +
+                '/' +
+                career.totalStats.allComps.goals +
+                '/' +
+                career.totalStats.allComps.assists
+            }}
           </td>
           <td *ngIf="screenWidth >= 640">
-            {{ career.totalGoals }}
+            {{ career.totalStats.allComps.appearances.total }}
           </td>
           <td *ngIf="screenWidth >= 640">
-            {{ career.totalAssists }}
+            {{ career.totalStats.allComps.goals }}
+          </td>
+          <td *ngIf="screenWidth >= 640">
+            {{ career.totalStats.allComps.assists }}
           </td>
           <td>
-            {{ career.avgRating }}
+            {{ career.totalStats.allComps.avgRating }}
           </td>
           <td>
             {{ career.totalEarnings | currency: 'EUR' : 'symbol' : '1.0-0' }}
@@ -252,11 +260,13 @@
                   : ''
             }}
           </td>
-          <td *ngIf="screenWidth < 640">{{ season.appearances + '/' + season.goals + '/' + season.assists }}</td>
-          <td *ngIf="screenWidth >= 640">{{ season.appearances }}</td>
-          <td *ngIf="screenWidth >= 640">{{ season.goals }}</td>
-          <td *ngIf="screenWidth >= 640">{{ season.assists }}</td>
-          <td>{{ season.avgRating === 0 ? 'N/A' : season.avgRating.toFixed(1) }}</td>
+          <td *ngIf="screenWidth < 640">
+            {{ season.stats.allComps.appearances.total + '/' + season.stats.allComps.goals + '/' + season.stats.allComps.assists }}
+          </td>
+          <td *ngIf="screenWidth >= 640">{{ season.stats.allComps.appearances.total }}</td>
+          <td *ngIf="screenWidth >= 640">{{ season.stats.allComps.goals }}</td>
+          <td *ngIf="screenWidth >= 640">{{ season.stats.allComps.assists }}</td>
+          <td>{{ season.stats.allComps.avgRating === 0 ? 'N/A' : season.stats.allComps.avgRating.toFixed(1) }}</td>
           <td>{{ season.currentClub?.wage | currency: 'EUR' : 'symbol' : '1.0-0' }}</td>
           <td class="capitalize">{{ season.currentClub?.playingTime }}</td>
         </tr>

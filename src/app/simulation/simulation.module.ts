@@ -32,7 +32,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [SimulationComponent],
+  declarations: [SimulationComponent, GroupStageComponent, StatsOverviewComponent, KnockoutStageComponent],
   providers: [SimulationService, SimulationQualifiersService],
   imports: [CommonModule, SharedModule, RouterModule.forChild(routes)],
 })

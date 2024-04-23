@@ -5,7 +5,7 @@
 <router-outlet></router-outlet>
 
 <div class="h-screen w-full bg-black/25 fixed top-0 left-0" *ngIf="service.isLoading$ | async">
-  <mat-spinner class="z-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></mat-spinner>
+  <!-- <mat-spinner class="z-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></mat-spinner> -->
 </div>
 
 <app-nation-dialog *ngIf="selectedNation" [class]="selectedNation ? 'show' : ''" (click)="changeSelectedNation()"></app-nation-dialog>

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { getRandomInts } from '@shared/utils';
 import { Club } from 'app/models/club.model';
-import { calcCareerScore, getPlayingTime, getTransferFee, getWage, simulateApps, totalSeasonsStr } from './career.utils';
+import { calcCareerScore, getPlayingTime, getTransferFee, getWage, totalSeasonsStr } from './career.utils';
 import { ageFactor } from './career.constants';
-import { generateNewClubStandings, getAppsForSeason, getCurrentClub, getCurrentClubAsTransfer } from './club/club.utils';
+import { getCurrentClub, getCurrentClubAsTransfer } from './club/club.utils';
 import { TransferOption, ClubStats } from './club/club.model';
 import { Season, CareerOverview } from './player/player.model';
-import { adjustCurrentAbility } from './player/player.utils';
+import { adjustCurrentAbility, calcTotalStats, getAppsForSeason } from './player/player.utils';
+import { simulateApps } from './simulation/simulation.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +16,9 @@ export class CareerService {
   constructor() {}
 
   simulateSeasonStats(transferChoice: TransferOption, season: Season, career: CareerOverview): Season {
-    const seasonStats = getAppsForSeason(transferChoice);
-
-    const { stats, leagueDifficulty } = simulateApps(seasonStats, transferChoice, season, career);
-
+    const seasonApps = getAppsForSeason(transferChoice);
+    const { stats, leagueDifficulty } = simulateApps(seasonApps, transferChoice, season, career);
+    console.log('simulateSeasonStats', stats);
     const currentAbility = adjustCurrentAbility(season, stats, transferChoice, career, leagueDifficulty);
 
     return {
@@ -49,7 +49,6 @@ export class CareerService {
     const playerRating = ageFactor(season.age, season.currentAbility, hasLoanOption);
     // check each team for ability
     const eligibleTransferClubs = clubs.filter(c => {
-      // console.log(c.clubRating, season.currentAbility, ageFactor(season.age, season.currentAbility));
       return (
         // max club
         c.clubRating < playerRating + 15 &&
@@ -60,15 +59,15 @@ export class CareerService {
         ((hasLoanOption && playerRating >= c.clubRating - 5) || !hasLoanOption)
       );
     });
-    console.log(
-      new Set(eligibleTransferClubs.map(a => a.league)),
-      'currentAbility',
-      season.currentAbility,
-      'best club',
-      playerRating - playerRating / 10,
-      'worst club',
-      playerRating + 15
-    );
+    // console.log(
+    //   new Set(eligibleTransferClubs.map(a => a.league)),
+    //   'currentAbility',
+    //   season.currentAbility,
+    //   'best club',
+    //   playerRating - playerRating / 10,
+    //   'worst club',
+    //   playerRating + 15
+    // );
 
     if (eligibleTransferClubs.length < 3) {
       return [];
@@ -83,10 +82,7 @@ export class CareerService {
     const teamIndexes = [...getRandomInts(3, 0, eligibleTransferClubs.length - 1)];
 
     teamIndexes.forEach(n => {
-      const club: Partial<ClubStats> = {
-        previousStandings: generateNewClubStandings(eligibleTransferClubs[n]),
-        ...eligibleTransferClubs[n],
-      };
+      const club: Club = eligibleTransferClubs[n];
       const playingTime = getPlayingTime(club, season);
       const wage = getWage(playingTime, parentClub, hasLoanOption);
       const { transferType, transferFee } = getTransferFee(club, parentClub, hasLoanOption, playingTime, season);
@@ -103,7 +99,7 @@ export class CareerService {
   }
 
   calcFinalStats(seasons: Season[], lastSeason: Season, career: CareerOverview): CareerOverview {
-    const totalApps = seasons.reduce((acc, s) => acc + s.appearances, 0);
+    const totalStats = calcTotalStats(seasons, career);
     const teams = seasons.map(s => s.currentClub?.club as Club);
     const careerStats: CareerOverview = {
       ...career,
@@ -111,13 +107,13 @@ export class CareerService {
     };
     const score = calcCareerScore(teams, careerStats);
     const getLongestServedClub = (clubs: ClubStats[]) => {
-      return clubs.sort((a, b) => b.clubApps - a.clubApps)[0];
+      return clubs.sort((a, b) => b.clubStats.allComps.appearances.total - a.clubStats.allComps.appearances.total)[0];
     };
     return {
       ...career,
       seasons: totalSeasonsStr(14, lastSeason.age),
       longestServedClub: getLongestServedClub(career.clubStats),
-      avgRating: (seasons.reduce((acc, s) => acc + s.aggRating, 0) / totalApps).toFixed(2),
+      totalStats,
       score,
     };
   }

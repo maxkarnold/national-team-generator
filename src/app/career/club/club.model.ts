@@ -1,10 +1,9 @@
 import { Club } from 'app/models/club.model';
-import { CompetitionStats } from '../career.model';
-import { PlayingTime } from '../player/player.model';
+import { PlayingTime, SeasonStats } from '../player/player.model';
 
 export interface ClubStats extends Club {
   seasonId: number;
-  clubStats: CompetitionStats;
+  clubStats: SeasonStats;
   isFirstClub: boolean;
   totalSeasons: number;
   currentClubStreak: number;
@@ -16,7 +15,7 @@ export interface ClubStats extends Club {
 }
 
 export interface TransferOption {
-  club: ClubStats;
+  club: ClubStats | Club;
   transferType: TransferType;
   transferFee: number;
   wage: number;

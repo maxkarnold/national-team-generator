@@ -9,7 +9,6 @@ import {
   GoogleAuthProvider,
 } from '@angular/fire/auth';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { EMPTY, Observable } from 'rxjs';
 import { User } from './firestore.model';
@@ -23,10 +22,7 @@ export class AuthService {
   auth = inject(Auth);
   firestore = inject(Firestore);
 
-  constructor(
-    private router: Router,
-    private snackbar: MatSnackBar
-  ) {
+  constructor(private router: Router) {
     if (this.auth) {
       this.user$ = authState(this.auth);
     }
@@ -38,7 +34,7 @@ export class AuthService {
       .then(credential => {
         if (credential.user) {
           this.updateUserData(credential.user);
-          this.snackbar.open('Successfully logged in!', 'Dismiss');
+          // this.snackbar.open('Successfully logged in!', 'Dismiss');
           this.router.navigate(['/simulation']);
         }
       })
@@ -50,11 +46,11 @@ export class AuthService {
   login(email: string, password: string) {
     signInWithEmailAndPassword(this.auth, email, password)
       .then(() => {
-        this.snackbar.open('Successfully logged in!', 'Dismiss');
-        this.router.navigate(['/simulation']);
+        // this.snackbar.open('Successfully logged in!', 'Dismiss');
+        // this.router.navigate(['/simulation']);
       })
       .catch((err: FirebaseError) => {
-        this.snackbar.open(`ERROR ${(err.code, err.message, err.name)}`);
+        // this.snackbar.open(`ERROR ${(err.code, err.message, err.name)}`);
       });
   }
 
@@ -68,7 +64,7 @@ export class AuthService {
 
   signOut() {
     signOut(this.auth).then(() => {
-      this.snackbar.open('Successfully logged out!', 'Dismiss');
+      // this.snackbar.open('Successfully logged out!', 'Dismiss');
       this.router.navigate(['/']);
     });
   }

@@ -66,7 +66,6 @@ export interface GroupTeam {
     def: Buff[];
     pen: Buff[];
   };
-  rating: number;
   matchHistory: {
     qualifiers: {
       match: Match;
@@ -81,6 +80,7 @@ export interface GroupTeam {
       opp: GroupTeam;
     }[];
   };
+  rating: number;
   ranking: number;
   attRanking: number;
   midRanking: number;

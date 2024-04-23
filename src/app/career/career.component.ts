@@ -9,8 +9,7 @@ import { CareerService } from './career.service';
 import { fringeRoles, tableHeaders } from './career.constants';
 import { sample as _sample } from 'lodash-es';
 import { TransferOption } from './club/club.model';
-import { CareerOverview, Season } from './player/player.model';
-import { defaultCompStats } from './career.model';
+import { CareerOverview, Season, defaultSeasonStats } from './player/player.model';
 
 @Component({
   selector: 'app-career',
@@ -37,7 +36,7 @@ export class CareerComponent implements OnInit {
   currentCareerOverview: CareerOverview = {
     seasons: '',
     yearsActive: 0,
-    totalStats: defaultCompStats,
+    totalStats: { ...defaultSeasonStats },
     totalEarnings: 0,
     score: {
       totalScore: 0,
@@ -58,12 +57,7 @@ export class CareerComponent implements OnInit {
   currentSeason: Season = {
     year: '2023/24',
     id: 0,
-    stats: {
-      allComps: defaultCompStats,
-      league: defaultCompStats,
-      cup: defaultCompStats,
-      continental: defaultCompStats,
-    },
+    stats: { ...defaultSeasonStats },
     leagueDifficulty: 'medium',
     age: 14,
     currentAbility: 65,
@@ -123,14 +117,14 @@ export class CareerComponent implements OnInit {
       currentClub: transferChoice,
     };
 
-    console.log('Age: ', this.currentSeason.age, 'Current Ability: ', this.currentSeason.currentAbility, this.currentSeason);
+    // console.log('Age: ', this.currentSeason.age, 'Current Ability: ', this.currentSeason.currentAbility, this.currentSeason);
 
     // Take the currentSeason and adjust the club stats for that club, will either add a new club to clubStats array or update an existing club
     this.currentCareerOverview.clubStats = adjustClubStats(this.currentCareerOverview.clubStats, season);
     this.currentCareerOverview.yearsActive++;
-    this.currentCareerOverview.totalStats.appearances.starts += season.stats.allComps.appearances.starts;
-    this.currentCareerOverview.totalStats.goals += season.stats.allComps.goals;
-    this.currentCareerOverview.totalStats.assists += season.stats.allComps.assists;
+    this.currentCareerOverview.totalStats.allComps.appearances.starts += season.stats.allComps.appearances.starts;
+    this.currentCareerOverview.totalStats.allComps.goals += season.stats.allComps.goals;
+    this.currentCareerOverview.totalStats.allComps.assists += season.stats.allComps.assists;
     this.currentCareerOverview.totalEarnings += (season.currentClub?.wage || 0) * 52;
     this.currentCareerOverview.totalPossibleApps += season.currentClub?.club.gamesInSeason || 0;
 
@@ -144,9 +138,15 @@ export class CareerComponent implements OnInit {
 
     this.seasons.push(season);
 
-    this.currentSeason.age++;
-    this.currentSeason.id++;
-    this.currentSeason.year = newSeasonStr(season.year);
+    this.currentSeason = {
+      ...this.currentSeason,
+      stats: { ...defaultSeasonStats },
+      age: this.currentSeason.age + 1,
+      id: this.currentSeason.id + 1,
+      year: newSeasonStr(season.year),
+    };
+    console.log('TEST1', this.seasons, this.currentSeason);
+
     this.isLoanOption = false;
     this.currentTransferOptions = this.getTransferChoices(
       this.currentSeason,
@@ -163,7 +163,6 @@ export class CareerComponent implements OnInit {
   ): TransferOption[] {
     const league = nation.name !== 'random' && nation.abbreviation ? nation.abbreviation : 'random';
     const eligibleClubs = this.service.getEligibleClubs(careerStats, this.clubList, league, parentClub, hasLoanOption);
-    console.log(this.currentCareerOverview);
     if (eligibleClubs.length < 1 && this.currentSeason.id > 1) {
       this.finalStats.unshift(this.service.calcFinalStats(this.seasons, this.currentSeason, this.currentCareerOverview));
       localStorage.setItem('career_overview', JSON.stringify(this.finalStats));

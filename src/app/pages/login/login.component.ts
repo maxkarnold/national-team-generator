@@ -3,7 +3,6 @@ import { AuthService } from '@core/services/auth.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { User } from '@core/services/firestore.model';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @UntilDestroy()
 @Component({
@@ -17,7 +16,10 @@ export class LoginComponent {
   user$;
   user: User | null = null;
 
-  constructor(public auth: AuthService, private router: Router) {
+  constructor(
+    public auth: AuthService,
+    private router: Router
+  ) {
     this.user$ = auth.user$;
     this.user$.pipe(untilDestroyed(this)).subscribe(u => {
       console.log(u?.uid);

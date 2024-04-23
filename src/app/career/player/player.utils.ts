@@ -1,6 +1,7 @@
 import { getRandomInt } from '@shared/utils';
 import { TransferOption, LeagueDifficulty } from '../club/club.model';
-import { Season, CareerOverview } from './player.model';
+import { Season, CareerOverview, SeasonStats, AppearanceStats } from './player.model';
+import { get } from 'lodash-es';
 
 const checkCurrentAbility = (ability: number) => {
   if (ability < 10) {
@@ -98,8 +99,7 @@ const performanceFactor = (app: number, gamesInSeason: number, avgRating: number
 
 export function adjustCurrentAbility(
   season: Season,
-  apps: number,
-  rating: number,
+  stats: SeasonStats,
   transfer: TransferOption,
   career: CareerOverview,
   leagueDiff: LeagueDifficulty
@@ -114,10 +114,114 @@ export function adjustCurrentAbility(
 
   const totalGames = transfer.club.gamesInSeason;
 
-  const performance = performanceFactor(apps, totalGames, rating);
+  const performance = performanceFactor(stats.allComps.appearances.total, totalGames, stats.allComps.avgRating);
 
   const currentAbility =
     consistencyFactor(career, transfer) + performance + challengeFactor(leagueDiff) + youthFactor(season) + season.currentAbility;
 
   return checkCurrentAbility(currentAbility);
+}
+
+export function getAppsForSeason(club: TransferOption): {
+  allComps: AppearanceStats;
+  league: AppearanceStats;
+  cup: AppearanceStats;
+  continental: AppearanceStats;
+} {
+  // TODO: add appearances for other competitions
+  const gamesInSeason = club.club.gamesInSeason;
+  let appearances = 0;
+
+  switch (club.playingTime) {
+    case 'breakthrough prospect':
+    case 'fringe player':
+      appearances = Math.abs(Math.round(gamesInSeason / 10 + getRandomInt(-5, 5)));
+      break;
+    case 'impact sub':
+      appearances = Math.abs(Math.round(gamesInSeason / 3 + getRandomInt(-5, 5)));
+      break;
+    case 'squad player':
+      appearances = Math.round(gamesInSeason / 2 + getRandomInt(-5, 5));
+      break;
+    case 'regular starter':
+      appearances = Math.round(gamesInSeason * 0.75 + getRandomInt(-10, 5));
+      break;
+    case 'important player':
+      appearances = Math.round(gamesInSeason * 0.9 + getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
+      break;
+    case 'star player':
+      appearances = Math.round(gamesInSeason - getRandomInt(-(gamesInSeason * 0.1), gamesInSeason * 0.1));
+      break;
+    default:
+      appearances = 0;
+      break;
+  }
+
+  if (appearances > club.club.gamesInSeason) {
+    appearances = club.club.gamesInSeason;
+  }
+  console.log('getAppsForSeason', appearances);
+
+  return {
+    allComps: {
+      appearances: {
+        starts: 0,
+        sub: 0,
+        total: appearances,
+      },
+    },
+    league: {
+      appearances: {
+        starts: 0,
+        sub: 0,
+        total: 0,
+      },
+    },
+    cup: {
+      appearances: {
+        starts: 0,
+        sub: 0,
+        total: 0,
+      },
+    },
+    continental: {
+      appearances: {
+        starts: 0,
+        sub: 0,
+        total: 0,
+      },
+    },
+  };
+}
+
+function calcCareerStat(seasons: Season[], propPath: string): number {
+  return seasons.reduce((acc, s) => acc + get(s, propPath), 0);
+}
+
+export function calcTotalStats(seasons: Season[], career: CareerOverview): SeasonStats {
+  const { allComps, league, cup, continental } = career.totalStats;
+  const stats: SeasonStats = {
+    allComps: {
+      ...allComps,
+      aggRating: calcCareerStat(seasons, 's.stats.allComps.aggRating'),
+      avgRating: calcCareerStat(seasons, 's.stats.allComps.avgRating'),
+    },
+    league: {
+      ...league,
+      aggRating: calcCareerStat(seasons, 's.stats.league.aggRating'),
+      avgRating: calcCareerStat(seasons, 's.stats.league.avgRating'),
+    },
+    cup: {
+      ...cup,
+      aggRating: calcCareerStat(seasons, 's.stats.cup.aggRating'),
+      avgRating: calcCareerStat(seasons, 's.stats.cup.avgRating'),
+    },
+    continental: {
+      ...continental,
+      aggRating: calcCareerStat(seasons, 's.stats.continental.aggRating'),
+      avgRating: calcCareerStat(seasons, 's.stats.continental.avgRating'),
+    },
+  };
+
+  return stats;
 }

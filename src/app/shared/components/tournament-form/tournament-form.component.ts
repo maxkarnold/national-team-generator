@@ -1,6 +1,5 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@core/services/auth.service';
 import { getRandFloat } from '@shared/utils';
 import { baseTeam, defaultHost32, defaultHosts48, GroupTeam, Nation } from 'app/models/nation.model';
@@ -57,12 +56,10 @@ export class TournamentFormComponent {
     leaderboard: LeaderboardService,
     private auth: AuthService,
     private fb: UntypedFormBuilder,
-    private snackbar: MatSnackBar
   ) {
     this.simulator = simulator;
     this.qualifier = qualifier;
     this.leaderboard = leaderboard;
-    this.snackbar = snackbar;
 
     this.cannotSaveCheck();
     this.createTeams();
@@ -141,9 +138,9 @@ export class TournamentFormComponent {
     if (this.user()) {
       this.setupTournament(numOfGames, numOfTeams, availableRegions, hostNations, true);
     } else if (this.localData && this.localData?.length > 9) {
-      this.snackbar.open('Already saved 10 Tournaments. Please wait 24 hours to save a new one.', 'Dismiss');
+      // this.snackbar.open('Already saved 10 Tournaments. Please wait 24 hours to save a new one.', 'Dismiss');
     } else if (!this.user()) {
-      this.snackbar.open('Please login before submitting', 'Dismiss');
+      // this.snackbar.open('Please login before submitting', 'Dismiss');
     }
     return;
   }
@@ -359,8 +356,8 @@ export class TournamentFormComponent {
   ) {
     const data = this.localData || [];
     if (data.length === 10 && new Date().toDateString() === data[0]?.time) {
-      this.snackbar.open('Cannot submit more than 10 tournaments per day.', 'Dismiss');
-      return;
+      // this.snackbar.open('Cannot submit more than 10 tournaments per day.', 'Dismiss');
+      // return;
     }
     // can save 10 tournaments per day, otherwise must wait 24 hours since 10th tournament
     const filteredData = data.length > 9 ? data.slice(Math.max(data.length - 9, 0)) : data;
@@ -380,6 +377,6 @@ export class TournamentFormComponent {
     });
     console.log(filteredData);
     this.leaderboard.saveLocalStorage('tournamentSubmitted24Hours', filteredData);
-    this.snackbar.open('Tournament Submitted', 'Dismiss');
+    // this.snackbar.open('Tournament Submitted', 'Dismiss');
   }
 }

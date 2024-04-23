@@ -57,15 +57,15 @@ export class NationDialogComponent implements OnInit {
       });
   }
 
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.screenWidth = window.innerWidth;
+  }
+
   ngOnInit(): void {
     this.rounds = this.tournament?.bracket?.roundOf32
       ? ['Round of 32', 'Round of 16', 'Quarter Finals', 'Semi Finals', 'Finals / Third Place Match']
       : ['Round of 16', 'Quarter Finals', 'Semi Finals', 'Finals / Third Place Match'];
-  }
-
-  @HostListener('window:resize', ['$event'])
-  getScreenSize() {
-    this.screenWidth = window.innerWidth;
   }
 
   changeSelectedNation(nation?: GroupTeam) {

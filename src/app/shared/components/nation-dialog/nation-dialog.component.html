@@ -19,33 +19,33 @@
         </div>
         <div>
           <span>OVR</span>
-          <h3>{{ getDisplayRating(nation.rating) }}</h3>
+          <h3>{{ getDisplayRating(nation.rating || 0) }}</h3>
         </div>
         <div>
           <span>ATT</span>
           <h3 [class.is-debuffed]="nation.isDebuffed.att" [class.is-buffed]="nation.isBuffed.att">
-            {{ getDisplayRating(nation.dynamicRating.att, true) }}
+            {{ getDisplayRating(nation.dynamicRating.att || 0, true) }}
           </h3>
           <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.att, true) }}</span> -->
         </div>
         <div>
           <span>MID</span>
           <h3 [class.is-debuffed]="nation.isDebuffed.mid" [class.is-buffed]="nation.isBuffed.mid">
-            {{ getDisplayRating(nation.dynamicRating.mid, true) }}
+            {{ getDisplayRating(nation.dynamicRating.mid || 0, true) }}
           </h3>
           <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.mid, true) }}</span> -->
         </div>
         <div>
           <span>DEF</span>
           <h3 [class.is-debuffed]="nation.isDebuffed.def" [class.is-buffed]="nation.isBuffed.def">
-            {{ getDisplayRating(nation.dynamicRating.def, true) }}
+            {{ getDisplayRating(nation.dynamicRating.def || 0, true) }}
           </h3>
           <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.def, true) }}</span> -->
         </div>
         <div>
           <span>PEN</span>
           <h3 [class.is-debuffed]="nation.isDebuffed.pen" [class.is-buffed]="nation.isBuffed.pen">
-            {{ getDisplayRating(nation.dynamicRating.pen, true) }}
+            {{ getDisplayRating(nation.dynamicRating.pen || 0, true) }}
           </h3>
           <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.pen, true) }}</span> -->
         </div>
@@ -77,7 +77,7 @@
           <tr>
             <th>Tier</th>
             <td>
-              <span>{{ getCoachRating(nation.coach.rating) }}</span>
+              <span>{{ getCoachRating(nation.coach.rating || 0) }}</span>
             </td>
           </tr>
         </table>
@@ -133,8 +133,8 @@
                 item.match.isPenaltyWin && stages[i].prop !== 'group'
                   ? '(P)'
                   : item.match.isEtWin && stages[i].prop !== 'group'
-                  ? '(AET)'
-                  : ''
+                    ? '(AET)'
+                    : ''
               }}
               <span class="score-tooltip">
                 <span class="title">Match Recap</span>
