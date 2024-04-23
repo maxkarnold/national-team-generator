@@ -55,7 +55,7 @@ export class TournamentFormComponent {
     qualifier: SimulationQualifiersService,
     leaderboard: LeaderboardService,
     private auth: AuthService,
-    private fb: UntypedFormBuilder,
+    private fb: UntypedFormBuilder
   ) {
     this.simulator = simulator;
     this.qualifier = qualifier;
