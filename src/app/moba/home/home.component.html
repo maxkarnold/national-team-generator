@@ -1,3 +1,15 @@
+<form class="flex justify-center items-center" [formGroup]="form">
+  <label class="form-control w-full max-w-xs mx-2">
+    <div class="label">
+      <span class="label-text">Pick the team region</span>
+    </div>
+    <select class="select select-bordered" formControlName="selectedRegion">
+      <option [value]="region.regionAbbrev" *ngFor="let region of regions">{{ region.regionAbbrev }} - {{ region.leagueName }}</option>
+    </select>
+  </label>
+  <button *ngIf="selectedPlayers.length" class="btn btn-secondary btn-wide self-end" (click)="resetPlayerOptions()">Reset</button>
+</form>
+
 <div class="my-8 sm:mx-8 px-2 py-4 overflow-x-auto">
   <legend>Click a player to choose them</legend>
   <table class="table table-xs xl:table-md table-zebra">

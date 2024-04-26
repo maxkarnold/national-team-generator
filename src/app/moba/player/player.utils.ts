@@ -5,6 +5,7 @@ import * as champions from 'assets/json/moba/champions.json';
 import { round, shuffle } from 'lodash-es';
 import { Nation, allNations } from 'app/models/nation.model';
 import { Champion } from '../champion/champion.model';
+import { MobaRegion } from '../team/team.model';
 
 function isCompatPlayStyle(map: Map<string, number>, playStyle: PlayStyle): boolean {
   switch (playStyle) {
@@ -38,7 +39,6 @@ function isCompatPlayStyle(map: Map<string, number>, playStyle: PlayStyle): bool
 }
 
 export function getChampMains(role: Role, gameStateStrength: GameState): Champion[] {
-  console.log(gameStateStrength);
   const champs = Array.from(champions) as Champion[];
   const filteredChamps = [...shuffle(champs.filter(c => c.roles.includes(role)))];
   const gameStateChamps = [...filteredChamps.filter(c => c.gameStateStrength === gameStateStrength)];
@@ -49,15 +49,52 @@ export function getAge() {
   return getRandomIntBC(16, 29, 1.25);
 }
 
-export function getName(players: Player[]): GamerTag {
-  const names: GamerTag[] = shuffle(Array.from(gamerTags)).slice(0, 5);
-  const currentPlayerIds = players.map(p => p.gamerTag.id);
-  console.log(names[0]);
-  if (currentPlayerIds.includes(names[0].id)) {
-    console.log(names[0]);
-    return names.filter(n => !currentPlayerIds.includes(n.id))[0];
+export function getNameNationality(region: MobaRegion, shuffledNames: GamerTag[]): string {
+  // not an exact science, can be improved in the future
+  const allNationalities = shuffledNames.map(n => n.nationality);
+  switch (region.regionAbbrev) {
+    case 'NA':
+      if (getRandomInt(1, 10) < 5) {
+        return 'usa';
+      } else if (getRandomInt(1, 10) < 5) {
+        return 'kor';
+      } else if (getRandomInt(1, 10) < 3) {
+        return shuffle(['can', 'aus'])[0];
+      } else {
+        return allNationalities[0];
+      }
+    case 'EU':
+      if (getRandomInt(1, 10) < 4) {
+        return shuffle(['fra', 'esp'])[0];
+      } else if (getRandomInt(1, 10) < 4) {
+        return shuffle(['kor', 'pol', 'cze', 'den', 'ger', 'swe'])[0];
+      } else {
+        return allNationalities.filter(n => !['usa'].includes(n))[0];
+      }
+    case 'CHN':
+      if (getRandomInt(1, 10) < 9) {
+        return 'chn';
+      } else if (getRandomInt(1, 10) < 2) {
+        return 'kor';
+      } else {
+        return shuffle(['tpe', 'hkg', 'sin'])[0];
+      }
+    // KOREAN IS DEFAULT NATIONALITY, this is for LCK as well
+    default:
+      return 'kor';
   }
-  return names[0];
+}
+
+export function getName(players: Player[], region: MobaRegion, selectedPlayers?: Player[]): GamerTag {
+  const allNames = Array.from(gamerTags) as GamerTag[];
+  const notSelectedNames = allNames.filter(
+    n => !selectedPlayers?.map(p => p.gamerTag.id).includes(n.id) || !players.map(p => p.gamerTag.id).includes(n.id)
+  );
+
+  const nationality = getNameNationality(region, notSelectedNames);
+  const shuffledNames = shuffle(notSelectedNames);
+
+  return shuffledNames.filter(n => n.nationality === nationality)[0] || shuffledNames[0];
 }
 
 export function getAttributes(role: Role): MobaAttributes {
@@ -227,12 +264,12 @@ export function getPlayStyle(attributes: MobaAttributes): PlayStyle {
   return availablePlayStyles[getRandomInt(0, availablePlayStyles.length - 1)];
 }
 
-export function getPlayerOptions(): Player[] {
+export function getPlayerOptions(region: MobaRegion, selectedPlayers?: Player[]): Player[] {
   const players = [];
   const roles = [...AllRoles];
 
   for (let i = 0; i < 5; i++) {
-    const gamerTag = getName(players);
+    const gamerTag = getName(players, region, selectedPlayers);
     const mainRole = roles[i];
     const attributes = getAttributes(mainRole);
     const playStyle = getPlayStyle(attributes);

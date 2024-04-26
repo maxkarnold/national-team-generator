@@ -42,10 +42,6 @@ export interface GamerTag {
   nationality: string;
 }
 
-// export interface SelectedPlayer extends Player {
-//   selectedPos: Role;
-// }
-
 export const rolePriority: { [key: string]: number } = {
   top: 1,
   jungle: 2,
@@ -70,3 +66,26 @@ export type GameState = 'early-game' | 'mid-game' | 'late-game';
 export const AllPlayStyles: PlayStyle[] = ['scaler', 'genius', 'duelist', 'team-fighter', 'innovator', 'macro-player', 'leader', 'closer'];
 export const AllGameStates: GameState[] = ['early-game', 'mid-game', 'late-game'];
 export const AllRoles: Role[] = ['top', 'jungle', 'mid', 'adc', 'support'];
+
+export const positions = [
+  {
+    name: 'top',
+    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png',
+  },
+  {
+    name: 'jungle',
+    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png',
+  },
+  {
+    name: 'mid',
+    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png',
+  },
+  {
+    name: 'adc',
+    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png',
+  },
+  {
+    name: 'support',
+    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png',
+  },
+];

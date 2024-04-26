@@ -1,6 +1,8 @@
 import { Component, HostListener } from '@angular/core';
-import { Player, sortByMainRole } from '../player/player.model';
+import { Player, positions, sortByMainRole } from '../player/player.model';
 import { getPlayerOptions, sortMapAttributes } from '../player/player.utils';
+import { MobaRegion, RegionAbbrev, regions as mobaRegions } from '../team/team.model';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -9,43 +11,53 @@ import { getPlayerOptions, sortMapAttributes } from '../player/player.utils';
 })
 export class HomeComponent {
   screenWidth: number;
+  form: FormGroup = new FormGroup({
+    selectedRegion: new FormControl<RegionAbbrev>(mobaRegions[0].regionAbbrev),
+  });
 
+  getPlayerOptions = getPlayerOptions;
   playerOptions: Player[] = [];
   selectedPlayers: Player[] = [];
-  positions = [
-    {
-      name: 'top',
-      url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png',
-    },
-    {
-      name: 'jungle',
-      url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png',
-    },
-    {
-      name: 'mid',
-      url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png',
-    },
-    {
-      name: 'adc',
-      url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png',
-    },
-    {
-      name: 'support',
-      url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png',
-    },
-  ];
+  positions = positions;
+  regions = mobaRegions;
+  previousRegion: RegionAbbrev = mobaRegions[0].regionAbbrev;
 
   constructor() {
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
 
-    this.playerOptions = getPlayerOptions();
-    console.log(this.playerOptions);
+    this.playerOptions = getPlayerOptions(mobaRegions[0]);
+
+    this.form.get('selectedRegion')?.valueChanges.subscribe((region: RegionAbbrev) => {
+      this.onRegionChange(region);
+    });
   }
 
   @HostListener('window:resize', ['$event'])
   getScreenSize() {
     this.screenWidth = window.innerWidth;
+  }
+
+  resetPlayerOptions() {
+    this.selectedPlayers = [];
+    const region = this.regions.find(r => r.regionAbbrev === this.form.get('selectedRegion')?.value) as MobaRegion;
+    this.playerOptions = getPlayerOptions(region);
+  }
+
+  onRegionChange(abbrev: RegionAbbrev) {
+    if (this.selectedPlayers.length > 0) {
+      const confirmChange = window.confirm('Are you sure? Changing the region will reset your team selection.');
+      if (confirmChange) {
+        this.resetPlayerOptions();
+      } else {
+        // User canceled, revert to previous region
+        this.form.patchValue({ selectedRegion: this.previousRegion }, { emitEvent: false });
+      }
+    } else {
+      const region = this.regions.find(r => r.regionAbbrev === abbrev) as MobaRegion;
+      this.playerOptions = getPlayerOptions(region);
+    }
+    this.previousRegion = this.form.get('selectedRegion')?.value;
   }
 
   choosePlayer(player: Player) {
@@ -55,7 +67,8 @@ export class HomeComponent {
     if (this.selectedPlayers.length >= 5) {
       this.playerOptions = [];
     } else {
-      this.playerOptions = getPlayerOptions();
+      const region = this.regions.find(r => r.regionAbbrev === this.form.get('selectedRegion')?.value) as MobaRegion;
+      this.playerOptions = getPlayerOptions(region, this.selectedPlayers);
     }
   }
 
