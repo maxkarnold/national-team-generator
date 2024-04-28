@@ -3509,6 +3509,28 @@
         "canSoloHost48": false,
         "triHosts48": [],
         "quadHosts48": []
+      },
+      {
+        "name": "Hong Kong",
+        "logo": "https://fmdataba.com/images/n/HKG.svg",
+        "region": "afc",
+        "firstNameUsages": ["Chinese"],
+        "lastNameUsages": ["Chinese"],
+        "mainLeagues": [],
+        "secondLeagues": [],
+        "thirdLeagues": [],
+        "rareLeagues": [],
+        "excludeLeagues": ["bilbao"],
+        "nationTier": "f",
+        "abbreviation": "hkg",
+        "rivals": [],
+        "emoji": "🇭🇰",
+        "cohosts32": [],
+        "canSoloHost32": false,
+        "cohosts48": [],
+        "canSoloHost48": false,
+        "triHosts48": [],
+        "quadHosts48": []
       }
     ]
   }

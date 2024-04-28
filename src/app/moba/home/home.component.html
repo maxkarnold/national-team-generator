@@ -1,5 +1,6 @@
-<form class="flex justify-center items-center" [formGroup]="form">
-  <label class="form-control w-full max-w-xs mx-2">
+<!-- Form -->
+<form class="flex justify-center items-center flex-col sm:flex-row" [formGroup]="form">
+  <label class="form-control w-full max-w-xs m-4">
     <div class="label">
       <span class="label-text">Pick the team region</span>
     </div>
@@ -7,8 +8,10 @@
       <option [value]="region.regionAbbrev" *ngFor="let region of regions">{{ region.regionAbbrev }} - {{ region.leagueName }}</option>
     </select>
   </label>
-  <button *ngIf="selectedPlayers.length" class="btn btn-secondary btn-wide self-end" (click)="resetPlayerOptions()">Reset</button>
+  <button class="btn btn-secondary btn-wide sm:self-end sm:mb-4" (click)="resetPlayerOptions()">+ New</button>
 </form>
+
+<!-- PLAYER CHOICE TABLE -->
 
 <div class="my-8 sm:mx-8 px-2 py-4 overflow-x-auto">
   <legend>Click a player to choose them</legend>
@@ -27,14 +30,14 @@
           <div>
             <div class="text-sm sm:text-base">{{ player.gamerTag.name }}</div>
             <div class="text-xs sm:text-sm opacity-50 uppercase">{{ player.age }}</div>
-            <app-star-rating [rating]="(player.mainRoleRating / 100) * 5"></app-star-rating>
+            <app-star-rating [rating]="(player.currentRoleRating / 100) * 5"></app-star-rating>
           </div>
         </div>
       </td>
       <td>
-        <div class="flex capitalize">
-          <div class="mr-2 w-20 border-r-gray-400 border-r">{{ player.mainRole }}</div>
-          <div class="flex">
+        <div class="flex capitalize flex-col">
+          <div class="mb-2">{{ player.mainRole }}</div>
+          <div class="flex" *ngIf="screenWidth >= 640">
             <img
               class="h-6 w-6 object-cover drop-shadow-sm mx-1 rounded-full"
               [src]="champ.img"
@@ -45,7 +48,7 @@
       </td>
       <td>
         <div class="capitalize">{{ player.gameStateStrength + ' ' + player.playStyle }}</div>
-        <div class="text-xs opacity-50 uppercase flex flex-col">
+        <div class="text-xs opacity-50 uppercase flex flex-col" *ngIf="screenWidth >= 640">
           <span *ngFor="let attribute of getTopThreeAttributes(player)">
             {{ attribute }}
           </span>
@@ -59,14 +62,17 @@
     </tr>
   </table>
 </div>
+
+<!-- LINEUP TABLE -->
+
 <div class="my-8 sm:mx-8 px-2 py-4 overflow-x-auto">
   <legend>Lineup</legend>
   <table class="table table-xs table-zebra">
     <thead class="uppercase">
       <tr>
         <th>position</th>
-        <th>name</th>
-        <th>role / top 3 champs</th>
+        <th>name / age / rating</th>
+        <th>role <span *ngIf="screenWidth >= 640">/ top 3 champs</span></th>
         <th>play style <span *ngIf="screenWidth >= 640">/ top 3 attributes</span></th>
         <th>nation</th>
         <th></th>
@@ -81,14 +87,16 @@
           <div>
             <div class="text-sm sm:text-base">{{ player.gamerTag.name }}</div>
             <div class="text-xs sm:text-sm opacity-50 uppercase">{{ player.age }}</div>
-            <app-star-rating [rating]="(player.mainRoleRating / 100) * 5"></app-star-rating>
+            <app-star-rating [rating]="(player.currentRoleRating / 100) * 5"></app-star-rating>
           </div>
         </div>
       </td>
       <td>
         <div class="flex capitalize">
-          <div class="mr-2 w-20 border-r-gray-400 border-r">{{ player.mainRole }}</div>
-          <div class="flex">
+          <div class="mr-2 w-20" [class.text-red-500]="player.currentRole && player.currentRole !== player.mainRole">
+            {{ player.mainRole }}
+          </div>
+          <div class="flex" *ngIf="screenWidth >= 640">
             <img
               class="h-6 w-6 object-cover drop-shadow-sm mx-1 rounded-full"
               [src]="champ.img"
@@ -99,7 +107,7 @@
       </td>
       <td>
         <div class="capitalize">{{ player.gameStateStrength + ' ' + player.playStyle }}</div>
-        <div class="text-xs opacity-50 uppercase flex flex-col">
+        <div class="text-xs opacity-50 uppercase flex flex-col" *ngIf="screenWidth >= 640">
           <span *ngFor="let attribute of getTopThreeAttributes(player)">
             {{ attribute }}
           </span>

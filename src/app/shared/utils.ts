@@ -118,6 +118,21 @@ export function shuffle<T>(arr: T[]) {
   return array;
 }
 
+export function mapRange(value: number, fromMin: number, fromMax: number, toMin: number, toMax: number): number {
+  // Check if the input range is valid
+  if (fromMin === fromMax) {
+    throw new Error('Input range cannot be a single value');
+  }
+
+  // Calculate the scaling factor
+  const scalingFactor = (toMax - toMin) / (fromMax - fromMin);
+
+  // Map the value to the new range
+  const mappedValue = (value - fromMin) * scalingFactor + toMin;
+
+  return mappedValue;
+}
+
 export function getRandomInt(mn: number, mx: number): number {
   // let seed = xmur3("string-seed");
   // let rand = mulberry32(seed());
@@ -129,6 +144,8 @@ export function getRandomInt(mn: number, mx: number): number {
 }
 
 export function getRandomIntBC(min: number, max: number, skew: number) {
+  // smaller skew, a value less than 1: creates larger numbers 0.99-0.25
+  // larger skew, a value more than 1: creates smaller numbers 1.01-3
   let u = 0,
     v = 0;
   while (u === 0) {
@@ -151,10 +168,18 @@ export function getRandomIntBC(min: number, max: number, skew: number) {
   return round(num);
 }
 
-export function getRandomInts(quantity: number, min: number, max: number): Set<number> {
+export function getRandomInts(min: number, max: number, quantity: number): Set<number> {
   const set = new Set<number>();
   while (set.size < quantity) {
     set.add(getRandomInt(min, max));
+  }
+  return set;
+}
+
+export function getRandomIntsBC(min: number, max: number, skew: number, quantity: number) {
+  const set = new Set<number>();
+  while (set.size < quantity) {
+    set.add(getRandomIntBC(min, max, skew));
   }
   return set;
 }

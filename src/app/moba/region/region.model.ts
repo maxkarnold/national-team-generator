@@ -1,6 +1,6 @@
 export interface MobaRegion {
   regionAbbrev: RegionAbbrev;
-  leagueName: string;
+  leagueName: 'LCS' | 'LEC' | 'LPL' | 'LCK';
 }
 
 export type RegionAbbrev = 'NA' | 'EU' | 'CHN' | 'KR';

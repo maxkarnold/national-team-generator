@@ -1,8 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { Player, positions, sortByMainRole } from '../player/player.model';
-import { getPlayerOptions, sortMapAttributes } from '../player/player.utils';
-import { MobaRegion, RegionAbbrev, regions as mobaRegions } from '../team/team.model';
+import { getCurrentRoles, getPlayerOptions, sortMapAttributes } from '../player/player.utils';
+import { MobaRegion, RegionAbbrev, regions as mobaRegions } from '../region/region.model';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MobaService } from '../moba.service';
 
 @Component({
   selector: 'app-home',
@@ -22,12 +23,28 @@ export class HomeComponent {
   regions = mobaRegions;
   previousRegion: RegionAbbrev = mobaRegions[0].regionAbbrev;
 
-  constructor() {
+  constructor(private service: MobaService) {
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
 
-    this.playerOptions = getPlayerOptions(mobaRegions[0]);
+    const selectedRegion = service.getLocalStorage<MobaRegion>('moba_region');
+    const playerOptions = service.getLocalStorage<Player[]>('moba_player_options');
+    const selectedPlayers = service.getLocalStorage<Player[]>('moba_selected_players');
+    if (selectedRegion) {
+      this.form.patchValue({ selectedRegion: selectedRegion.regionAbbrev }, { emitEvent: false });
+    }
+    if (playerOptions) {
+      this.playerOptions = playerOptions;
+    } else {
+      this.playerOptions = getPlayerOptions(selectedRegion || mobaRegions[0]);
+    }
 
+    if (selectedPlayers) {
+      this.selectedPlayers = selectedPlayers;
+    }
+    console.log(this.positions);
+
+    this.service.setLocalStorage('moba_region', selectedRegion || mobaRegions[0]);
     this.form.get('selectedRegion')?.valueChanges.subscribe((region: RegionAbbrev) => {
       this.onRegionChange(region);
     });
@@ -42,6 +59,9 @@ export class HomeComponent {
     this.selectedPlayers = [];
     const region = this.regions.find(r => r.regionAbbrev === this.form.get('selectedRegion')?.value) as MobaRegion;
     this.playerOptions = getPlayerOptions(region);
+    this.service.setLocalStorage('moba_region', region);
+    this.service.setLocalStorage('moba_player_options', this.playerOptions);
+    this.service.removeLocalStorage('moba_selected_players');
   }
 
   onRegionChange(abbrev: RegionAbbrev) {
@@ -56,6 +76,8 @@ export class HomeComponent {
     } else {
       const region = this.regions.find(r => r.regionAbbrev === abbrev) as MobaRegion;
       this.playerOptions = getPlayerOptions(region);
+      this.service.setLocalStorage('moba_region', region);
+      this.service.setLocalStorage('moba_player_options', this.playerOptions);
     }
     this.previousRegion = this.form.get('selectedRegion')?.value;
   }
@@ -64,12 +86,14 @@ export class HomeComponent {
     console.log(player);
     this.selectedPlayers.push(player);
     this.selectedPlayers = sortByMainRole(this.selectedPlayers);
+    this.selectedPlayers = getCurrentRoles(this.selectedPlayers);
     if (this.selectedPlayers.length >= 5) {
       this.playerOptions = [];
     } else {
       const region = this.regions.find(r => r.regionAbbrev === this.form.get('selectedRegion')?.value) as MobaRegion;
       this.playerOptions = getPlayerOptions(region, this.selectedPlayers);
     }
+    this.service.setLocalStorage('moba_selected_players', this.selectedPlayers);
   }
 
   getTopThreeAttributes(player: Player): string[] {

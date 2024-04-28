@@ -132,7 +132,7 @@ function getRandomGoalTimes(forEventTimes: MatchEvent[], oppEventTimes: MatchEve
   const interval = time === 45 || time === 90 || time === 105 || time === 120 ? time + 5 : time;
   const events = [...forEventTimes, ...oppEventTimes];
 
-  const newEventTimes = getRandomInts(4, time - 14, interval);
+  const newEventTimes = getRandomInts(time - 14, interval, 4);
   for (let i = 0; i < newEventTimes.size; i++) {
     const newTime = Array.from(newEventTimes)[i];
     const newTimeStr = newTime > time ? `${time}+${newTime - time}` : newTime.toString();

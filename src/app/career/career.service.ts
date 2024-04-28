@@ -79,7 +79,7 @@ export class CareerService {
       transferChoices.push(getCurrentClubAsTransfer(currentClub, season, parentClub, hasLoanOption));
     }
 
-    const teamIndexes = [...getRandomInts(3, 0, eligibleTransferClubs.length - 1)];
+    const teamIndexes = [...getRandomInts(0, eligibleTransferClubs.length - 1, 3)];
 
     teamIndexes.forEach(n => {
       const club: Club = eligibleTransferClubs[n];

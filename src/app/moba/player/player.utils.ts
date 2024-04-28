@@ -1,38 +1,69 @@
-import { calcWeightedSumRating, getRandomInt, getRandomIntBC, isTopNumOfMap } from '@shared/utils';
-import { AllGameStates, AllPlayStyles, AllRoles, GameState, GamerTag, MobaAttributes, PlayStyle, Player, Role } from './player.model';
+import { calcWeightedSumRating, getRandomInt, getRandomIntBC, getRandomInts, isTopNumOfMap, mapRange, median } from '@shared/utils';
+import {
+  AllGameStates,
+  AllUniquePlayStyles,
+  AllRoles,
+  GameState,
+  GamerTag,
+  MechanicAttributes,
+  MobaAttributes,
+  PlayStyle,
+  Player,
+  Role,
+  IntangibleAttributes,
+  MacroAttributes,
+} from './player.model';
 import * as gamerTags from 'assets/json/moba/gamerTags.json';
 import * as champions from 'assets/json/moba/champions.json';
 import { round, shuffle } from 'lodash-es';
 import { Nation, allNations } from 'app/models/nation.model';
 import { Champion } from '../champion/champion.model';
-import { MobaRegion } from '../team/team.model';
+import { MobaRegion } from '../region/region.model';
+import { getRegionSkew } from '../region/region.utils';
 
 function isCompatPlayStyle(map: Map<string, number>, playStyle: PlayStyle): boolean {
+  // should probably be reworked so that the attributes need to be in the top # of attributes and also have a minimum number
   switch (playStyle) {
     case 'scaler':
-      return isTopNumOfMap(map, 'farming', 3) || (map.get('farming') || 0) > 15;
-    case 'genius':
-      return isTopNumOfMap(map, 'apm', 3) || (map.get('apm') || 0) > 15;
-    case 'duelist':
-      return isTopNumOfMap(map, 'dueling', 3) || (map.get('dueling') || 0) > 15;
+      return isTopNumOfMap(map, 'farming', 1) || (map.get('farming') || 0) > 16;
+    case 'mechanical god':
+      return (map.get('apm') || 0) > 16;
+    case 'split-pusher':
+      return (
+        (isTopNumOfMap(map, 'dueling', 4) && isTopNumOfMap(map, 'map_positioning', 4) && isTopNumOfMap(map, 'pathing', 4)) ||
+        ((map.get('dueling') || 0) > 15 && (map.get('map_positioning') || 0) > 15 && (map.get('pathing') || 0) > 15)
+      );
+    case 'baron stealer':
+      return (map.get('team_fighting') || 0) > 14 && (map.get('neutral_control') || 0) > 15 && (map.get('composure') || 0) > 15;
+    case 'team-fighter':
+      return (
+        (isTopNumOfMap(map, 'team_fighting', 4) && isTopNumOfMap(map, 'map_positioning', 4) && isTopNumOfMap(map, 'composure', 4)) ||
+        ((map.get('team_fighting') || 0) > 15 && (map.get('composure') || 0) > 14 && (map.get('map_positioning') || 0) > 14)
+      );
     case 'closer':
       return (
-        isTopNumOfMap(map, 'winning', 3) ||
-        isTopNumOfMap(map, 'composure', 3) ||
+        (isTopNumOfMap(map, 'winning', 3) && isTopNumOfMap(map, 'composure', 3)) ||
         ((map.get('winning') || 0) > 15 && (map.get('composure') || 0) > 15)
       );
-    case 'innovator':
-      return (
-        isTopNumOfMap(map, 'flexibility', 3) ||
-        isTopNumOfMap(map, 'team_composition', 3) ||
-        ((map.get('flexibility') || 0) > 16 && (map.get('team_composition') || 0) > 15)
-      );
+    case 'flex god':
+      return (map.get('flexibility') || 0) > 16 && (map.get('game_knowledge') || 0) > 15 && (map.get('consistency') || 0) > 15;
     case 'macro-player':
-      return isTopNumOfMap(map, 'map_control', 3) || (map.get('map_control') || 0) > 15;
+      return (
+        (isTopNumOfMap(map, 'pathing', 6) &&
+          isTopNumOfMap(map, 'map_positioning', 6) &&
+          isTopNumOfMap(map, 'vision_control', 6) &&
+          isTopNumOfMap(map, 'neutral_control', 6)) ||
+        ((map.get('pathing') || 0) > 14 &&
+          (map.get('map_positioning') || 0) > 14 &&
+          (map.get('vision_control') || 0) > 14 &&
+          (map.get('neutral_control') || 0) > 14)
+      );
     case 'leader':
-      return isTopNumOfMap(map, 'in_game_leader', 3) || (map.get('in_game_leader') || 0) > 15;
-    case 'team-fighter':
-      return isTopNumOfMap(map, 'team_fighting', 3) || (map.get('team_fighting') || 0) > 15;
+      return (
+        (isTopNumOfMap(map, 'in_game_leader', 4) && isTopNumOfMap(map, 'composure', 4) && isTopNumOfMap(map, 'game_knowledge', 4)) ||
+        ((map.get('in_game_leader') || 0) > 15 && (map.get('composure') || 0) > 15 && (map.get('game_knowledge') || 0) > 15)
+      );
+
     default:
       return false;
   }
@@ -46,12 +77,13 @@ export function getChampMains(role: Role, gameStateStrength: GameState): Champio
 }
 
 export function getAge() {
-  return getRandomIntBC(16, 29, 1.25);
+  // not fully accurate, but more interesting to get more varied ages, still ends up more as a bell curve because its choosing the median of 5 random ints
+  return median(Array.from(getRandomInts(16, 30, 5)));
 }
 
-export function getNameNationality(region: MobaRegion, shuffledNames: GamerTag[]): string {
+export function getNameNationality(region: MobaRegion, names: GamerTag[]): string {
   // not an exact science, can be improved in the future
-  const allNationalities = shuffledNames.map(n => n.nationality);
+  const allNationalities = shuffle(Array.from(new Set(names.map(n => n.nationality))));
   switch (region.regionAbbrev) {
     case 'NA':
       if (getRandomInt(1, 10) < 5) {
@@ -67,9 +99,9 @@ export function getNameNationality(region: MobaRegion, shuffledNames: GamerTag[]
       if (getRandomInt(1, 10) < 4) {
         return shuffle(['fra', 'esp'])[0];
       } else if (getRandomInt(1, 10) < 4) {
-        return shuffle(['kor', 'pol', 'cze', 'den', 'ger', 'swe'])[0];
+        return shuffle(['pol', 'cze', 'den', 'ger', 'swe', 'kor'])[0];
       } else {
-        return allNationalities.filter(n => !['usa'].includes(n))[0];
+        return allNationalities.filter(n => !['usa', 'bra'].includes(n))[0];
       }
     case 'CHN':
       if (getRandomInt(1, 10) < 9) {
@@ -85,146 +117,238 @@ export function getNameNationality(region: MobaRegion, shuffledNames: GamerTag[]
   }
 }
 
-export function getName(players: Player[], region: MobaRegion, selectedPlayers?: Player[]): GamerTag {
+export function getName(newPlayerOptions: Player[], region: MobaRegion, selectedPlayers?: Player[]): GamerTag {
   const allNames = Array.from(gamerTags) as GamerTag[];
-  const notSelectedNames = allNames.filter(
-    n => !selectedPlayers?.map(p => p.gamerTag.id).includes(n.id) || !players.map(p => p.gamerTag.id).includes(n.id)
-  );
+
+  const notSelectedNames = allNames.filter(tag => {
+    const selectedNames = newPlayerOptions.concat(selectedPlayers || []);
+    return !selectedNames.map(p => p.gamerTag).includes(tag);
+  });
 
   const nationality = getNameNationality(region, notSelectedNames);
   const shuffledNames = shuffle(notSelectedNames);
-
   return shuffledNames.filter(n => n.nationality === nationality)[0] || shuffledNames[0];
 }
 
-export function getAttributes(role: Role): MobaAttributes {
+function getRoleBasedAttributes<AttributeGroup>(
+  role: Role,
+  attributeGroup: 'mechanics' | 'intangible' | 'macro',
+  age: number,
+  regionSkew: number
+): AttributeGroup {
+  // maybe should make some attributes partially mutually exclusive,
+  // for example: dueling and teamFighting are opposites and one should be high and one low
+  // younger age is better for Mechanics
+  const mechanicsSkew = mapRange(age, 29, 16, 1.5, 0.8);
+  // older age is better for Mental
+  const mentalSkew = mapRange(age, 16, 29, 1.5, 0.8);
+  if (attributeGroup === 'intangible') {
+    return {
+      flexibility: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+      winning: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+      composure: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+      consistency: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+      in_game_leader: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+      game_knowledge: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+    } as AttributeGroup;
+  }
+
+  switch (role) {
+    case 'top':
+      if (attributeGroup === 'mechanics') {
+        return {
+          farming: getRandomIntBC(1, 20, 0.8 * mechanicsSkew * regionSkew),
+          apm: getRandomIntBC(1, 20, 1 * mechanicsSkew * regionSkew),
+          dueling: getRandomIntBC(1, 20, 0.7 * mechanicsSkew * regionSkew),
+          team_fighting: getRandomIntBC(1, 20, 0.75 * mechanicsSkew * regionSkew),
+        } as AttributeGroup;
+      } else {
+        return {
+          pathing: getRandomIntBC(1, 20, 0.8 * mentalSkew * regionSkew),
+          vision_control: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+          map_positioning: getRandomIntBC(1, 20, 0.7 * mentalSkew * regionSkew),
+          neutral_control: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+        } as AttributeGroup;
+      }
+    case 'jungle':
+      if (attributeGroup === 'mechanics') {
+        return {
+          farming: getRandomIntBC(1, 20, 0.75 * mechanicsSkew * regionSkew),
+          apm: getRandomIntBC(1, 20, 1 * mechanicsSkew * regionSkew),
+          dueling: getRandomIntBC(1, 20, 0.9 * mechanicsSkew * regionSkew),
+          team_fighting: getRandomIntBC(1, 20, 1 * mechanicsSkew * regionSkew),
+        } as AttributeGroup;
+      } else {
+        return {
+          pathing: getRandomIntBC(1, 20, 0.8 * mentalSkew * regionSkew),
+          vision_control: getRandomIntBC(1, 20, 0.8 * mentalSkew * regionSkew),
+          map_positioning: getRandomIntBC(1, 20, 0.7 * mentalSkew * regionSkew),
+          neutral_control: getRandomIntBC(1, 20, 0.65 * mentalSkew * regionSkew),
+        } as AttributeGroup;
+      }
+
+    case 'mid':
+      if (attributeGroup === 'mechanics') {
+        return {
+          farming: getRandomIntBC(1, 20, 0.7 * mechanicsSkew * regionSkew),
+          apm: getRandomIntBC(1, 20, 0.7 * mechanicsSkew * regionSkew),
+          dueling: getRandomIntBC(1, 20, 0.8 * mechanicsSkew * regionSkew),
+          team_fighting: getRandomIntBC(1, 20, 0.75 * mechanicsSkew * regionSkew),
+        } as AttributeGroup;
+      } else {
+        return {
+          pathing: getRandomIntBC(1, 20, 0.75 * mentalSkew * regionSkew),
+          vision_control: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+          map_positioning: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+          neutral_control: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+        } as AttributeGroup;
+      }
+    case 'adc':
+      if (attributeGroup === 'mechanics') {
+        return {
+          farming: getRandomIntBC(1, 20, 0.7 * mechanicsSkew * regionSkew),
+          apm: getRandomIntBC(1, 20, 0.7 * mechanicsSkew * regionSkew),
+          dueling: getRandomIntBC(1, 20, 1 * mechanicsSkew * regionSkew),
+          team_fighting: getRandomIntBC(1, 20, 0.8 * mechanicsSkew * regionSkew),
+        } as AttributeGroup;
+      } else {
+        return {
+          pathing: getRandomIntBC(1, 20, 0.85 * mentalSkew * regionSkew),
+          vision_control: getRandomIntBC(1, 20, 1.2 * mentalSkew * regionSkew),
+          map_positioning: getRandomIntBC(1, 20, 0.85 * mentalSkew * regionSkew),
+          neutral_control: getRandomIntBC(1, 20, 1 * mentalSkew * regionSkew),
+        } as AttributeGroup;
+      }
+    case 'support':
+      if (attributeGroup === 'mechanics') {
+        return {
+          farming: getRandomIntBC(1, 20, 1.2 * mechanicsSkew * regionSkew),
+          apm: getRandomIntBC(1, 20, 1 * mechanicsSkew * regionSkew),
+          dueling: getRandomIntBC(1, 20, 0.9 * mechanicsSkew * regionSkew),
+          team_fighting: getRandomIntBC(1, 20, 0.8 * mechanicsSkew * regionSkew),
+        } as AttributeGroup;
+      } else {
+        return {
+          pathing: getRandomIntBC(1, 20, 0.75 * mentalSkew * regionSkew),
+          vision_control: getRandomIntBC(1, 20, 0.65 * mentalSkew * regionSkew),
+          map_positioning: getRandomIntBC(1, 20, 0.65 * mentalSkew * regionSkew),
+          neutral_control: getRandomIntBC(1, 20, 0.75 * mentalSkew * regionSkew),
+        } as AttributeGroup;
+      }
+    default:
+      throw new Error('Invalid Role');
+  }
+}
+
+export function getAttributes(role: Role, age: number, regionSkew: number): MobaAttributes {
+  const mechanics = getRoleBasedAttributes<MechanicAttributes>(role, 'mechanics', age, regionSkew);
+  const intangible = getRoleBasedAttributes<IntangibleAttributes>(role, 'intangible', age, regionSkew);
+  const macro = getRoleBasedAttributes<MacroAttributes>(role, 'macro', age, regionSkew);
   return {
-    mechanics: {
-      farming: role === 'jungle' || role === 'support' ? getRandomIntBC(1, 20, 1) : getRandomIntBC(1, 20, 0.75),
-      apm: getRandomIntBC(1, 20, 1),
-      dueling: getRandomIntBC(1, 20, 1),
-      team_fighting: role === 'jungle' || role === 'top' ? getRandomIntBC(1, 20, 1) : getRandomIntBC(1, 20, 0.75),
-      jungling: role === 'jungle' ? getRandomIntBC(10, 20, 1.5) : getRandomIntBC(1, 10, 1),
-    },
-    selfMental: {
-      flexibility: getRandomIntBC(1, 20, 1),
-      winning: getRandomIntBC(1, 20, 1),
-      composure: getRandomIntBC(1, 20, 1),
-      consistency: getRandomIntBC(1, 20, 1),
-    },
-    teamMental: {
-      map_control: role !== 'adc' ? getRandomIntBC(1, 20, 0.75) : getRandomIntBC(1, 20, 1),
-      in_game_leader: getRandomIntBC(1, 20, 1),
-      team_composition: getRandomIntBC(1, 20, 1),
-    },
+    mechanics,
+    intangible,
+    macro,
   };
 }
 
 // OUT OF 100
-export function getOverallRating({ mechanics, selfMental, teamMental }: MobaAttributes, role: Role): number {
+export function getOverallRating({ mechanics, intangible, macro }: MobaAttributes, role: Role): number {
+  // intangibles: 0.8 weight
+  // 1.5+ skew: 2 weight
+  // 1.2+ skew: 1.5 weight
+  // 0.9+ skew: 0.8 weight
+  // 0.8- skew: 0.75 weight
+  // support's farming attribute measure the ability for the support to control the early game and help their adc farm
+  const primaryAttributes = [];
+  const secondaryAttributes = [];
+  const tertiaryAttributes = [];
   switch (role) {
     case 'top':
-      return (
-        ((calcWeightedSumRating(
-          [
-            mechanics.farming,
-            mechanics.dueling,
-            teamMental.map_control,
-            teamMental.in_game_leader,
-            selfMental.flexibility,
-            selfMental.consistency,
-          ],
-          1
-        ) +
-          calcWeightedSumRating(
-            [mechanics.apm, mechanics.team_fighting, selfMental.composure, selfMental.winning, teamMental.team_composition],
-            0.75
-          ) +
-          calcWeightedSumRating([mechanics.jungling], 0.25)) /
-          12) *
-        6
+      tertiaryAttributes.push(
+        intangible.composure,
+        intangible.consistency,
+        intangible.flexibility,
+        intangible.in_game_leader,
+        intangible.game_knowledge,
+        intangible.winning,
+        macro.neutral_control,
+        macro.vision_control,
+        mechanics.apm
       );
+      primaryAttributes.push(mechanics.dueling, macro.map_positioning);
+      secondaryAttributes.push(mechanics.farming, mechanics.team_fighting, macro.pathing);
+      break;
     case 'jungle':
-      return (
-        ((calcWeightedSumRating(
-          [
-            mechanics.team_fighting,
-            mechanics.dueling,
-            teamMental.map_control,
-            teamMental.in_game_leader,
-            selfMental.flexibility,
-            selfMental.consistency,
-          ],
-          0.9
-        ) +
-          calcWeightedSumRating(
-            [mechanics.apm, mechanics.team_fighting, selfMental.composure, selfMental.winning, teamMental.team_composition],
-            0.75
-          ) +
-          calcWeightedSumRating([mechanics.jungling], 1.25)) /
-          12) *
-        6
+      tertiaryAttributes.push(
+        intangible.composure,
+        intangible.consistency,
+        intangible.flexibility,
+        intangible.in_game_leader,
+        intangible.game_knowledge,
+        intangible.winning,
+        mechanics.apm,
+        mechanics.dueling,
+        mechanics.team_fighting
       );
+      primaryAttributes.push(macro.map_positioning, macro.neutral_control);
+      secondaryAttributes.push(macro.pathing, macro.vision_control, mechanics.farming);
+      break;
     case 'mid':
-      return (
-        ((calcWeightedSumRating(
-          [
-            mechanics.team_fighting,
-            mechanics.apm,
-            teamMental.map_control,
-            teamMental.in_game_leader,
-            selfMental.flexibility,
-            mechanics.dueling,
-            mechanics.team_fighting,
-            selfMental.consistency,
-          ],
-          0.9
-        ) +
-          calcWeightedSumRating([selfMental.composure, selfMental.winning, teamMental.team_composition], 0.75) +
-          calcWeightedSumRating([mechanics.jungling], 0.25)) /
-          12) *
-        6
+      tertiaryAttributes.push(
+        intangible.composure,
+        intangible.consistency,
+        intangible.flexibility,
+        intangible.in_game_leader,
+        intangible.game_knowledge,
+        intangible.winning,
+        macro.vision_control,
+        macro.map_positioning,
+        macro.neutral_control
       );
+      primaryAttributes.push(mechanics.apm, mechanics.farming);
+      secondaryAttributes.push(mechanics.dueling, mechanics.team_fighting, macro.pathing);
+      break;
     case 'adc':
-      return (
-        ((calcWeightedSumRating(
-          [
-            mechanics.team_fighting,
-            mechanics.apm,
-            teamMental.in_game_leader,
-            mechanics.dueling,
-            mechanics.team_fighting,
-            selfMental.composure,
-            selfMental.consistency,
-          ],
-          0.95
-        ) +
-          calcWeightedSumRating([selfMental.flexibility, teamMental.map_control, selfMental.winning, teamMental.team_composition], 0.75) +
-          calcWeightedSumRating([mechanics.jungling], 0.25)) /
-          12) *
-        6
+      tertiaryAttributes.push(
+        intangible.composure,
+        intangible.consistency,
+        intangible.flexibility,
+        intangible.in_game_leader,
+        intangible.game_knowledge,
+        intangible.winning,
+        macro.vision_control,
+        mechanics.dueling,
+        macro.neutral_control
       );
+      primaryAttributes.push(mechanics.apm, mechanics.farming);
+      secondaryAttributes.push(mechanics.team_fighting, macro.pathing, macro.map_positioning);
+      break;
     case 'support':
-      return (
-        ((calcWeightedSumRating(
-          [
-            selfMental.flexibility,
-            mechanics.team_fighting,
-            teamMental.map_control,
-            teamMental.in_game_leader,
-            selfMental.composure,
-            selfMental.consistency,
-          ],
-          1.1
-        ) +
-          calcWeightedSumRating([mechanics.dueling, selfMental.winning, teamMental.team_composition, mechanics.apm], 0.7) +
-          calcWeightedSumRating([mechanics.jungling, mechanics.farming], 0.25)) /
-          12) *
-        6
+      tertiaryAttributes.push(
+        intangible.composure,
+        intangible.consistency,
+        intangible.flexibility,
+        intangible.in_game_leader,
+        intangible.game_knowledge,
+        intangible.winning,
+        mechanics.dueling,
+        mechanics.apm,
+        mechanics.farming
       );
+      primaryAttributes.push(macro.vision_control, macro.map_positioning);
+      secondaryAttributes.push(mechanics.team_fighting, macro.pathing, macro.neutral_control);
+      break;
     default:
-      return 50;
+      break;
   }
+  return round(
+    ((calcWeightedSumRating(primaryAttributes, 2) +
+      calcWeightedSumRating(secondaryAttributes, 1.5) +
+      calcWeightedSumRating(tertiaryAttributes, 0.8)) /
+      14) *
+      5,
+    2
+  );
 }
 
 export function getNationality(gamerTag: GamerTag): Nation {
@@ -242,26 +366,32 @@ export function getGameStateStrength(playStyle: PlayStyle): GameState {
 export function sortMapAttributes(attributes: MobaAttributes) {
   const map: Map<string, number> = new Map([
     ...Object.entries(attributes.mechanics),
-    ...Object.entries(attributes.selfMental),
-    ...Object.entries(attributes.teamMental),
+    ...Object.entries(attributes.intangible),
+    ...Object.entries(attributes.macro),
   ]);
 
-  return new Map([...map].sort((a, b) => a[1] - b[1]));
+  return new Map([...map].sort((a, b) => b[1] - a[1]));
 }
 
-export function getPlayStyle(attributes: MobaAttributes): PlayStyle {
+export function getPlayStyle(attributes: MobaAttributes, age: number): PlayStyle {
   const sortedMap = sortMapAttributes(attributes);
   const availablePlayStyles: PlayStyle[] = [];
 
-  for (const playStyle of AllPlayStyles) {
+  for (const playStyle of AllUniquePlayStyles) {
     if (isCompatPlayStyle(sortedMap, playStyle)) {
       availablePlayStyles.push(playStyle);
     }
   }
   if (availablePlayStyles.length < 1) {
-    availablePlayStyles.push('prodigy');
+    if (age < 19) {
+      return 'prodigy';
+    } else if (age > 24) {
+      return 'journeyman';
+    } else {
+      return 'specialist';
+    }
   }
-  return availablePlayStyles[getRandomInt(0, availablePlayStyles.length - 1)];
+  return shuffle(availablePlayStyles)[0];
 }
 
 export function getPlayerOptions(region: MobaRegion, selectedPlayers?: Player[]): Player[] {
@@ -270,26 +400,44 @@ export function getPlayerOptions(region: MobaRegion, selectedPlayers?: Player[])
 
   for (let i = 0; i < 5; i++) {
     const gamerTag = getName(players, region, selectedPlayers);
+    const regionSkew = getRegionSkew(region);
     const mainRole = roles[i];
-    const attributes = getAttributes(mainRole);
-    const playStyle = getPlayStyle(attributes);
+    const age = getAge();
+    const attributes = getAttributes(mainRole, age, regionSkew);
+    const playStyle = getPlayStyle(attributes, age);
     const gameStateStrength = getGameStateStrength(playStyle);
     const player: Player = {
       id: getRandomInt(0, 1000),
-      age: getAge(),
+      age,
       gamerTag,
       mainRole,
       offRoles: [],
       gameStateStrength,
       playStyle,
       nationality: getNationality(gamerTag),
-      mainRoleRating: round(getOverallRating(attributes, mainRole), 2),
+      currentRoleRating: getOverallRating(attributes, mainRole),
       attributes,
       champMains: getChampMains(mainRole, gameStateStrength),
     };
-
+    console.log(player);
     players.push(player);
   }
 
   return players;
+}
+
+export function getCurrentRoles(players: Player[]): Player[] {
+  const updatedPlayers: Player[] = [];
+
+  for (let i = 0; i < players.length; i++) {
+    const player = { ...players[i] };
+    const currentRoleRating = getOverallRating(player.attributes, AllRoles[i]);
+    console.log(currentRoleRating);
+    updatedPlayers.push({
+      ...players[i],
+      currentRole: AllRoles[i],
+      currentRoleRating: AllRoles[i] === player.mainRole ? currentRoleRating : currentRoleRating - 10,
+    });
+  }
+  return updatedPlayers;
 }
