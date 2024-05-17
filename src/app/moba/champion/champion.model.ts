@@ -26,3 +26,5 @@ export type Archetype =
   | 'lane-bully'
   | 'aoe'
   | 'duelist';
+
+export type CompRole = 'hard-engage' | 'engage' | 'poke' | 'isolator' | 'anti-engage' | 'team-fight-burst' | 'team-fight-sustain' | 'carry';

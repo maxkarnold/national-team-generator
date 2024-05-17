@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Player, positions, sortByMainRole } from '../player/player.model';
 import { getCurrentRoles, getPlayerOptions, sortMapAttributes } from '../player/player.utils';
-import { MobaRegion, RegionAbbrev, regions as mobaRegions } from '../region/region.model';
+import { LeagueName, MobaRegion, regions as mobaRegions } from '../region/region.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MobaService } from '../moba.service';
 
@@ -13,7 +13,7 @@ import { MobaService } from '../moba.service';
 export class HomeComponent {
   screenWidth: number;
   form: FormGroup = new FormGroup({
-    selectedRegion: new FormControl<RegionAbbrev>(mobaRegions[0].regionAbbrev),
+    selectedRegion: new FormControl<LeagueName>(mobaRegions[0].leagueName),
   });
 
   getPlayerOptions = getPlayerOptions;
@@ -21,7 +21,7 @@ export class HomeComponent {
   selectedPlayers: Player[] = [];
   positions = positions;
   regions = mobaRegions;
-  previousRegion: RegionAbbrev = mobaRegions[0].regionAbbrev;
+  previousRegion: LeagueName = mobaRegions[0].leagueName;
 
   constructor(private service: MobaService) {
     this.screenWidth = window.innerWidth;
@@ -31,7 +31,7 @@ export class HomeComponent {
     const playerOptions = service.getLocalStorage<Player[]>('moba_player_options');
     const selectedPlayers = service.getLocalStorage<Player[]>('moba_selected_players');
     if (selectedRegion) {
-      this.form.patchValue({ selectedRegion: selectedRegion.regionAbbrev }, { emitEvent: false });
+      this.form.patchValue({ selectedRegion: selectedRegion.leagueName }, { emitEvent: false });
     }
     if (playerOptions) {
       this.playerOptions = playerOptions;
@@ -45,7 +45,7 @@ export class HomeComponent {
     console.log(this.positions);
 
     this.service.setLocalStorage('moba_region', selectedRegion || mobaRegions[0]);
-    this.form.get('selectedRegion')?.valueChanges.subscribe((region: RegionAbbrev) => {
+    this.form.get('selectedRegion')?.valueChanges.subscribe((region: LeagueName) => {
       this.onRegionChange(region);
     });
   }
@@ -57,14 +57,14 @@ export class HomeComponent {
 
   resetPlayerOptions() {
     this.selectedPlayers = [];
-    const region = this.regions.find(r => r.regionAbbrev === this.form.get('selectedRegion')?.value) as MobaRegion;
+    const region = this.regions.find(r => r.leagueName === this.form.get('selectedRegion')?.value) as MobaRegion;
     this.playerOptions = getPlayerOptions(region);
     this.service.setLocalStorage('moba_region', region);
     this.service.setLocalStorage('moba_player_options', this.playerOptions);
     this.service.removeLocalStorage('moba_selected_players');
   }
 
-  onRegionChange(abbrev: RegionAbbrev) {
+  onRegionChange(abbrev: LeagueName) {
     if (this.selectedPlayers.length > 0) {
       const confirmChange = window.confirm('Are you sure? Changing the region will reset your team selection.');
       if (confirmChange) {
@@ -74,7 +74,7 @@ export class HomeComponent {
         this.form.patchValue({ selectedRegion: this.previousRegion }, { emitEvent: false });
       }
     } else {
-      const region = this.regions.find(r => r.regionAbbrev === abbrev) as MobaRegion;
+      const region = this.regions.find(r => r.leagueName === abbrev) as MobaRegion;
       this.playerOptions = getPlayerOptions(region);
       this.service.setLocalStorage('moba_region', region);
       this.service.setLocalStorage('moba_player_options', this.playerOptions);
@@ -90,7 +90,7 @@ export class HomeComponent {
     if (this.selectedPlayers.length >= 5) {
       this.playerOptions = [];
     } else {
-      const region = this.regions.find(r => r.regionAbbrev === this.form.get('selectedRegion')?.value) as MobaRegion;
+      const region = this.regions.find(r => r.leagueName === this.form.get('selectedRegion')?.value) as MobaRegion;
       this.playerOptions = getPlayerOptions(region, this.selectedPlayers);
     }
     this.service.setLocalStorage('moba_selected_players', this.selectedPlayers);

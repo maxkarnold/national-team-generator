@@ -5,7 +5,7 @@
       <span class="label-text">Pick the team region</span>
     </div>
     <select class="select select-bordered" formControlName="selectedRegion">
-      <option [value]="region.regionAbbrev" *ngFor="let region of regions">{{ region.regionAbbrev }} - {{ region.leagueName }}</option>
+      <option [value]="region.leagueName" *ngFor="let region of regions">{{ region.regionAbbrev }} - {{ region.leagueName }}</option>
     </select>
   </label>
   <button class="btn btn-secondary btn-wide sm:self-end sm:mb-4" (click)="resetPlayerOptions()">+ New</button>

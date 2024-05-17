@@ -1,25 +1,42 @@
 export interface MobaRegion {
   regionAbbrev: RegionAbbrev;
-  leagueName: 'LCS' | 'LEC' | 'LPL' | 'LCK';
+  leagueName: LeagueName;
 }
 
-export type RegionAbbrev = 'NA' | 'EU' | 'CHN' | 'KR';
+export type RegionAbbrev = 'NA' | 'EU' | 'CN' | 'KR' | 'BR' | 'APAC' | 'LATAM';
+export type LeagueName = 'LCS' | 'LEC' | 'LPL' | 'LCK' | 'VCS' | 'CBLOL' | 'PCS' | 'LLA';
 
 export const regions: MobaRegion[] = [
   {
-    regionAbbrev: 'NA',
-    leagueName: 'LCS',
+    regionAbbrev: 'KR',
+    leagueName: 'LCK',
+  },
+  {
+    regionAbbrev: 'CN',
+    leagueName: 'LPL',
   },
   {
     regionAbbrev: 'EU',
     leagueName: 'LEC',
   },
   {
-    regionAbbrev: 'CHN',
-    leagueName: 'LPL',
+    regionAbbrev: 'NA',
+    leagueName: 'LCS',
   },
   {
-    regionAbbrev: 'KR',
-    leagueName: 'LCK',
+    regionAbbrev: 'APAC',
+    leagueName: 'PCS',
+  },
+  {
+    regionAbbrev: 'APAC',
+    leagueName: 'VCS',
+  },
+  {
+    regionAbbrev: 'BR',
+    leagueName: 'CBLOL',
+  },
+  {
+    regionAbbrev: 'LATAM',
+    leagueName: 'LLA',
   },
 ];
