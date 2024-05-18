@@ -1,5 +1,5 @@
 import { Nation } from 'app/models/nation.model';
-import { Champion } from '../champion/champion.model';
+import { Champion, GameState } from '../champion/champion.model';
 
 export interface Player {
   id: number;
@@ -82,7 +82,7 @@ export type PlayStyle =
   | 'prodigy'
   | 'journeyman'
   | 'specialist';
-export type GameState = 'early-game' | 'mid-game' | 'late-game';
+
 export const AllUniquePlayStyles: PlayStyle[] = [
   'scaler',
   'mechanical god',
@@ -94,7 +94,6 @@ export const AllUniquePlayStyles: PlayStyle[] = [
   'closer',
   'baron stealer',
 ];
-export const AllGameStates: GameState[] = ['early-game', 'mid-game', 'late-game'];
 export const AllRoles: Role[] = ['top', 'jungle', 'mid', 'adc', 'support'];
 
 export const positions = [
