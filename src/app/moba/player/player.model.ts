@@ -1,5 +1,5 @@
 import { Nation } from 'app/models/nation.model';
-import { Champion, GameState } from '../champion/champion.model';
+import { Champion } from '../champion/champion.model';
 
 export interface Player {
   id: number;
@@ -69,6 +69,7 @@ export const sortByMainRole = (players: Player[]): Player[] => {
 };
 
 export type Role = 'top' | 'jungle' | 'mid' | 'adc' | 'support';
+export type GameState = 'early-game' | 'mid-game' | 'late-game';
 export type PlayStyle =
   | 'scaler'
   | 'mechanical god'
@@ -95,26 +96,27 @@ export const AllUniquePlayStyles: PlayStyle[] = [
   'baron stealer',
 ];
 export const AllRoles: Role[] = ['top', 'jungle', 'mid', 'adc', 'support'];
+export const AllGameStates: GameState[] = ['early-game', 'mid-game', 'late-game'];
 
 export const positions = [
   {
     name: 'top',
-    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png',
+    url: 'assets/images/role_icons/top.webp',
   },
   {
     name: 'jungle',
-    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png',
+    url: 'assets/images/role_icons/jungle.webp',
   },
   {
     name: 'mid',
-    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png',
+    url: 'assets/images/role_icons/mid.webp',
   },
   {
     name: 'adc',
-    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png',
+    url: 'assets/images/role_icons/adc.webp',
   },
   {
     name: 'support',
-    url: 'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png',
+    url: 'assets/images/role_icons/support.webp',
   },
 ];

@@ -5,4 +5,15 @@ import { Component } from '@angular/core';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {}
+export class HomeComponent {
+  tabs = [
+    {
+      name: 'Player Selection',
+      url: 'player-select',
+    },
+    {
+      name: 'Draft',
+      url: 'draft',
+    },
+  ];
+}

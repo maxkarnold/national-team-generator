@@ -1,3 +1,140 @@
-<div class="container">
-  <table class="table table-"></table>
+<div>
+  <!-- DRAFT FORM -->
+  <form class="flex items-center justify-center" [formGroup]="draftForm" *ngIf="!draftStarted">
+    <label class="form-control w-full max-w-xs m-2">
+      <div class="label">
+        <span class="label-text">Selected Patch</span>
+      </div>
+      <select class="select select-bordered" formControlName="patchVersion">
+        <option selected>14.8</option>
+      </select>
+    </label>
+
+    <div class="form-control">
+      <label class="label cursor-pointer">
+        <span class="label-text">Blue Side</span>
+        <input type="checkbox" class="toggle mx-2" formControlName="isRedSide" />
+        <span class="label-text">Red Side</span>
+      </label>
+    </div>
+
+    <button class="btn btn-primary" (click)="startDraft()">Start Draft</button>
+  </form>
+
+  <!-- DRAFT INTERFACE -->
+  <div *ngIf="draftStarted">
+    <h1 class="text-center text-2xl mb-4">{{ draftPhase }}</h1>
+
+    <!-- BAN DASHBOARD -->
+    <div class="flex">
+      <ul class="flex">
+        <li *ngFor="let champ of blueSideBans()" class="mx-2">
+          <div class="avatar placeholder" *ngIf="champ?.isPlaceholder">
+            <div class="w-12 rounded bg-blue-500 text-neutral-content">
+              <span class="text-2xl">{{ champ.name }}</span>
+            </div>
+          </div>
+          <div class="avatar" *ngIf="!champ?.isPlaceholder">
+            <div class="w-12 rounded">
+              <img [src]="champ.img" />
+            </div>
+          </div>
+        </li>
+      </ul>
+      <label class="input input-bordered flex items-center gap-2 flex-1">
+        <input type="text" class="grow" placeholder="Search" />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+          <path
+            fill-rule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clip-rule="evenodd" />
+        </svg>
+      </label>
+      <ul class="flex">
+        <li *ngFor="let champ of redSideBans()" class="mx-2">
+          <div class="avatar placeholder" *ngIf="champ?.isPlaceholder">
+            <div class="w-12 rounded bg-red-500 text-neutral-content">
+              <span class="text-2xl">{{ champ.name }}</span>
+            </div>
+          </div>
+          <div class="avatar" *ngIf="!champ?.isPlaceholder">
+            <div class="w-12 rounded">
+              <img [src]="champ.img" />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Selected Champs and Table -->
+    <div class="flex my-8 gap-4">
+      <!-- BLUE SIDE -->
+      <ul class="flex flex-col">
+        <li *ngFor="let champ of blueSideChamps()" class="my-4">
+          <div class="avatar placeholder" *ngIf="champ?.isPlaceholder">
+            <div class="w-24 rounded bg-blue-500 text-neutral-content">
+              <span class="text-2xl">{{ champ.name }}</span>
+            </div>
+          </div>
+          <div class="avatar" *ngIf="!champ?.isPlaceholder">
+            <div class="w-24 rounded">
+              <img [src]="champ.img" />
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- TABLE -->
+      <div class="overflow-x-auto max-h-[65vh] flex-1">
+        <table class="table table-pin-rows">
+          <thead>
+            <tr>
+              <th *ngFor="let header of headers">
+                <div>
+                  <span class="cursor-pointer">{{ header.name }}</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let champ of filteredChampions()" class="hover cursor-pointer" (click)="chooseChampion(champ)">
+              <td>
+                <div class="flex items-center gap-3">
+                  <div class="avatar">
+                    <div class="rounded w-12">
+                      <img [src]="champ.img" [alt]="champ.name" />
+                    </div>
+                  </div>
+                  <div>
+                    <div class="font-bold">{{ champ.name }}</div>
+                    <!-- <div class="text-sm opacity-50">United States</div> -->
+                  </div>
+                </div>
+              </td>
+              <td>{{ getLetterRank(champ.metaStrength) }}</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>{{ getPickScore(champ) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RED SIDE -->
+      <ul class="flex flex-col">
+        <li *ngFor="let champ of redSideChamps()" class="my-4">
+          <div class="avatar placeholder" *ngIf="champ?.isPlaceholder">
+            <div class="w-24 rounded bg-red-500 text-neutral-content">
+              <span class="text-2xl">{{ champ.name }}</span>
+            </div>
+          </div>
+          <div class="avatar" *ngIf="!champ?.isPlaceholder">
+            <div class="w-24 rounded">
+              <img [src]="champ.img" />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

@@ -72,7 +72,21 @@ function isCompatPlayStyle(map: Map<string, number>, playStyle: PlayStyle): bool
 export function getChampMains(role: Role, gameStateStrength: GameState): Champion[] {
   const champs = Array.from(champions) as Champion[];
   const filteredChamps = [...shuffle(champs.filter(c => c.roles.includes(role)))];
-  const gameStateChamps = [...filteredChamps.filter(c => c.gameStateStrength === gameStateStrength)];
+  const gameStateChamps = [
+    ...filteredChamps.filter(c => {
+      const { early, mid, late } = c.gameStateAttributes;
+
+      const maxValue = Math.max(early, mid, late);
+
+      if (maxValue === early) {
+        return gameStateStrength === 'early-game';
+      } else if (maxValue === mid) {
+        return gameStateStrength === 'mid-game';
+      } else {
+        return gameStateStrength === 'late-game';
+      }
+    }),
+  ];
   return [...new Set([...gameStateChamps, ...filteredChamps])].slice(0, 3);
 }
 
