@@ -1904,7 +1904,7 @@
     }
   },
   {
-    "id": 40,
+    "id": 41,
     "name": "Nami",
     "roles": [
       "support"
@@ -1950,7 +1950,7 @@
     }
   },
   {
-    "id": 41,
+    "id": 42,
     "name": "Viego",
     "roles": [
       "jungle"
@@ -1996,7 +1996,7 @@
     }
   },
   {
-    "id": 42,
+    "id": 43,
     "name": "Sejuani",
     "roles": [
       "jungle"
@@ -2042,7 +2042,7 @@
     }
   },
   {
-    "id": 43,
+    "id": 44,
     "name": "Zac",
     "roles": [
       "top",
@@ -2089,7 +2089,7 @@
     }
   },
   {
-    "id": 44,
+    "id": 45,
     "name": "Camille",
     "roles": [
       "top"
@@ -2135,7 +2135,7 @@
     }
   },
   {
-    "id": 45,
+    "id": 46,
     "name": "Ornn",
     "roles": [
       "top",
@@ -2182,7 +2182,7 @@
     }
   },
   {
-    "id": 46,
+    "id": 47,
     "name": "Urgot",
     "roles": [
       "top"
@@ -2228,7 +2228,7 @@
     }
   },
   {
-    "id": 47,
+    "id": 48,
     "name": "Jarvan IV",
     "roles": [
       "jungle"
@@ -2274,7 +2274,7 @@
     }
   },
   {
-    "id": 48,
+    "id": 49,
     "name": "Wukong",
     "roles": [
       "jungle"
@@ -2320,7 +2320,7 @@
     }
   },
   {
-    "id": 49,
+    "id": 50,
     "name": "Ahri",
     "roles": [
       "mid"
@@ -2366,7 +2366,7 @@
     }
   },
   {
-    "id": 50,
+    "id": 51,
     "name": "Aurelion Sol",
     "roles": [
       "mid"
@@ -2412,7 +2412,7 @@
     }
   },
   {
-    "id": 51,
+    "id": 52,
     "name": "Corki",
     "roles": [
       "mid"
@@ -2458,7 +2458,7 @@
     }
   },
   {
-    "id": 52,
+    "id": 53,
     "name": "Tahm Kench",
     "roles": [
       "support"

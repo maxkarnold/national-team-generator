@@ -1,4 +1,5 @@
 import { Champion } from '../champion/champion.model';
+import { Player } from '../player/player.model';
 
 export interface DraftChampion extends Champion {
   isPlaceholder?: boolean;
@@ -10,7 +11,11 @@ export interface DraftChampion extends Champion {
   currentScore: number;
 }
 
-export interface PatchChampions {
+export interface DraftPlayer extends Player {
+  championMastery: RankedChampions;
+}
+
+export interface RankedChampions {
   s: number[];
   a: number[];
   b: number[];
@@ -93,3 +98,57 @@ export const emptyDraftPicks: Partial<DraftChampion>[] = [
     name: 'Support',
   },
 ];
+
+export const defaultPlayerMasteries: Partial<DraftPlayer>[] = [
+  {
+    mainRole: 'top',
+    championMastery: {
+      s: [47, 44],
+      a: [45, 46, 0],
+      b: [1, 2],
+      c: [],
+      d: [],
+    },
+  },
+  {
+    mainRole: 'jungle',
+    championMastery: {
+      s: [2, 8],
+      a: [9, 10],
+      b: [11, 12],
+      c: [13],
+      d: [],
+    },
+  },
+  {
+    mainRole: 'mid',
+    championMastery: {
+      s: [18, 17],
+      a: [20, 19],
+      b: [21, 22],
+      c: [28],
+      d: [],
+    },
+  },
+  {
+    mainRole: 'adc',
+    championMastery: {
+      s: [29, 30, 31],
+      a: [32],
+      b: [33, 34],
+      c: [],
+      d: [],
+    },
+  },
+  {
+    mainRole: 'support',
+    championMastery: {
+      s: [36, 37],
+      a: [38, 39],
+      b: [40, 41],
+      c: [53],
+      d: [],
+    },
+  },
+];
+export const defaultOpponentMasteries: Partial<DraftPlayer>[] = [];

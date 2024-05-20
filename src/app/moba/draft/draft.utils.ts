@@ -1,7 +1,18 @@
 import { Champion } from '../champion/champion.model';
-import { DraftChampion, PatchChampions, blueSideBans, blueSidePicks, redSideBans, redSidePicks } from './draft.model';
+import { Role } from '../player/player.model';
+import {
+  DraftChampion,
+  DraftPlayer,
+  RankedChampions,
+  blueSideBans,
+  blueSidePicks,
+  defaultOpponentMasteries,
+  defaultPlayerMasteries,
+  redSideBans,
+  redSidePicks,
+} from './draft.model';
 
-const patchMSI24: PatchChampions = {
+const patchMSI24: RankedChampions = {
   s: [],
   a: [],
   b: [],
@@ -29,13 +40,35 @@ function getMetaStrength(champion: Champion, patchVersion: string): number {
   }
 }
 
+export function getPlayerMastery(champ: Champion, playerMasteries: Partial<DraftPlayer>[]): number {
+  const { id, roles } = champ;
+  const tierValues: { [key: string]: number } = { s: 20, a: 16, b: 12, c: 8, d: 4 };
+
+  const relevantPlayerMasteries = playerMasteries.filter(player => roles.includes(player.mainRole as Role));
+
+  let maxMastery = 0;
+
+  relevantPlayerMasteries.forEach(player => {
+    const { championMastery } = player;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const championTiers = Object.entries(championMastery as RankedChampions).filter(([_, ids]) => ids.includes(id));
+
+    championTiers.forEach(([tier]) => {
+      const mastery = tierValues[tier] || 0;
+      maxMastery = Math.max(maxMastery, mastery);
+    });
+  });
+
+  return maxMastery;
+}
+
 export function getDraftChampions(champions: Champion[], patchVersion: string): DraftChampion[] {
   return champions.map(c => {
     return {
       ...c,
       metaStrength: getMetaStrength(c, patchVersion),
-      playerMastery: 0,
-      opponentMastery: 0,
+      playerMastery: getPlayerMastery(c, defaultPlayerMasteries),
+      opponentMastery: getPlayerMastery(c, defaultOpponentMasteries),
       currentSynergy: 0,
       currentCounter: 0,
       currentScore: 0,
