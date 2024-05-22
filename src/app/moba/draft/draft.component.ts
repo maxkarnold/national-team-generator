@@ -12,8 +12,14 @@ import {
   redSideBans,
   redSidePicks,
   LetterRank,
+  defaultOpponentMasteries,
+  defaultPlayerMasteries,
+  DraftPlayer,
+  DraftPhase,
 } from './draft.model';
-import { getChampScoreRating, getDraftChampions } from './draft.utils';
+import { getChampScoreRating, getDraftChampions, getMasterySort } from './draft.utils';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AllRoles, Role } from '../player/player.model';
 
 @Component({
   selector: 'app-draft',
@@ -22,15 +28,42 @@ import { getChampScoreRating, getDraftChampions } from './draft.utils';
 })
 export class DraftComponent {
   draftStarted = false;
-  draftPhase = 'First Ban Phase';
+  isBanPhase = false;
+  draftPhase: DraftPhase = 'Blue Ban 1';
   currentDraftRound = 1;
   champions: DraftChampion[];
   headers = draftHeaders;
 
   draftForm: FormGroup = new FormGroup({
-    patchVersion: new FormControl<string>('MSI24'),
+    patchVersion: new FormControl<string>('MSI 24'),
     isRedSide: new FormControl<boolean>(false),
+    useAiOpponent: new FormControl<boolean>(false),
   });
+
+  blueSideMasteries: Partial<DraftPlayer>[] = [];
+  redSideMasteries: Partial<DraftPlayer>[] = [];
+  blueSidePlayers: {
+    [key: string]: DraftChampion[];
+  } = {
+    top: [],
+    jungle: [],
+    mid: [],
+    adc: [],
+    support: [],
+  };
+  redSidePlayers: {
+    [key: string]: DraftChampion[];
+  } = {
+    top: [],
+    jungle: [],
+    mid: [],
+    adc: [],
+    support: [],
+  };
+  searchControl = new FormControl<string>('');
+  searchControlValue = toSignal(this.searchControl.valueChanges);
+
+  sortMasteryProp: WritableSignal<'opponentMastery' | 'playerMastery'> = signal('opponentMastery');
 
   filteredChampions: Signal<DraftChampion[]> = computed(() => {
     const redBans = this.redSideBans();
@@ -38,9 +71,18 @@ export class DraftComponent {
     const redSideChamps = this.redSideChamps();
     const blueSideChamps = this.blueSideChamps();
     const selectedChampions = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps];
-    return this.champions.filter(c => {
-      return !selectedChampions.includes(c);
-    });
+    const searchValue = this.searchControlValue();
+    return this.champions
+      .filter(c => {
+        if (!searchValue) {
+          return !selectedChampions.includes(c);
+        }
+        return !selectedChampions.includes(c) && c.name.toLowerCase().includes(searchValue.toLowerCase());
+      })
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .sort(this.sortByMastery)
+      .sort((a, b) => this.getMetaScore(b) - this.getMetaScore(a))
+      .sort(this.sortChampions);
   });
   redSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
   blueSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
@@ -50,7 +92,6 @@ export class DraftComponent {
   constructor() {
     const champions = Array.from(championsJson) as Champion[];
     this.champions = getDraftChampions(champions, this.patchVersion);
-    console.log(this.champions);
   }
 
   get isRedSide(): boolean {
@@ -61,31 +102,113 @@ export class DraftComponent {
     return this.draftForm.get('patchVersion')?.value;
   }
 
+  get useAiOpponent(): boolean {
+    return this.draftForm.get('useAiOpponent')?.value;
+  }
+
   getLetterRank(rating: number): LetterRank {
-    switch (rating) {
-      case 20:
-        return 'S';
-      case 16:
-        return 'A';
-      case 16:
-        return 'B';
-      case 16:
-        return 'C';
-      case 16:
-        return 'D';
-      default:
-        return 'N/A';
+    if (rating > 18) {
+      return 'S';
+    } else if (rating > 14) {
+      return 'A';
+    } else if (rating > 10) {
+      return 'B';
+    } else if (rating > 6) {
+      return 'C';
+    } else if (rating > 2) {
+      return 'D';
+    } else {
+      return 'F';
     }
   }
 
-  getPickScore(champ: DraftChampion): LetterRank {
+  sortChampions = (a: DraftChampion, b: DraftChampion) => {
+    const aValue: number = this.getPickScore(a);
+    const bValue: number = this.getPickScore(b);
+
+    // Sort in descending order
+    return bValue - aValue;
+  };
+
+  sortByMastery = (a: DraftChampion, b: DraftChampion) => {
+    const aValue: number = a[this.sortMasteryProp()] as number;
+    const bValue: number = b[this.sortMasteryProp()] as number;
+
+    // Sort in descending order
+    return bValue - aValue;
+  };
+
+  getMasteryScore(champ: DraftChampion) {
     const rating = getChampScoreRating(champ, this.draftPhase, this.currentDraftRound, this.isRedSide);
-    return this.getLetterRank(rating);
+    return rating;
+  }
+
+  getMetaScore({ metaStrength }: DraftChampion, specificRole?: Role) {
+    if (specificRole) {
+      const roles = [...AllRoles];
+      const index = roles.indexOf(specificRole);
+      return metaStrength[index];
+    }
+    return Math.max(...metaStrength);
+    // const arr = metaStrength.filter(rating => rating !== 0);
+    // const avg = arr.reduce((a, b) => a + b, 0) / arr.length;
+    // return avg;
+  }
+
+  getPickScore(champ: DraftChampion) {
+    const mastery = this.getMasteryScore(champ);
+    const metaStrength = this.getMetaScore(champ);
+    if (mastery === 0) {
+      return 0;
+    }
+    const avg = (mastery * 0.75 + metaStrength * 1.25) / 2;
+    // console.log(avg);
+    return avg;
+  }
+
+  getTopChamps(role: string, isBlueSide: boolean): DraftChampion[] {
+    const key = role.toLowerCase();
+    if (isBlueSide) {
+      return this.blueSidePlayers[key].slice(0, 4);
+    } else {
+      return this.redSidePlayers[key].slice(0, 4);
+    }
+  }
+
+  getTopChampsForEachRole(player: Partial<DraftPlayer>, isBlueSide: boolean) {
+    const role = player.mainRole;
+    if (!role) {
+      return;
+    }
+    const champs = Array.from(
+      this.filteredChampions()
+        .filter(c => c.roles.includes(role as Role) && player.championMastery?.s.includes(c.id))
+        .concat(...this.filteredChampions().filter(c => c.roles.includes(role as Role) && player.championMastery?.a.includes(c.id)))
+    );
+    if (isBlueSide) {
+      this.blueSidePlayers[role] = champs;
+    } else {
+      this.redSidePlayers[role] = champs;
+    }
   }
 
   startDraft() {
     console.log('start draft');
     this.draftStarted = true;
+    this.isBanPhase = true;
+    const prop = this.isRedSide ? 'opponentMastery' : 'playerMastery';
+    this.sortMasteryProp.set(prop);
+    this.blueSideMasteries = this.isRedSide ? [...defaultOpponentMasteries] : [...defaultPlayerMasteries];
+    this.redSideMasteries = this.isRedSide ? [...defaultPlayerMasteries] : [...defaultOpponentMasteries];
+    for (const player of this.blueSideMasteries) {
+      this.getTopChampsForEachRole(player, true);
+    }
+
+    for (const player of this.redSideMasteries) {
+      this.getTopChampsForEachRole(player, false);
+    }
+    console.log('blueSide', this.blueSideMasteries, '\nredSide', this.redSideMasteries);
+    console.log('blueSide', this.blueSidePlayers, '\nredSide', this.redSidePlayers);
   }
 
   chooseChampion(champ: DraftChampion) {
@@ -105,26 +228,30 @@ export class DraftComponent {
       const isRed = redSideBans.includes(this.currentDraftRound);
       if (isRed) {
         const arr = [...this.redSideBans()];
-        arr[redSideBans.indexOf(this.currentDraftRound)] = champ;
+        const index = redSideBans.indexOf(this.currentDraftRound);
+        arr[index] = champ;
         this.redSideBans.set(arr);
       } else {
         const arr = [...this.blueSideBans()];
-        arr[blueSideBans.indexOf(this.currentDraftRound)] = champ;
+        const index = blueSideBans.indexOf(this.currentDraftRound);
+        arr[index] = champ;
         this.blueSideBans.set(arr);
       }
     } else if (firstPickPhase || secondPickPhase) {
       // PICKS
-      // red chooses on 8, 9, 12
-      // blue chooses on 7, 10, 11
+      // red chooses on 8, 9, 12, 17, 20
+      // blue chooses on 7, 10, 11, 18, 19
 
       const isRed = redSidePicks.includes(this.currentDraftRound);
       if (isRed) {
         const arr = [...this.redSideChamps()];
-        arr[redSidePicks.indexOf(this.currentDraftRound)] = champ;
+        const index = redSidePicks.indexOf(this.currentDraftRound);
+        arr[index] = champ;
         this.redSideChamps.set(arr);
       } else {
         const arr = [...this.blueSideChamps()];
-        arr[blueSidePicks.indexOf(this.currentDraftRound)] = champ;
+        const index = blueSidePicks.indexOf(this.currentDraftRound);
+        arr[index] = champ;
         this.blueSideChamps.set(arr);
       }
     }
@@ -133,28 +260,41 @@ export class DraftComponent {
   }
 
   checkPickPhase() {
+    if (this.currentDraftRound > 20) {
+      this.draftPhase = 'Draft Complete';
+      return;
+    }
+
     const firstBanPhase = this.currentDraftRound < 7;
     const secondBanPhase = this.currentDraftRound > 12 && this.currentDraftRound < 17;
     const firstPickPhase = this.currentDraftRound > 6 && this.currentDraftRound < 13;
     const secondPickPhase = this.currentDraftRound > 16;
-    switch (true) {
-      case firstBanPhase:
-        this.draftPhase = 'First Ban Phase';
-        break;
-      case secondBanPhase:
-        this.draftPhase = 'Second Ban Phase';
-        break;
-      case firstPickPhase:
-        this.draftPhase = 'First Pick Phase';
-        break;
-      case secondPickPhase:
-        this.draftPhase = 'Second Pick Phase';
-        break;
-      default:
-        this.draftPhase = 'N/A';
+    let index = 0;
+    let firstPhrase = '';
+    if (firstBanPhase || secondBanPhase) {
+      const isRed = redSideBans.includes(this.currentDraftRound);
+      if (isRed) {
+        index = redSideBans.indexOf(this.currentDraftRound);
+        firstPhrase = 'Red Ban ';
+      } else {
+        index = blueSideBans.indexOf(this.currentDraftRound);
+        firstPhrase = 'Blue Ban ';
+      }
+    } else if (firstPickPhase || secondPickPhase) {
+      // PICKS
+      // red chooses on 8, 9, 12, 17, 20
+      // blue chooses on 7, 10, 11, 18, 19
+      const isRed = redSidePicks.includes(this.currentDraftRound);
+      if (isRed) {
+        index = redSidePicks.indexOf(this.currentDraftRound);
+        firstPhrase = 'Red Pick ';
+      } else {
+        index = blueSidePicks.indexOf(this.currentDraftRound);
+        firstPhrase = 'Blue Pick ';
+      }
     }
-    if (this.currentDraftRound > 20) {
-      this.draftPhase = 'Draft Complete';
-    }
+    this.draftPhase = (firstPhrase + (index + 1).toString()) as DraftPhase;
+
+    this.sortMasteryProp.set(getMasterySort(this.draftPhase, this.currentDraftRound, this.isRedSide));
   }
 }

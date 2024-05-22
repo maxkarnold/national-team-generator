@@ -2,7 +2,9 @@ import { Champion } from '../champion/champion.model';
 import { Role } from '../player/player.model';
 import {
   DraftChampion,
+  DraftPhase,
   DraftPlayer,
+  PatchStrength,
   RankedChampions,
   blueSideBans,
   blueSidePicks,
@@ -12,31 +14,82 @@ import {
   redSidePicks,
 } from './draft.model';
 
-const patchMSI24: RankedChampions = {
-  s: [],
-  a: [],
-  b: [],
-  c: [],
-  d: [],
+// JUDGING META STRENGTH
+// S Tier: champs commonly banned in first phase, probably a 75%+ presence in games, strong first pick
+// A Tier: champs commonly banned in second phase, typically a stable champ, can be a champ that has emerged as a strong counter to s/a tier picks or has good synergy with meta picks
+// B Tier: champ is not strong, but still able to be picked. Can only be played by masters of the champ in a good counter situation
+// C Tier: champs hardly picked, chosen by players with high mastery but with a small champ pool or as a last resort
+// D Tier: do not pick these champs, are so weak that will be easily countered or not counter meta champs
+
+// TODO: need to add Vayne, Nidalee, Volibear, Lulu, Olaf, Ziggs, Yone, Ivern, Yasuo, Braum, Lillia, Blitzcrank,
+// Galio, Karthus, Khazix, Kog'maw, Sion, Veigar, Kindred, Brand, Gragas, Graves, Jayce, Sylas, Swain
+const patchMSI24: PatchStrength = {
+  top: {
+    s: [1],
+    a: [2, 5, 44, 45, 46, 47, 8],
+    b: [7, 4, 6],
+    c: [0, 3],
+    d: [17],
+  },
+  jungle: {
+    s: [9],
+    a: [10, 43, 11, 14, 42, 48, 8],
+    b: [0, 4, 49],
+    c: [13],
+    d: [18, 12, 44, 2],
+  },
+  mid: {
+    s: [16, 18],
+    a: [15, 19, 21, 50, 51, 52],
+    b: [2, 20, 22],
+    c: [17, 28, 44],
+    d: [],
+  },
+  adc: {
+    s: [24, 26],
+    a: [23, 27, 32],
+    b: [25, 29, 30, 31, 34],
+    c: [21, 28, 33, 35],
+    d: [],
+  },
+  support: {
+    s: [25, 36],
+    a: [38],
+    b: [37, 8, 12, 20, 11, 41, 53, 46, 40, 39, 24],
+    c: [17],
+    d: [19, 26],
+  },
 };
 
-function getMetaStrength(champion: Champion, patchVersion: string): number {
-  if (patchVersion === 'MSI24') {
+function getRoleMetaStrength(id: number, role: RankedChampions, tierValues: { [key: string]: number }): number {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const tierFound = Object.entries(role).find(([_, championIds]: [string, number[]]) => {
+    const typedChampionIds = championIds as number[];
+    return typedChampionIds.includes(id);
+  });
+
+  if (tierFound) {
+    const [tier] = tierFound;
+    return tierValues[tier];
+  }
+
+  return 0;
+}
+
+function getMetaStrength(champion: Champion, patchVersion: string): [number, number, number, number, number] {
+  if (patchVersion === 'MSI 24') {
     const { id } = champion;
     const tierValues: { [key: string]: number } = { s: 20, a: 16, b: 12, c: 8, d: 4 };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const tierFound = Object.entries(patchMSI24).find(([_, championIds]: [string, number[]]) => championIds.includes(id));
+    const topStrength = getRoleMetaStrength(id, patchMSI24.top, tierValues);
+    const jungleStrength = getRoleMetaStrength(id, patchMSI24.jungle, tierValues);
+    const midStrength = getRoleMetaStrength(id, patchMSI24.mid, tierValues);
+    const adcStrength = getRoleMetaStrength(id, patchMSI24.adc, tierValues);
+    const supportStrength = getRoleMetaStrength(id, patchMSI24.support, tierValues);
 
-    if (tierFound) {
-      const [tier] = tierFound;
-      return tierValues[tier];
-    }
-
-    // If the champion's ID is not found in the patchMSI24 object, return a default value
-    return 0;
+    return [topStrength, jungleStrength, midStrength, adcStrength, supportStrength];
   } else {
-    return 0;
+    return [0, 0, 0, 0, 0];
   }
 }
 
@@ -51,7 +104,7 @@ export function getPlayerMastery(champ: Champion, playerMasteries: Partial<Draft
   relevantPlayerMasteries.forEach(player => {
     const { championMastery } = player;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const championTiers = Object.entries(championMastery as RankedChampions).filter(([_, ids]) => ids.includes(id));
+    const championTiers = Object.entries(championMastery as RankedChampions).filter(([_, ids]: [string, number[]]) => ids.includes(id));
 
     championTiers.forEach(([tier]) => {
       const mastery = tierValues[tier] || 0;
@@ -76,8 +129,8 @@ export function getDraftChampions(champions: Champion[], patchVersion: string): 
   });
 }
 
-export function getChampScoreRating(champ: DraftChampion, draftPhase: string, currentDraftRound: number, isRedSide: boolean): number {
-  if (draftPhase === 'First Ban Phase' || draftPhase === 'Second Ban Phase') {
+export function getChampScoreRating(champ: DraftChampion, draftPhase: DraftPhase, currentDraftRound: number, isRedSide: boolean): number {
+  if (draftPhase.includes('Ban')) {
     let currentBans: number[];
     if (isRedSide) {
       currentBans = [...redSideBans];
@@ -95,5 +148,27 @@ export function getChampScoreRating(champ: DraftChampion, draftPhase: string, cu
     }
     const isPicking = currentPicks.includes(currentDraftRound);
     return isPicking ? champ.playerMastery : champ.opponentMastery;
+  }
+}
+
+export function getMasterySort(draftPhase: DraftPhase, currentDraftRound: number, isRedSide: boolean): 'playerMastery' | 'opponentMastery' {
+  if (draftPhase.includes('Ban')) {
+    let currentBans: number[];
+    if (isRedSide) {
+      currentBans = [...redSideBans];
+    } else {
+      currentBans = [...blueSideBans];
+    }
+    const isBanning = currentBans.includes(currentDraftRound);
+    return isBanning ? 'opponentMastery' : 'playerMastery';
+  } else {
+    let currentPicks: number[];
+    if (isRedSide) {
+      currentPicks = [...redSidePicks];
+    } else {
+      currentPicks = [...blueSidePicks];
+    }
+    const isPicking = currentPicks.includes(currentDraftRound);
+    return isPicking ? 'playerMastery' : 'opponentMastery';
   }
 }

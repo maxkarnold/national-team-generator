@@ -2046,7 +2046,8 @@
     "name": "Zac",
     "roles": [
       "top",
-      "jungle"
+      "jungle",
+      "mid"
     ],
     "img": "assets/images/champion_icons/Zac.webp",
     "dmgType": "low ap",
