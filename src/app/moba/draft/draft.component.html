@@ -115,7 +115,9 @@
             <tr>
               <th *ngFor="let header of headers">
                 <div>
-                  <span class="cursor-pointer">{{ isBanPhase && header.name === 'Score' ? 'Ban Score' : header.name }}</span>
+                  <span class="cursor-pointer">{{
+                    draftPhase.includes('Ban') && header.name === 'Score' ? 'Ban Score' : header.name
+                  }}</span>
                 </div>
               </th>
             </tr>

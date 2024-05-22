@@ -17,7 +17,7 @@ import {
   DraftPlayer,
   DraftPhase,
 } from './draft.model';
-import { getChampScoreRating, getDraftChampions, getMasterySort } from './draft.utils';
+import { checkForAvailableRoles, getChampScoreRating, getDraftChampions, getMasterySort } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role } from '../player/player.model';
 
@@ -28,7 +28,6 @@ import { AllRoles, Role } from '../player/player.model';
 })
 export class DraftComponent {
   draftStarted = false;
-  isBanPhase = false;
   draftPhase: DraftPhase = 'Blue Ban 1';
   currentDraftRound = 1;
   champions: DraftChampion[];
@@ -161,6 +160,27 @@ export class DraftComponent {
     if (mastery === 0) {
       return 0;
     }
+    if (this.draftPhase.includes('Red Ban') || this.draftPhase.includes('Blue Pick')) {
+      // When red team is banning or blue team is picking
+      // if champ has only one role and the same role as one of the selected blueSideChamps return 0
+      const pickedChampRoles = this.blueSideChamps().map(c => c.roles as Role[]);
+      const availableRoles = checkForAvailableRoles(pickedChampRoles);
+      // console.log(availableRoles);
+      // if any of the availableRoles is in the currentChamp's roles then it can be returned as normal
+      if (!availableRoles.some(r => champ.roles.includes(r))) {
+        return 0;
+      }
+    } else if (this.draftPhase.includes('Blue Ban') || this.draftPhase.includes('Red Pick')) {
+      // When blue team is banning or red team is picking
+      // if champ has only one role and the same role as one of the selected redSideChamps return 0
+      const pickedChampRoles = this.redSideChamps().map(c => c.roles as Role[]);
+      const availableRoles = checkForAvailableRoles(pickedChampRoles);
+      // console.log(availableRoles);
+      // if any of the availableRoles is in the currentChamp's roles then it can be returned as normal
+      if (!availableRoles.some(r => champ.roles.includes(r))) {
+        return 0;
+      }
+    }
     const avg = (mastery * 0.75 + metaStrength * 1.25) / 2;
     // console.log(avg);
     return avg;
@@ -195,7 +215,6 @@ export class DraftComponent {
   startDraft() {
     console.log('start draft');
     this.draftStarted = true;
-    this.isBanPhase = true;
     const prop = this.isRedSide ? 'opponentMastery' : 'playerMastery';
     this.sortMasteryProp.set(prop);
     this.blueSideMasteries = this.isRedSide ? [...defaultOpponentMasteries] : [...defaultPlayerMasteries];

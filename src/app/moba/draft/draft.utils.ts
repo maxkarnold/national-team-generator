@@ -1,5 +1,5 @@
 import { Champion } from '../champion/champion.model';
-import { Role } from '../player/player.model';
+import { AllRoles, Role } from '../player/player.model';
 import {
   DraftChampion,
   DraftPhase,
@@ -171,4 +171,34 @@ export function getMasterySort(draftPhase: DraftPhase, currentDraftRound: number
     const isPicking = currentPicks.includes(currentDraftRound);
     return isPicking ? 'playerMastery' : 'opponentMastery';
   }
+}
+
+export function checkForAvailableRoles(roles: (Role[] | undefined)[]): Role[] {
+  const availableRoles: Role[] = [...AllRoles];
+
+  roles.forEach(roleArr => {
+    if (roleArr) {
+      roleArr.forEach(role => {
+        const index = availableRoles.indexOf(role);
+        if (index !== -1) {
+          availableRoles.splice(index, 1);
+        }
+      });
+    }
+  });
+
+  const undefinedCount = roles.filter(roleArr => !roleArr).length;
+  if (undefinedCount > 0) {
+    roles.forEach(roleArr => {
+      if (roleArr && roleArr.length > 1) {
+        roleArr.forEach(role => {
+          if (!availableRoles.includes(role)) {
+            availableRoles.push(role);
+          }
+        });
+      }
+    });
+  }
+
+  return availableRoles;
 }
