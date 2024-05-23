@@ -183,5 +183,26 @@
         </li>
       </ul>
     </div>
+    <!-- ADVICE ON DRAFT FOR BOTH SIDES -->
+    <div class="flex">
+      <!-- BLUE SIDE -->
+      <div>
+        <h2>Blue Side</h2>
+        <ul>
+          <li *ngFor="let item of getCompositionAdvice('blue')">
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+      <!-- RED SIDE -->
+      <div>
+        <h2>Red Side</h2>
+        <ul>
+          <li *ngFor="let item of getCompositionAdvice('blue')">
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>

@@ -173,32 +173,51 @@ export function getMasterySort(draftPhase: DraftPhase, currentDraftRound: number
   }
 }
 
-export function checkForAvailableRoles(roles: (Role[] | undefined)[]): Role[] {
-  const availableRoles: Role[] = [...AllRoles];
-
-  roles.forEach(roleArr => {
-    if (roleArr) {
-      roleArr.forEach(role => {
-        const index = availableRoles.indexOf(role);
-        if (index !== -1) {
-          availableRoles.splice(index, 1);
-        }
-      });
-    }
-  });
-
-  const undefinedCount = roles.filter(roleArr => !roleArr).length;
-  if (undefinedCount > 0) {
-    roles.forEach(roleArr => {
-      if (roleArr && roleArr.length > 1) {
-        roleArr.forEach(role => {
-          if (!availableRoles.includes(role)) {
-            availableRoles.push(role);
-          }
-        });
-      }
-    });
+function backtrack(index: number, chosen: (string | undefined)[], solutions: Set<string>, arrays: (string[] | undefined)[]): void {
+  if (index === arrays.length) {
+    solutions.add(chosen.filter(val => val !== undefined).join(''));
+    return;
   }
 
-  return availableRoles;
+  if (arrays[index] === undefined) {
+    chosen.push(undefined);
+    backtrack(index + 1, chosen, solutions, arrays);
+    chosen.pop();
+  } else {
+    for (const value of arrays[index]!) {
+      chosen.push(value);
+      backtrack(index + 1, chosen, solutions, arrays);
+      chosen.pop();
+    }
+  }
+}
+
+function getPossibleStrings<T>(arrays: (string[] | undefined)[]): T[] {
+  const definedArrays = arrays.filter((arr): arr is string[] => arr !== undefined);
+  const uniqueStrings = [...new Set(definedArrays.flat())];
+  const possibleStrings: string[] = [];
+
+  for (const str of uniqueStrings) {
+    const newArrays = arrays.map(arr => (arr && arr.includes(str) ? arr : arr ? [...arr, str] : [str]));
+    const solutions = new Set<string>();
+    backtrack(0, [], solutions, newArrays);
+    if (solutions.size > definedArrays.length) {
+      possibleStrings.push(str);
+    }
+  }
+
+  return possibleStrings as T[];
+}
+
+export function checkForAvailableRoles(roleMap: (Role[] | undefined)[]): Role[] {
+  const undefinedCount = roleMap.filter(roleArr => !roleArr).length;
+  if (undefinedCount === 5) {
+    return [...AllRoles];
+  }
+  if (undefinedCount === 0) {
+    return [];
+  }
+  const roles = getPossibleStrings<Role>(roleMap);
+  console.log(roleMap, roles);
+  return roles;
 }

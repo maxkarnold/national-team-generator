@@ -316,4 +316,11 @@ export class DraftComponent {
 
     this.sortMasteryProp.set(getMasterySort(this.draftPhase, this.currentDraftRound, this.isRedSide));
   }
+
+  getCompositionAdvice(redOrBlue: 'red' | 'blue'): string[] {
+    if (redOrBlue === 'blue') {
+      return [''];
+    }
+    return [''];
+  }
 }
