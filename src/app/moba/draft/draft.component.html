@@ -26,6 +26,14 @@
       </label>
     </div>
 
+    <div class="form-control">
+      <label class="label cursor-pointer flex justify-center">
+        <span class="label-text">Fixed Team</span>
+        <input type="checkbox" class="toggle mx-2" formControlName="isRandomTeam" />
+        <span class="label-text">Random Team</span>
+      </label>
+    </div>
+
     <button class="btn btn-primary" (click)="startDraft()" type="button">Start Draft</button>
   </form>
 
@@ -78,7 +86,8 @@
     <div class="flex my-8 gap-4">
       <!-- BLUE SIDE -->
       <ul class="flex flex-col">
-        <li *ngFor="let champ of blueSideChamps()" class="my-4">
+        <!-- EMPTY CHAMP SLOT -->
+        <li *ngFor="let champ of blueSideChamps(); let i = index" class="my-4">
           <div class="relative" *ngIf="champ?.isPlaceholder">
             <div class="w-24 h-24 rounded bg-blue-500 text-neutral-content items-center justify-center flex">
               <span class="text-2xl">{{ champ.name }}</span>
@@ -92,17 +101,21 @@
               </ul>
             </div>
           </div>
-          <div class="avatar" *ngIf="!champ?.isPlaceholder">
+          <!-- FILLED CHAMP SLOT -->
+          <div *ngIf="!champ?.isPlaceholder" class="avatar cursor-pointer">
+            <div class="absolute right-full h-full w-6 mr-1">
+              <ul>
+                <li
+                  *ngFor="let role of champ.roles"
+                  class="w-6 aspect-square"
+                  [class.bg-neutral-700]="role === champ.selectedRole"
+                  (click)="selectRole(role, champ, true, i)">
+                  <img [src]="'assets/images/role_icons/' + role + '.webp'" />
+                </li>
+              </ul>
+            </div>
             <div class="relative w-24 rounded">
-              <img [src]="champ.img" class="w-full" />
-              <div class="absolute inset-0 flex items-end justify-start rounded" *ngIf="champ.roles?.length || 4 < 3">
-                <!-- Overlay content -->
-                <ul class="flex">
-                  <li *ngFor="let role of champ.roles" class="h-8">
-                    <img [src]="'assets/images/role_icons/' + role + '.webp'" />
-                  </li>
-                </ul>
-              </div>
+              <img [src]="champ.img" class="w-full" (click)="getChampionInfo(champ)" />
             </div>
           </div>
         </li>
@@ -133,19 +146,27 @@
                   </div>
                   <div>
                     <div class="font-bold">{{ champ.name }}</div>
-                    <!-- <div class="text-sm opacity-50">United States</div> -->
                   </div>
                   <ul class="flex">
                     <li *ngFor="let role of champ.roles" class="flex flex-col items-center w-8">
                       <img [src]="'assets/images/role_icons/' + role + '.webp'" />
-                      <span *ngIf="champ.roles.length > 1" class="text-xs">{{ getLetterRank(getMetaScore(champ, role)) }}</span>
                     </li>
                   </ul>
                 </div>
               </td>
               <td>{{ getLetterRank(getPickScore(champ)) }}</td>
-              <td>{{ getLetterRank(getMetaScore(champ)) }}</td>
-              <td>{{ getLetterRank(getMasteryScore(champ)) }}</td>
+              <td>
+                <span *ngFor="let role of champ.roles; let i = index">
+                  {{ getLetterRank(getMetaScore(champ, role)) }}
+                  <span *ngIf="i < champ.roles.length - 1"> / </span>
+                </span>
+              </td>
+              <td>
+                <span *ngFor="let role of champ.roles; let i = index">
+                  {{ getLetterRank(getMasteryScore(champ, role)) }}
+                  <span *ngIf="i < champ.roles.length - 1"> / </span>
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -153,7 +174,8 @@
 
       <!-- RED SIDE -->
       <ul class="flex flex-col">
-        <li *ngFor="let champ of redSideChamps()" class="my-4">
+        <li *ngFor="let champ of redSideChamps(); let i = index" class="my-4">
+          <!-- EMPTY CHAMP SLOT -->
           <div class="relative" *ngIf="champ?.isPlaceholder">
             <div class="w-24 h-24 rounded bg-red-500 text-neutral-content items-center justify-center flex">
               <span class="text-2xl">{{ champ.name }}</span>
@@ -167,38 +189,40 @@
               </ul>
             </div>
           </div>
-          <div class="avatar" *ngIf="!champ?.isPlaceholder">
+          <!-- FILLED CHAMP SLOT -->
+          <div *ngIf="!champ?.isPlaceholder" class="avatar cursor-pointer">
+            <div class="absolute left-full h-full w-6 ml-1">
+              <ul>
+                <li
+                  *ngFor="let role of champ.roles"
+                  class="w-6 aspect-square"
+                  [class.bg-neutral-700]="role === champ.selectedRole"
+                  (click)="selectRole(role, champ, false, i)">
+                  <img [src]="'assets/images/role_icons/' + role + '.webp'" />
+                </li>
+              </ul>
+            </div>
             <div class="relative w-24 rounded">
-              <img [src]="champ.img" class="w-full" />
-              <div class="absolute inset-0 flex items-end rounded" *ngIf="champ.roles?.length || 4 < 3">
-                <!-- Overlay content -->
-                <ul class="flex">
-                  <li *ngFor="let role of champ.roles" class="h-8">
-                    <img [src]="'assets/images/role_icons/' + role + '.webp'" />
-                  </li>
-                </ul>
-              </div>
+              <img [src]="champ.img" class="w-full" (click)="getChampionInfo(champ)" />
             </div>
           </div>
         </li>
       </ul>
     </div>
     <!-- ADVICE ON DRAFT FOR BOTH SIDES -->
-    <div class="flex">
-      <!-- BLUE SIDE -->
-      <div>
-        <h2>Blue Side</h2>
+    <div class="flex justify-between mb-8">
+      <div class="p-4 bg-blue-400 rounded-lg">
+        <h2 class="mb-2">Blue Side</h2>
         <ul>
-          <li *ngFor="let item of getCompositionAdvice('blue')">
+          <li *ngFor="let item of getCompositionAdvice(true)" class="mb-1">
             {{ item }}
           </li>
         </ul>
       </div>
-      <!-- RED SIDE -->
-      <div>
-        <h2>Red Side</h2>
+      <div class="text-right p-4 bg-red-400 rounded-lg">
+        <h2 class="mb-2">Red Side</h2>
         <ul>
-          <li *ngFor="let item of getCompositionAdvice('blue')">
+          <li *ngFor="let item of getCompositionAdvice(false)" class="mb-1">
             {{ item }}
           </li>
         </ul>

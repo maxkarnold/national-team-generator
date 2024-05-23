@@ -232,3 +232,9 @@ export function isTopNumOfMap<T>(map: Map<string, T>, searchString: string, topB
 export function calcWeightedSumRating(arr: number[], weight: number) {
   return sum(arr) * weight;
 }
+
+export function startsWithVowel(word: string): boolean {
+  const vowels = ['a', 'e', 'i', 'o', 'u'];
+  const firstLetter = word.toLowerCase().charAt(0);
+  return vowels.includes(firstLetter);
+}

@@ -1999,7 +1999,8 @@
     "id": 43,
     "name": "Sejuani",
     "roles": [
-      "jungle"
+      "jungle",
+      "support"
     ],
     "img": "assets/images/champion_icons/Sejuani.webp",
     "dmgType": "low mix",
@@ -2501,6 +2502,2452 @@
         "peel": false,
         "utility": false,
         "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 54,
+    "name": "Vayne",
+    "roles": [
+      "adc",
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Vayne.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 5,
+      "mid": 10,
+      "late": 15
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 55,
+    "name": "Nidalee",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Nidalee.webp",
+    "dmgType": "low ap",
+    "gameStateAttributes": {
+      "early": 14,
+      "mid": 10,
+      "late": 6
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": false,
+        "poke": true,
+        "siege": true,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": true,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 56,
+    "name": "Volibear",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Volibear.webp",
+    "dmgType": "low mix",
+    "gameStateAttributes": {
+      "early": 14,
+      "mid": 10,
+      "late": 6
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 57,
+    "name": "Lulu",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Lulu.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 9,
+      "late": 12
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": true,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 58,
+    "name": "Olaf",
+    "roles": [
+      "top",
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Olaf.webp",
+    "dmgType": "low ad",
+    "gameStateAttributes": {
+      "early": 13,
+      "mid": 11,
+      "late": 6
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 59,
+    "name": "Ziggs",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Ziggs.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 11,
+      "mid": 8,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 60,
+    "name": "Yone",
+    "roles": [
+      "top",
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Yone.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 7,
+      "mid": 9,
+      "late": 14
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 61,
+    "name": "Ivern",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Ivern.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 12,
+      "mid": 10,
+      "late": 8
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": true,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 62,
+    "name": "Yasuo",
+    "roles": [
+      "top",
+      "mid",
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/Yasuo.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 9,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 63,
+    "name": "Braum",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Braum.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": true,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 64,
+    "name": "Lillia",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Lillia.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 8,
+      "mid": 11,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 65,
+    "name": "Blitzcrank",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Blitzcrank.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 15,
+      "mid": 10,
+      "late": 5
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 66,
+    "name": "Galio",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Galio.webp",
+    "dmgType": "low ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": true,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 67,
+    "name": "Karthus",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Karthus.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 5,
+      "mid": 11,
+      "late": 14
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 68,
+    "name": "Kha'Zix",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Khazix.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 11,
+      "mid": 12,
+      "late": 7
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 69,
+    "name": "Kog'Maw",
+    "roles": [
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/KogMaw.webp",
+    "dmgType": "high mix",
+    "gameStateAttributes": {
+      "early": 5,
+      "mid": 10,
+      "late": 15
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": true,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 70,
+    "name": "Sion",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Sion.webp",
+    "dmgType": "low mix",
+    "gameStateAttributes": {
+      "early": 12,
+      "mid": 9,
+      "late": 9
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": true,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 71,
+    "name": "Veigar",
+    "roles": [
+      "mid",
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Veigar.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 5,
+      "mid": 10,
+      "late": 15
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 72,
+    "name": "Kindred",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Kindred.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 6,
+      "mid": 10,
+      "late": 14
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 73,
+    "name": "Brand",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Brand.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 12,
+      "mid": 9,
+      "late": 9
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 74,
+    "name": "Gragas",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Gragas.webp",
+    "dmgType": "low ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": true,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 75,
+    "name": "Graves",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Graves.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 9,
+      "late": 12
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 76,
+    "name": "Jayce",
+    "roles": [
+      "top",
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Jayce.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 11,
+      "mid": 12,
+      "late": 7
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": true,
+        "dps": false,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 77,
+    "name": "Sylas",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Sylas.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 78,
+    "name": "Swain",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Swain.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 79,
+    "name": "Gnar",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Gnar.webp",
+    "dmgType": "low ad",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 80,
+    "name": "Gwen",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Gwen.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 7,
+      "mid": 10,
+      "late": 13
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 81,
+    "name": "Ryze",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Ryze.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 5,
+      "mid": 14,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 82,
+    "name": "Bel'Veth",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Belveth.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 8,
+      "late": 12
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 83,
+    "name": "Diana",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Diana.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 8,
+      "mid": 12,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 84,
+    "name": "Talon",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Talon.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 13,
+      "late": 7
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 85,
+    "name": "Trundle",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Trundle.webp",
+    "dmgType": "low ad",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 11,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 86,
+    "name": "LeBlanc",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Leblanc.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 12.2,
+      "mid": 7,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": false,
+        "poke": true,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 87,
+    "name": "Annie",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Annie.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 12,
+      "late": 8
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": true,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 88,
+    "name": "Vex",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Vex.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 12,
+      "late": 8
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 89,
+    "name": "Irelia",
+    "roles": [
+      "mid",
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Irelia.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 12,
+      "late": 9
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 90,
+    "name": "Syndra",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Syndra.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 7,
+      "mid": 10,
+      "late": 13
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": false,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 91,
+    "name": "Vel'koz",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Velkoz.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 12,
+      "mid": 10,
+      "late": 8
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 92,
+    "name": "Zed",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Zed.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 11,
+      "mid": 9,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 93,
+    "name": "Zilean",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Zilean.webp",
+    "dmgType": "low ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": true,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 94,
+    "name": "Jhin",
+    "roles": [
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/Jhin.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": false,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 95,
+    "name": "Samira",
+    "roles": [
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/Samira.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 11,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 96,
+    "name": "Caitlyn",
+    "roles": [
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/Caitlyn.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 13,
+      "mid": 5,
+      "late": 12
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": true,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 97,
+    "name": "Nilah",
+    "roles": [
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/Nilah.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 10,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 98,
+    "name": "Seraphine",
+    "roles": [
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/Seraphine.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 8,
+      "mid": 10,
+      "late": 12
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": true,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 99,
+    "name": "Sivir",
+    "roles": [
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/Sivir.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 5,
+      "mid": 10,
+      "late": 15
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": true,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": true,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 100,
+    "name": "Twitch",
+    "roles": [
+      "adc"
+    ],
+    "img": "assets/images/champion_icons/Twitch.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 5,
+      "mid": 10,
+      "late": 15
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 101,
+    "name": "Bard",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Bard.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 10,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 102,
+    "name": "Leona",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Leona.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": true,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    }
+  },
+  {
+    "id": 103,
+    "name": "Thresh",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Thresh.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 11,
+      "mid": 10,
+      "late": 9
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": true,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 104,
+    "name": "Heimerdinger",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Heimerdinger.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 13,
+      "mid": 9,
+      "late": 8
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 105,
+    "name": "Janna",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Janna.webp",
+    "dmgType": "utility",
+    "gameStateAttributes": {
+      "early": 8,
+      "mid": 11,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": true,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": true,
+        "utility": true,
+        "zoneControl": true
+      }
+    }
+  },
+  {
+    "id": 106,
+    "name": "Pyke",
+    "roles": [
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Pyke.webp",
+    "dmgType": "low ad",
+    "gameStateAttributes": {
+      "early": 13,
+      "mid": 10,
+      "late": 7
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
       }
     }
   }
