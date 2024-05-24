@@ -1,6 +1,6 @@
 <div class="flex flex-col items-center">
   <!-- DRAFT FORM -->
-  <form class="flex flex-col w-full max-w-96 sm:w-2/5" [formGroup]="draftForm" *ngIf="!draftStarted">
+  <form class="flex flex-col w-full" [formGroup]="draftForm" *ngIf="!draftStarted">
     <label class="form-control w-full max-w-xs m-2 self-center">
       <div class="label">
         <span class="label-text">Selected Patch</span>
@@ -34,6 +34,37 @@
       </label>
     </div>
 
+    <div>
+      <h1 class="text-xl font-bold">Current Team Strengths</h1>
+      <table class="table table-zebra table-xs">
+        <tbody>
+          <tr *ngFor="let player of masteriesForSide" class="hover">
+            <th>{{ player.mainRole | uppercase }}</th>
+            <ng-container *ngFor="let champ of getTopChampsInMeta(player.championMastery, player.mainRole); let i = index">
+              <td *ngIf="champ; else emptySlot">
+                <div class="flex items-center gap-3">
+                  <div class="avatar">
+                    <div class="rounded w-10 sm:w-12">
+                      <img [src]="champ.img" [alt]="champ.name" />
+                    </div>
+                  </div>
+                  <div *ngIf="screenWidth > 640">
+                    <div class="font-bold">{{ champ.name }}</div>
+                  </div>
+                </div>
+              </td>
+              <ng-template #emptySlot>
+                <td></td>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngFor="let i of [].constructor(3 - getTopChampsInMeta(player.championMastery, player.mainRole).length)">
+              <td></td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <button class="btn btn-primary" (click)="startDraft()" type="button">Start Draft</button>
   </form>
 
@@ -42,9 +73,9 @@
     <h1 class="text-center text-2xl mb-4">{{ draftPhase }}</h1>
 
     <!-- BAN DASHBOARD -->
-    <div class="flex">
-      <ul class="flex">
-        <li *ngFor="let champ of blueSideBans()" class="mx-2">
+    <div class="flex flex-col gap-4 md:flex-row md:gap-0">
+      <ul class="flex justify-around md:justify-normal">
+        <li *ngFor="let champ of blueSideBans()" class="sm:mx-2">
           <div class="avatar placeholder" *ngIf="champ?.isPlaceholder">
             <div class="w-12 rounded bg-blue-500 text-neutral-content">
               <span class="text-2xl">{{ champ.name }}</span>
@@ -57,7 +88,7 @@
           </div>
         </li>
       </ul>
-      <label class="input input-bordered flex items-center gap-2 flex-1">
+      <label class="input input-lg input-bordered flex items-center gap-2 flex-1 order-2 md:order-none md:input-md">
         <input type="text" class="grow" placeholder="Search" [formControl]="searchControl" id="searchControl" />
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
           <path
@@ -66,8 +97,8 @@
             clip-rule="evenodd" />
         </svg>
       </label>
-      <ul class="flex">
-        <li *ngFor="let champ of redSideBans()" class="mx-2">
+      <ul class="flex justify-around md:justify-normal">
+        <li *ngFor="let champ of redSideBans()" class="sm:mx-2">
           <div class="avatar placeholder" *ngIf="champ?.isPlaceholder">
             <div class="w-12 rounded bg-red-500 text-neutral-content">
               <span class="text-2xl">{{ champ.name }}</span>
@@ -83,27 +114,19 @@
     </div>
 
     <!-- Selected Champs and Table -->
-    <div class="flex my-8 gap-4">
-      <!-- BLUE SIDE -->
-      <ul class="flex flex-col">
-        <!-- EMPTY CHAMP SLOT -->
+    <div class="flex pt-8 pb-16 gap-16 md:pb-8 md:gap-4 flex-col md:flex-row">
+      <!-- Blue SIDE -->
+      <ul class="flex justify-around flex-wrap order-1 md:mb-0 md:order-none md:flex-col md:justify-normal">
         <li *ngFor="let champ of blueSideChamps(); let i = index" class="my-4">
+          <!-- EMPTY CHAMP SLOT -->
           <div class="relative" *ngIf="champ?.isPlaceholder">
-            <div class="w-24 h-24 rounded bg-blue-500 text-neutral-content items-center justify-center flex">
-              <span class="text-2xl">{{ champ.name }}</span>
-            </div>
-            <div class="absolute inset-0 flex items-end rounded overflow-hidden">
-              <!-- Overlay content -->
-              <ul class="flex" *ngIf="champ.name">
-                <li *ngFor="let c of getTopChamps(champ.name, true)" class="h-6">
-                  <img [src]="c.img" class="h-full w-full object-cover" />
-                </li>
-              </ul>
+            <div class="w-12 h-12 md:w-24 md:h-24 rounded bg-blue-500 text-neutral-content items-center justify-center flex">
+              <span class="text-xs md:text-2xl">B{{ i + 1 }}</span>
             </div>
           </div>
           <!-- FILLED CHAMP SLOT -->
           <div *ngIf="!champ?.isPlaceholder" class="avatar cursor-pointer">
-            <div class="absolute right-full h-full w-6 mr-1">
+            <div class="absolute right-1/4 top-full w-6 mt-1 md:mt-0 md:top-0 md:right-full h-[4.5rem] md:h-full md:mr-2">
               <ul>
                 <li
                   *ngFor="let role of champ.roles"
@@ -114,8 +137,8 @@
                 </li>
               </ul>
             </div>
-            <div class="relative w-24 rounded">
-              <img [src]="champ.img" class="w-full" (click)="getChampionInfo(champ)" />
+            <div class="relative w-12 md:w-24 rounded">
+              <img [src]="champ.img" class="w-full" (click)="getChampionFromId(champ.id)" />
             </div>
           </div>
         </li>
@@ -123,16 +146,17 @@
 
       <!-- TABLE -->
       <div class="overflow-x-auto max-h-[68vh] flex-1">
-        <table class="table table-pin-rows table-zebra">
+        <table class="table table-pin-rows table-zebra table-xs sm:table-md">
           <thead>
             <tr>
-              <th *ngFor="let header of headers">
-                <div>
-                  <span class="cursor-pointer">{{
-                    draftPhase.includes('Ban') && header.name === 'Score' ? 'Ban Score' : header.name
-                  }}</span>
-                </div>
+              <th>
+                {{ screenWidth > 640 ? 'Champion / Roles' : 'Champion' }}
               </th>
+              <th>
+                <span>{{ draftPhase.includes('Ban') ? 'Ban Score' : 'Score' }}</span>
+              </th>
+              <th>Meta</th>
+              <th>Mastery</th>
             </tr>
           </thead>
           <tbody>
@@ -140,15 +164,15 @@
               <td>
                 <div class="flex items-center gap-3">
                   <div class="avatar">
-                    <div class="rounded w-12">
+                    <div class="rounded w-10 sm:w-12">
                       <img [src]="champ.img" [alt]="champ.name" />
                     </div>
                   </div>
-                  <div>
+                  <div *ngIf="screenWidth > 640">
                     <div class="font-bold">{{ champ.name }}</div>
                   </div>
                   <ul class="flex">
-                    <li *ngFor="let role of champ.roles" class="flex flex-col items-center w-8">
+                    <li *ngFor="let role of champ.roles" class="flex flex-col items-center w-4 sm:w-8">
                       <img [src]="'assets/images/role_icons/' + role + '.webp'" />
                     </li>
                   </ul>
@@ -173,25 +197,17 @@
       </div>
 
       <!-- RED SIDE -->
-      <ul class="flex flex-col">
+      <ul class="flex justify-around flex-wrap order-1 md:mb-0 md:order-none md:flex-col md:justify-normal">
         <li *ngFor="let champ of redSideChamps(); let i = index" class="my-4">
           <!-- EMPTY CHAMP SLOT -->
           <div class="relative" *ngIf="champ?.isPlaceholder">
-            <div class="w-24 h-24 rounded bg-red-500 text-neutral-content items-center justify-center flex">
-              <span class="text-2xl">{{ champ.name }}</span>
-            </div>
-            <div class="absolute inset-0 flex items-end rounded overflow-hidden">
-              <!-- Overlay content -->
-              <ul class="flex" *ngIf="champ.name">
-                <li *ngFor="let c of getTopChamps(champ.name, false)" class="h-6">
-                  <img [src]="c.img" class="h-full w-full object-cover" />
-                </li>
-              </ul>
+            <div class="w-12 h-12 md:w-24 md:h-24 rounded bg-red-500 text-neutral-content items-center justify-center flex">
+              <span class="text-xs md:text-2xl">R{{ i + 1 }}</span>
             </div>
           </div>
           <!-- FILLED CHAMP SLOT -->
           <div *ngIf="!champ?.isPlaceholder" class="avatar cursor-pointer">
-            <div class="absolute left-full h-full w-6 ml-1">
+            <div class="absolute left-1/4 top-full mt-1 md:mt-0 md:top-0 md:left-full h-[4.5rem] md:h-full w-6 md:ml-2">
               <ul>
                 <li
                   *ngFor="let role of champ.roles"
@@ -202,25 +218,25 @@
                 </li>
               </ul>
             </div>
-            <div class="relative w-24 rounded">
-              <img [src]="champ.img" class="w-full" (click)="getChampionInfo(champ)" />
+            <div class="relative w-12 md:w-24 rounded">
+              <img [src]="champ.img" class="w-full" (click)="getChampionFromId(champ.id)" />
             </div>
           </div>
         </li>
       </ul>
     </div>
     <!-- ADVICE ON DRAFT FOR BOTH SIDES -->
-    <div class="flex justify-between mb-8">
-      <div class="p-4 bg-blue-400 rounded-lg">
-        <h2 class="mb-2">Blue Side</h2>
+    <div class="flex flex-col md:flex-row justify-between">
+      <div class="p-4 bg-blue-400 rounded-lg mb-8">
+        <h2 class="mb-2 font-bold">Blue Side</h2>
         <ul>
           <li *ngFor="let item of getCompositionAdvice(true)" class="mb-1">
             {{ item }}
           </li>
         </ul>
       </div>
-      <div class="text-right p-4 bg-red-400 rounded-lg">
-        <h2 class="mb-2">Red Side</h2>
+      <div class="md:text-right p-4 bg-red-400 rounded-lg mb-8">
+        <h2 class="mb-2 font-bold">Red Side</h2>
         <ul>
           <li *ngFor="let item of getCompositionAdvice(false)" class="mb-1">
             {{ item }}

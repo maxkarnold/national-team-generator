@@ -1,4 +1,4 @@
-import { Component, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Component, HostListener, Signal, WritableSignal, computed, signal } from '@angular/core';
 import * as championsJson from 'assets/json/moba/champions.json';
 import { Champion } from '../champion/champion.model';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -17,6 +17,9 @@ import {
   DraftPlayer,
   DraftPhase,
   CompStyleStats,
+  RankedChampions,
+  PatchVersion,
+  patchMSI24,
 } from './draft.model';
 import {
   checkForAvailableRoles,
@@ -30,7 +33,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role } from '../player/player.model';
 import { startsWithVowel } from '@shared/utils';
-import { capitalize } from 'lodash-es';
+import { capitalize, round, sum } from 'lodash-es';
 
 @Component({
   selector: 'app-draft',
@@ -38,6 +41,7 @@ import { capitalize } from 'lodash-es';
   styleUrl: './draft.component.scss',
 })
 export class DraftComponent {
+  screenWidth: number;
   draftStarted = false;
   draftPhase: DraftPhase = 'Blue Ban 1';
   currentDraftRound = 1;
@@ -45,12 +49,14 @@ export class DraftComponent {
   headers = draftHeaders;
 
   draftForm: FormGroup = new FormGroup({
-    patchVersion: new FormControl<string>('MSI 24'),
+    patchVersion: new FormControl<PatchVersion>('MSI 24'),
     isRedSide: new FormControl<boolean>(false),
     useAiOpponent: new FormControl<boolean>({ value: false, disabled: true }),
     isRandomTeam: new FormControl<boolean>({ value: true, disabled: true }),
   });
 
+  blueSideDraftScores: number[] = [];
+  redSideDraftScores: number[] = [];
   blueSideMasteries: DraftPlayer[] = [];
   redSideMasteries: DraftPlayer[] = [];
   blueSidePlayers: {
@@ -98,13 +104,33 @@ export class DraftComponent {
   redSideChamps: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftPicks]);
   blueSideChamps: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftPicks]);
 
-  constructor() {}
+  constructor() {
+    this.screenWidth = window.innerWidth;
+    this.getScreenSize();
+    const champions = Array.from(championsJson) as Champion[];
+    const playerMasteries: DraftPlayer[] = this.isRandomTeam ? getRandomMasteries() : [...defaultPlayerMasteries];
+    const opponentMasteries: DraftPlayer[] = this.isRandomTeam ? getRandomMasteries() : [...defaultOpponentMasteries];
+    this.champions = getDraftChampions(champions, this.patchVersion, playerMasteries, opponentMasteries);
+
+    this.blueSideMasteries = this.isRedSide ? opponentMasteries : playerMasteries;
+    this.redSideMasteries = this.isRedSide ? playerMasteries : opponentMasteries;
+    console.log(this.blueSideMasteries);
+    console.log(this.redSideMasteries);
+
+    for (const player of this.blueSideMasteries) {
+      this.getTopChampsForEachRole(player, true);
+    }
+
+    for (const player of this.redSideMasteries) {
+      this.getTopChampsForEachRole(player, false);
+    }
+  }
 
   get isRedSide(): boolean {
     return this.draftForm.get('isRedSide')?.value;
   }
 
-  get patchVersion(): string {
+  get patchVersion(): PatchVersion {
     return this.draftForm.get('patchVersion')?.value;
   }
 
@@ -116,8 +142,18 @@ export class DraftComponent {
     return this.draftForm.get('isRandomTeam')?.value;
   }
 
-  getChampionInfo(champ: Partial<DraftChampion>) {
-    console.log(champ);
+  get masteriesForSide(): DraftPlayer[] {
+    return this.isRedSide ? this.redSideMasteries : this.blueSideMasteries;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+    this.screenWidth = window.innerWidth;
+  }
+
+  getChampionFromId(id: number | undefined) {
+    const champion = this.champions.find(c => c.id === id);
+    return champion;
   }
 
   selectRole(role: Role, champ: Partial<DraftChampion>, isBlueSide: boolean, index: number) {
@@ -147,6 +183,55 @@ export class DraftComponent {
     } else {
       return 'F';
     }
+  }
+
+  getPreciseLetterRank(rating: number): LetterRank {
+    if (rating > 19) {
+      return 'S+';
+    }
+    if (rating > 18) {
+      return 'S';
+    }
+    if (rating > 17) {
+      return 'S-';
+    }
+    if (rating >= 16) {
+      return 'A+';
+    }
+    if (rating >= 15) {
+      return 'A';
+    }
+    if (rating >= 14) {
+      return 'A-';
+    }
+    if (rating >= 12) {
+      return 'B+';
+    }
+    if (rating >= 11) {
+      return 'B';
+    }
+    if (rating >= 10) {
+      return 'B-';
+    }
+    if (rating >= 8) {
+      return 'C+';
+    }
+    if (rating >= 7) {
+      return 'C';
+    }
+    if (rating >= 6) {
+      return 'C-';
+    }
+    if (rating >= 4) {
+      return 'D+';
+    }
+    if (rating >= 3) {
+      return 'D';
+    }
+    if (rating >= 2) {
+      return 'D-';
+    }
+    return 'F';
   }
 
   sortChampions = (a: DraftChampion, b: DraftChampion) => {
@@ -207,13 +292,15 @@ export class DraftComponent {
     return avg;
   }
 
-  getTopChamps(role: string, isBlueSide: boolean): DraftChampion[] {
-    const key = role.toLowerCase();
-    if (isBlueSide) {
-      return this.blueSidePlayers[key].slice(0, 4);
-    } else {
-      return this.redSidePlayers[key].slice(0, 4);
+  getTopChampsInMeta(masteries: RankedChampions, role: Role): DraftChampion[] {
+    if (this.patchVersion !== 'MSI 24') {
+      return [];
     }
+    const masteredChamps = [...masteries.s, ...masteries.a];
+    const metaChamps = [...patchMSI24[role].s, ...patchMSI24[role].a, ...patchMSI24[role].b];
+    const mainChamps = masteredChamps.filter(id => metaChamps.includes(id)).map(id => this.getChampionFromId(id));
+    const filteredChamps: DraftChampion[] = [...mainChamps].filter((champ): champ is DraftChampion => !!champ);
+    return filteredChamps.slice(0, 3);
   }
 
   getTopChampsForEachRole(player: DraftPlayer, isBlueSide: boolean) {
@@ -236,21 +323,7 @@ export class DraftComponent {
   startDraft() {
     console.log('start draft');
     this.draftStarted = true;
-    const champions = Array.from(championsJson) as Champion[];
-    const playerMasteries: DraftPlayer[] = this.isRandomTeam ? getRandomMasteries() : [...defaultPlayerMasteries];
-    const opponentMasteries: DraftPlayer[] = this.isRandomTeam ? getRandomMasteries() : [...defaultOpponentMasteries];
-    this.champions = getDraftChampions(champions, this.patchVersion, playerMasteries, opponentMasteries);
 
-    this.blueSideMasteries = this.isRedSide ? opponentMasteries : playerMasteries;
-    this.redSideMasteries = this.isRedSide ? playerMasteries : opponentMasteries;
-
-    for (const player of this.blueSideMasteries) {
-      this.getTopChampsForEachRole(player, true);
-    }
-
-    for (const player of this.redSideMasteries) {
-      this.getTopChampsForEachRole(player, false);
-    }
     console.log('blueSide', this.blueSideMasteries, '\nredSide', this.redSideMasteries);
     console.log('blueSide', this.blueSidePlayers, '\nredSide', this.redSidePlayers);
   }
@@ -259,7 +332,7 @@ export class DraftComponent {
     if (this.currentDraftRound > 20) {
       return;
     }
-
+    const draftPickScore = this.getPickScore(champ);
     console.log('choose champion', this.getPickScore(champ), `Champ ID: ${champ.id}`);
     // BANS
     // red bans on 2, 4, 6, 13, 15
@@ -291,11 +364,13 @@ export class DraftComponent {
         const arr = [...this.redSideChamps()];
         const index = redSidePicks.indexOf(this.currentDraftRound);
         arr[index] = champ;
+        this.redSideDraftScores.push(draftPickScore);
         this.redSideChamps.set(arr);
       } else {
         const arr = [...this.blueSideChamps()];
         const index = blueSidePicks.indexOf(this.currentDraftRound);
         arr[index] = champ;
+        this.blueSideDraftScores.push(draftPickScore);
         this.blueSideChamps.set(arr);
       }
     }
@@ -351,12 +426,31 @@ export class DraftComponent {
     // team comp should have balanced damage sources (2 low dmg of each or 1 high dmg of each type, mix would count as half, so low mix is 1/2 a low dmg and high mix is equal to low dmg)
     // team comp should have some early, mid and late game champs to be more balanced, it can be skewed but not too much
     // team comp should have attributes that fill one comp style
+
     const selectedTeamChamps = isBlueSide ? [...(blueSideChamps as DraftChampion[])] : [...(redSideChamps as DraftChampion[])];
+    const { needsMoreEarlyChamps, needsMoreMidChamps, needsMoreLateChamps } = needsMoreScalingAdvice(selectedTeamChamps);
     const { needsMoreAdDmg, needsMoreApDmg } = needsMoreDmgAdvice(selectedTeamChamps);
+
     const compStyles: CompStyleStats = getTeamCompStyleScoring(selectedTeamChamps);
     const sortedComps = Object.entries(compStyles)
       .map(([a, b]) => [capitalize(a), b])
       .sort((a, b) => b[1] - a[1]);
+
+    if (selectedTeamChamps.length === 5) {
+      const scores = isBlueSide ? [...this.blueSideDraftScores] : [...this.redSideDraftScores];
+      let grade = sum(scores) / 5;
+      const allNegativeAdvice = [needsMoreEarlyChamps, needsMoreMidChamps, needsMoreLateChamps, needsMoreAdDmg, needsMoreApDmg];
+      for (let i = 0; i < allNegativeAdvice.length; i++) {
+        grade -= allNegativeAdvice[i] ? 1.5 : 0;
+      }
+      if (sortedComps[0][1] > 25) {
+        grade += 1.5;
+      } else if (sortedComps[0][1] > 30) {
+        grade += 3;
+      }
+      // advice.push(`This draft scores ${startsWithVowel(finalGrade) || finalGrade[0] === 'S' ? 'an' : 'a'} ${finalGrade} grade.`);
+      advice.push(`This draft scores ${round(grade, 1)} of 20.`);
+    }
 
     if (needsMoreAdDmg) {
       advice.push('You need more AD damage sources.');
@@ -369,8 +463,6 @@ export class DraftComponent {
       advice.push(`Your team is most suited to ${startsWithVowel(sortedComps[0][0]) ? 'an' : 'a'} ${sortedComps[0][0]} composition.`);
       return advice;
     }
-
-    const { needsMoreEarlyChamps, needsMoreMidChamps, needsMoreLateChamps } = needsMoreScalingAdvice(selectedTeamChamps);
 
     if (needsMoreEarlyChamps) {
       advice.push('Your team lacks Early game capability.');

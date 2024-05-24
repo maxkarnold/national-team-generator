@@ -6,6 +6,7 @@ import {
   DraftPhase,
   DraftPlayer,
   PatchStrength,
+  PatchVersion,
   RankedChampions,
   blueSideBans,
   blueSidePicks,
@@ -88,7 +89,7 @@ export function getAllMasteries(champ: Champion, playerMasteries: DraftPlayer[])
 
 export function getDraftChampions(
   champions: Champion[],
-  patchVersion: string,
+  patchVersion: PatchVersion,
   playerMasteries: DraftPlayer[],
   opponentMasteries: DraftPlayer[]
 ): DraftChampion[] {
@@ -303,7 +304,6 @@ export function getRandomMasteries(): DraftPlayer[] {
     if (Object.prototype.hasOwnProperty.call(patchMSI24, role)) {
       const { s, a, b, c, d } = patchMSI24[role as keyof PatchStrength];
       const mainChamps = [...shuffle(s.concat(a, b))];
-      console.log(mainChamps);
       const offMetaChamps = [...shuffle(c)];
       const weirdChamps = [...shuffle(d)];
       // Randomly assign championMastery for the current role

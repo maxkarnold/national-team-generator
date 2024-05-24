@@ -48,8 +48,9 @@ export interface CompStyleData {
 }
 
 export type CompStyle = 'engage' | 'pick' | 'protect' | 'siege' | 'split';
+export type PatchVersion = 'MSI 24';
 
-export type LetterRank = 'S' | 'A' | 'B' | 'C' | 'D' | 'F' | 'N/A';
+export type LetterRank = 'S' | 'A' | 'B' | 'C' | 'D' | 'F' | 'N/A' | 'S+' | 'S-' | 'A+' | 'A-' | 'B+' | 'B-' | 'C+' | 'C-' | 'D+' | 'D-';
 export type DraftPhase =
   | 'Blue Ban 1'
   | 'Blue Ban 2'
