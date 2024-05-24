@@ -7,10 +7,10 @@ import {
   draftHeaders,
   emptyDraftBans,
   emptyDraftPicks,
-  blueSideBans,
-  blueSidePicks,
-  redSideBans,
-  redSidePicks,
+  blueSideBanRounds,
+  blueSidePickRounds,
+  redSideBanRounds,
+  redSidePickRounds,
   LetterRank,
   defaultOpponentMasteries,
   defaultPlayerMasteries,
@@ -33,7 +33,8 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role } from '../player/player.model';
 import { startsWithVowel } from '@shared/utils';
-import { capitalize, round, sum } from 'lodash-es';
+import { capitalize, round, shuffle, sum } from 'lodash-es';
+import { MobaService } from '../moba.service';
 
 @Component({
   selector: 'app-draft',
@@ -45,14 +46,26 @@ export class DraftComponent {
   draftStarted = false;
   draftPhase: DraftPhase = 'Blue Ban 1';
   currentDraftRound = 1;
+  aiTimer = -1;
   champions: DraftChampion[] = [];
   headers = draftHeaders;
+  notification = {
+    isActive: false,
+    message: '',
+    type: 'success',
+  };
+  isAiChoosing = false;
+  // maybe should clean this up
+  blueSideBanRounds = blueSideBanRounds;
+  redSideBanRounds = redSideBanRounds;
+  blueRounds = [...blueSideBanRounds, ...blueSidePickRounds];
+  redRounds = [...redSideBanRounds, ...redSidePickRounds];
 
   draftForm: FormGroup = new FormGroup({
     patchVersion: new FormControl<PatchVersion>('MSI 24'),
-    isRedSide: new FormControl<boolean>(false),
-    useAiOpponent: new FormControl<boolean>({ value: false, disabled: true }),
-    isRandomTeam: new FormControl<boolean>({ value: true, disabled: true }),
+    userIsRedSide: new FormControl<boolean>(false),
+    useAiOpponent: new FormControl<boolean>(false),
+    useRandomTeam: new FormControl<boolean>({ value: true, disabled: true }),
   });
 
   blueSideDraftScores: number[] = [];
@@ -104,16 +117,26 @@ export class DraftComponent {
   redSideChamps: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftPicks]);
   blueSideChamps: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftPicks]);
 
-  constructor() {
+  constructor(private service: MobaService) {
+    const draftMetaData = this.service.getLocalStorage<{
+      userIsRedSide: boolean;
+      patchVersion: PatchVersion;
+      useAiOpponent: boolean;
+      useRandomTeam: boolean;
+    }>('draft_metaData');
+    if (draftMetaData) {
+      this.draftForm.setValue(draftMetaData);
+    }
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
+
     const champions = Array.from(championsJson) as Champion[];
-    const playerMasteries: DraftPlayer[] = this.isRandomTeam ? getRandomMasteries() : [...defaultPlayerMasteries];
-    const opponentMasteries: DraftPlayer[] = this.isRandomTeam ? getRandomMasteries() : [...defaultOpponentMasteries];
+    const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries() : [...defaultPlayerMasteries];
+    const opponentMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries() : [...defaultOpponentMasteries];
     this.champions = getDraftChampions(champions, this.patchVersion, playerMasteries, opponentMasteries);
 
-    this.blueSideMasteries = this.isRedSide ? opponentMasteries : playerMasteries;
-    this.redSideMasteries = this.isRedSide ? playerMasteries : opponentMasteries;
+    this.blueSideMasteries = this.userIsRedSide ? opponentMasteries : playerMasteries;
+    this.redSideMasteries = this.userIsRedSide ? playerMasteries : opponentMasteries;
     console.log(this.blueSideMasteries);
     console.log(this.redSideMasteries);
 
@@ -126,8 +149,8 @@ export class DraftComponent {
     }
   }
 
-  get isRedSide(): boolean {
-    return this.draftForm.get('isRedSide')?.value;
+  get userIsRedSide(): boolean {
+    return this.draftForm.get('userIsRedSide')?.value;
   }
 
   get patchVersion(): PatchVersion {
@@ -138,17 +161,87 @@ export class DraftComponent {
     return this.draftForm.get('useAiOpponent')?.value;
   }
 
-  get isRandomTeam(): boolean {
-    return this.draftForm.get('isRandomTeam')?.value;
+  get useRandomTeam(): boolean {
+    return this.draftForm.get('useRandomTeam')?.value;
   }
 
   get masteriesForSide(): DraftPlayer[] {
-    return this.isRedSide ? this.redSideMasteries : this.blueSideMasteries;
+    return this.userIsRedSide ? this.redSideMasteries : this.blueSideMasteries;
   }
 
   @HostListener('window:resize', ['$event'])
   getScreenSize() {
     this.screenWidth = window.innerWidth;
+  }
+
+  startDraft() {
+    this.draftStarted = true;
+    this.service.setLocalStorage('draft_metaData', {
+      userIsRedSide: this.userIsRedSide,
+      useAiOpponent: this.useAiOpponent,
+      patchVersion: this.patchVersion,
+      useRandomTeam: this.useRandomTeam,
+    });
+
+    console.log('blueSide', this.blueSideMasteries, '\nredSide', this.redSideMasteries);
+    console.log('blueSide', this.blueSidePlayers, '\nredSide', this.redSidePlayers);
+    this.checkAndStartAiTimer();
+  }
+
+  resetDraft() {
+    this.draftStarted = false;
+    this.draftPhase = 'Blue Ban 1';
+    this.currentDraftRound = 1;
+    this.aiTimer = -1;
+    this.champions = [];
+    const champions = Array.from(championsJson) as Champion[];
+    const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries() : [...defaultPlayerMasteries];
+    const opponentMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries() : [...defaultOpponentMasteries];
+    this.champions = getDraftChampions(champions, this.patchVersion, playerMasteries, opponentMasteries);
+
+    this.blueSideMasteries = this.userIsRedSide ? opponentMasteries : playerMasteries;
+    this.redSideMasteries = this.userIsRedSide ? playerMasteries : opponentMasteries;
+
+    this.isAiChoosing = false;
+
+    this.blueSideDraftScores = [];
+    this.redSideDraftScores = [];
+    this.blueSidePlayers = {
+      top: [],
+      jungle: [],
+      mid: [],
+      adc: [],
+      support: [],
+    };
+    this.redSidePlayers = {
+      top: [],
+      jungle: [],
+      mid: [],
+      adc: [],
+      support: [],
+    };
+
+    this.redSideBans.set([...emptyDraftBans]);
+    this.blueSideBans.set([...emptyDraftBans]);
+    this.redSideChamps.set([...emptyDraftPicks]);
+    this.blueSideChamps.set([...emptyDraftPicks]);
+  }
+
+  callNotification(message: string, color = 'green') {
+    if (color === 'blue') {
+      this.notification.type = 'info';
+    } else if (color === 'red') {
+      this.notification.type = 'error';
+    } else {
+      this.notification.type = 'success';
+    }
+
+    this.notification.message = message;
+    this.notification.isActive = true;
+    setTimeout(() => {
+      this.notification.isActive = false;
+      this.notification.message = '';
+    }, 4000);
   }
 
   getChampionFromId(id: number | undefined) {
@@ -157,12 +250,13 @@ export class DraftComponent {
   }
 
   selectRole(role: Role, champ: Partial<DraftChampion>, isBlueSide: boolean, index: number) {
-    champ.selectedRole = role;
-    if (isBlueSide) {
+    if ((isBlueSide && !this.userIsRedSide) || !this.useAiOpponent) {
+      champ.selectedRole = role;
       const updatedChamps = [...this.blueSideChamps()];
       updatedChamps[index] = champ;
       this.blueSideChamps.set(updatedChamps);
-    } else {
+    } else if ((!isBlueSide && this.userIsRedSide) || !this.useAiOpponent) {
+      champ.selectedRole = role;
       const updatedChamps = [...this.redSideChamps()];
       updatedChamps[index] = champ;
       this.redSideChamps.set(updatedChamps);
@@ -243,7 +337,7 @@ export class DraftComponent {
   };
 
   getMasteryScore(champ: DraftChampion, specificRole?: Role) {
-    const ratings = getChampMasteries(champ, this.draftPhase, this.currentDraftRound, this.isRedSide);
+    const ratings = getChampMasteries(champ, this.draftPhase, this.currentDraftRound, this.userIsRedSide);
     if (!specificRole) {
       return Math.max(...ratings);
     }
@@ -320,18 +414,67 @@ export class DraftComponent {
     }
   }
 
-  startDraft() {
-    console.log('start draft');
-    this.draftStarted = true;
+  checkAndStartAiTimer() {
 
-    console.log('blueSide', this.blueSideMasteries, '\nredSide', this.redSideMasteries);
-    console.log('blueSide', this.blueSidePlayers, '\nredSide', this.redSidePlayers);
-  }
-
-  chooseChampion(champ: DraftChampion) {
-    if (this.currentDraftRound > 20) {
+    console.log(this.currentDraftRound, blueSidePickRounds, redSidePickRounds);
+    console.log('isAiChoosing', this.isAiChoosing);
+    if (!this.useAiOpponent || this.isAiChoosing) {
       return;
     }
+    console.log('test1');
+    if (
+      (this.userIsRedSide && this.blueRounds.includes(this.currentDraftRound)) ||
+      (!this.userIsRedSide && this.redRounds.includes(this.currentDraftRound))
+    ) {
+      this.isAiChoosing = true;
+      const intervalId = setInterval(() => {
+        this.incrementAiTimer();
+        if (this.aiTimer >= 100) {
+          clearInterval(intervalId);
+          this.chooseAiChampion();
+          this.aiTimer = -1;
+          this.isAiChoosing = false;
+          this.checkAndStartAiTimer();
+        }
+      }, 25);
+    }
+  }
+
+  incrementAiTimer() {
+    // commented out for dev purposes
+    // this.aiTimer += 0.5;
+    this.aiTimer += 1;
+  }
+
+  chooseAiChampion() {
+    let champOptions = [];
+    // if AI is Blue Side and is currently picking a champ
+    if (this.userIsRedSide && blueSidePickRounds.includes(this.currentDraftRound)) {
+      const selectedRoles = this.blueSideChamps()
+        .filter(c => c.selectedRole)
+        .map(c => c.selectedRole as Role);
+      champOptions = [...this.filteredChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
+    } else if (!this.userIsRedSide && redSidePickRounds.includes(this.currentDraftRound)) {
+      // if AI is Red Side and is currently picking a champ
+      const selectedRoles = this.redSideChamps()
+        .filter(c => c.selectedRole)
+        .map(c => c.selectedRole as Role);
+      champOptions = [...this.filteredChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
+    } else {
+      champOptions = [...this.filteredChampions()]; // this will return all champions
+    }
+    const draftChampion = shuffle(champOptions.slice(0, 3))[0];
+    this.chooseChampion(draftChampion, true);
+  }
+
+  chooseChampion(champ: DraftChampion, isAiChoice = false) {
+    if (!isAiChoice) {
+      this.isAiChoosing = false;
+    }
+    if (this.currentDraftRound > 20 || (this.aiTimer > -1 && !isAiChoice)) {
+      return;
+    }
+
     const draftPickScore = this.getPickScore(champ);
     console.log('choose champion', this.getPickScore(champ), `Champ ID: ${champ.id}`);
     // BANS
@@ -342,40 +485,45 @@ export class DraftComponent {
     const firstPickPhase = this.currentDraftRound > 6 && this.currentDraftRound < 13;
     const secondPickPhase = this.currentDraftRound > 16;
     if (firstBanPhase || secondBanPhase) {
-      const isRed = redSideBans.includes(this.currentDraftRound);
+      const isRed = redSideBanRounds.includes(this.currentDraftRound);
       if (isRed) {
         const arr = [...this.redSideBans()];
-        const index = redSideBans.indexOf(this.currentDraftRound);
+        const index = redSideBanRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
         this.redSideBans.set(arr);
+        this.callNotification(`Red side has banned ${champ.name}.`, 'red');
       } else {
         const arr = [...this.blueSideBans()];
-        const index = blueSideBans.indexOf(this.currentDraftRound);
+        const index = blueSideBanRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
         this.blueSideBans.set(arr);
+        this.callNotification(`Blue side has banned ${champ.name}.`, 'blue');
       }
     } else if (firstPickPhase || secondPickPhase) {
       // PICKS
       // red chooses on 8, 9, 12, 17, 20
       // blue chooses on 7, 10, 11, 18, 19
 
-      const isRed = redSidePicks.includes(this.currentDraftRound);
+      const isRed = redSidePickRounds.includes(this.currentDraftRound);
       if (isRed) {
         const arr = [...this.redSideChamps()];
-        const index = redSidePicks.indexOf(this.currentDraftRound);
+        const index = redSidePickRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
         this.redSideDraftScores.push(draftPickScore);
         this.redSideChamps.set(arr);
+        this.callNotification(`Red side has chosen ${champ.name}.`, 'red');
       } else {
         const arr = [...this.blueSideChamps()];
-        const index = blueSidePicks.indexOf(this.currentDraftRound);
+        const index = blueSidePickRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
         this.blueSideDraftScores.push(draftPickScore);
         this.blueSideChamps.set(arr);
+        this.callNotification(`Blue side has chosen ${champ.name}.`, 'blue');
       }
     }
     this.currentDraftRound++;
     this.checkPickPhase();
+    this.checkAndStartAiTimer();
   }
 
   checkPickPhase() {
@@ -391,24 +539,24 @@ export class DraftComponent {
     let index = 0;
     let firstPhrase = '';
     if (firstBanPhase || secondBanPhase) {
-      const isRed = redSideBans.includes(this.currentDraftRound);
+      const isRed = redSideBanRounds.includes(this.currentDraftRound);
       if (isRed) {
-        index = redSideBans.indexOf(this.currentDraftRound);
+        index = redSideBanRounds.indexOf(this.currentDraftRound);
         firstPhrase = 'Red Ban ';
       } else {
-        index = blueSideBans.indexOf(this.currentDraftRound);
+        index = blueSideBanRounds.indexOf(this.currentDraftRound);
         firstPhrase = 'Blue Ban ';
       }
     } else if (firstPickPhase || secondPickPhase) {
       // PICKS
       // red chooses on 8, 9, 12, 17, 20
       // blue chooses on 7, 10, 11, 18, 19
-      const isRed = redSidePicks.includes(this.currentDraftRound);
+      const isRed = redSidePickRounds.includes(this.currentDraftRound);
       if (isRed) {
-        index = redSidePicks.indexOf(this.currentDraftRound);
+        index = redSidePickRounds.indexOf(this.currentDraftRound);
         firstPhrase = 'Red Pick ';
       } else {
-        index = blueSidePicks.indexOf(this.currentDraftRound);
+        index = blueSidePickRounds.indexOf(this.currentDraftRound);
         firstPhrase = 'Blue Pick ';
       }
     }
@@ -448,7 +596,6 @@ export class DraftComponent {
       } else if (sortedComps[0][1] > 30) {
         grade += 3;
       }
-      // advice.push(`This draft scores ${startsWithVowel(finalGrade) || finalGrade[0] === 'S' ? 'an' : 'a'} ${finalGrade} grade.`);
       advice.push(`This draft scores ${round(grade, 1)} of 20.`);
     }
 

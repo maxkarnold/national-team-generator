@@ -74,10 +74,10 @@ export type DraftPhase =
   | 'Red Pick 5'
   | 'Draft Complete';
 
-export const redSidePicks = [8, 9, 12, 17, 20];
-export const blueSidePicks = [7, 10, 11, 18, 19];
-export const redSideBans = [2, 4, 6, 13, 15];
-export const blueSideBans = [1, 3, 5, 14, 16];
+export const redSidePickRounds = [8, 9, 12, 17, 20];
+export const blueSidePickRounds = [7, 10, 11, 18, 19];
+export const redSideBanRounds = [2, 4, 6, 13, 15];
+export const blueSideBanRounds = [1, 3, 5, 14, 16];
 
 export const draftHeaders = [
   {

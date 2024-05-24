@@ -1,4 +1,11 @@
+<div class="toast toast-top toast-center z-20" *ngIf="notification.isActive">
+  <div class="alert" [class.alert-info]="notification.type === 'info'" [class.alert-error]="notification.type === 'error'">
+    <span>{{ notification.message }}</span>
+  </div>
+</div>
+
 <div class="flex flex-col items-center">
+  <h1 class="text-3xl font-bold">Pro LoL Draft Sim</h1>
   <!-- DRAFT FORM -->
   <form class="flex flex-col w-full" [formGroup]="draftForm" *ngIf="!draftStarted">
     <label class="form-control w-full max-w-xs m-2 self-center">
@@ -13,7 +20,14 @@
     <div class="form-control">
       <label class="label cursor-pointer flex justify-center">
         <span class="label-text">Blue Side</span>
-        <input type="checkbox" class="toggle mx-2" formControlName="isRedSide" />
+        <input
+          type="checkbox"
+          class="toggle mx-2"
+          [ngClass]="{
+            'bg-blue-500 hover:bg-blue-700 border-blue-500': !userIsRedSide,
+            'bg-red-500 hover:bg-red-700 border-red-500': userIsRedSide
+          }"
+          formControlName="userIsRedSide" />
         <span class="label-text">Red Side</span>
       </label>
     </div>
@@ -29,7 +43,7 @@
     <div class="form-control">
       <label class="label cursor-pointer flex justify-center">
         <span class="label-text">Fixed Team</span>
-        <input type="checkbox" class="toggle mx-2" formControlName="isRandomTeam" />
+        <input type="checkbox" class="toggle mx-2" formControlName="useRandomTeam" />
         <span class="label-text">Random Team</span>
       </label>
     </div>
@@ -70,7 +84,22 @@
 
   <!-- DRAFT INTERFACE -->
   <div *ngIf="draftStarted">
-    <h1 class="text-center text-2xl mb-4">{{ draftPhase }}</h1>
+    <div class="flex justify-center items-center mb-4 gap-4">
+      <h1 class="text-2xl">{{ draftPhase }}</h1>
+      <button class="btn btn-primary btn-sm" (click)="resetDraft()">Reset</button>
+    </div>
+
+    <div class="text-center my-4">
+      <p *ngIf="aiTimer > -1; else playerPick">
+        AI is {{ blueSideBanRounds.concat(redSideBanRounds).includes(currentDraftRound) ? 'banning' : 'picking' }} a champion<span
+          class="loading loading-dots loading-xs ml-1 relative top-2"></span>
+      </p>
+      <ng-template #playerPick>
+        <p>{{ blueSideBanRounds.concat(redSideBanRounds).includes(currentDraftRound) ? 'Ban' : 'Pick' }} a champion</p>
+      </ng-template>
+
+      <progress class="progress w-56" [value]="aiTimer" [max]="100"></progress>
+    </div>
 
     <!-- BAN DASHBOARD -->
     <div class="flex flex-col gap-4 md:flex-row md:gap-0">

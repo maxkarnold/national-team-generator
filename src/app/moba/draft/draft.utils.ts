@@ -8,12 +8,12 @@ import {
   PatchStrength,
   PatchVersion,
   RankedChampions,
-  blueSideBans,
-  blueSidePicks,
+  blueSideBanRounds,
+  blueSidePickRounds,
   compStyleReqs,
   patchMSI24,
-  redSideBans,
-  redSidePicks,
+  redSideBanRounds,
+  redSidePickRounds,
 } from './draft.model';
 
 import { get as _get, shuffle } from 'lodash-es';
@@ -120,18 +120,18 @@ export function getChampMasteries(
   if (draftPhase.includes('Ban')) {
     let currentBans: number[];
     if (isRedSide) {
-      currentBans = [...redSideBans];
+      currentBans = [...redSideBanRounds];
     } else {
-      currentBans = [...blueSideBans];
+      currentBans = [...blueSideBanRounds];
     }
     const isBanning = currentBans.includes(currentDraftRound);
     return isBanning ? champ.opponentMastery : champ.playerMastery;
   } else {
     let currentPicks: number[];
     if (isRedSide) {
-      currentPicks = [...redSidePicks];
+      currentPicks = [...redSidePickRounds];
     } else {
-      currentPicks = [...blueSidePicks];
+      currentPicks = [...blueSidePickRounds];
     }
     const isPicking = currentPicks.includes(currentDraftRound);
     return isPicking ? champ.playerMastery : champ.opponentMastery;
@@ -142,59 +142,59 @@ export function getMasterySort(draftPhase: DraftPhase, currentDraftRound: number
   if (draftPhase.includes('Ban')) {
     let currentBans: number[];
     if (isRedSide) {
-      currentBans = [...redSideBans];
+      currentBans = [...redSideBanRounds];
     } else {
-      currentBans = [...blueSideBans];
+      currentBans = [...blueSideBanRounds];
     }
     const isBanning = currentBans.includes(currentDraftRound);
     return isBanning ? 'opponentMastery' : 'playerMastery';
   } else {
     let currentPicks: number[];
     if (isRedSide) {
-      currentPicks = [...redSidePicks];
+      currentPicks = [...redSidePickRounds];
     } else {
-      currentPicks = [...blueSidePicks];
+      currentPicks = [...blueSidePickRounds];
     }
     const isPicking = currentPicks.includes(currentDraftRound);
     return isPicking ? 'playerMastery' : 'opponentMastery';
   }
 }
 
-function backtrack(index: number, chosen: (string | undefined)[], solutions: Set<string>, arrays: (string[] | undefined)[]): void {
-  if (index === arrays.length) {
-    solutions.add(chosen.filter(val => val !== undefined).join(''));
-    return;
-  }
+// function backtrack(index: number, chosen: (string | undefined)[], solutions: Set<string>, arrays: (string[] | undefined)[]): void {
+//   if (index === arrays.length) {
+//     solutions.add(chosen.filter(val => val !== undefined).join(''));
+//     return;
+//   }
 
-  if (arrays[index] === undefined) {
-    chosen.push(undefined);
-    backtrack(index + 1, chosen, solutions, arrays);
-    chosen.pop();
-  } else {
-    for (const value of arrays[index]!) {
-      chosen.push(value);
-      backtrack(index + 1, chosen, solutions, arrays);
-      chosen.pop();
-    }
-  }
-}
+//   if (arrays[index] === undefined) {
+//     chosen.push(undefined);
+//     backtrack(index + 1, chosen, solutions, arrays);
+//     chosen.pop();
+//   } else {
+//     for (const value of arrays[index]!) {
+//       chosen.push(value);
+//       backtrack(index + 1, chosen, solutions, arrays);
+//       chosen.pop();
+//     }
+//   }
+// }
 
-function getPossibleStrings<T>(arrays: (string[] | undefined)[]): T[] {
-  const definedArrays = arrays.filter((arr): arr is string[] => arr !== undefined);
-  const uniqueStrings = [...new Set(definedArrays.flat())];
-  const possibleStrings: string[] = [];
+// function getPossibleStrings<T>(arrays: (string[] | undefined)[]): T[] {
+//   const definedArrays = arrays.filter((arr): arr is string[] => arr !== undefined);
+//   const uniqueStrings = [...new Set(definedArrays.flat())];
+//   const possibleStrings: string[] = [];
 
-  for (const str of uniqueStrings) {
-    const newArrays = arrays.map(arr => (arr && arr.includes(str) ? arr : arr ? [...arr, str] : [str]));
-    const solutions = new Set<string>();
-    backtrack(0, [], solutions, newArrays);
-    if (solutions.size > definedArrays.length) {
-      possibleStrings.push(str);
-    }
-  }
+//   for (const str of uniqueStrings) {
+//     const newArrays = arrays.map(arr => (arr && arr.includes(str) ? arr : arr ? [...arr, str] : [str]));
+//     const solutions = new Set<string>();
+//     backtrack(0, [], solutions, newArrays);
+//     if (solutions.size > definedArrays.length) {
+//       possibleStrings.push(str);
+//     }
+//   }
 
-  return possibleStrings as T[];
-}
+//   return possibleStrings as T[];
+// }
 
 export function checkForAvailableRoles(selectedRoles: (Role | undefined)[]): Role[] {
   const undefinedCount = selectedRoles.filter(roleArr => !roleArr).length;
@@ -211,9 +211,6 @@ export function checkForAvailableRoles(selectedRoles: (Role | undefined)[]): Rol
     }
   });
   return availableRoles;
-  // const roles = getPossibleStrings<Role>(selectedRoles);
-  // console.log(selectedRoles, roles);
-  // return roles;
 }
 
 export function needsMoreDmgAdvice(selectedTeamChamps: DraftChampion[]): { needsMoreApDmg: boolean; needsMoreAdDmg: boolean } {

@@ -1,6 +1,10 @@
 # PROJECT TODO LIST
 
 ## PRIORITIES
+- Moba Draft Page
+  - Add PvE functionality
+  - Add Synergy combos
+  - Adjust draft score
 
 - Continue work on Career page
   - Small Changes:
