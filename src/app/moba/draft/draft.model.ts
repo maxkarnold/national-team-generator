@@ -74,37 +74,14 @@ export type DraftPhase =
   | 'Red Pick 5'
   | 'Draft Complete';
 
+export function getRoleFromFilter(role: Role | 'all' | undefined): Role | undefined {
+  return role === 'all' ? undefined : role;
+}
+
 export const redSidePickRounds = [8, 9, 12, 17, 20];
 export const blueSidePickRounds = [7, 10, 11, 18, 19];
 export const redSideBanRounds = [2, 4, 6, 13, 15];
 export const blueSideBanRounds = [1, 3, 5, 14, 16];
-
-export const draftHeaders = [
-  {
-    name: 'Champion / Roles',
-    tooltip: '',
-  },
-  {
-    name: 'Score',
-    tooltip: '',
-  },
-  {
-    name: 'Meta',
-    tooltip: '',
-  },
-  {
-    name: 'Mastery',
-    tooltip: '',
-  },
-  // {
-  //   name: 'Synergy',
-  //   tooltip: '',
-  // },
-  // {
-  //   name: 'Counter',
-  //   tooltip: '',
-  // },
-];
 
 export const emptyDraftBans: Partial<DraftChampion>[] = [
   {

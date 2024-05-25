@@ -2,9 +2,11 @@
 
 ## PRIORITIES
 - Moba Draft Page
-  - Add PvE functionality
+  <!-- - Add PvE functionality -->
   - Add Synergy combos
   - Adjust draft score
+  - Add Counters
+  - Make it easier to draft a team that has one champion in each role and make sure scoring is worse if that is not the case.
 
 - Continue work on Career page
   - Small Changes:

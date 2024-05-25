@@ -4,7 +4,6 @@ import { Champion } from '../champion/champion.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   DraftChampion,
-  draftHeaders,
   emptyDraftBans,
   emptyDraftPicks,
   blueSideBanRounds,
@@ -20,6 +19,7 @@ import {
   RankedChampions,
   PatchVersion,
   patchMSI24,
+  getRoleFromFilter,
 } from './draft.model';
 import {
   checkForAvailableRoles,
@@ -31,7 +31,7 @@ import {
   getChampMasteries,
 } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AllRoles, Role } from '../player/player.model';
+import { AllRoles, Role, positionFilters } from '../player/player.model';
 import { startsWithVowel } from '@shared/utils';
 import { capitalize, round, shuffle, sum } from 'lodash-es';
 import { MobaService } from '../moba.service';
@@ -48,7 +48,8 @@ export class DraftComponent {
   currentDraftRound = 1;
   aiTimer = -1;
   champions: DraftChampion[] = [];
-  headers = draftHeaders;
+  getRoleFromFilter = getRoleFromFilter;
+  positionFilters = positionFilters;
   notification = {
     isActive: false,
     message: '',
@@ -92,6 +93,7 @@ export class DraftComponent {
   };
   searchControl = new FormControl<string>('');
   searchControlValue = toSignal(this.searchControl.valueChanges);
+  roleFilter: WritableSignal<Role | 'all'> = signal('all');
 
   filteredChampions: Signal<DraftChampion[]> = computed(() => {
     const redBans = this.redSideBans();
@@ -100,17 +102,28 @@ export class DraftComponent {
     const blueSideChamps = this.blueSideChamps();
     const selectedChampions = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps];
     const searchValue = this.searchControlValue();
+    const roleFilterValue = this.roleFilter();
     return this.champions
       .filter(c => {
-        if (!searchValue) {
-          return !selectedChampions.includes(c);
+        const defaultChamps = !selectedChampions.includes(c);
+        if (!searchValue && roleFilterValue === 'all') {
+          return defaultChamps;
         }
-        return !selectedChampions.includes(c) && c.name.toLowerCase().includes(searchValue.toLowerCase());
+        if (searchValue && roleFilterValue === 'all') {
+          return defaultChamps && c.name.toLowerCase().includes(searchValue.toLowerCase());
+        }
+
+        if (roleFilterValue !== 'all' && !searchValue) {
+          return defaultChamps && c.roles.includes(roleFilterValue);
+        }
+
+        if (roleFilterValue !== 'all' && searchValue) {
+          return defaultChamps && c.roles.includes(roleFilterValue) && c.name.toLowerCase().includes(searchValue.toLowerCase());
+        }
       })
       .sort((a, b) => a.name.localeCompare(b.name))
-      .sort((a, b) => this.getMasteryScore(b) - this.getMasteryScore(a))
-      .sort((a, b) => this.getMetaScore(b) - this.getMetaScore(a))
-      .sort(this.sortChampions);
+      .sort((a, b) => this.getDisplayMasteryScore(b) - this.getDisplayMasteryScore(a))
+      .sort((a, b) => this.getDisplayMetaScore(b) - this.getDisplayMetaScore(a));
   });
   redSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
   blueSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
@@ -336,6 +349,20 @@ export class DraftComponent {
     return bValue - aValue;
   };
 
+  getDisplayMetaScore(champ: DraftChampion, specificRole?: Role) {
+    if (this.roleFilter() === 'all') {
+      return this.isOneRoleAvailable(champ) ? this.getMetaScore(champ, specificRole) : 0;
+    }
+    return this.getMetaScore(champ, this.roleFilter() as Role);
+  }
+
+  getDisplayMasteryScore(champ: DraftChampion, specificRole?: Role) {
+    if (this.roleFilter() === 'all') {
+      return this.isOneRoleAvailable(champ) ? this.getMasteryScore(champ, specificRole) : 0;
+    }
+    return this.getMasteryScore(champ, this.roleFilter() as Role);
+  }
+
   getMasteryScore(champ: DraftChampion, specificRole?: Role) {
     const ratings = getChampMasteries(champ, this.draftPhase, this.currentDraftRound, this.userIsRedSide);
     if (!specificRole) {
@@ -352,7 +379,13 @@ export class DraftComponent {
       const index = roles.indexOf(specificRole);
       return metaStrength[index];
     }
-    return Math.max(...metaStrength);
+    // this should accurately give multiRole champs in edge in metaScore
+    const weightedStrength = metaStrength.filter(r => r >= 2).sort((a, b) => b - a);
+    return weightedStrength.length < 2
+      ? Math.max(...weightedStrength)
+      : weightedStrength.length === 2
+        ? Math.max(...weightedStrength) + weightedStrength[1] / 12
+        : Math.max(...weightedStrength) + weightedStrength[1] / 12 + weightedStrength[2] / 12;
   }
 
   getPickScore(champ: DraftChampion) {
@@ -361,6 +394,14 @@ export class DraftComponent {
     if (mastery === 0) {
       return 0;
     }
+    if (!this.isOneRoleAvailable(champ)) {
+      return 0;
+    }
+    const avg = (mastery * 0.6 + metaStrength * 1.4) / 2;
+    return avg;
+  }
+
+  isOneRoleAvailable(champ: DraftChampion) {
     if (this.draftPhase.includes('Red Ban') || this.draftPhase.includes('Blue Pick')) {
       // When red team is banning or blue team is picking
       // if champ has only one role and the same role as one of the selected blueSideChamps return 0
@@ -382,8 +423,7 @@ export class DraftComponent {
         return 0;
       }
     }
-    const avg = (mastery * 0.6 + metaStrength * 1.4) / 2;
-    return avg;
+    return true;
   }
 
   getTopChampsInMeta(masteries: RankedChampions, role: Role): DraftChampion[] {
@@ -415,7 +455,6 @@ export class DraftComponent {
   }
 
   checkAndStartAiTimer() {
-
     console.log(this.currentDraftRound, blueSidePickRounds, redSidePickRounds);
     console.log('isAiChoosing', this.isAiChoosing);
     if (!this.useAiOpponent || this.isAiChoosing) {

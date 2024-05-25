@@ -96,9 +96,12 @@ export const AllUniquePlayStyles: PlayStyle[] = [
   'baron stealer',
 ];
 export const AllRoles: Role[] = ['top', 'jungle', 'mid', 'adc', 'support'];
+export function isRole(value: unknown): value is Role {
+  return typeof value === 'string' && AllRoles.includes(value as Role);
+}
 export const AllGameStates: GameState[] = ['early-game', 'mid-game', 'late-game'];
 
-export const positions = [
+export const positions: { name: Role; url: string }[] = [
   {
     name: 'top',
     url: 'assets/images/role_icons/top.webp',
@@ -120,3 +123,11 @@ export const positions = [
     url: 'assets/images/role_icons/support.webp',
   },
 ];
+
+export const positionFilters: { name: Role | 'all'; url: string }[] = Array.from([
+  {
+    name: 'all',
+    url: 'assets/images/role_icons/all.webp',
+  },
+  ...positions,
+]);
