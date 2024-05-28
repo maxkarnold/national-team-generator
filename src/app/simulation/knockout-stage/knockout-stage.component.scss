@@ -3,7 +3,6 @@
 .bracket {
   padding: 2rem 0;
   width: 100%;
-  background: linear-gradient(to bottom, $secondary-light, $secondary);
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -23,7 +22,6 @@
     li {
       display: flex;
       justify-content: center;
-      color: white;
 
       @media screen and (max-width: 1200px) {
         margin: 0 2rem;
@@ -45,7 +43,6 @@
     li {
       display: flex;
       justify-content: center;
-      color: white;
 
       @media screen and (max-width: 1600px) {
         margin: 0 2rem;
@@ -112,9 +109,6 @@
         justify-content: space-around;
         margin: 10px 5px;
         padding: 10px;
-        border: 1px solid #1f1e1e;
-        border-radius: 5px;
-        background-color: #d3d1d1e6;
         height: 7rem;
 
         @media screen and (max-width: 1200px) {
@@ -124,7 +118,6 @@
 
         h3 {
           position: absolute;
-          color: white;
           font-size: 2.5rem;
           display: flex;
           justify-content: center;
@@ -167,7 +160,6 @@
             cursor: pointer;
 
             .nation-flag {
-              // width: 3rem;
               height: 2rem;
               width: 2rem;
             }
@@ -255,9 +247,6 @@
         justify-content: space-around;
         margin: 10px 5px;
         padding: 10px;
-        border: 1px solid #1f1e1e;
-        border-radius: 5px;
-        background-color: #d3d1d1e6;
         height: 7rem;
 
         @media screen and (max-width: 1600px) {
@@ -267,7 +256,6 @@
 
         h3 {
           position: absolute;
-          color: white;
           font-size: 2.5rem;
           display: flex;
           justify-content: center;
@@ -310,7 +298,6 @@
             cursor: pointer;
 
             .nation-flag {
-              // width: 3rem;
               height: 2rem;
               width: 2rem;
             }
