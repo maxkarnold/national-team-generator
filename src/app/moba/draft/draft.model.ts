@@ -5,19 +5,28 @@ export interface DraftChampion extends Champion {
   metaStrength: [number, number, number, number, number];
   playerMastery: [number, number, number, number, number];
   opponentMastery: [number, number, number, number, number];
-  currentSynergy: number;
-  currentCounter: number;
-  currentScore: number;
+  currentSynergy: {
+    player?: number;
+    opp?: number;
+  };
+  currentCounter: {
+    player?: number;
+    opp?: number;
+  };
+  currentScore: {
+    player?: number;
+    opp?: number;
+  };
   selectedRole: Role;
   isPlaceholder: boolean;
 }
 
 export interface DraftPlayer {
   mainRole: Role;
-  championMastery: RankedChampions;
+  championMastery: TierListRankings;
 }
 
-export interface RankedChampions {
+export interface TierListRankings {
   s: number[];
   a: number[];
   b: number[];
@@ -25,12 +34,12 @@ export interface RankedChampions {
   d: number[];
 }
 
-export interface PatchStrength {
-  top: RankedChampions;
-  jungle: RankedChampions;
-  mid: RankedChampions;
-  adc: RankedChampions;
-  support: RankedChampions;
+export interface AllRolesTierList {
+  top: TierListRankings;
+  jungle: TierListRankings;
+  mid: TierListRankings;
+  adc: TierListRankings;
+  support: TierListRankings;
 }
 
 export interface CompStyleStats {
@@ -49,6 +58,7 @@ export interface CompStyleData {
 
 export type CompStyle = 'engage' | 'pick' | 'protect' | 'siege' | 'split';
 export type PatchVersion = 'MSI 24';
+export type DraftSortHeader = 'name' | 'mastery' | 'meta' | 'synergy';
 
 export type LetterRank = 'S' | 'A' | 'B' | 'C' | 'D' | 'F' | 'N/A' | 'S+' | 'S-' | 'A+' | 'A-' | 'B+' | 'B-' | 'C+' | 'C-' | 'D+' | 'D-';
 export type DraftPhase =
@@ -77,6 +87,8 @@ export type DraftPhase =
 export function getRoleFromFilter(role: Role | 'all' | undefined): Role | undefined {
   return role === 'all' ? undefined : role;
 }
+
+export const tierValues: { [key: string]: number } = { s: 20, a: 16, b: 12, c: 8, d: 4 };
 
 export const redSidePickRounds = [8, 9, 12, 17, 20];
 export const blueSidePickRounds = [7, 10, 11, 18, 19];
@@ -268,7 +280,10 @@ export const defaultOpponentMasteries: DraftPlayer[] = [
 // B Tier: champ is not strong, but still able to be picked. Can only be played by masters of the champ in a good counter situation
 // C Tier: champs hardly picked, chosen by players with high mastery but with a small champ pool or as a last resort
 // D Tier: do not pick these champs, are so weak that will be easily countered or not counter meta champs
-export const patchMSI24: PatchStrength = {
+
+// TODO: CHAMPS TO ADD
+// Katarina, Lux, Zyra, Morgana, Sona, Miss Fortune, Yuumi
+export const patchMSI24: AllRolesTierList = {
   top: {
     s: [1],
     a: [2, 5, 44, 45, 46, 47, 8, 54],

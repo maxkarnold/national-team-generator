@@ -40,6 +40,15 @@
       </label>
     </div>
 
+    <div class="form-control" *ngIf="useAiOpponent">
+      <!-- <label>AI Difficulty</label> -->
+      <div class="join justify-center">
+        <input class="join-item btn" type="radio" value="easy" aria-label="Easy" formControlName="difficulty" />
+        <input class="join-item btn" type="radio" value="medium" aria-label="Normal" formControlName="difficulty" />
+        <input class="join-item btn" type="radio" value="hard" aria-label="Hard" formControlName="difficulty" />
+      </div>
+    </div>
+
     <div class="form-control">
       <label class="label cursor-pointer flex justify-center">
         <span class="label-text">Fixed Team</span>
@@ -192,11 +201,14 @@
       <table class="table table-pin-rows table-zebra table-xs sm:table-md">
         <thead>
           <tr>
-            <th>
+            <th (click)="sortBy.set('name')" class="cursor-pointer">
               {{ screenWidth > 640 ? 'Champion / Roles' : 'Champion' }}
             </th>
-            <th>Meta</th>
-            <th>{{ draftPhase.includes('Ban') && screenWidth > 640 ? 'Opp Mastery' : 'Mastery' }}</th>
+            <th (click)="sortBy.set('meta')" class="cursor-pointer">Meta</th>
+            <th (click)="sortBy.set('mastery')" class="cursor-pointer">
+              {{ draftPhase.includes('Ban') && screenWidth > 640 ? 'Opp Mastery' : 'Mastery' }}
+            </th>
+            <th (click)="sortBy.set('synergy')" class="cursor-pointer">Synergy</th>
           </tr>
         </thead>
         <tbody>
@@ -240,6 +252,9 @@
               <ng-template #filteredMastery>
                 <span>{{ getLetterRank(getDisplayMasteryScore(champ)) }}</span>
               </ng-template>
+            </td>
+            <td>
+              {{ getLetterRank(getSynergyScore(champ)) === 'F' ? 'N/A' : getLetterRank(getSynergyScore(champ)) }}
             </td>
           </tr>
         </tbody>

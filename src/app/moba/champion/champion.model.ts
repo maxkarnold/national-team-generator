@@ -1,3 +1,4 @@
+import { AllRolesTierList } from '../draft/draft.model';
 import { Role } from '../player/player.model';
 
 export interface Champion {
@@ -8,7 +9,9 @@ export interface Champion {
   img: string;
   dmgType: 'high ad' | 'high ap' | 'high mix' | 'low ad' | 'low ap' | 'low mix' | 'utility';
   attributes: TypeAttributes;
-  archetypes?: Archetype[];
+  // Use champion ids for synergies and counters
+  synergies: AllRolesTierList;
+  counters: AllRolesTierList;
 }
 
 export interface GameStateAttributes {

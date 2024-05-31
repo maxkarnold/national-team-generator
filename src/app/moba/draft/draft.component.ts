@@ -16,10 +16,12 @@ import {
   DraftPlayer,
   DraftPhase,
   CompStyleStats,
-  RankedChampions,
+  TierListRankings,
   PatchVersion,
   patchMSI24,
   getRoleFromFilter,
+  tierValues,
+  DraftSortHeader,
 } from './draft.model';
 import {
   checkForAvailableRoles,
@@ -29,6 +31,7 @@ import {
   needsMoreDmgAdvice,
   needsMoreScalingAdvice,
   getChampMasteries,
+  getChampPropFromDraftPhase,
 } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role, positionFilters } from '../player/player.model';
@@ -66,11 +69,12 @@ export class DraftComponent {
     patchVersion: new FormControl<PatchVersion>('MSI 24'),
     userIsRedSide: new FormControl<boolean>(false),
     useAiOpponent: new FormControl<boolean>(false),
+    difficulty: new FormControl<'easy' | 'medium' | 'hard'>('medium'),
     useRandomTeam: new FormControl<boolean>({ value: true, disabled: true }),
   });
 
-  blueSideDraftScores: number[] = [];
-  redSideDraftScores: number[] = [];
+  blueSideDraftScores: WritableSignal<number[]> = signal([]);
+  redSideDraftScores: WritableSignal<number[]> = signal([]);
   blueSideMasteries: DraftPlayer[] = [];
   redSideMasteries: DraftPlayer[] = [];
   blueSidePlayers: {
@@ -94,36 +98,52 @@ export class DraftComponent {
   searchControl = new FormControl<string>('');
   searchControlValue = toSignal(this.searchControl.valueChanges);
   roleFilter: WritableSignal<Role | 'all'> = signal('all');
+  sortBy: WritableSignal<DraftSortHeader> = signal('meta');
 
-  filteredChampions: Signal<DraftChampion[]> = computed(() => {
+  availableChampions: Signal<DraftChampion[]> = computed(() => {
     const redBans = this.redSideBans();
     const blueBans = this.blueSideBans();
     const redSideChamps = this.redSideChamps();
     const blueSideChamps = this.blueSideChamps();
-    const selectedChampions = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps];
+    const selectedChampionsIds = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps].map(c => c.id);
+    return this.champions.filter(c => !selectedChampionsIds.includes(c.id));
+  });
+
+  filteredChampions: Signal<DraftChampion[]> = computed(() => {
+    const availableChampions = this.availableChampions();
     const searchValue = this.searchControlValue();
     const roleFilterValue = this.roleFilter();
-    return this.champions
+    const sortBy = this.sortBy();
+    const redBans = this.redSideBans();
+    const blueBans = this.blueSideBans();
+    const redSideChamps = this.redSideChamps();
+    const blueSideChamps = this.blueSideChamps();
+    const selectedChampionIds = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps].map(c => c.id);
+    const champions = availableChampions
       .filter(c => {
-        const defaultChamps = !selectedChampions.includes(c);
+        if (selectedChampionIds.includes(c.id)) {
+          return false;
+        }
         if (!searchValue && roleFilterValue === 'all') {
-          return defaultChamps;
+          return true;
         }
         if (searchValue && roleFilterValue === 'all') {
-          return defaultChamps && c.name.toLowerCase().includes(searchValue.toLowerCase());
+          return c.name.toLowerCase().includes(searchValue.toLowerCase());
         }
 
         if (roleFilterValue !== 'all' && !searchValue) {
-          return defaultChamps && c.roles.includes(roleFilterValue);
+          return c.roles.includes(roleFilterValue);
         }
 
         if (roleFilterValue !== 'all' && searchValue) {
-          return defaultChamps && c.roles.includes(roleFilterValue) && c.name.toLowerCase().includes(searchValue.toLowerCase());
+          return c.roles.includes(roleFilterValue) && c.name.toLowerCase().includes(searchValue.toLowerCase());
         }
       })
       .sort((a, b) => a.name.localeCompare(b.name))
       .sort((a, b) => this.getDisplayMasteryScore(b) - this.getDisplayMasteryScore(a))
       .sort((a, b) => this.getDisplayMetaScore(b) - this.getDisplayMetaScore(a));
+    // console.log(champions);
+    return this.chooseSortBy(champions, sortBy);
   });
   redSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
   blueSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
@@ -135,31 +155,15 @@ export class DraftComponent {
       userIsRedSide: boolean;
       patchVersion: PatchVersion;
       useAiOpponent: boolean;
+      difficulty: string;
       useRandomTeam: boolean;
     }>('draft_metaData');
-    if (draftMetaData) {
+    if (draftMetaData && draftMetaData.difficulty) {
       this.draftForm.setValue(draftMetaData);
     }
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
-
-    const champions = Array.from(championsJson) as Champion[];
-    const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries() : [...defaultPlayerMasteries];
-    const opponentMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries() : [...defaultOpponentMasteries];
-    this.champions = getDraftChampions(champions, this.patchVersion, playerMasteries, opponentMasteries);
-
-    this.blueSideMasteries = this.userIsRedSide ? opponentMasteries : playerMasteries;
-    this.redSideMasteries = this.userIsRedSide ? playerMasteries : opponentMasteries;
-    console.log(this.blueSideMasteries);
-    console.log(this.redSideMasteries);
-
-    for (const player of this.blueSideMasteries) {
-      this.getTopChampsForEachRole(player, true);
-    }
-
-    for (const player of this.redSideMasteries) {
-      this.getTopChampsForEachRole(player, false);
-    }
+    this.initiateMasteries();
   }
 
   get userIsRedSide(): boolean {
@@ -178,6 +182,10 @@ export class DraftComponent {
     return this.draftForm.get('useRandomTeam')?.value;
   }
 
+  get difficulty(): 'easy' | 'medium' | 'hard' {
+    return this.draftForm.get('difficulty')?.value;
+  }
+
   get masteriesForSide(): DraftPlayer[] {
     return this.userIsRedSide ? this.redSideMasteries : this.blueSideMasteries;
   }
@@ -192,13 +200,33 @@ export class DraftComponent {
     this.service.setLocalStorage('draft_metaData', {
       userIsRedSide: this.userIsRedSide,
       useAiOpponent: this.useAiOpponent,
+      difficulty: this.difficulty,
       patchVersion: this.patchVersion,
       useRandomTeam: this.useRandomTeam,
     });
-
+    this.initiateMasteries();
+    console.log(this.difficulty);
     console.log('blueSide', this.blueSideMasteries, '\nredSide', this.redSideMasteries);
     console.log('blueSide', this.blueSidePlayers, '\nredSide', this.redSidePlayers);
     this.checkAndStartAiTimer();
+  }
+
+  initiateMasteries() {
+    const champions = Array.from(championsJson) as Champion[];
+    const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries('medium') : [...defaultPlayerMasteries];
+    const opponentMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries(this.difficulty) : [...defaultOpponentMasteries];
+    this.champions = getDraftChampions(champions, this.patchVersion, playerMasteries, opponentMasteries);
+
+    this.blueSideMasteries = this.userIsRedSide ? opponentMasteries : playerMasteries;
+    this.redSideMasteries = this.userIsRedSide ? playerMasteries : opponentMasteries;
+
+    for (const player of this.blueSideMasteries) {
+      this.getTopChampsForEachRole(player, true);
+    }
+
+    for (const player of this.redSideMasteries) {
+      this.getTopChampsForEachRole(player, false);
+    }
   }
 
   resetDraft() {
@@ -207,18 +235,12 @@ export class DraftComponent {
     this.currentDraftRound = 1;
     this.aiTimer = -1;
     this.champions = [];
-    const champions = Array.from(championsJson) as Champion[];
-    const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries() : [...defaultPlayerMasteries];
-    const opponentMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries() : [...defaultOpponentMasteries];
-    this.champions = getDraftChampions(champions, this.patchVersion, playerMasteries, opponentMasteries);
-
-    this.blueSideMasteries = this.userIsRedSide ? opponentMasteries : playerMasteries;
-    this.redSideMasteries = this.userIsRedSide ? playerMasteries : opponentMasteries;
+    this.initiateMasteries();
 
     this.isAiChoosing = false;
 
-    this.blueSideDraftScores = [];
-    this.redSideDraftScores = [];
+    this.blueSideDraftScores.set([]);
+    this.redSideDraftScores.set([]);
     this.blueSidePlayers = {
       top: [],
       jungle: [],
@@ -268,12 +290,34 @@ export class DraftComponent {
       const updatedChamps = [...this.blueSideChamps()];
       updatedChamps[index] = champ;
       this.blueSideChamps.set(updatedChamps);
+      console.log(this.blueSideChamps().map(c => c.selectedRole));
     } else if ((!isBlueSide && this.userIsRedSide) || !this.useAiOpponent) {
       champ.selectedRole = role;
       const updatedChamps = [...this.redSideChamps()];
       updatedChamps[index] = champ;
       this.redSideChamps.set(updatedChamps);
+      console.log(this.redSideChamps().map(c => c.selectedRole));
     }
+    for (const filteredChamp of this.filteredChampions()) {
+      this.setSynergyScore(filteredChamp);
+    }
+
+    // this should
+    // if (isBlueSide) {
+    //   this.blueSideDraftScores.update(arr => {
+    //     const newArr = [...arr];
+    //     newArr.splice(index, 1, this.getPickScore(champ as DraftChampion));
+    //     // console.log()
+    //     return newArr;
+    //   });
+    // } else {
+    //   this.redSideDraftScores.update(arr => {
+    //     const newArr = [...arr];
+    //     newArr[index] = this.getPickScore(champ as DraftChampion);
+    //     return newArr;
+    //   });
+    // }
+    console.log('blueside scores', this.blueSideDraftScores(), 'redside scores', this.redSideDraftScores());
   }
 
   getLetterRank(rating: number): LetterRank {
@@ -291,63 +335,6 @@ export class DraftComponent {
       return 'F';
     }
   }
-
-  getPreciseLetterRank(rating: number): LetterRank {
-    if (rating > 19) {
-      return 'S+';
-    }
-    if (rating > 18) {
-      return 'S';
-    }
-    if (rating > 17) {
-      return 'S-';
-    }
-    if (rating >= 16) {
-      return 'A+';
-    }
-    if (rating >= 15) {
-      return 'A';
-    }
-    if (rating >= 14) {
-      return 'A-';
-    }
-    if (rating >= 12) {
-      return 'B+';
-    }
-    if (rating >= 11) {
-      return 'B';
-    }
-    if (rating >= 10) {
-      return 'B-';
-    }
-    if (rating >= 8) {
-      return 'C+';
-    }
-    if (rating >= 7) {
-      return 'C';
-    }
-    if (rating >= 6) {
-      return 'C-';
-    }
-    if (rating >= 4) {
-      return 'D+';
-    }
-    if (rating >= 3) {
-      return 'D';
-    }
-    if (rating >= 2) {
-      return 'D-';
-    }
-    return 'F';
-  }
-
-  sortChampions = (a: DraftChampion, b: DraftChampion) => {
-    const aValue: number = this.getPickScore(a);
-    const bValue: number = this.getPickScore(b);
-
-    // Sort in descending order
-    return bValue - aValue;
-  };
 
   getDisplayMetaScore(champ: DraftChampion, specificRole?: Role) {
     if (this.roleFilter() === 'all') {
@@ -388,17 +375,95 @@ export class DraftComponent {
         : Math.max(...weightedStrength) + weightedStrength[1] / 12 + weightedStrength[2] / 12;
   }
 
+  setSynergyScore(evaluatedChamp: DraftChampion) {
+    const side = getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
+    let currentSelectedChamps: Partial<DraftChampion>[];
+    if (blueSideBanRounds.includes(this.currentDraftRound) || redSidePickRounds.includes(this.currentDraftRound)) {
+      currentSelectedChamps = this.redSideChamps();
+    } else {
+      currentSelectedChamps = this.blueSideChamps();
+    }
+
+    currentSelectedChamps = currentSelectedChamps.filter(c => !c.isPlaceholder);
+    if (currentSelectedChamps.length < 1) {
+      if (side === 'player') {
+        evaluatedChamp.currentSynergy.player = 0;
+        return 0;
+      } else {
+        evaluatedChamp.currentSynergy.opp = 0;
+        return 0;
+      }
+    }
+    for (const champ of currentSelectedChamps as DraftChampion[]) {
+      const tierList = champ.synergies[champ.selectedRole];
+      for (const [letter, championIds] of Object.entries(tierList)) {
+        if (championIds.includes(evaluatedChamp.id)) {
+          if (side === 'player') {
+            evaluatedChamp.currentSynergy.player = tierValues[letter];
+            return tierValues[letter];
+          } else {
+            evaluatedChamp.currentSynergy.opp = tierValues[letter];
+            return tierValues[letter];
+          }
+        }
+      }
+    }
+    if (side === 'player') {
+      evaluatedChamp.currentSynergy.player = 0;
+      return 0;
+    } else {
+      evaluatedChamp.currentSynergy.opp = 0;
+      return 0;
+    }
+  }
+
+  getSynergyScore(evaluatedChamp: DraftChampion): number {
+    // if champ hasn't been evaluated for synergy or the selectedRole has changed for a selectedChamp then get the synergy score otherwise use the existing score
+    const side = getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
+    if (evaluatedChamp.currentSynergy.player && side === 'player') {
+      return evaluatedChamp.currentSynergy.player;
+    }
+    if (evaluatedChamp.currentSynergy.opp && side === 'opponent') {
+      return evaluatedChamp.currentSynergy.opp;
+    }
+    const score = this.setSynergyScore(evaluatedChamp);
+    if (side === 'player') {
+      evaluatedChamp.currentSynergy.player = score;
+      return score;
+    } else {
+      evaluatedChamp.currentSynergy.opp = score;
+      return score;
+    }
+  }
+
   getPickScore(champ: DraftChampion) {
     const mastery = this.getMasteryScore(champ);
     const metaStrength = this.getMetaScore(champ);
+    const synergy = this.getSynergyScore(champ);
     if (mastery === 0) {
       return 0;
     }
     if (!this.isOneRoleAvailable(champ)) {
       return 0;
     }
-    const avg = (mastery * 0.6 + metaStrength * 1.4) / 2;
+    const avg = (mastery * 0.6 + metaStrength * 1.4 + synergy * 0.5) / 2;
     return avg;
+  }
+
+  chooseSortBy(champs: DraftChampion[], sortBy: DraftSortHeader) {
+    if (sortBy === 'name') {
+      return champs.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    if (sortBy === 'synergy') {
+      return champs.sort((a, b) => this.getSynergyScore(b) - this.getSynergyScore(a));
+    }
+    if (sortBy === 'mastery') {
+      return champs.sort((a, b) => this.getDisplayMasteryScore(b) - this.getDisplayMasteryScore(a));
+    }
+    if (sortBy === 'meta') {
+      return champs.sort((a, b) => this.getDisplayMetaScore(b) - this.getDisplayMetaScore(a));
+    }
+    return champs;
   }
 
   isOneRoleAvailable(champ: DraftChampion) {
@@ -426,11 +491,11 @@ export class DraftComponent {
     return true;
   }
 
-  getTopChampsInMeta(masteries: RankedChampions, role: Role): DraftChampion[] {
+  getTopChampsInMeta(masteries: TierListRankings, role: Role): DraftChampion[] {
     if (this.patchVersion !== 'MSI 24') {
       return [];
     }
-    const masteredChamps = [...masteries.s, ...masteries.a];
+    const masteredChamps = [...masteries.s, ...masteries.a, ...masteries.b, ...masteries.c];
     const metaChamps = [...patchMSI24[role].s, ...patchMSI24[role].a, ...patchMSI24[role].b];
     const mainChamps = masteredChamps.filter(id => metaChamps.includes(id)).map(id => this.getChampionFromId(id));
     const filteredChamps: DraftChampion[] = [...mainChamps].filter((champ): champ is DraftChampion => !!champ);
@@ -455,12 +520,9 @@ export class DraftComponent {
   }
 
   checkAndStartAiTimer() {
-    console.log(this.currentDraftRound, blueSidePickRounds, redSidePickRounds);
-    console.log('isAiChoosing', this.isAiChoosing);
     if (!this.useAiOpponent || this.isAiChoosing) {
       return;
     }
-    console.log('test1');
     if (
       (this.userIsRedSide && this.blueRounds.includes(this.currentDraftRound)) ||
       (!this.userIsRedSide && this.redRounds.includes(this.currentDraftRound))
@@ -480,8 +542,6 @@ export class DraftComponent {
   }
 
   incrementAiTimer() {
-    // commented out for dev purposes
-    // this.aiTimer += 0.5;
     this.aiTimer += 1;
   }
 
@@ -492,17 +552,18 @@ export class DraftComponent {
       const selectedRoles = this.blueSideChamps()
         .filter(c => c.selectedRole)
         .map(c => c.selectedRole as Role);
-      champOptions = [...this.filteredChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
+      champOptions = [...this.availableChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
     } else if (!this.userIsRedSide && redSidePickRounds.includes(this.currentDraftRound)) {
       // if AI is Red Side and is currently picking a champ
       const selectedRoles = this.redSideChamps()
         .filter(c => c.selectedRole)
         .map(c => c.selectedRole as Role);
-      champOptions = [...this.filteredChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
+      champOptions = [...this.availableChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
     } else {
-      champOptions = [...this.filteredChampions()]; // this will return all champions
+      champOptions = [...this.availableChampions()]; // this will return all champions
     }
-    const draftChampion = shuffle(champOptions.slice(0, 3))[0];
+    const sortedChamps = champOptions.sort((a, b) => this.getPickScore(b) - this.getPickScore(a));
+    const draftChampion = shuffle(sortedChamps.slice(0, 3))[0];
     this.chooseChampion(draftChampion, true);
   }
 
@@ -515,7 +576,6 @@ export class DraftComponent {
     }
 
     const draftPickScore = this.getPickScore(champ);
-    console.log('choose champion', this.getPickScore(champ), `Champ ID: ${champ.id}`);
     // BANS
     // red bans on 2, 4, 6, 13, 15
     // blue bans on 1, 3, 5, 14, 16
@@ -548,18 +608,21 @@ export class DraftComponent {
         const arr = [...this.redSideChamps()];
         const index = redSidePickRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
-        this.redSideDraftScores.push(draftPickScore);
+        this.redSideDraftScores.set([...this.redSideDraftScores(), draftPickScore]);
         this.redSideChamps.set(arr);
-        this.callNotification(`Red side has chosen ${champ.name}.`, 'red');
+        this.callNotification(`Red side has chosen ${champ.name}.`, `'red'`);
+        console.log(`Red side has chosen ${champ.name}.`, `With a score of ${draftPickScore}/20`);
       } else {
         const arr = [...this.blueSideChamps()];
         const index = blueSidePickRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
-        this.blueSideDraftScores.push(draftPickScore);
+        this.blueSideDraftScores.set([...this.blueSideDraftScores(), draftPickScore]);
         this.blueSideChamps.set(arr);
         this.callNotification(`Blue side has chosen ${champ.name}.`, 'blue');
+        console.log(`Blue side has chosen ${champ.name}.`, `With a score of ${draftPickScore}/20`);
       }
     }
+    console.log(this.blueSideDraftScores(), this.redSideDraftScores());
     this.currentDraftRound++;
     this.checkPickPhase();
     this.checkAndStartAiTimer();
@@ -624,7 +687,7 @@ export class DraftComponent {
       .sort((a, b) => b[1] - a[1]);
 
     if (selectedTeamChamps.length === 5) {
-      const scores = isBlueSide ? [...this.blueSideDraftScores] : [...this.redSideDraftScores];
+      const scores = isBlueSide ? [...this.blueSideDraftScores()] : [...this.redSideDraftScores()];
       let grade = sum(scores) / 5;
       const allNegativeAdvice = [needsMoreEarlyChamps, needsMoreMidChamps, needsMoreLateChamps, needsMoreAdDmg, needsMoreApDmg];
       for (let i = 0; i < allNegativeAdvice.length; i++) {

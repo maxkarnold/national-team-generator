@@ -4,7 +4,10 @@
 - Moba Draft Page
   <!-- - Add PvE functionality -->
   - Add Synergy combos
+    - add combos for jungle/mid, jungle/top
   - Adjust draft score
+    - changing role of champ should change draft score
+    - should give error, "champ can't be selected, because you have already selected a champ with one role in that role"
   - Add Counters
   - Make it easier to draft a team that has one champion in each role and make sure scoring is worse if that is not the case.
 
