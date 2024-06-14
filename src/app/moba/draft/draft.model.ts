@@ -56,9 +56,19 @@ export interface CompStyleData {
   secondary: string[];
 }
 
+export interface DraftFormData {
+  userIsRedSide: boolean;
+  patchVersion: PatchVersion;
+  useAiOpponent: boolean;
+  difficulty: DraftDifficulty;
+  useRandomTeam: boolean;
+}
+
 export type CompStyle = 'engage' | 'pick' | 'protect' | 'siege' | 'split';
 export type PatchVersion = 'MSI 24';
 export type DraftSortHeader = 'name' | 'mastery' | 'meta' | 'synergy';
+export type DraftDifficulty = 'easy' | 'medium' | 'hard';
+export type DraftAdviceTag = 'Counters Banned' | 'Recommended' | 'Counter Pick';
 
 export type LetterRank = 'S' | 'A' | 'B' | 'C' | 'D' | 'F' | 'N/A' | 'S+' | 'S-' | 'A+' | 'A-' | 'B+' | 'B-' | 'C+' | 'C-' | 'D+' | 'D-';
 export type DraftPhase =
@@ -282,7 +292,7 @@ export const defaultOpponentMasteries: DraftPlayer[] = [
 // D Tier: do not pick these champs, are so weak that will be easily countered or not counter meta champs
 
 // TODO: CHAMPS TO ADD
-// Katarina, Lux, Zyra, Morgana, Sona, Miss Fortune, Yuumi
+// Patch 14.8
 export const patchMSI24: AllRolesTierList = {
   top: {
     s: [1],

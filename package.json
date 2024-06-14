@@ -5,11 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "start-mobile": "ng serve --host 192.168.0.158",
-    "build": "postcss -s postcss-scss -u autoprefixer --autoprefixer.browsers \"last 2 versions\" -r src/**/*.scss; ng build",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "eslint src --ext .ts",
-    "deploy": "postcss -s postcss-scss -u autoprefixer --autoprefixer.browsers \"last 2 versions\" -r src/**/*.scss; ng build; firebase deploy --only hosting",
+    "deploy": "ng build && firebase deploy --only hosting",
     "prefixcss": "postcss -s postcss-scss -u autoprefixer --autoprefixer.browsers \"last 2 versions\" -r src/**/*.scss"
   },
   "private": true,
