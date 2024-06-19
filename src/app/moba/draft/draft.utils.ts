@@ -6,7 +6,6 @@ import {
   DraftPhase,
   DraftPlayer,
   AllRolesTierList,
-  PatchVersion,
   TierListRankings,
   blueSideBanRounds,
   blueSidePickRounds,
@@ -15,6 +14,9 @@ import {
   redSideBanRounds,
   redSidePickRounds,
   tierValues,
+  PatchData,
+  PatchName,
+  DraftDifficulty,
 } from './draft.model';
 
 import { get as _get, shuffle } from 'lodash-es';
@@ -34,24 +36,19 @@ function getRoleMetaStrength(id: number, roleTierList: TierListRankings): number
   return 0;
 }
 
-function getMetaStrength(champion: Champion, patchVersion: string): [number, number, number, number, number] {
-  if (patchVersion === 'MSI 24') {
-    const { id } = champion;
+function getMetaStrength(champion: Champion, patchVersion: AllRolesTierList): [number, number, number, number, number] {
+  const { id } = champion;
 
-    const topStrength = getRoleMetaStrength(id, patchMSI24.top);
-    const jungleStrength = getRoleMetaStrength(id, patchMSI24.jungle);
-    const midStrength = getRoleMetaStrength(id, patchMSI24.mid);
-    const adcStrength = getRoleMetaStrength(id, patchMSI24.adc);
-    const supportStrength = getRoleMetaStrength(id, patchMSI24.support);
+  const topStrength = getRoleMetaStrength(id, patchVersion.top);
+  const jungleStrength = getRoleMetaStrength(id, patchVersion.jungle);
+  const midStrength = getRoleMetaStrength(id, patchVersion.mid);
+  const adcStrength = getRoleMetaStrength(id, patchVersion.adc);
+  const supportStrength = getRoleMetaStrength(id, patchVersion.support);
 
-    return [topStrength, jungleStrength, midStrength, adcStrength, supportStrength];
-  } else {
-    return [0, 0, 0, 0, 0];
-  }
+  return [topStrength, jungleStrength, midStrength, adcStrength, supportStrength];
 }
 
 function getRoleMastery(id: number, roleMasteries: TierListRankings) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const tierFound = Object.entries(roleMasteries).find(([_, championIds]: [string, number[]]) => {
     const typedChampionIds = championIds as number[];
     return typedChampionIds.includes(id);
@@ -86,27 +83,78 @@ export function getAllMasteries(champ: Champion, playerMasteries: DraftPlayer[])
   return [topMastery, jungleMastery, midMastery, adcMastery, supportMastery];
 }
 
+export function getPatchData(name: PatchName): PatchData {
+  if (name === 'MSI 24') {
+    return {
+      name,
+      version: 14.8,
+      excludedChamps: [133],
+      patchTierList: patchMSI24,
+    };
+  }
+  return {
+    name,
+    version: 14.8,
+    excludedChamps: [],
+    patchTierList: patchMSI24,
+  };
+}
+
 export function getDraftChampions(
   champions: Champion[],
-  patchVersion: PatchVersion,
+  patchData: PatchData,
   playerMasteries: DraftPlayer[],
   opponentMasteries: DraftPlayer[]
 ): DraftChampion[] {
-  return champions.map(c => {
-    const metaStrength = getMetaStrength(c, patchVersion);
-    const selectedRole = AllRoles[metaStrength.indexOf(Math.max(...metaStrength))];
-    return {
-      ...c,
-      metaStrength,
-      playerMastery: getAllMasteries(c, playerMasteries),
-      opponentMastery: getAllMasteries(c, opponentMasteries),
-      currentSynergy: {},
-      currentCounter: {},
-      currentScore: {},
-      isPlaceholder: false,
-      selectedRole,
-    };
-  });
+  return champions
+    .filter(c => !patchData.excludedChamps.includes(c.id))
+    .map(c => {
+      const metaStrength = getMetaStrength(c, patchData.patchTierList);
+      const selectedRole = AllRoles[metaStrength.indexOf(Math.max(...metaStrength))];
+      console.log(playerMasteries, opponentMasteries);
+      return {
+        ...c,
+        metaStrength,
+        playerMastery: getAllMasteries(c, playerMasteries),
+        opponentMastery: getAllMasteries(c, opponentMasteries),
+        currentSynergy: {},
+        currentCounter: {
+          player: {
+            top: 0,
+            jungle: 0,
+            mid: 0,
+            adc: 0,
+            support: 0,
+          },
+          opp: {
+            top: 0,
+            jungle: 0,
+            mid: 0,
+            adc: 0,
+            support: 0,
+          },
+        },
+        currentScore: {},
+        isPlaceholder: false,
+        selectedRole,
+        adviceTags: {
+          player: {
+            top: [],
+            jungle: [],
+            mid: [],
+            adc: [],
+            support: [],
+          },
+          opp: {
+            top: [],
+            jungle: [],
+            mid: [],
+            adc: [],
+            support: [],
+          },
+        },
+      };
+    });
 }
 
 export function getChampPropFromDraftPhase(draftPhase: DraftPhase, currentDraftRound: number, isRedSide: boolean) {
@@ -135,9 +183,13 @@ export function getChampMasteries(
   champ: DraftChampion,
   draftPhase: DraftPhase,
   currentDraftRound: number,
-  isRedSide: boolean
+  isRedSide: boolean,
+  playerSide?: string
 ): [number, number, number, number, number] {
   // this will return the masteries of the champ based on the playerMastery and opponentMastery prop on the champ
+  if (playerSide) {
+    return playerSide === 'player' ? champ.playerMastery : champ.opponentMastery;
+  }
   const prop = getChampPropFromDraftPhase(draftPhase, currentDraftRound, isRedSide);
 
   if (prop === 'player') {
@@ -168,42 +220,6 @@ export function getMasterySort(draftPhase: DraftPhase, currentDraftRound: number
     return isPicking ? 'playerMastery' : 'opponentMastery';
   }
 }
-
-// function backtrack(index: number, chosen: (string | undefined)[], solutions: Set<string>, arrays: (string[] | undefined)[]): void {
-//   if (index === arrays.length) {
-//     solutions.add(chosen.filter(val => val !== undefined).join(''));
-//     return;
-//   }
-
-//   if (arrays[index] === undefined) {
-//     chosen.push(undefined);
-//     backtrack(index + 1, chosen, solutions, arrays);
-//     chosen.pop();
-//   } else {
-//     for (const value of arrays[index]!) {
-//       chosen.push(value);
-//       backtrack(index + 1, chosen, solutions, arrays);
-//       chosen.pop();
-//     }
-//   }
-// }
-
-// function getPossibleStrings<T>(arrays: (string[] | undefined)[]): T[] {
-//   const definedArrays = arrays.filter((arr): arr is string[] => arr !== undefined);
-//   const uniqueStrings = [...new Set(definedArrays.flat())];
-//   const possibleStrings: string[] = [];
-
-//   for (const str of uniqueStrings) {
-//     const newArrays = arrays.map(arr => (arr && arr.includes(str) ? arr : arr ? [...arr, str] : [str]));
-//     const solutions = new Set<string>();
-//     backtrack(0, [], solutions, newArrays);
-//     if (solutions.size > definedArrays.length) {
-//       possibleStrings.push(str);
-//     }
-//   }
-
-//   return possibleStrings as T[];
-// }
 
 export function checkForAvailableRoles(selectedRoles: (Role | undefined)[]): Role[] {
   const undefinedCount = selectedRoles.filter(roleArr => !roleArr).length;
@@ -301,15 +317,19 @@ export function getTeamCompStyleScoring(selectedTeamChamps: DraftChampion[]): Co
   return compStats;
 }
 
-export function getRandomMasteries(difficulty: 'easy' | 'medium' | 'hard'): DraftPlayer[] {
-  // needs to check patchVersion
-  // also can be used to add difficulties to draft
-
+/**
+ * Generates a list of draft players with randomly assigned champion masteries based on the provided patch tier list and difficulty level.
+ *
+ * @param {PatchData} patchTierList - An object containing the patch tier list for each role.
+ * @param {DraftDifficulty} [difficulty='medium'] - The difficulty level for generating the champion masteries. Defaults to 'medium'.
+ * @return {DraftPlayer[]} An array of draft players with their main role and randomly assigned champion masteries.
+ */
+export function getRandomMasteries({ patchTierList }: PatchData, difficulty: DraftDifficulty = 'medium'): DraftPlayer[] {
   const playerMasteries: DraftPlayer[] = [];
 
-  for (const role in patchMSI24) {
-    if (Object.prototype.hasOwnProperty.call(patchMSI24, role)) {
-      const { s, a, b, c, d } = patchMSI24[role as keyof AllRolesTierList];
+  for (const role in patchTierList) {
+    if (Object.prototype.hasOwnProperty.call(patchTierList, role)) {
+      const { s, a, b, c, d } = patchTierList[role as keyof AllRolesTierList];
       const mainChamps = [...shuffle(s.concat(a, b))];
       const offMetaChamps = [...shuffle(c)];
       const weirdChamps = [...shuffle(d)];

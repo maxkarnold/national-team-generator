@@ -69,6 +69,7 @@ export const sortByMainRole = (players: Player[]): Player[] => {
 };
 
 export type Role = 'top' | 'jungle' | 'mid' | 'adc' | 'support';
+export type FilterRole = Role | 'all';
 export type GameState = 'early-game' | 'mid-game' | 'late-game';
 export type PlayStyle =
   | 'scaler'

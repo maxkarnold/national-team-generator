@@ -7,7 +7,7 @@ export interface Champion {
   roles: Role[];
   gameStateAttributes: GameStateAttributes;
   img: string;
-  dmgType: 'high ad' | 'high ap' | 'high mix' | 'low ad' | 'low ap' | 'low mix' | 'utility';
+  dmgType: DamageType;
   attributes: TypeAttributes;
   // Use champion ids for synergies and counters
   synergies: AllRolesTierList;
@@ -52,6 +52,8 @@ export interface TypeAttributes {
     zoneControl: boolean;
   };
 }
+
+export type DamageType = 'high ad' | 'high ap' | 'high mix' | 'low ad' | 'low ap' | 'low mix' | 'utility';
 
 export type Archetype =
   | 'bruiser'

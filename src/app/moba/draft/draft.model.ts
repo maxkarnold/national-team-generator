@@ -10,8 +10,20 @@ export interface DraftChampion extends Champion {
     opp?: number;
   };
   currentCounter: {
-    player?: number;
-    opp?: number;
+    player: {
+      top: number;
+      jungle: number;
+      mid: number;
+      adc: number;
+      support: number;
+    };
+    opp: {
+      top: number;
+      jungle: number;
+      mid: number;
+      adc: number;
+      support: number;
+    };
   };
   currentScore: {
     player?: number;
@@ -19,6 +31,22 @@ export interface DraftChampion extends Champion {
   };
   selectedRole: Role;
   isPlaceholder: boolean;
+  adviceTags: {
+    player: {
+      top: DraftAdviceTag[];
+      jungle: DraftAdviceTag[];
+      mid: DraftAdviceTag[];
+      adc: DraftAdviceTag[];
+      support: DraftAdviceTag[];
+    };
+    opp: {
+      top: DraftAdviceTag[];
+      jungle: DraftAdviceTag[];
+      mid: DraftAdviceTag[];
+      adc: DraftAdviceTag[];
+      support: DraftAdviceTag[];
+    };
+  };
 }
 
 export interface DraftPlayer {
@@ -64,9 +92,19 @@ export interface DraftFormData {
   useRandomTeam: boolean;
 }
 
+export interface PatchData {
+  name: PatchName;
+  version: PatchVersion;
+  excludedChamps: number[];
+  patchTierList: AllRolesTierList;
+  // counters?: AllRolesTierList;
+  // synergies?: AllRolesTierList;
+}
+
 export type CompStyle = 'engage' | 'pick' | 'protect' | 'siege' | 'split';
-export type PatchVersion = 'MSI 24';
-export type DraftSortHeader = 'name' | 'mastery' | 'meta' | 'synergy';
+export type PatchName = 'MSI 24';
+export type PatchVersion = 14.8;
+export type DraftSortHeader = 'name' | 'mastery' | 'meta' | 'synergy' | 'counter';
 export type DraftDifficulty = 'easy' | 'medium' | 'hard';
 export type DraftAdviceTag = 'Counters Banned' | 'Recommended' | 'Counter Pick';
 
@@ -285,48 +323,52 @@ export const defaultOpponentMasteries: DraftPlayer[] = [
 ];
 
 // JUDGING META STRENGTH
+// Z/S+ Tier: champs that are so strong they deserve their own tier, not every role will have champs in this tier
 // S Tier: champs commonly banned in first phase, probably a 75%+ presence in games, strong first pick
+// best of the best champs, almost 100% presence in games, very bannable, flexible, not many weak matchups
 // A Tier: champs commonly banned in second phase, typically a stable champ, can be a champ that has emerged as a strong counter to s/a tier picks or has good synergy with meta picks
-// B Tier: champ is not strong, but still able to be picked. Can only be played by masters of the champ in a good counter situation
-// C Tier: champs hardly picked, chosen by players with high mastery but with a small champ pool or as a last resort
-// D Tier: do not pick these champs, are so weak that will be easily countered or not counter meta champs
+// strong champs that are also bannable, can be counters, but also have counters of their own. They shouldn't be easily counterable and have presence in nearly 100% of games
+// B Tier: these champs are playable, can be good siutational picks and could be just in this tier because they can counter a top meta pick
+// C Tier: champs that are very situational, will have obvious weakpoints, not usually banned but could be in certain situations.
+// Easily countered so usually picked late in draft or with counters already banned, typical spot for a lot of off-role champs
+// D Tier: champs that can technically play the role, but are either too easily countered or just too weak in their current state to be playable.
+// Champs that are never played but could be picked in the perfect scenario.
 
-// TODO: CHAMPS TO ADD
 // Patch 14.8
 export const patchMSI24: AllRolesTierList = {
   top: {
-    s: [1],
-    a: [2, 5, 44, 45, 46, 47, 8, 54],
-    b: [7, 4, 6, 62, 79, 80],
-    c: [0, 3, 58, 60, 70, 74, 81],
-    d: [17, 76, 89],
+    s: [1, 133, 5],
+    a: [2, 4, 44, 45, 8],
+    b: [3, 122, 79, 80, 76, 127, 129, 46, 0, 7, 70, 6, 47, 54, 56, 62],
+    c: [22, 74, 124, 89, 17, 126, 128, 58, 132, 81, 43, 28, 136, 60],
+    d: [120, 123, 114, 115, 23],
   },
   jungle: {
-    s: [9],
-    a: [10, 43, 11, 14, 42, 48, 8],
-    b: [0, 4, 49, 55, 56, 64, 68],
-    c: [13, 61, 67, 72, 73, 75, 82, 83],
-    d: [18, 12, 44, 2, 58, 84, 85],
+    s: [9, 133],
+    a: [10, 8, 11, 43],
+    b: [48, 42, 14, 0, 55, 64, 56, 68, 4, 49, 61, 72, 83, 67, 13],
+    c: [82, 73, 75, 18, 6, 131, 74, 2, 130, 44, 84, 85, 58],
+    d: [12],
   },
   mid: {
     s: [16, 18],
     a: [15, 19, 21, 50, 51, 52],
-    b: [2, 20, 22, 60, 86],
-    c: [17, 28, 44, 59, 71, 76, 77, 87, 88],
-    d: [62, 78, 89, 90, 91, 92, 93],
+    b: [20, 22, 86, 60, 77, 76, 17, 5, 90],
+    c: [87, 88, 71, 59, 93, 118, 73, 78, 74, 66, 119, 125, 121, 135, 92, 91, 137, 89, 70, 81, 27, 28, 34],
+    d: [134, 44],
   },
   adc: {
-    s: [24, 26],
-    a: [23, 27, 32],
-    b: [25, 29, 30, 31, 34],
-    c: [21, 28, 33, 35, 69, 94, 95],
-    d: [54, 96, 97, 98, 99, 62, 100],
+    s: [24, 26, 23],
+    a: [27],
+    b: [31, 32, 33, 94, 35, 34, 28, 30, 29],
+    c: [25, 96, 19, 69, 111, 97, 95, 98, 99, 21, 5, 100, 54, 62, 59],
+    d: [],
   },
   support: {
     s: [25, 36],
-    a: [38],
-    b: [37, 8, 12, 20, 11, 41, 53, 46, 40, 39, 24, 57, 63, 65],
-    c: [17, 66, 71, 101, 102, 103],
-    d: [19, 26, 104, 105, 43, 106],
+    a: [38, 37],
+    b: [40, 101, 65, 63, 45, 17, 102, 57, 11, 39, 41, 20, 46, 12, 26, 53],
+    c: [66, 104, 19, 105, 24, 107, 8, 106, 2, 43, 98, 110, 116, 117, 103, 112, 108],
+    d: [109, 113, 71],
   },
 };

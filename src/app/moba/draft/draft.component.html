@@ -192,6 +192,12 @@
           <div class="relative w-12 md:w-24 rounded">
             <img [src]="champ.img" class="w-full" (click)="getChampionFromId(champ.id)" />
           </div>
+          <span
+            *ngIf="champ.dmgType"
+            class="badge badge-sm badge-outline absolute -bottom-4 left-[20%]"
+            [ngClass]="getBadgeClass(champ.dmgType)">
+            {{ champ.dmgType | uppercase }}
+          </span>
         </div>
       </li>
     </ul>
@@ -206,26 +212,51 @@
             </th>
             <th (click)="sortBy.set('meta')" class="cursor-pointer">Meta</th>
             <th (click)="sortBy.set('mastery')" class="cursor-pointer">
-              {{ draftPhase.includes('Ban') && screenWidth > 640 ? 'Opp Mastery' : 'Mastery' }}
+              {{ screenWidth > 640 && roleFilter() !== 'all' ? 'Mastery / Opp' : draftPhase.includes('ban') ? 'Opp Mastery' : 'Mastery' }}
             </th>
-            <th (click)="sortBy.set('synergy')" class="cursor-pointer">Synergy</th>
+            <th (click)="sortBy.set('synergy')" class="cursor-pointer">
+              {{ screenWidth > 640 && roleFilter() !== 'all' ? 'Synergy / Opp' : 'Synergy' }}
+            </th>
+            <th (click)="sortBy.set('counter')" class="cursor-pointer">Counter</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let champ of filteredChampions()" class="hover cursor-pointer" (click)="chooseChampion(champ)">
             <td>
               <div class="flex items-center gap-3">
-                <div class="avatar">
-                  <div class="rounded w-10 sm:w-12">
-                    <img [src]="champ.img" [alt]="champ.name" />
+                <div class="flex flex-col items-center justify-center">
+                  <div class="avatar">
+                    <div class="rounded w-10 sm:w-12">
+                      <img [src]="champ.img" [alt]="champ.name" />
+                    </div>
+                  </div>
+                  <div *ngIf="screenWidth > 640" class="badge badge-xs badge-outline" [ngClass]="getBadgeClass(champ.dmgType)">
+                    {{ champ.dmgType | uppercase }}
                   </div>
                 </div>
+
                 <div *ngIf="screenWidth > 640">
                   <div class="font-bold">{{ champ.name }}</div>
                 </div>
                 <ul class="flex">
                   <li *ngFor="let role of champ.roles" class="flex flex-col items-center w-4 sm:w-8">
                     <img [src]="'assets/images/role_icons/' + role + '.webp'" />
+                  </li>
+                </ul>
+                <ul
+                  *ngIf="
+                    this.roleFilter() !== 'all' && getChampPropFromDraftPhase(draftPhase, currentDraftRound, userIsRedSide) === 'player'
+                  ">
+                  <li *ngFor="let badge of champ.adviceTags.player[selectedRoleFilter]" class="flex flex-col mb-1">
+                    <div class="badge badge-success badge-sm">{{ badge }}</div>
+                  </li>
+                </ul>
+                <ul
+                  *ngIf="
+                    this.roleFilter() !== 'all' && getChampPropFromDraftPhase(draftPhase, currentDraftRound, userIsRedSide) === 'opponent'
+                  ">
+                  <li *ngFor="let badge of champ.adviceTags.opp[selectedRoleFilter]" class="flex flex-col mb-1">
+                    <div class="badge badge-success badge-sm">{{ badge }}</div>
                   </li>
                 </ul>
               </div>
@@ -250,11 +281,29 @@
                 </span>
               </ng-container>
               <ng-template #filteredMastery>
-                <span>{{ getLetterRank(getDisplayMasteryScore(champ)) }}</span>
+                <span
+                  >{{ getLetterRank(getDisplayMasteryScore(champ, undefined, 'player')) }} /
+                  {{ getLetterRank(getDisplayMasteryScore(champ, undefined, 'opponent')) }}</span
+                >
               </ng-template>
             </td>
             <td>
-              {{ getLetterRank(getSynergyScore(champ)) === 'F' ? 'N/A' : getLetterRank(getSynergyScore(champ)) }}
+              <ng-container [ngSwitch]="displaySynergyAndCounter()">
+                <span *ngSwitchCase="'n/a'"> N/A </span>
+                <span *ngSwitchCase="'roleSpecific'">
+                  {{ getLetterRank(getSynergyScore(champ, 'player')) }} / {{ getLetterRank(getSynergyScore(champ, 'opponent')) }}</span
+                >
+                <span *ngSwitchDefault> {{ getLetterRank(getSynergyScore(champ)) }} </span>
+              </ng-container>
+            </td>
+            <td>
+              <ng-container [ngSwitch]="displaySynergyAndCounter()">
+                <span *ngSwitchCase="'n/a'"> N/A </span>
+                <span *ngSwitchCase="'roleSpecific'">
+                  {{ getLetterRank(getCounterScore(champ, 'player')) }} / {{ getLetterRank(getCounterScore(champ, 'opponent')) }}</span
+                >
+                <span *ngSwitchDefault> {{ 'N/A' }} </span>
+              </ng-container>
             </td>
           </tr>
         </tbody>
@@ -286,6 +335,12 @@
           <div class="relative w-12 md:w-24 rounded">
             <img [src]="champ.img" class="w-full" (click)="getChampionFromId(champ.id)" />
           </div>
+          <span
+            *ngIf="champ.dmgType"
+            class="badge badge-sm badge-outline absolute -bottom-4 left-[20%]"
+            [ngClass]="getBadgeClass(champ.dmgType)">
+            {{ champ.dmgType | uppercase }}
+          </span>
         </div>
       </li>
     </ul>

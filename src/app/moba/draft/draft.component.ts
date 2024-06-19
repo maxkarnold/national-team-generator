@@ -1,6 +1,6 @@
 import { Component, HostListener, Signal, WritableSignal, computed, signal } from '@angular/core';
 import * as championsJson from 'assets/json/moba/champions.json';
-import { Champion } from '../champion/champion.model';
+import { Champion, DamageType } from '../champion/champion.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   DraftChampion,
@@ -17,11 +17,11 @@ import {
   DraftPhase,
   CompStyleStats,
   TierListRankings,
-  PatchVersion,
   patchMSI24,
   getRoleFromFilter,
   tierValues,
   DraftSortHeader,
+  PatchName,
 } from './draft.model';
 import {
   checkForAvailableRoles,
@@ -32,6 +32,7 @@ import {
   needsMoreScalingAdvice,
   getChampMasteries,
   getChampPropFromDraftPhase,
+  getPatchData,
 } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role, positionFilters } from '../player/player.model';
@@ -52,6 +53,7 @@ export class DraftComponent {
   aiTimer = -1;
   champions: DraftChampion[] = [];
   getRoleFromFilter = getRoleFromFilter;
+  getChampPropFromDraftPhase = getChampPropFromDraftPhase;
   positionFilters = positionFilters;
   notification = {
     isActive: false,
@@ -66,7 +68,7 @@ export class DraftComponent {
   redRounds = [...redSideBanRounds, ...redSidePickRounds];
 
   draftForm: FormGroup = new FormGroup({
-    patchVersion: new FormControl<PatchVersion>('MSI 24'),
+    patchVersion: new FormControl<PatchName>('MSI 24'),
     userIsRedSide: new FormControl<boolean>(false),
     useAiOpponent: new FormControl<boolean>(false),
     difficulty: new FormControl<'easy' | 'medium' | 'hard'>('medium'),
@@ -153,7 +155,7 @@ export class DraftComponent {
   constructor(private service: MobaService) {
     const draftMetaData = this.service.getLocalStorage<{
       userIsRedSide: boolean;
-      patchVersion: PatchVersion;
+      patchVersion: PatchName;
       useAiOpponent: boolean;
       difficulty: string;
       useRandomTeam: boolean;
@@ -170,7 +172,7 @@ export class DraftComponent {
     return this.draftForm.get('userIsRedSide')?.value;
   }
 
-  get patchVersion(): PatchVersion {
+  get patchVersion(): PatchName {
     return this.draftForm.get('patchVersion')?.value;
   }
 
@@ -190,9 +192,27 @@ export class DraftComponent {
     return this.userIsRedSide ? this.redSideMasteries : this.blueSideMasteries;
   }
 
+  get selectedRoleFilter(): Role {
+    const role = this.roleFilter();
+    if (role === 'all') {
+      return 'top';
+    } else {
+      return role;
+    }
+  }
+
   @HostListener('window:resize', ['$event'])
   getScreenSize() {
     this.screenWidth = window.innerWidth;
+  }
+  getBadgeClass(dmgType: DamageType): string {
+    if (dmgType.includes('ad')) {
+      return 'badge-error';
+    } else if (dmgType.includes('ap')) {
+      return 'badge-info';
+    } else {
+      return 'badge-primary';
+    }
   }
 
   startDraft() {
@@ -213,9 +233,13 @@ export class DraftComponent {
 
   initiateMasteries() {
     const champions = Array.from(championsJson) as Champion[];
-    const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries('medium') : [...defaultPlayerMasteries];
-    const opponentMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries(this.difficulty) : [...defaultOpponentMasteries];
-    this.champions = getDraftChampions(champions, this.patchVersion, playerMasteries, opponentMasteries);
+    const patchData = getPatchData(this.patchVersion);
+    const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries(patchData) : [...defaultPlayerMasteries];
+    const opponentMasteries: DraftPlayer[] = this.useRandomTeam
+      ? getRandomMasteries(patchData, this.difficulty)
+      : [...defaultOpponentMasteries];
+
+    this.champions = getDraftChampions(champions, patchData, playerMasteries, opponentMasteries);
 
     this.blueSideMasteries = this.userIsRedSide ? opponentMasteries : playerMasteries;
     this.redSideMasteries = this.userIsRedSide ? playerMasteries : opponentMasteries;
@@ -300,6 +324,7 @@ export class DraftComponent {
     }
     for (const filteredChamp of this.filteredChampions()) {
       this.setSynergyScore(filteredChamp);
+      this.setCounterScore(filteredChamp);
     }
 
     // this should
@@ -343,15 +368,15 @@ export class DraftComponent {
     return this.getMetaScore(champ, this.roleFilter() as Role);
   }
 
-  getDisplayMasteryScore(champ: DraftChampion, specificRole?: Role) {
+  getDisplayMasteryScore(champ: DraftChampion, specificRole?: Role, playerSide?: 'player' | 'opponent') {
     if (this.roleFilter() === 'all') {
       return this.isOneRoleAvailable(champ) ? this.getMasteryScore(champ, specificRole) : 0;
     }
-    return this.getMasteryScore(champ, this.roleFilter() as Role);
+    return this.getMasteryScore(champ, this.roleFilter() as Role, playerSide);
   }
 
-  getMasteryScore(champ: DraftChampion, specificRole?: Role) {
-    const ratings = getChampMasteries(champ, this.draftPhase, this.currentDraftRound, this.userIsRedSide);
+  getMasteryScore(champ: DraftChampion, specificRole?: Role, playerSide?: string) {
+    const ratings = getChampMasteries(champ, this.draftPhase, this.currentDraftRound, this.userIsRedSide, playerSide);
     if (!specificRole) {
       return Math.max(...ratings);
     }
@@ -375,8 +400,8 @@ export class DraftComponent {
         : Math.max(...weightedStrength) + weightedStrength[1] / 12 + weightedStrength[2] / 12;
   }
 
-  setSynergyScore(evaluatedChamp: DraftChampion) {
-    const side = getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
+  setSynergyScore(evaluatedChamp: DraftChampion, playerSide?: 'player' | 'opponent'): number {
+    const side = playerSide ?? getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
     let currentSelectedChamps: Partial<DraftChampion>[];
     if (blueSideBanRounds.includes(this.currentDraftRound) || redSidePickRounds.includes(this.currentDraftRound)) {
       currentSelectedChamps = this.redSideChamps();
@@ -417,21 +442,93 @@ export class DraftComponent {
     }
   }
 
-  getSynergyScore(evaluatedChamp: DraftChampion): number {
+  getSynergyScore(evaluatedChamp: DraftChampion, playerSide?: 'player' | 'opponent'): number {
     // if champ hasn't been evaluated for synergy or the selectedRole has changed for a selectedChamp then get the synergy score otherwise use the existing score
-    const side = getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
-    if (evaluatedChamp.currentSynergy.player && side === 'player') {
-      return evaluatedChamp.currentSynergy.player;
-    }
-    if (evaluatedChamp.currentSynergy.opp && side === 'opponent') {
-      return evaluatedChamp.currentSynergy.opp;
-    }
-    const score = this.setSynergyScore(evaluatedChamp);
+
+    const side = playerSide ?? getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
+    // if (evaluatedChamp.currentSynergy.player && side === 'player') {
+    //   return evaluatedChamp.currentSynergy.player;
+    // }
+    // if (evaluatedChamp.currentSynergy.opp && side === 'opponent') {
+    //   return evaluatedChamp.currentSynergy.opp;
+    // }
+    const score = this.setSynergyScore(evaluatedChamp, playerSide);
     if (side === 'player') {
       evaluatedChamp.currentSynergy.player = score;
       return score;
     } else {
       evaluatedChamp.currentSynergy.opp = score;
+      return score;
+    }
+  }
+
+  setCounterScore(evaluatedChamp: DraftChampion, playerSide?: 'opponent' | 'player'): number {
+    const side = playerSide ?? getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
+    let currentSelectedChamps: Partial<DraftChampion>[];
+    if (blueSideBanRounds.includes(this.currentDraftRound) || redSidePickRounds.includes(this.currentDraftRound)) {
+      currentSelectedChamps = this.blueSideChamps();
+    } else {
+      currentSelectedChamps = this.redSideChamps();
+    }
+
+    currentSelectedChamps = currentSelectedChamps.filter(c => !c.isPlaceholder);
+    if (currentSelectedChamps.length < 1) {
+      if (side === 'player') {
+        evaluatedChamp.currentCounter.player[evaluatedChamp.selectedRole] = 0;
+        return 0;
+      } else {
+        evaluatedChamp.currentCounter.opp[evaluatedChamp.selectedRole] = 0;
+        return 0;
+      }
+    }
+    for (const champ of currentSelectedChamps as DraftChampion[]) {
+      const tierList = champ.counters[champ.selectedRole];
+      for (const [letter, championIds] of Object.entries(tierList)) {
+        if (championIds.includes(evaluatedChamp.id)) {
+          if (side === 'player') {
+            const score = tierValues[letter];
+            evaluatedChamp.currentCounter.player[champ.selectedRole] = score;
+            if (score >= 12) {
+              console.log('counter pick for player');
+              evaluatedChamp.adviceTags.player[evaluatedChamp.selectedRole] = ['Counter Pick'];
+            }
+            return score;
+          } else {
+            const score = tierValues[letter];
+            evaluatedChamp.currentCounter.opp[champ.selectedRole] = score;
+            if (score >= 12) {
+              console.log('counter pick for opp');
+              evaluatedChamp.adviceTags.opp[evaluatedChamp.selectedRole] = ['Counter Pick'];
+            }
+            return score;
+          }
+        }
+      }
+    }
+    if (side === 'player') {
+      evaluatedChamp.currentCounter.player[evaluatedChamp.selectedRole] = 0;
+      return 0;
+    } else {
+      evaluatedChamp.currentCounter.opp[evaluatedChamp.selectedRole] = 0;
+      return 0;
+    }
+  }
+
+  getCounterScore(evaluatedChamp: DraftChampion, playerSide?: 'player' | 'opponent'): number {
+    const side = playerSide ?? getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
+
+    // if (evaluatedChamp.currentCounter.player && side === 'player') {
+    //   return evaluatedChamp.currentCounter.player;
+    // }
+    // if (evaluatedChamp.currentCounter.opp && side === 'opponent') {
+    //   return evaluatedChamp.currentCounter.opp;
+    // }
+    const score = this.setCounterScore(evaluatedChamp, side);
+    if (side === 'player') {
+      evaluatedChamp.currentCounter.player[evaluatedChamp.selectedRole] = score;
+      return score;
+    } else {
+      evaluatedChamp.currentCounter.opp[evaluatedChamp.selectedRole] = score;
       return score;
     }
   }
@@ -462,6 +559,9 @@ export class DraftComponent {
     }
     if (sortBy === 'meta') {
       return champs.sort((a, b) => this.getDisplayMetaScore(b) - this.getDisplayMetaScore(a));
+    }
+    if (sortBy === 'counter') {
+      return champs.sort((a, b) => this.getCounterScore(b) - this.getCounterScore(a));
     }
     return champs;
   }
@@ -725,5 +825,15 @@ export class DraftComponent {
     advice.push(`Your team is most suited to ${startsWithVowel(sortedComps[0][0]) ? 'an' : 'a'} ${sortedComps[0][0]} composition. `);
     advice.push(`A secondary option would be ${startsWithVowel(sortedComps[1][0]) ? 'an' : 'a'} ${sortedComps[1][0]} composition.`);
     return advice;
+  }
+
+  displaySynergyAndCounter() {
+    if (this.currentDraftRound < 7) {
+      return 'n/a';
+    } else if (this.screenWidth > 640 && this.roleFilter() !== 'all') {
+      return 'roleSpecific';
+    } else {
+      return;
+    }
   }
 }
