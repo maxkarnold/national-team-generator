@@ -34,7 +34,6 @@
 
     <div class="form-control">
       <label class="label cursor-pointer flex justify-center">
-        <!-- <span class="label-text">PvP</span> -->
         <input type="checkbox" class="toggle mx-2" formControlName="useAiOpponent" />
         <span class="label-text">Use AI Opponent</span>
       </label>
@@ -162,7 +161,6 @@
       [class.btn-active]="this.roleFilter() === role.name"
       (click)="this.roleFilter.set(role.name)">
       <img [src]="role.url" class="w-full" />
-      <!-- <span>{{ role.name }}</span> -->
     </button>
   </ul>
   <!-- Selected Champs and Table -->
@@ -261,7 +259,6 @@
                 </ul>
               </div>
             </td>
-            <!-- <td>{{ getPreciseLetterRank(getPickScore(champ)) }}</td> -->
             <td>
               <ng-container *ngIf="roleFilter() === 'all'; else filteredMeta">
                 <span *ngFor="let role of champ.roles; let i = index">

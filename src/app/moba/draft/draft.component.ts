@@ -75,6 +75,13 @@ export class DraftComponent {
     useRandomTeam: new FormControl<boolean>({ value: true, disabled: true }),
   });
 
+  isBlueSideChoosing = signal(true);
+  isBanPhase = signal(true);
+  isUserChoosing = computed(() => {
+    const blueSideChoosing = this.isBlueSideChoosing();
+    return this.userIsRedSide ? !blueSideChoosing : blueSideChoosing;
+  });
+
   blueSideDraftScores: WritableSignal<number[]> = signal([]);
   redSideDraftScores: WritableSignal<number[]> = signal([]);
   blueSideMasteries: DraftPlayer[] = [];
@@ -100,7 +107,7 @@ export class DraftComponent {
   searchControl = new FormControl<string>('');
   searchControlValue = toSignal(this.searchControl.valueChanges);
   roleFilter: WritableSignal<Role | 'all'> = signal('all');
-  sortBy: WritableSignal<DraftSortHeader> = signal('meta');
+  sortBy: WritableSignal<DraftSortHeader> = signal('mastery');
 
   availableChampions: Signal<DraftChampion[]> = computed(() => {
     const redBans = this.redSideBans();
@@ -142,9 +149,7 @@ export class DraftComponent {
         }
       })
       .sort((a, b) => a.name.localeCompare(b.name))
-      .sort((a, b) => this.getDisplayMasteryScore(b) - this.getDisplayMasteryScore(a))
       .sort((a, b) => this.getDisplayMetaScore(b) - this.getDisplayMetaScore(a));
-    // console.log(champions);
     return this.chooseSortBy(champions, sortBy);
   });
   redSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
@@ -254,6 +259,8 @@ export class DraftComponent {
   }
 
   resetDraft() {
+    this.isBlueSideChoosing.set(true);
+    this.isBanPhase.set(true);
     this.draftStarted = false;
     this.draftPhase = 'Blue Ban 1';
     this.currentDraftRound = 1;
@@ -548,6 +555,8 @@ export class DraftComponent {
   }
 
   chooseSortBy(champs: DraftChampion[], sortBy: DraftSortHeader) {
+    const playerSide =
+      (this.isUserChoosing() && this.isBanPhase()) || (!this.isUserChoosing() && !this.isBanPhase()) ? 'opponent' : 'player';
     if (sortBy === 'name') {
       return champs.sort((a, b) => a.name.localeCompare(b.name));
     }
@@ -555,7 +564,11 @@ export class DraftComponent {
       return champs.sort((a, b) => this.getSynergyScore(b) - this.getSynergyScore(a));
     }
     if (sortBy === 'mastery') {
-      return champs.sort((a, b) => this.getDisplayMasteryScore(b) - this.getDisplayMasteryScore(a));
+      return champs.sort(
+        (a, b) =>
+          this.getDisplayMasteryScore(b, this.roleFilter() === 'all' ? undefined : (this.roleFilter() as Role), playerSide) -
+          this.getDisplayMasteryScore(a, this.roleFilter() === 'all' ? undefined : (this.roleFilter() as Role), playerSide)
+      );
     }
     if (sortBy === 'meta') {
       return champs.sort((a, b) => this.getDisplayMetaScore(b) - this.getDisplayMetaScore(a));
