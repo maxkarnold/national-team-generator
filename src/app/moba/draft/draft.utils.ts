@@ -1,7 +1,8 @@
+import { getRandomInt } from '@shared/utils';
 import { Champion } from '../champion/champion.model';
+import { patchMSI24 } from '../patch-lists/msi-24';
 import { AllRoles, Role } from '../player/player.model';
 import {
-  CompStyleStats,
   DraftChampion,
   DraftPhase,
   DraftPlayer,
@@ -9,8 +10,6 @@ import {
   TierListRankings,
   blueSideBanRounds,
   blueSidePickRounds,
-  compStyleReqs,
-  patchMSI24,
   redSideBanRounds,
   redSidePickRounds,
   tierValues,
@@ -111,7 +110,7 @@ export function getDraftChampions(
     .map(c => {
       const metaStrength = getMetaStrength(c, patchData.patchTierList);
       const selectedRole = AllRoles[metaStrength.indexOf(Math.max(...metaStrength))];
-      console.log(playerMasteries, opponentMasteries);
+      // console.log(playerMasteries, opponentMasteries);
       return {
         ...c,
         metaStrength,
@@ -238,83 +237,29 @@ export function checkForAvailableRoles(selectedRoles: (Role | undefined)[]): Rol
   return availableRoles;
 }
 
-export function needsMoreDmgAdvice(selectedTeamChamps: DraftChampion[]): { needsMoreApDmg: boolean; needsMoreAdDmg: boolean } {
-  const teamDamageTypes = selectedTeamChamps.map(c => c.dmgType);
-  const needsMoreApDmg =
-    teamDamageTypes.reduce((acc, dmg) => {
-      if (dmg === 'high ap') {
-        return acc + 2;
-      }
-      if (dmg === 'low ap' || dmg === 'high mix') {
-        return acc + 1;
-      }
-      if (dmg === 'low mix') {
-        return acc + 0.5;
-      }
-      return acc;
-    }, 0) < 2;
-  const needsMoreAdDmg =
-    teamDamageTypes.reduce((acc, dmg) => {
-      if (dmg === 'high ad') {
-        return acc + 2;
-      }
-      if (dmg === 'low ad' || dmg === 'high mix') {
-        return acc + 1;
-      }
-      if (dmg === 'low mix') {
-        return acc + 0.5;
-      }
-      return acc;
-    }, 0) < 2;
-
+/**
+ * Calculates the TierListRankings based on the provided list of champions and the draft difficulty.
+ *
+ * @param {number[]} allChamps - The list of all champions to consider.
+ * @param {DraftDifficulty} difficulty - The difficulty level of the draft (easy, medium, hard).
+ * @return {TierListRankings} The TierListRankings object with champion slices for each tier (s, a, b, c, d).
+ */
+function getChampionMasteryBasedOnDiff(allChamps: number[], difficulty: DraftDifficulty): TierListRankings {
+  const diffFactors = { easy: 4.75, medium: 4, hard: 3.25 };
+  const numOfChamps = allChamps.length;
+  const sIndex = difficulty === 'hard' ? getRandomInt(2, 3) : difficulty === 'medium' ? getRandomInt(1, 2) : 1;
+  const aIndex = Math.floor(numOfChamps / diffFactors[difficulty]) - 1;
+  const bIndex = aIndex * 2 - 1;
+  const cIndex = bIndex + Math.floor(aIndex / 1.5);
+  const dIndex = Math.floor(cIndex + diffFactors[difficulty] * 1.5 - 1);
+  console.log('numOfChamps', numOfChamps, aIndex, bIndex, cIndex, dIndex);
   return {
-    needsMoreApDmg,
-    needsMoreAdDmg,
+    s: allChamps.slice(0, sIndex),
+    a: allChamps.slice(sIndex, aIndex),
+    b: allChamps.slice(aIndex, bIndex),
+    c: allChamps.slice(bIndex, cIndex),
+    d: allChamps.slice(cIndex, dIndex),
   };
-}
-
-export function needsMoreScalingAdvice(selectedTeamChamps: DraftChampion[]): {
-  needsMoreEarlyChamps: boolean;
-  needsMoreMidChamps: boolean;
-  needsMoreLateChamps: boolean;
-} {
-  const requiredScore = selectedTeamChamps.length * 9.5;
-  const earlyScore = selectedTeamChamps.reduce((acc, champ) => acc + champ.gameStateAttributes.early, 0);
-  const midScore = selectedTeamChamps.reduce((acc, champ) => acc + champ.gameStateAttributes.mid, 0);
-  const lateScore = selectedTeamChamps.reduce((acc, champ) => acc + champ.gameStateAttributes.late, 0);
-  const needsMoreEarlyChamps = earlyScore < requiredScore;
-  const needsMoreMidChamps = midScore < requiredScore;
-  const needsMoreLateChamps = lateScore < requiredScore;
-
-  return {
-    needsMoreEarlyChamps,
-    needsMoreMidChamps,
-    needsMoreLateChamps,
-  };
-}
-
-export function getTeamCompStyleScoring(selectedTeamChamps: DraftChampion[]): CompStyleStats {
-  const compStats: CompStyleStats = {
-    engage: 0,
-    pick: 0,
-    protect: 0,
-    siege: 0,
-    split: 0,
-  };
-
-  selectedTeamChamps.forEach(champ => {
-    compStyleReqs.forEach(comp => {
-      const primarySum = comp.primary.reduce((acc, attrPath) => {
-        return _get(champ, 'attributes.' + attrPath) ? acc + 2 : acc;
-      }, 0);
-      const secondarySum = comp.secondary.reduce((acc, attrPath) => {
-        return _get(champ, 'attributes.' + attrPath) ? acc + 1 : acc;
-      }, 0);
-      compStats[comp.name] += +primarySum + secondarySum;
-    });
-  });
-
-  return compStats;
 }
 
 /**
@@ -331,43 +276,9 @@ export function getRandomMasteries({ patchTierList }: PatchData, difficulty: Dra
     if (Object.prototype.hasOwnProperty.call(patchTierList, role)) {
       const { s, a, b, c, d } = patchTierList[role as keyof AllRolesTierList];
       const mainChamps = [...shuffle(s.concat(a, b))];
-      const offMetaChamps = [...shuffle(c)];
-      const weirdChamps = [...shuffle(d)];
+      const allChamps = [...mainChamps.slice(0, 4), ...shuffle(mainChamps.slice(4).concat(c, d))];
       // Randomly assign championMastery for the current role
-      const championMastery: TierListRankings = {
-        s: [],
-        a: [],
-        b: [],
-        c: [],
-        d: [],
-      };
-
-      championMastery.s =
-        difficulty === 'easy' ? mainChamps.slice(0, 1) : difficulty === 'hard' ? mainChamps.slice(0, 4) : mainChamps.slice(0, 2);
-      championMastery.a =
-        difficulty === 'easy'
-          ? mainChamps.slice(1, 4)
-          : difficulty === 'hard'
-            ? [...mainChamps.slice(4, 8), offMetaChamps[0]]
-            : [...mainChamps.slice(2, 5), offMetaChamps[0]];
-      championMastery.b =
-        difficulty === 'easy'
-          ? [...mainChamps.slice(4, 7), offMetaChamps[0]]
-          : difficulty === 'hard'
-            ? [...mainChamps.slice(8, 11), ...offMetaChamps.slice(1, 3), ...weirdChamps.slice(0, 2)]
-            : [...mainChamps.slice(5, 8), offMetaChamps[1], weirdChamps[0]];
-      championMastery.c =
-        difficulty === 'easy'
-          ? [...mainChamps.slice(7, 9), ...offMetaChamps.slice(1, 3), ...weirdChamps.slice(0, 2)]
-          : difficulty === 'hard'
-            ? [...mainChamps.slice(11, 13), ...offMetaChamps.slice(3, 5), ...weirdChamps.slice(2, 4)]
-            : [...mainChamps.slice(8, 12), offMetaChamps[2], weirdChamps[1]];
-      championMastery.d =
-        difficulty === 'easy'
-          ? [...mainChamps.slice(9, 10), ...offMetaChamps.slice(3, 5), ...weirdChamps.slice(2, 5)]
-          : difficulty === 'hard'
-            ? [...offMetaChamps.slice(5, 7), ...weirdChamps.slice(4, 9)]
-            : [...mainChamps.slice(12, 13), ...offMetaChamps.slice(3, 4), ...weirdChamps.slice(2, 4)];
+      const championMastery = getChampionMasteryBasedOnDiff(allChamps, difficulty);
 
       const roleData: DraftPlayer = {
         mainRole: role as Role,

@@ -15,9 +15,7 @@ import {
   defaultPlayerMasteries,
   DraftPlayer,
   DraftPhase,
-  CompStyleStats,
   TierListRankings,
-  patchMSI24,
   getRoleFromFilter,
   tierValues,
   DraftSortHeader,
@@ -27,18 +25,16 @@ import {
   checkForAvailableRoles,
   getDraftChampions,
   getRandomMasteries,
-  getTeamCompStyleScoring,
-  needsMoreDmgAdvice,
-  needsMoreScalingAdvice,
   getChampMasteries,
   getChampPropFromDraftPhase,
   getPatchData,
 } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role, positionFilters } from '../player/player.model';
-import { startsWithVowel } from '@shared/utils';
-import { capitalize, round, shuffle, sum } from 'lodash-es';
+import { shuffle } from 'lodash-es';
 import { MobaService } from '../moba.service';
+import { patchMSI24 } from '../patch-lists/msi-24';
+import { getCompositionAdviceAndGrade } from './draft-grader';
 
 @Component({
   selector: 'app-draft',
@@ -779,65 +775,13 @@ export class DraftComponent {
   }
 
   getCompositionAdvice(isBlueSide: boolean): string[] {
-    const blueSideChamps = this.blueSideChamps().filter(c => c?.id);
-    const redSideChamps = this.redSideChamps().filter(c => c?.id);
-    if ((isBlueSide && blueSideChamps.length < 1) || (!isBlueSide && redSideChamps.length < 1)) {
-      return ['Choose champions before receiving advice.'];
-    }
-    const advice: string[] = [];
-    // composition advice
-    // team comp should have balanced damage sources (2 low dmg of each or 1 high dmg of each type, mix would count as half, so low mix is 1/2 a low dmg and high mix is equal to low dmg)
-    // team comp should have some early, mid and late game champs to be more balanced, it can be skewed but not too much
-    // team comp should have attributes that fill one comp style
-
-    const selectedTeamChamps = isBlueSide ? [...(blueSideChamps as DraftChampion[])] : [...(redSideChamps as DraftChampion[])];
-    const { needsMoreEarlyChamps, needsMoreMidChamps, needsMoreLateChamps } = needsMoreScalingAdvice(selectedTeamChamps);
-    const { needsMoreAdDmg, needsMoreApDmg } = needsMoreDmgAdvice(selectedTeamChamps);
-
-    const compStyles: CompStyleStats = getTeamCompStyleScoring(selectedTeamChamps);
-    const sortedComps = Object.entries(compStyles)
-      .map(([a, b]) => [capitalize(a), b])
-      .sort((a, b) => b[1] - a[1]);
-
-    if (selectedTeamChamps.length === 5) {
-      const scores = isBlueSide ? [...this.blueSideDraftScores()] : [...this.redSideDraftScores()];
-      let grade = sum(scores) / 5;
-      const allNegativeAdvice = [needsMoreEarlyChamps, needsMoreMidChamps, needsMoreLateChamps, needsMoreAdDmg, needsMoreApDmg];
-      for (let i = 0; i < allNegativeAdvice.length; i++) {
-        grade -= allNegativeAdvice[i] ? 1.5 : 0;
-      }
-      if (sortedComps[0][1] > 25) {
-        grade += 1.5;
-      } else if (sortedComps[0][1] > 30) {
-        grade += 3;
-      }
-      advice.push(`This draft scores ${round(grade, 1)} of 20.`);
-    }
-
-    if (needsMoreAdDmg) {
-      advice.push('You need more AD damage sources.');
-    }
-    if (needsMoreApDmg) {
-      advice.push('You need more AP damage sources.');
-    }
-
-    if (selectedTeamChamps.length < 3) {
-      advice.push(`Your team is most suited to ${startsWithVowel(sortedComps[0][0]) ? 'an' : 'a'} ${sortedComps[0][0]} composition.`);
-      return advice;
-    }
-
-    if (needsMoreEarlyChamps) {
-      advice.push('Your team lacks Early game capability.');
-    }
-    if (needsMoreMidChamps) {
-      advice.push('Your team lacks Mid game capability.');
-    }
-    if (needsMoreLateChamps) {
-      advice.push('Your team lacks Late game capability.');
-    }
-    advice.push(`Your team is most suited to ${startsWithVowel(sortedComps[0][0]) ? 'an' : 'a'} ${sortedComps[0][0]} composition. `);
-    advice.push(`A secondary option would be ${startsWithVowel(sortedComps[1][0]) ? 'an' : 'a'} ${sortedComps[1][0]} composition.`);
-    return advice;
+    return getCompositionAdviceAndGrade(
+      isBlueSide,
+      this.blueSideChamps,
+      this.redSideChamps,
+      this.blueSideDraftScores,
+      this.redSideDraftScores
+    );
   }
 
   displaySynergyAndCounter() {
