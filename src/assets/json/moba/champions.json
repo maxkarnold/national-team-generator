@@ -3149,7 +3149,7 @@
       "support"
     ],
     "img": "assets/images/champion_icons/Senna.webp",
-    "dmgType": "high ap",
+    "dmgType": "high ad",
     "gameStateAttributes": {
       "early": 5,
       "mid": 10,
