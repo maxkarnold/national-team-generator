@@ -20,6 +20,7 @@ import {
   tierValues,
   DraftSortHeader,
   PatchName,
+  TierValue,
 } from './draft.model';
 import {
   checkForAvailableRoles,
@@ -57,7 +58,6 @@ export class DraftComponent {
     type: 'success',
   };
   isAiChoosing = false;
-  // maybe should clean this up
   blueSideBanRounds = blueSideBanRounds;
   redSideBanRounds = redSideBanRounds;
   blueRounds = [...blueSideBanRounds, ...blueSidePickRounds];
@@ -211,8 +211,10 @@ export class DraftComponent {
       return 'badge-error';
     } else if (dmgType.includes('ap')) {
       return 'badge-info';
-    } else {
+    } else if (dmgType.includes('mix')) {
       return 'badge-primary';
+    } else {
+      return 'badge-accent';
     }
   }
 
@@ -366,14 +368,14 @@ export class DraftComponent {
 
   getDisplayMetaScore(champ: DraftChampion, specificRole?: Role) {
     if (this.roleFilter() === 'all') {
-      return this.isOneRoleAvailable(champ) ? this.getMetaScore(champ, specificRole) : 0;
+      return this.isOneRoleAvailable(champ) ? this.getMetaScore(champ, specificRole) : TierValue.F;
     }
     return this.getMetaScore(champ, this.roleFilter() as Role);
   }
 
   getDisplayMasteryScore(champ: DraftChampion, specificRole?: Role, playerSide?: 'player' | 'opponent') {
     if (this.roleFilter() === 'all') {
-      return this.isOneRoleAvailable(champ) ? this.getMasteryScore(champ, specificRole) : 0;
+      return this.isOneRoleAvailable(champ) ? this.getMasteryScore(champ, specificRole) : TierValue.F;
     }
     return this.getMasteryScore(champ, this.roleFilter() as Role, playerSide);
   }
@@ -403,7 +405,7 @@ export class DraftComponent {
         : Math.max(...weightedStrength) + weightedStrength[1] / 12 + weightedStrength[2] / 12;
   }
 
-  setSynergyScore(evaluatedChamp: DraftChampion, playerSide?: 'player' | 'opponent'): number {
+  setSynergyScore(evaluatedChamp: DraftChampion, playerSide?: 'player' | 'opponent') {
     const side = playerSide ?? getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
     let currentSelectedChamps: Partial<DraftChampion>[];
     if (blueSideBanRounds.includes(this.currentDraftRound) || redSidePickRounds.includes(this.currentDraftRound)) {
@@ -415,11 +417,11 @@ export class DraftComponent {
     currentSelectedChamps = currentSelectedChamps.filter(c => !c.isPlaceholder);
     if (currentSelectedChamps.length < 1) {
       if (side === 'player') {
-        evaluatedChamp.currentSynergy.player = 0;
-        return 0;
+        evaluatedChamp.currentSynergy.player = TierValue.F;
+        return TierValue.F;
       } else {
-        evaluatedChamp.currentSynergy.opp = 0;
-        return 0;
+        evaluatedChamp.currentSynergy.opp = TierValue.F;
+        return TierValue.F;
       }
     }
     for (const champ of currentSelectedChamps as DraftChampion[]) {
@@ -437,11 +439,11 @@ export class DraftComponent {
       }
     }
     if (side === 'player') {
-      evaluatedChamp.currentSynergy.player = 0;
-      return 0;
+      evaluatedChamp.currentSynergy.player = TierValue.F;
+      return TierValue.F;
     } else {
-      evaluatedChamp.currentSynergy.opp = 0;
-      return 0;
+      evaluatedChamp.currentSynergy.opp = TierValue.F;
+      return TierValue.F;
     }
   }
 
@@ -477,11 +479,11 @@ export class DraftComponent {
     currentSelectedChamps = currentSelectedChamps.filter(c => !c.isPlaceholder);
     if (currentSelectedChamps.length < 1) {
       if (side === 'player') {
-        evaluatedChamp.currentCounter.player[evaluatedChamp.selectedRole] = 0;
-        return 0;
+        evaluatedChamp.currentCounter.player[evaluatedChamp.selectedRole] = TierValue.F;
+        return TierValue.F;
       } else {
-        evaluatedChamp.currentCounter.opp[evaluatedChamp.selectedRole] = 0;
-        return 0;
+        evaluatedChamp.currentCounter.opp[evaluatedChamp.selectedRole] = TierValue.F;
+        return TierValue.F;
       }
     }
     for (const champ of currentSelectedChamps as DraftChampion[]) {
@@ -491,17 +493,19 @@ export class DraftComponent {
           if (side === 'player') {
             const score = tierValues[letter];
             evaluatedChamp.currentCounter.player[champ.selectedRole] = score;
-            if (score >= 12) {
+            const adviceTags = evaluatedChamp.adviceTags.player[evaluatedChamp.selectedRole];
+            if (score >= 12 && !adviceTags.includes('Counter Pick')) {
               console.log('counter pick for player');
-              evaluatedChamp.adviceTags.player[evaluatedChamp.selectedRole] = ['Counter Pick'];
+              adviceTags.push('Counter Pick');
             }
             return score;
           } else {
             const score = tierValues[letter];
             evaluatedChamp.currentCounter.opp[champ.selectedRole] = score;
-            if (score >= 12) {
+            const adviceTags = evaluatedChamp.adviceTags.opp[evaluatedChamp.selectedRole];
+            if (score >= 12 && !adviceTags.includes('Counter Pick')) {
               console.log('counter pick for opp');
-              evaluatedChamp.adviceTags.opp[evaluatedChamp.selectedRole] = ['Counter Pick'];
+              adviceTags.push('Counter Pick');
             }
             return score;
           }
@@ -509,11 +513,11 @@ export class DraftComponent {
       }
     }
     if (side === 'player') {
-      evaluatedChamp.currentCounter.player[evaluatedChamp.selectedRole] = 0;
-      return 0;
+      evaluatedChamp.currentCounter.player[evaluatedChamp.selectedRole] = TierValue.F;
+      return TierValue.F;
     } else {
-      evaluatedChamp.currentCounter.opp[evaluatedChamp.selectedRole] = 0;
-      return 0;
+      evaluatedChamp.currentCounter.opp[evaluatedChamp.selectedRole] = TierValue.F;
+      return TierValue.F;
     }
   }
 
@@ -540,13 +544,13 @@ export class DraftComponent {
     const mastery = this.getMasteryScore(champ);
     const metaStrength = this.getMetaScore(champ);
     const synergy = this.getSynergyScore(champ);
-    if (mastery === 0) {
-      return 0;
+    if (mastery === TierValue.F) {
+      return TierValue.F;
     }
     if (!this.isOneRoleAvailable(champ)) {
-      return 0;
+      return TierValue.F;
     }
-    const avg = (mastery * 0.6 + metaStrength * 1.4 + synergy * 0.5) / 2;
+    const avg = (mastery * 0.75 + metaStrength * 1.25 + synergy * 0.5) / 2;
     return avg;
   }
 
@@ -584,7 +588,7 @@ export class DraftComponent {
       // console.log(availableRoles);
       // if any of the availableRoles is in the currentChamp's roles then it can be returned as normal
       if (!availableRoles.some(r => champ.roles.includes(r))) {
-        return 0;
+        return TierValue.F;
       }
     } else if (this.draftPhase.includes('Blue Ban') || this.draftPhase.includes('Red Pick')) {
       // When blue team is banning or red team is picking

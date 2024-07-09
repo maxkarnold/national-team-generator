@@ -1,7 +1,7 @@
 import { getRandomInt } from '@shared/utils';
 import { Champion } from '../champion/champion.model';
 import { patchMSI24 } from '../patch-lists/msi-24';
-import { AllRoles, Role } from '../player/player.model';
+import { AllRoles, Role, RoleIndex } from '../player/player.model';
 import {
   DraftChampion,
   DraftPhase,
@@ -16,6 +16,8 @@ import {
   PatchData,
   PatchName,
   DraftDifficulty,
+  ChampionAdvice,
+  TierValue,
 } from './draft.model';
 
 import { get as _get, shuffle } from 'lodash-es';
@@ -99,6 +101,30 @@ export function getPatchData(name: PatchName): PatchData {
   };
 }
 
+export function getAdviceTags(
+  metaStrength: [number, number, number, number, number],
+  playerMasteries: [number, number, number, number, number],
+  opponentMasteries: [number, number, number, number, number]
+): { player: ChampionAdvice; opp: ChampionAdvice } {
+  return {
+    player: {
+      top: metaStrength[RoleIndex.TOP] < TierValue.C || playerMasteries[RoleIndex.TOP] < TierValue.D ? ['Not Recommended'] : [],
+      jungle: metaStrength[RoleIndex.JUNGLE] < TierValue.C || playerMasteries[RoleIndex.JUNGLE] < TierValue.D ? ['Not Recommended'] : [],
+      mid: metaStrength[RoleIndex.MID] < TierValue.C || playerMasteries[RoleIndex.MID] < TierValue.D ? ['Not Recommended'] : [],
+      adc: metaStrength[RoleIndex.ADC] < TierValue.C || playerMasteries[RoleIndex.ADC] < TierValue.D ? ['Not Recommended'] : [],
+      support: metaStrength[RoleIndex.SUPPORT] < TierValue.C || playerMasteries[RoleIndex.SUPPORT] < TierValue.D ? ['Not Recommended'] : [],
+    },
+    opp: {
+      top: metaStrength[RoleIndex.TOP] < TierValue.C || opponentMasteries[RoleIndex.TOP] < TierValue.D ? ['Not Recommended'] : [],
+      jungle: metaStrength[RoleIndex.JUNGLE] < TierValue.C || opponentMasteries[RoleIndex.JUNGLE] < TierValue.D ? ['Not Recommended'] : [],
+      mid: metaStrength[RoleIndex.MID] < TierValue.C || opponentMasteries[RoleIndex.MID] < TierValue.D ? ['Not Recommended'] : [],
+      adc: metaStrength[RoleIndex.ADC] < TierValue.C || opponentMasteries[RoleIndex.ADC] < TierValue.D ? ['Not Recommended'] : [],
+      support:
+        metaStrength[RoleIndex.SUPPORT] < TierValue.C || opponentMasteries[RoleIndex.SUPPORT] < TierValue.D ? ['Not Recommended'] : [],
+    },
+  };
+}
+
 export function getDraftChampions(
   champions: Champion[],
   patchData: PatchData,
@@ -111,11 +137,13 @@ export function getDraftChampions(
       const metaStrength = getMetaStrength(c, patchData.patchTierList);
       const selectedRole = AllRoles[metaStrength.indexOf(Math.max(...metaStrength))];
       // console.log(playerMasteries, opponentMasteries);
+      const playerMastery = getAllMasteries(c, playerMasteries);
+      const opponentMastery = getAllMasteries(c, opponentMasteries);
       return {
         ...c,
         metaStrength,
-        playerMastery: getAllMasteries(c, playerMasteries),
-        opponentMastery: getAllMasteries(c, opponentMasteries),
+        playerMastery,
+        opponentMastery,
         currentSynergy: {},
         currentCounter: {
           player: {
@@ -136,22 +164,7 @@ export function getDraftChampions(
         currentScore: {},
         isPlaceholder: false,
         selectedRole,
-        adviceTags: {
-          player: {
-            top: [],
-            jungle: [],
-            mid: [],
-            adc: [],
-            support: [],
-          },
-          opp: {
-            top: [],
-            jungle: [],
-            mid: [],
-            adc: [],
-            support: [],
-          },
-        },
+        adviceTags: getAdviceTags(metaStrength, playerMastery, opponentMastery),
       };
     });
 }

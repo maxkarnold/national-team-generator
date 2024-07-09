@@ -32,20 +32,8 @@ export interface DraftChampion extends Champion {
   selectedRole: Role;
   isPlaceholder: boolean;
   adviceTags: {
-    player: {
-      top: DraftAdviceTag[];
-      jungle: DraftAdviceTag[];
-      mid: DraftAdviceTag[];
-      adc: DraftAdviceTag[];
-      support: DraftAdviceTag[];
-    };
-    opp: {
-      top: DraftAdviceTag[];
-      jungle: DraftAdviceTag[];
-      mid: DraftAdviceTag[];
-      adc: DraftAdviceTag[];
-      support: DraftAdviceTag[];
-    };
+    player: ChampionAdvice;
+    opp: ChampionAdvice;
   };
 }
 
@@ -101,12 +89,20 @@ export interface PatchData {
   // synergies?: AllRolesTierList;
 }
 
+export interface ChampionAdvice {
+  top: DraftAdviceTag[];
+  jungle: DraftAdviceTag[];
+  mid: DraftAdviceTag[];
+  adc: DraftAdviceTag[];
+  support: DraftAdviceTag[];
+}
+
 export type CompStyle = 'engage' | 'pick' | 'protect' | 'siege' | 'split';
 export type PatchName = 'MSI 24';
 export type PatchVersion = 14.8;
 export type DraftSortHeader = 'name' | 'mastery' | 'meta' | 'synergy' | 'counter';
 export type DraftDifficulty = 'easy' | 'medium' | 'hard';
-export type DraftAdviceTag = 'Counters Banned' | 'Recommended' | 'Counter Pick';
+export type DraftAdviceTag = 'Counters Banned' | 'Recommended' | 'Counter Pick' | 'Not Recommended' | 'High Synergy';
 
 export type LetterRank = 'S' | 'A' | 'B' | 'C' | 'D' | 'F' | 'N/A' | 'S+' | 'S-' | 'A+' | 'A-' | 'B+' | 'B-' | 'C+' | 'C-' | 'D+' | 'D-';
 export type DraftPhase =
@@ -136,7 +132,23 @@ export function getRoleFromFilter(role: Role | 'all' | undefined): Role | undefi
   return role === 'all' ? undefined : role;
 }
 
-export const tierValues: { [key: string]: number } = { s: 20, a: 16, b: 12, c: 8, d: 4 };
+export enum TierValue {
+  S = 20,
+  A = 16,
+  B = 12,
+  C = 8,
+  D = 4,
+  F = 0,
+}
+
+export const tierValues: { [key: string]: TierValue } = {
+  s: TierValue.S,
+  a: TierValue.A,
+  b: TierValue.B,
+  c: TierValue.C,
+  d: TierValue.D,
+  f: TierValue.F,
+};
 
 export const redSidePickRounds = [8, 9, 12, 17, 20];
 export const blueSidePickRounds = [7, 10, 11, 18, 19];
