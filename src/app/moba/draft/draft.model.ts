@@ -6,8 +6,14 @@ export interface DraftChampion extends Champion {
   playerMastery: [number, number, number, number, number];
   opponentMastery: [number, number, number, number, number];
   currentSynergy: {
-    player?: number;
-    opp?: number;
+    player: {
+      team: number;
+      individual: number;
+    };
+    opp: {
+      team: number;
+      individual: number;
+    };
   };
   currentCounter: {
     player: {
