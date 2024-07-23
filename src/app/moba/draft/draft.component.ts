@@ -21,6 +21,9 @@ import {
   DraftSortHeader,
   PatchName,
   TierValue,
+  DraftMetaData,
+  hasAllPropsDraftMetaData,
+  patchNames,
 } from './draft.model';
 import {
   checkForAvailableRoles,
@@ -34,7 +37,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role, positionFilters } from '../player/player.model';
 import { shuffle } from 'lodash-es';
 import { MobaService } from '../moba.service';
-import { patchMSI24 } from '../patch-lists/msi-24';
 import { compareCompStyle, getCompositionAdviceAndGrade, getTeamCompStyleScoring } from './draft-grader';
 
 @Component({
@@ -51,6 +53,7 @@ export class DraftComponent {
   champions: DraftChampion[] = [];
   getRoleFromFilter = getRoleFromFilter;
   getChampPropFromDraftPhase = getChampPropFromDraftPhase;
+  patchNames = patchNames;
   positionFilters = positionFilters;
   notification = {
     isActive: false,
@@ -64,7 +67,7 @@ export class DraftComponent {
   redRounds = [...redSideBanRounds, ...redSidePickRounds];
 
   draftForm: FormGroup = new FormGroup({
-    patchVersion: new FormControl<PatchName>('MSI 24'),
+    patchName: new FormControl<PatchName>('Summer 2024'),
     userIsRedSide: new FormControl<boolean>(false),
     useAiOpponent: new FormControl<boolean>(false),
     difficulty: new FormControl<'easy' | 'medium' | 'hard'>('medium'),
@@ -103,7 +106,7 @@ export class DraftComponent {
   searchControl = new FormControl<string>('');
   searchControlValue = toSignal(this.searchControl.valueChanges);
   roleFilter: WritableSignal<Role | 'all'> = signal('all');
-  sortBy: WritableSignal<DraftSortHeader> = signal('mastery');
+  sortBy: WritableSignal<DraftSortHeader> = signal('meta');
 
   availableChampions: Signal<DraftChampion[]> = computed(() => {
     const redBans = this.redSideBans();
@@ -145,6 +148,7 @@ export class DraftComponent {
         }
       })
       .sort((a, b) => a.name.localeCompare(b.name))
+      .sort((a, b) => this.getDisplayMasteryScore(a) - this.getDisplayMasteryScore(b))
       .sort((a, b) => this.getDisplayMetaScore(b) - this.getDisplayMetaScore(a));
     return this.chooseSortBy(champions, sortBy);
   });
@@ -154,14 +158,8 @@ export class DraftComponent {
   blueSideChamps: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftPicks]);
 
   constructor(private service: MobaService) {
-    const draftMetaData = this.service.getLocalStorage<{
-      userIsRedSide: boolean;
-      patchVersion: PatchName;
-      useAiOpponent: boolean;
-      difficulty: string;
-      useRandomTeam: boolean;
-    }>('draft_metaData');
-    if (draftMetaData && draftMetaData.difficulty) {
+    const draftMetaData = this.service.getLocalStorage<DraftMetaData>('draft_metaData');
+    if (draftMetaData && hasAllPropsDraftMetaData(draftMetaData)) {
       this.draftForm.setValue(draftMetaData);
     }
     this.screenWidth = window.innerWidth;
@@ -173,8 +171,8 @@ export class DraftComponent {
     return this.draftForm.get('userIsRedSide')?.value;
   }
 
-  get patchVersion(): PatchName {
-    return this.draftForm.get('patchVersion')?.value;
+  get patchName(): PatchName {
+    return this.draftForm.get('patchName')?.value;
   }
 
   get useAiOpponent(): boolean {
@@ -220,11 +218,11 @@ export class DraftComponent {
 
   startDraft() {
     this.draftStarted = true;
-    this.service.setLocalStorage('draft_metaData', {
+    this.service.setLocalStorage<DraftMetaData>('draft_metaData', {
       userIsRedSide: this.userIsRedSide,
       useAiOpponent: this.useAiOpponent,
       difficulty: this.difficulty,
-      patchVersion: this.patchVersion,
+      patchName: this.patchName,
       useRandomTeam: this.useRandomTeam,
     });
     this.initiateMasteries();
@@ -236,7 +234,7 @@ export class DraftComponent {
 
   initiateMasteries() {
     const champions = Array.from(championsJson) as Champion[];
-    const patchData = getPatchData(this.patchVersion);
+    const patchData = getPatchData(this.patchName);
     const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries(patchData) : [...defaultPlayerMasteries];
     const opponentMasteries: DraftPlayer[] = this.useRandomTeam
       ? getRandomMasteries(patchData, this.difficulty)
@@ -612,11 +610,9 @@ export class DraftComponent {
   }
 
   getTopChampsInMeta(masteries: TierListRankings, role: Role): DraftChampion[] {
-    if (this.patchVersion !== 'MSI 24') {
-      return [];
-    }
+    const patchTierList = getPatchData(this.patchName).patchTierList;
     const masteredChamps = [...masteries.s, ...masteries.a, ...masteries.b, ...masteries.c];
-    const metaChamps = [...patchMSI24[role].s, ...patchMSI24[role].a, ...patchMSI24[role].b];
+    const metaChamps = [...patchTierList[role].s, ...patchTierList[role].a, ...patchTierList[role].b];
     const mainChamps = masteredChamps.filter(id => metaChamps.includes(id)).map(id => this.getChampionFromId(id));
     const filteredChamps: DraftChampion[] = [...mainChamps].filter((champ): champ is DraftChampion => !!champ);
     return filteredChamps.slice(0, 3);

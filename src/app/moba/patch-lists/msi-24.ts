@@ -1,4 +1,4 @@
-import { AllRolesTierList } from '../draft/draft.model';
+import { AllRolesTierList, PatchData } from '../draft/draft.model';
 
 // JUDGING META STRENGTH
 // Z/S+ Tier: champs that are so strong they deserve their own tier, not every role will have champs in this tier
@@ -15,7 +15,7 @@ import { AllRolesTierList } from '../draft/draft.model';
 // These champs have been played in the meta, but are not strong enough to blind pick and will only work in the perfect scenario.
 
 // Patch 14.8
-export const patchMSI24: AllRolesTierList = {
+export const MSI24TierList: AllRolesTierList = {
   // top: [3, 5, 16, 14, 5] | sumTotal: 43
   top: {
     s: [1, 133, 5], // 3
@@ -56,4 +56,11 @@ export const patchMSI24: AllRolesTierList = {
     c: [66, 104, 19, 105, 24, 107, 8, 106, 2, 43, 98, 110, 116, 117, 103, 112, 108],
     d: [109, 113, 71],
   },
+};
+
+export const patchMSI24: PatchData = {
+  name: 'MSI 2024',
+  version: 14.8,
+  excludedChamps: [133],
+  patchTierList: MSI24TierList,
 };

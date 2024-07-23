@@ -21,6 +21,7 @@ import {
 } from './draft.model';
 
 import { get as _get, shuffle } from 'lodash-es';
+import { patchSummer24 } from '../patch-lists/summer-24';
 
 function getRoleMetaStrength(id: number, roleTierList: TierListRankings): number {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -85,20 +86,14 @@ export function getAllMasteries(champ: Champion, playerMasteries: DraftPlayer[])
 }
 
 export function getPatchData(name: PatchName): PatchData {
-  if (name === 'MSI 24') {
-    return {
-      name,
-      version: 14.8,
-      excludedChamps: [133],
-      patchTierList: patchMSI24,
-    };
+  switch (name) {
+    case 'MSI 2024':
+      return patchMSI24;
+    case 'Summer 2024':
+      return patchSummer24;
+    default:
+      return patchMSI24;
   }
-  return {
-    name,
-    version: 14.8,
-    excludedChamps: [],
-    patchTierList: patchMSI24,
-  };
 }
 
 export function getAdviceTags(
@@ -140,6 +135,9 @@ export function getDraftChampions(
       const opponentMastery = getAllMasteries(c, opponentMasteries);
       return {
         ...c,
+        roles: AllRoles.filter(r => {
+          return metaStrength[AllRoles.indexOf(r)] > TierValue.F;
+        }),
         metaStrength,
         playerMastery,
         opponentMastery,

@@ -1,6 +1,14 @@
 import { Champion } from '../champion/champion.model';
 import { Role } from '../player/player.model';
 
+export interface DraftMetaData {
+  userIsRedSide: boolean;
+  patchName: PatchName;
+  useAiOpponent: boolean;
+  difficulty: string;
+  useRandomTeam: boolean;
+}
+
 export interface DraftChampion extends Champion {
   metaStrength: [number, number, number, number, number];
   playerMastery: [number, number, number, number, number];
@@ -104,8 +112,8 @@ export interface ChampionAdvice {
 }
 
 export type CompStyle = 'engage' | 'pick' | 'protect' | 'siege' | 'split';
-export type PatchName = 'MSI 24';
-export type PatchVersion = 14.8;
+export type PatchName = 'MSI 2024' | 'Summer 2024';
+export type PatchVersion = 14.8 | 14.13;
 export type DraftSortHeader = 'name' | 'mastery' | 'meta' | 'synergy' | 'counter';
 export type DraftDifficulty = 'easy' | 'medium' | 'hard';
 export type DraftAdviceTag = 'Counters Banned' | 'Recommended' | 'Counter Pick' | 'Not Recommended' | 'High Synergy';
@@ -138,6 +146,13 @@ export function getRoleFromFilter(role: Role | 'all' | undefined): Role | undefi
   return role === 'all' ? undefined : role;
 }
 
+export function hasAllPropsDraftMetaData(obj: object): obj is DraftMetaData {
+  if (typeof obj !== 'object' || obj === null) {
+    return false;
+  }
+  return 'userIsRedSide' in obj && 'patchName' in obj && 'useAiOpponent' in obj && 'difficulty' in obj && 'useRandomTeam' in obj;
+}
+
 export enum TierValue {
   S = 20,
   A = 16,
@@ -155,6 +170,8 @@ export const tierValues: { [key: string]: TierValue } = {
   d: TierValue.D,
   f: TierValue.F,
 };
+
+export const patchNames: PatchName[] = ['MSI 2024', 'Summer 2024'];
 
 export const redSidePickRounds = [8, 9, 12, 17, 20];
 export const blueSidePickRounds = [7, 10, 11, 18, 19];

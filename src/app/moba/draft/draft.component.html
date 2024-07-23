@@ -12,8 +12,8 @@
       <div class="label">
         <span class="label-text">Selected Patch</span>
       </div>
-      <select class="select select-bordered" formControlName="patchVersion">
-        <option selected>MSI 24</option>
+      <select class="select select-bordered" formControlName="patchName">
+        <option *ngFor="let patchName of patchNames" [value]="patchName">{{ patchName }}</option>
       </select>
     </label>
 
