@@ -35,7 +35,7 @@ import { AllRoles, Role, positionFilters } from '../player/player.model';
 import { shuffle } from 'lodash-es';
 import { MobaService } from '../moba.service';
 import { patchMSI24 } from '../patch-lists/msi-24';
-import { getCompositionAdviceAndGrade } from './draft-grader';
+import { compareCompStyle, getCompositionAdviceAndGrade, getTeamCompStyleScoring } from './draft-grader';
 
 @Component({
   selector: 'app-draft',
@@ -381,6 +381,10 @@ export class DraftComponent {
   }
 
   getMasteryScore(champ: DraftChampion, specificRole?: Role, playerSide?: string) {
+    // this will always return the masteries from the 1st player's chosen side
+    // this is at least for the filteredRoles, changes when all roles are shown
+    // e.g. player/opponent will still be player/opponent when opponent picks
+    // this should be changed when roles are filtered
     const ratings = getChampMasteries(champ, this.draftPhase, this.currentDraftRound, this.userIsRedSide, playerSide);
     if (!specificRole) {
       return Math.max(...ratings);
@@ -416,34 +420,37 @@ export class DraftComponent {
 
     currentSelectedChamps = currentSelectedChamps.filter(c => !c.isPlaceholder);
     if (currentSelectedChamps.length < 1) {
-      if (side === 'player') {
-        evaluatedChamp.currentSynergy.player = TierValue.F;
-        return TierValue.F;
-      } else {
-        evaluatedChamp.currentSynergy.opp = TierValue.F;
-        return TierValue.F;
-      }
+      return TierValue.F;
+    }
+    const compStats = getTeamCompStyleScoring(currentSelectedChamps as DraftChampion[]);
+
+    const teamSynergy = compareCompStyle(compStats, evaluatedChamp, currentSelectedChamps.length);
+    console.log(teamSynergy);
+    if (side === 'player') {
+      evaluatedChamp.currentSynergy.player.team = teamSynergy;
+    } else {
+      evaluatedChamp.currentSynergy.opp.team = teamSynergy;
     }
     for (const champ of currentSelectedChamps as DraftChampion[]) {
       const tierList = champ.synergies[champ.selectedRole];
       for (const [letter, championIds] of Object.entries(tierList)) {
         if (championIds.includes(evaluatedChamp.id)) {
           if (side === 'player') {
-            evaluatedChamp.currentSynergy.player = tierValues[letter];
-            return tierValues[letter];
+            evaluatedChamp.currentSynergy.player.individual = tierValues[letter];
+            return (tierValues[letter] * 3 + teamSynergy) / 4;
           } else {
-            evaluatedChamp.currentSynergy.opp = tierValues[letter];
-            return tierValues[letter];
+            evaluatedChamp.currentSynergy.opp.individual = tierValues[letter];
+            return (tierValues[letter] * 3 + teamSynergy) / 4;
           }
         }
       }
     }
     if (side === 'player') {
-      evaluatedChamp.currentSynergy.player = TierValue.F;
-      return TierValue.F;
+      evaluatedChamp.currentSynergy.player.individual = TierValue.F;
+      return (TierValue.F + teamSynergy) / 2;
     } else {
-      evaluatedChamp.currentSynergy.opp = TierValue.F;
-      return TierValue.F;
+      evaluatedChamp.currentSynergy.opp.individual = TierValue.F;
+      return (TierValue.F + teamSynergy) / 2;
     }
   }
 
@@ -459,10 +466,10 @@ export class DraftComponent {
     // }
     const score = this.setSynergyScore(evaluatedChamp, playerSide);
     if (side === 'player') {
-      evaluatedChamp.currentSynergy.player = score;
+      evaluatedChamp.currentSynergy.player.individual = score;
       return score;
     } else {
-      evaluatedChamp.currentSynergy.opp = score;
+      evaluatedChamp.currentSynergy.opp.individual = score;
       return score;
     }
   }

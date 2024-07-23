@@ -136,7 +136,6 @@ export function getDraftChampions(
     .map(c => {
       const metaStrength = getMetaStrength(c, patchData.patchTierList);
       const selectedRole = AllRoles[metaStrength.indexOf(Math.max(...metaStrength))];
-      // console.log(playerMasteries, opponentMasteries);
       const playerMastery = getAllMasteries(c, playerMasteries);
       const opponentMastery = getAllMasteries(c, opponentMasteries);
       return {
@@ -144,7 +143,16 @@ export function getDraftChampions(
         metaStrength,
         playerMastery,
         opponentMastery,
-        currentSynergy: {},
+        currentSynergy: {
+          player: {
+            team: 0,
+            individual: 0,
+          },
+          opp: {
+            team: 0,
+            individual: 0,
+          },
+        },
         currentCounter: {
           player: {
             top: 0,
