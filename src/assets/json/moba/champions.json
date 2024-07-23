@@ -16612,5 +16612,1928 @@
         "d": []
       }
     }
+  },
+  {
+    "id": 138,
+    "name": "Amumu",
+    "roles": [
+      "jungle",
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Amumu.webp",
+    "dmgType": "low ap",
+    "gameStateAttributes": {
+      "early": 6,
+      "mid": 14,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": true,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 139,
+    "name": "Anivia",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Anivia.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 7,
+      "mid": 10,
+      "late": 13
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 140,
+    "name": "Cho'Gath",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Chogath.webp",
+    "dmgType": "low ap",
+    "gameStateAttributes": {
+      "early": 6,
+      "mid": 10,
+      "late": 14
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": true,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 141,
+    "name": "Dr. Mundo",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/DrMundo.webp",
+    "dmgType": "low mix",
+    "gameStateAttributes": {
+      "early": 6,
+      "mid": 10,
+      "late": 14
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 142,
+    "name": "Elise",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Elise.webp",
+    "dmgType": "low ap",
+    "gameStateAttributes": {
+      "early": 14,
+      "mid": 10,
+      "late": 6
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 143,
+    "name": "Fiddlesticks",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Fiddlesticks.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 10,
+      "mid": 10,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 144,
+    "name": "Gangplank",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Gangplank.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 6,
+      "mid": 9,
+      "late": 15
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 145,
+    "name": "Hecarim",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Hecarim.webp",
+    "dmgType": "low ad",
+    "gameStateAttributes": {
+      "early": 7,
+      "mid": 12,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": false,
+        "skirmish": true,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 146,
+    "name": "Kayn",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Kayn.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 7,
+      "mid": 13,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": true,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 147,
+    "name": "Lissandra",
+    "roles": [
+      "mid",
+      "support"
+    ],
+    "img": "assets/images/champion_icons/Lissandra.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 12,
+      "late": 9
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": true,
+        "singleTarget": true,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 148,
+    "name": "Malzahar",
+    "roles": [
+      "mid"
+    ],
+    "img": "assets/images/champion_icons/Malzahar.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 8,
+      "mid": 9,
+      "late": 13
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": false,
+        "skirmish": false,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": true,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 149,
+    "name": "Nasus",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Nasus.webp",
+    "dmgType": "low mix",
+    "gameStateAttributes": {
+      "early": 6,
+      "mid": 10,
+      "late": 14
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 150,
+    "name": "Quinn",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Quinn.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 13,
+      "mid": 11,
+      "late": 6
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 151,
+    "name": "Shyvana",
+    "roles": [
+      "jungle",
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Shyvana.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 12,
+      "late": 9
+    },
+    "attributes": {
+      "mobility": {
+        "engage": true,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": true,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": true,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 152,
+    "name": "Teemo",
+    "roles": [
+      "top"
+    ],
+    "img": "assets/images/champion_icons/Teemo.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 12,
+      "mid": 7,
+      "late": 11
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 153,
+    "name": "Zoe",
+    "roles": [
+      "jungle"
+    ],
+    "img": "assets/images/champion_icons/Zoe.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 12,
+      "late": 9
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": false,
+        "dps": false,
+        "poke": true,
+        "siege": true,
+        "waveClear": true,
+        "splitPush": false
+      },
+      "crowdControl": {
+        "impact": true,
+        "aoe": false,
+        "singleTarget": true,
+        "ranged": true
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
   }
 ]

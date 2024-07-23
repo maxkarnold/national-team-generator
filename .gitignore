@@ -56,3 +56,5 @@ firestore.rules
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+*storybook.log
