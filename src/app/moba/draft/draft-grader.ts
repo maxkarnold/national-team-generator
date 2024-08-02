@@ -134,14 +134,15 @@ export function getCompositionAdviceAndGrade(
     return ['Choose champions before receiving advice.'];
   }
   const advice: string[] = [];
-  // composition advice
-  // team comp should have balanced damage sources (2 low dmg of each or 1 high dmg of each type, mix would count as half, so low mix is 1/2 a low dmg and high mix is equal to low dmg)
-  // team comp should have some early, mid and late game champs to be more balanced, it can be skewed but not too much
-  // team comp should have attributes that fill one comp style
 
+  // team comp should have some early, mid and late game champs to be more balanced, it can be skewed but not too much
+  // Scaling balance does not currently affect draft score.
   const { needsMoreEarlyChamps, needsMoreMidChamps, needsMoreLateChamps } = needsMoreScalingAdvice(selectedTeamChamps);
+
+  // team comp should have balanced damage sources (2 low dmg of each or 1 high dmg of each type, mix would count as half, so low mix is 1/2 a low dmg and high mix is equal to low dmg)
   const { needsMoreAdDmg, needsMoreApDmg } = needsMoreDmgAdvice(selectedTeamChamps);
 
+  // team comp should have attributes that fill one comp style
   const compStyles: CompStyleStats = getTeamCompStyleScoring(selectedTeamChamps);
   const sortedComps = Object.entries(compStyles)
     .map(([a, b]) => [capitalize(a), b])
@@ -150,7 +151,7 @@ export function getCompositionAdviceAndGrade(
   if (selectedTeamChamps.length === 5) {
     const scores = isBlueSide ? [...blueSideDraftScores()] : [...redSideDraftScores()];
     let grade = sum(scores) / 5;
-    const allNegativeAdvice = [needsMoreEarlyChamps, needsMoreMidChamps, needsMoreLateChamps, needsMoreAdDmg, needsMoreApDmg];
+    const allNegativeAdvice = [needsMoreAdDmg, needsMoreApDmg];
     for (let i = 0; i < allNegativeAdvice.length; i++) {
       grade -= allNegativeAdvice[i] ? 1.5 : 0;
     }
