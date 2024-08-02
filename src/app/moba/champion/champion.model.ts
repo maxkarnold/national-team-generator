@@ -1,9 +1,11 @@
-import { AllRolesTierList } from '../draft/draft.model';
+import { AllRolesTierList, DifficultyLevel } from '../draft/draft.model';
 import { Role } from '../player/player.model';
 
 export interface Champion {
   id: number;
   name: string;
+  releaseYear: number;
+  masteryDifficulty: DifficultyLevel;
   roles: Role[];
   gameStateAttributes: GameStateAttributes;
   img: string;

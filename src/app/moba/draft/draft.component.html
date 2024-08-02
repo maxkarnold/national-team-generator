@@ -262,25 +262,25 @@
             <td>
               <ng-container *ngIf="roleFilter() === 'all'; else filteredMeta">
                 <span *ngFor="let role of champ.roles; let i = index">
-                  {{ getLetterRank(getDisplayMetaScore(champ, role)) }}
+                  {{ getTableDisplayScore(getDisplayMetaScore(champ, role)) }}
                   <span *ngIf="i < champ.roles.length - 1"> / </span>
                 </span>
               </ng-container>
               <ng-template #filteredMeta>
-                <span>{{ getLetterRank(getDisplayMetaScore(champ)) }}</span>
+                <span>{{ getTableDisplayScore(getDisplayMetaScore(champ)) }}</span>
               </ng-template>
             </td>
             <td>
               <ng-container *ngIf="roleFilter() === 'all'; else filteredMastery">
                 <span *ngFor="let role of champ.roles; let i = index">
-                  {{ getLetterRank(getDisplayMasteryScore(champ, role)) }}
+                  {{ getTableDisplayScore(getDisplayMasteryScore(champ, role), true) }}
                   <span *ngIf="i < champ.roles.length - 1"> / </span>
                 </span>
               </ng-container>
               <ng-template #filteredMastery>
                 <span
-                  >{{ getLetterRank(getDisplayMasteryScore(champ, undefined, 'player')) }} /
-                  {{ getLetterRank(getDisplayMasteryScore(champ, undefined, 'opponent')) }}</span
+                  >{{ getTableDisplayScore(getDisplayMasteryScore(champ, undefined, 'player'), true) }} /
+                  {{ getTableDisplayScore(getDisplayMasteryScore(champ, undefined, 'opponent'), true) }}</span
                 >
               </ng-template>
             </td>
@@ -288,16 +288,18 @@
               <ng-container [ngSwitch]="displaySynergyAndCounter()">
                 <span *ngSwitchCase="'n/a'"> N/A </span>
                 <span *ngSwitchCase="'roleSpecific'">
-                  {{ getLetterRank(getSynergyScore(champ, 'player')) }} / {{ getLetterRank(getSynergyScore(champ, 'opponent')) }}</span
+                  {{ getTableDisplayScore(getSynergyScore(champ, 'player')) }} /
+                  {{ getTableDisplayScore(getSynergyScore(champ, 'opponent')) }}</span
                 >
-                <span *ngSwitchDefault> {{ getLetterRank(getSynergyScore(champ)) }} </span>
+                <span *ngSwitchDefault> {{ getTableDisplayScore(getSynergyScore(champ)) }} </span>
               </ng-container>
             </td>
             <td>
               <ng-container [ngSwitch]="displaySynergyAndCounter()">
                 <span *ngSwitchCase="'n/a'"> N/A </span>
                 <span *ngSwitchCase="'roleSpecific'">
-                  {{ getLetterRank(getCounterScore(champ, 'player')) }} / {{ getLetterRank(getCounterScore(champ, 'opponent')) }}</span
+                  {{ getTableDisplayScore(getCounterScore(champ, 'player')) }} /
+                  {{ getTableDisplayScore(getCounterScore(champ, 'opponent')) }}</span
                 >
                 <span *ngSwitchDefault> {{ 'N/A' }} </span>
               </ng-container>

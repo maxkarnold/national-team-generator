@@ -1,6 +1,4 @@
-import { getRandomInt } from '@shared/utils';
 import { Champion } from '../champion/champion.model';
-import { patchMSI24 } from '../patch-lists/msi-24';
 import { AllRoles, Role, RoleIndex } from '../player/player.model';
 import {
   DraftChampion,
@@ -15,13 +13,15 @@ import {
   tierValues,
   PatchData,
   PatchName,
-  DraftDifficulty,
+  DifficultyLevel,
   ChampionAdvice,
   TierValue,
 } from './draft.model';
 
 import { get as _get, shuffle } from 'lodash-es';
 import { patchSummer24 } from '../patch-lists/summer-24';
+import { patchMSI24 } from '../patch-lists/msi-24';
+import { patchSummer24v2 } from '../patch-lists/summer-24-v2';
 
 function getRoleMetaStrength(id: number, roleTierList: TierListRankings): number {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -91,6 +91,8 @@ export function getPatchData(name: PatchName): PatchData {
       return patchMSI24;
     case 'Summer 2024':
       return patchSummer24;
+    case 'Summer 14.14 2024':
+      return patchSummer24v2;
     default:
       return patchMSI24;
   }
@@ -103,19 +105,19 @@ export function getAdviceTags(
 ): { player: ChampionAdvice; opp: ChampionAdvice } {
   return {
     player: {
-      top: metaStrength[RoleIndex.TOP] < TierValue.C || playerMasteries[RoleIndex.TOP] < TierValue.D ? ['Not Recommended'] : [],
-      jungle: metaStrength[RoleIndex.JUNGLE] < TierValue.C || playerMasteries[RoleIndex.JUNGLE] < TierValue.D ? ['Not Recommended'] : [],
-      mid: metaStrength[RoleIndex.MID] < TierValue.C || playerMasteries[RoleIndex.MID] < TierValue.D ? ['Not Recommended'] : [],
-      adc: metaStrength[RoleIndex.ADC] < TierValue.C || playerMasteries[RoleIndex.ADC] < TierValue.D ? ['Not Recommended'] : [],
-      support: metaStrength[RoleIndex.SUPPORT] < TierValue.C || playerMasteries[RoleIndex.SUPPORT] < TierValue.D ? ['Not Recommended'] : [],
+      top: metaStrength[RoleIndex.TOP] < TierValue.C || playerMasteries[RoleIndex.TOP] < TierValue.C ? ['Not Recommended'] : [],
+      jungle: metaStrength[RoleIndex.JUNGLE] < TierValue.C || playerMasteries[RoleIndex.JUNGLE] < TierValue.C ? ['Not Recommended'] : [],
+      mid: metaStrength[RoleIndex.MID] < TierValue.C || playerMasteries[RoleIndex.MID] < TierValue.C ? ['Not Recommended'] : [],
+      adc: metaStrength[RoleIndex.ADC] < TierValue.C || playerMasteries[RoleIndex.ADC] < TierValue.C ? ['Not Recommended'] : [],
+      support: metaStrength[RoleIndex.SUPPORT] < TierValue.C || playerMasteries[RoleIndex.SUPPORT] < TierValue.C ? ['Not Recommended'] : [],
     },
     opp: {
-      top: metaStrength[RoleIndex.TOP] < TierValue.C || opponentMasteries[RoleIndex.TOP] < TierValue.D ? ['Not Recommended'] : [],
-      jungle: metaStrength[RoleIndex.JUNGLE] < TierValue.C || opponentMasteries[RoleIndex.JUNGLE] < TierValue.D ? ['Not Recommended'] : [],
-      mid: metaStrength[RoleIndex.MID] < TierValue.C || opponentMasteries[RoleIndex.MID] < TierValue.D ? ['Not Recommended'] : [],
-      adc: metaStrength[RoleIndex.ADC] < TierValue.C || opponentMasteries[RoleIndex.ADC] < TierValue.D ? ['Not Recommended'] : [],
+      top: metaStrength[RoleIndex.TOP] < TierValue.C || opponentMasteries[RoleIndex.TOP] < TierValue.C ? ['Not Recommended'] : [],
+      jungle: metaStrength[RoleIndex.JUNGLE] < TierValue.C || opponentMasteries[RoleIndex.JUNGLE] < TierValue.C ? ['Not Recommended'] : [],
+      mid: metaStrength[RoleIndex.MID] < TierValue.C || opponentMasteries[RoleIndex.MID] < TierValue.C ? ['Not Recommended'] : [],
+      adc: metaStrength[RoleIndex.ADC] < TierValue.C || opponentMasteries[RoleIndex.ADC] < TierValue.C ? ['Not Recommended'] : [],
       support:
-        metaStrength[RoleIndex.SUPPORT] < TierValue.C || opponentMasteries[RoleIndex.SUPPORT] < TierValue.D ? ['Not Recommended'] : [],
+        metaStrength[RoleIndex.SUPPORT] < TierValue.C || opponentMasteries[RoleIndex.SUPPORT] < TierValue.C ? ['Not Recommended'] : [],
     },
   };
 }
@@ -260,24 +262,29 @@ export function checkForAvailableRoles(selectedRoles: (Role | undefined)[]): Rol
  * Calculates the TierListRankings based on the provided list of champions and the draft difficulty.
  *
  * @param {number[]} allChamps - The list of all champions to consider.
- * @param {DraftDifficulty} difficulty - The difficulty level of the draft (easy, medium, hard).
+ * @param {DifficultyLevel} difficulty - The difficulty level of the draft (easy, medium, hard).
  * @return {TierListRankings} The TierListRankings object with champion slices for each tier (s, a, b, c, d).
  */
-function getChampionMasteryBasedOnDiff(allChamps: number[], difficulty: DraftDifficulty): TierListRankings {
-  const diffFactors = { easy: 4.75, medium: 4, hard: 3.25 };
-  const numOfChamps = allChamps.length;
-  const sIndex = difficulty === 'hard' ? getRandomInt(2, 3) : difficulty === 'medium' ? getRandomInt(1, 2) : 1;
-  const aIndex = Math.floor(numOfChamps / diffFactors[difficulty]) - 1;
-  const bIndex = aIndex * 2 - 1;
-  const cIndex = bIndex + Math.floor(aIndex / 1.5);
-  const dIndex = Math.floor(cIndex + diffFactors[difficulty] * 1.5 - 1);
-  console.log('numOfChamps', numOfChamps, aIndex, bIndex, cIndex, dIndex);
+function getChampionMasteryBasedOnDiff(allChamps: number[], difficulty: DifficultyLevel): TierListRankings {
+  // s tier = ++
+  // a/b tier = +
+  // c tier = +-
+  // d tier = -
+  // f tier = --
+  const diffModifiers = { easy: -1, medium: 0, hard: 1 };
+  const champsPerTier = Math.floor(allChamps.length / 5);
+  const randomChamps = shuffle(allChamps);
+  const sIndex = champsPerTier + diffModifiers[difficulty];
+  const aIndex = sIndex + champsPerTier + diffModifiers[difficulty];
+  const bIndex = aIndex + champsPerTier;
+  const cIndex = bIndex + champsPerTier - diffModifiers[difficulty];
+  const dIndex = cIndex + champsPerTier - diffModifiers[difficulty];
   return {
-    s: allChamps.slice(0, sIndex),
-    a: allChamps.slice(sIndex, aIndex),
-    b: allChamps.slice(aIndex, bIndex),
-    c: allChamps.slice(bIndex, cIndex),
-    d: allChamps.slice(cIndex, dIndex),
+    s: randomChamps.slice(0, sIndex),
+    a: randomChamps.slice(sIndex, aIndex),
+    b: randomChamps.slice(aIndex, bIndex),
+    c: randomChamps.slice(bIndex, cIndex),
+    d: randomChamps.slice(cIndex, dIndex),
   };
 }
 
@@ -285,14 +292,15 @@ function getChampionMasteryBasedOnDiff(allChamps: number[], difficulty: DraftDif
  * Generates a list of draft players with randomly assigned champion masteries based on the provided patch tier list and difficulty level.
  *
  * @param {PatchData} patchTierList - An object containing the patch tier list for each role.
- * @param {DraftDifficulty} [difficulty='medium'] - The difficulty level for generating the champion masteries. Defaults to 'medium'.
+ * @param {DifficultyLevel} [difficulty='medium'] - The difficulty level for generating the champion masteries. Defaults to 'medium'.
  * @return {DraftPlayer[]} An array of draft players with their main role and randomly assigned champion masteries.
  */
-export function getRandomMasteries({ patchTierList }: PatchData, difficulty: DraftDifficulty = 'medium'): DraftPlayer[] {
+export function getRandomMasteries({ patchTierList }: PatchData, difficulty: DifficultyLevel = 'medium'): DraftPlayer[] {
   const playerMasteries: DraftPlayer[] = [];
 
   for (const role in patchTierList) {
     if (Object.prototype.hasOwnProperty.call(patchTierList, role)) {
+      // const allChamps = patchTierList[role as keyof AllRolesTierList];
       const { s, a, b, c, d } = patchTierList[role as keyof AllRolesTierList];
       const mainChamps = [...shuffle(s.concat(a, b))];
       const allChamps = [...mainChamps.slice(0, 4), ...shuffle(mainChamps.slice(4).concat(c, d))];

@@ -63,4 +63,5 @@ export const patchMSI24: PatchData = {
   version: 14.8,
   excludedChamps: [133],
   patchTierList: MSI24TierList,
+  description: 'Lane Swap Meta',
 };

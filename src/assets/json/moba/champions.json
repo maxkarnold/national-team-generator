@@ -2,10 +2,9 @@
   {
     "id": 0,
     "name": "Rek'Sai",
-    "roles": [
-      "jungle",
-      "top"
-    ],
+    "releaseYear": 2014,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle", "top"],
     "img": "assets/images/champion_icons/RekSai.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -123,9 +122,9 @@
   {
     "id": 1,
     "name": "K'Sante",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2022,
+    "masteryDifficulty": "hard",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/KSante.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -243,11 +242,9 @@
   {
     "id": 2,
     "name": "Rumble",
-    "roles": [
-      "top",
-      "jungle",
-      "support"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["top", "jungle", "support"],
     "img": "assets/images/champion_icons/Rumble.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -365,9 +362,9 @@
   {
     "id": 3,
     "name": "Aatrox",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2013,
+    "masteryDifficulty": "medium",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Aatrox.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -485,10 +482,9 @@
   {
     "id": 4,
     "name": "Jax",
-    "roles": [
-      "top",
-      "jungle"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top", "jungle"],
     "img": "assets/images/champion_icons/Jax.webp",
     "dmgType": "high mix",
     "gameStateAttributes": {
@@ -606,11 +602,9 @@
   {
     "id": 5,
     "name": "Twisted Fate",
-    "roles": [
-      "top",
-      "mid",
-      "adc"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top", "mid", "adc"],
     "img": "assets/images/champion_icons/TwistedFate.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -728,10 +722,9 @@
   {
     "id": 6,
     "name": "Udyr",
-    "roles": [
-      "top",
-      "jungle"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top", "jungle"],
     "img": "assets/images/champion_icons/Udyr.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -849,9 +842,9 @@
   {
     "id": 7,
     "name": "Renekton",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Renekton.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -969,11 +962,9 @@
   {
     "id": 8,
     "name": "Poppy",
-    "roles": [
-      "top",
-      "jungle",
-      "support"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["top", "jungle", "support"],
     "img": "assets/images/champion_icons/Poppy.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -1091,9 +1082,9 @@
   {
     "id": 9,
     "name": "Vi",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Vi.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -1211,9 +1202,9 @@
   {
     "id": 10,
     "name": "Xin Zhao",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/XinZhao.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -1331,10 +1322,9 @@
   {
     "id": 11,
     "name": "Maokai",
-    "roles": [
-      "jungle",
-      "support"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle", "support"],
     "img": "assets/images/champion_icons/Maokai.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -1452,10 +1442,9 @@
   {
     "id": 12,
     "name": "Rell",
-    "roles": [
-      "support",
-      "jungle"
-    ],
+    "releaseYear": 2020,
+    "masteryDifficulty": "medium",
+    "roles": ["support", "jungle"],
     "img": "assets/images/champion_icons/Rell.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -1573,9 +1562,9 @@
   {
     "id": 13,
     "name": "Nocturne",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Nocturne.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -1693,9 +1682,9 @@
   {
     "id": 14,
     "name": "Lee Sin",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "hard",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/LeeSin.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -1813,9 +1802,9 @@
   {
     "id": 15,
     "name": "Orianna",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Orianna.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -1933,9 +1922,9 @@
   {
     "id": 16,
     "name": "Azir",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2014,
+    "masteryDifficulty": "hard",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Azir.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -2053,11 +2042,9 @@
   {
     "id": 17,
     "name": "Karma",
-    "roles": [
-      "mid",
-      "support",
-      "top"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["mid", "support", "top"],
     "img": "assets/images/champion_icons/Karma.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -2175,10 +2162,9 @@
   {
     "id": 18,
     "name": "Taliyah",
-    "roles": [
-      "mid",
-      "jungle"
-    ],
+    "releaseYear": 2016,
+    "masteryDifficulty": "hard",
+    "roles": ["mid", "jungle"],
     "img": "assets/images/champion_icons/Taliyah.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -2296,11 +2282,9 @@
   {
     "id": 19,
     "name": "Hwei",
-    "roles": [
-      "mid",
-      "support",
-      "adc"
-    ],
+    "releaseYear": 2023,
+    "masteryDifficulty": "medium",
+    "roles": ["mid", "support", "adc"],
     "img": "assets/images/champion_icons/Hwei.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -2418,10 +2402,9 @@
   {
     "id": 20,
     "name": "Neeko",
-    "roles": [
-      "mid",
-      "support"
-    ],
+    "releaseYear": 2018,
+    "masteryDifficulty": "medium",
+    "roles": ["mid", "support"],
     "img": "assets/images/champion_icons/Neeko.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -2539,10 +2522,9 @@
   {
     "id": 21,
     "name": "Tristana",
-    "roles": [
-      "mid",
-      "adc"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["mid", "adc"],
     "img": "assets/images/champion_icons/Tristana.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -2660,10 +2642,9 @@
   {
     "id": 22,
     "name": "Akali",
-    "roles": [
-      "mid",
-      "top"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "hard",
+    "roles": ["mid", "top"],
     "img": "assets/images/champion_icons/Akali.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -2781,10 +2762,9 @@
   {
     "id": 23,
     "name": "Varus",
-    "roles": [
-      "adc",
-      "top"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["adc", "top"],
     "img": "assets/images/champion_icons/Varus.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -2902,10 +2882,9 @@
   {
     "id": 24,
     "name": "Kalista",
-    "roles": [
-      "adc",
-      "support"
-    ],
+    "releaseYear": 2014,
+    "masteryDifficulty": "medium",
+    "roles": ["adc", "support"],
     "img": "assets/images/champion_icons/Kalista.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -3023,10 +3002,9 @@
   {
     "id": 25,
     "name": "Ashe",
-    "roles": [
-      "adc",
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["adc", "support"],
     "img": "assets/images/champion_icons/Ashe.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -3144,10 +3122,9 @@
   {
     "id": 26,
     "name": "Senna",
-    "roles": [
-      "adc",
-      "support"
-    ],
+    "releaseYear": 2019,
+    "masteryDifficulty": "medium",
+    "roles": ["adc", "support"],
     "img": "assets/images/champion_icons/Senna.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -3265,10 +3242,9 @@
   {
     "id": 27,
     "name": "Lucian",
-    "roles": [
-      "adc",
-      "mid"
-    ],
+    "releaseYear": 2013,
+    "masteryDifficulty": "medium",
+    "roles": ["adc", "mid"],
     "img": "assets/images/champion_icons/Lucian.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -3386,11 +3362,9 @@
   {
     "id": 28,
     "name": "Smolder",
-    "roles": [
-      "adc",
-      "mid",
-      "top"
-    ],
+    "releaseYear": 2024,
+    "masteryDifficulty": "medium",
+    "roles": ["adc", "mid", "top"],
     "img": "assets/images/champion_icons/Smolder.webp",
     "dmgType": "high mix",
     "gameStateAttributes": {
@@ -3508,9 +3482,9 @@
   {
     "id": 29,
     "name": "Zeri",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2022,
+    "masteryDifficulty": "hard",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Zeri.webp",
     "dmgType": "high mix",
     "gameStateAttributes": {
@@ -3628,9 +3602,9 @@
   {
     "id": 30,
     "name": "Xayah",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2017,
+    "masteryDifficulty": "medium",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Xayah.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -3748,9 +3722,9 @@
   {
     "id": 31,
     "name": "Aphelios",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2019,
+    "masteryDifficulty": "medium",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Aphelios.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -3868,9 +3842,9 @@
   {
     "id": 32,
     "name": "Draven",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Draven.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -3988,9 +3962,9 @@
   {
     "id": 33,
     "name": "Ezreal",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "hard",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Ezreal.webp",
     "dmgType": "high mix",
     "gameStateAttributes": {
@@ -4108,10 +4082,9 @@
   {
     "id": 34,
     "name": "Kai'Sa",
-    "roles": [
-      "adc",
-      "mid"
-    ],
+    "releaseYear": 2018,
+    "masteryDifficulty": "medium",
+    "roles": ["adc", "mid"],
     "img": "assets/images/champion_icons/Kaisa.webp",
     "dmgType": "high mix",
     "gameStateAttributes": {
@@ -4229,9 +4202,9 @@
   {
     "id": 35,
     "name": "Jinx",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2013,
+    "masteryDifficulty": "easy",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Jinx.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -4349,9 +4322,9 @@
   {
     "id": 36,
     "name": "Nautilus",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Nautilus.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -4469,9 +4442,9 @@
   {
     "id": 37,
     "name": "Rakan",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2017,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Rakan.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -4589,9 +4562,9 @@
   {
     "id": 38,
     "name": "Renata Glasc",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2022,
+    "masteryDifficulty": "hard",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/RenataGlasc.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -4709,9 +4682,9 @@
   {
     "id": 39,
     "name": "Milio",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2023,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Milio.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -4829,9 +4802,9 @@
   {
     "id": 40,
     "name": "Alistar",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Alistar.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -4949,9 +4922,9 @@
   {
     "id": 41,
     "name": "Nami",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Nami.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -5069,9 +5042,9 @@
   {
     "id": 42,
     "name": "Viego",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2021,
+    "masteryDifficulty": "hard",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Viego.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -5189,10 +5162,9 @@
   {
     "id": 43,
     "name": "Sejuani",
-    "roles": [
-      "jungle",
-      "support"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle", "support"],
     "img": "assets/images/champion_icons/Sejuani.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -5310,11 +5282,9 @@
   {
     "id": 44,
     "name": "Zac",
-    "roles": [
-      "top",
-      "jungle",
-      "mid"
-    ],
+    "releaseYear": 2013,
+    "masteryDifficulty": "easy",
+    "roles": ["top", "jungle", "mid"],
     "img": "assets/images/champion_icons/Zac.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -5432,10 +5402,9 @@
   {
     "id": 45,
     "name": "Camille",
-    "roles": [
-      "top",
-      "support"
-    ],
+    "releaseYear": 2016,
+    "masteryDifficulty": "medium",
+    "roles": ["top", "support"],
     "img": "assets/images/champion_icons/Camille.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -5553,10 +5522,9 @@
   {
     "id": 46,
     "name": "Ornn",
-    "roles": [
-      "top",
-      "support"
-    ],
+    "releaseYear": 2017,
+    "masteryDifficulty": "medium",
+    "roles": ["top", "support"],
     "img": "assets/images/champion_icons/Ornn.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -5674,9 +5642,9 @@
   {
     "id": 47,
     "name": "Urgot",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "hard",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Urgot.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -5794,9 +5762,9 @@
   {
     "id": 48,
     "name": "Jarvan IV",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/JarvanIV.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -5914,9 +5882,9 @@
   {
     "id": 49,
     "name": "Wukong",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Wukong.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -6034,9 +6002,9 @@
   {
     "id": 50,
     "name": "Ahri",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Ahri.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -6154,9 +6122,9 @@
   {
     "id": 51,
     "name": "Aurelion Sol",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2016,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/AurelionSol.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -6274,9 +6242,9 @@
   {
     "id": 52,
     "name": "Corki",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Corki.webp",
     "dmgType": "high mix",
     "gameStateAttributes": {
@@ -6394,9 +6362,9 @@
   {
     "id": 53,
     "name": "Tahm Kench",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2015,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/TahmKench.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -6514,10 +6482,9 @@
   {
     "id": 54,
     "name": "Vayne",
-    "roles": [
-      "adc",
-      "top"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["adc", "top"],
     "img": "assets/images/champion_icons/Vayne.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -6635,9 +6602,9 @@
   {
     "id": 55,
     "name": "Nidalee",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Nidalee.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -6755,10 +6722,9 @@
   {
     "id": 56,
     "name": "Volibear",
-    "roles": [
-      "jungle",
-      "top"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle", "top"],
     "img": "assets/images/champion_icons/Volibear.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -6876,9 +6842,9 @@
   {
     "id": 57,
     "name": "Lulu",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Lulu.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -6996,10 +6962,9 @@
   {
     "id": 58,
     "name": "Olaf",
-    "roles": [
-      "top",
-      "jungle"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["top", "jungle"],
     "img": "assets/images/champion_icons/Olaf.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -7117,10 +7082,9 @@
   {
     "id": 59,
     "name": "Ziggs",
-    "roles": [
-      "mid",
-      "adc"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["mid", "adc"],
     "img": "assets/images/champion_icons/Ziggs.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -7238,10 +7202,9 @@
   {
     "id": 60,
     "name": "Yone",
-    "roles": [
-      "top",
-      "mid"
-    ],
+    "releaseYear": 2020,
+    "masteryDifficulty": "medium",
+    "roles": ["top", "mid"],
     "img": "assets/images/champion_icons/Yone.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -7359,9 +7322,9 @@
   {
     "id": 61,
     "name": "Ivern",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2016,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Ivern.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -7479,11 +7442,9 @@
   {
     "id": 62,
     "name": "Yasuo",
-    "roles": [
-      "top",
-      "mid",
-      "adc"
-    ],
+    "releaseYear": 2013,
+    "masteryDifficulty": "hard",
+    "roles": ["top", "mid", "adc"],
     "img": "assets/images/champion_icons/Yasuo.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -7601,9 +7562,9 @@
   {
     "id": 63,
     "name": "Braum",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2014,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Braum.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -7721,9 +7682,9 @@
   {
     "id": 64,
     "name": "Lillia",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2020,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Lillia.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -7841,9 +7802,9 @@
   {
     "id": 65,
     "name": "Blitzcrank",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Blitzcrank.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -7961,10 +7922,9 @@
   {
     "id": 66,
     "name": "Galio",
-    "roles": [
-      "support",
-      "mid"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["support", "mid"],
     "img": "assets/images/champion_icons/Galio.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -8082,9 +8042,9 @@
   {
     "id": 67,
     "name": "Karthus",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Karthus.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -8202,9 +8162,9 @@
   {
     "id": 68,
     "name": "Kha'Zix",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "hard",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Khazix.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -8322,9 +8282,9 @@
   {
     "id": 69,
     "name": "Kog'Maw",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/KogMaw.webp",
     "dmgType": "high mix",
     "gameStateAttributes": {
@@ -8442,10 +8402,9 @@
   {
     "id": 70,
     "name": "Sion",
-    "roles": [
-      "top",
-      "mid"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top", "mid"],
     "img": "assets/images/champion_icons/Sion.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -8563,10 +8522,9 @@
   {
     "id": 71,
     "name": "Veigar",
-    "roles": [
-      "mid",
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["mid", "support"],
     "img": "assets/images/champion_icons/Veigar.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -8684,9 +8642,9 @@
   {
     "id": 72,
     "name": "Kindred",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2015,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Kindred.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -8804,10 +8762,9 @@
   {
     "id": 73,
     "name": "Brand",
-    "roles": [
-      "jungle",
-      "mid"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle", "mid"],
     "img": "assets/images/champion_icons/Brand.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -8925,11 +8882,9 @@
   {
     "id": 74,
     "name": "Gragas",
-    "roles": [
-      "top",
-      "jungle",
-      "mid"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["top", "jungle", "mid"],
     "img": "assets/images/champion_icons/Gragas.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -9047,9 +9002,9 @@
   {
     "id": 75,
     "name": "Graves",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Graves.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -9167,10 +9122,9 @@
   {
     "id": 76,
     "name": "Jayce",
-    "roles": [
-      "top",
-      "mid"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["top", "mid"],
     "img": "assets/images/champion_icons/Jayce.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -9288,9 +9242,9 @@
   {
     "id": 77,
     "name": "Sylas",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2019,
+    "masteryDifficulty": "hard",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Sylas.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -9408,9 +9362,9 @@
   {
     "id": 78,
     "name": "Swain",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Swain.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -9528,9 +9482,9 @@
   {
     "id": 79,
     "name": "Gnar",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2014,
+    "masteryDifficulty": "hard",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Gnar.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -9648,9 +9602,9 @@
   {
     "id": 80,
     "name": "Gwen",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2021,
+    "masteryDifficulty": "hard",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Gwen.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -9768,10 +9722,9 @@
   {
     "id": 81,
     "name": "Ryze",
-    "roles": [
-      "top",
-      "mid"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "hard",
+    "roles": ["top", "mid"],
     "img": "assets/images/champion_icons/Ryze.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -9889,11 +9842,11 @@
   {
     "id": 82,
     "name": "Bel'Veth",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2022,
+    "masteryDifficulty": "hard",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Belveth.webp",
-    "dmgType": "high ap",
+    "dmgType": "high ad",
     "gameStateAttributes": {
       "early": 10,
       "mid": 8,
@@ -10009,9 +9962,9 @@
   {
     "id": 83,
     "name": "Diana",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Diana.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -10129,9 +10082,9 @@
   {
     "id": 84,
     "name": "Talon",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Talon.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -10249,9 +10202,9 @@
   {
     "id": 85,
     "name": "Trundle",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Trundle.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -10369,9 +10322,9 @@
   {
     "id": 86,
     "name": "LeBlanc",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "hard",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Leblanc.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -10489,10 +10442,9 @@
   {
     "id": 87,
     "name": "Annie",
-    "roles": [
-      "mid",
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["mid", "support"],
     "img": "assets/images/champion_icons/Annie.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -10610,9 +10562,9 @@
   {
     "id": 88,
     "name": "Vex",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2021,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Vex.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -10730,10 +10682,9 @@
   {
     "id": 89,
     "name": "Irelia",
-    "roles": [
-      "mid",
-      "top"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "hard",
+    "roles": ["mid", "top"],
     "img": "assets/images/champion_icons/Irelia.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -10851,9 +10802,9 @@
   {
     "id": 90,
     "name": "Syndra",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Syndra.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -10971,9 +10922,9 @@
   {
     "id": 91,
     "name": "Vel'koz",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2014,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Velkoz.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -11091,9 +11042,9 @@
   {
     "id": 92,
     "name": "Zed",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "hard",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Zed.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -11211,9 +11162,9 @@
   {
     "id": 93,
     "name": "Zilean",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Zilean.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -11331,9 +11282,9 @@
   {
     "id": 94,
     "name": "Jhin",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2016,
+    "masteryDifficulty": "medium",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Jhin.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -11451,9 +11402,9 @@
   {
     "id": 95,
     "name": "Samira",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2020,
+    "masteryDifficulty": "medium",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Samira.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -11571,9 +11522,9 @@
   {
     "id": 96,
     "name": "Caitlyn",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Caitlyn.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -11691,9 +11642,9 @@
   {
     "id": 97,
     "name": "Nilah",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2022,
+    "masteryDifficulty": "medium",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Nilah.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -11811,10 +11762,9 @@
   {
     "id": 98,
     "name": "Seraphine",
-    "roles": [
-      "adc",
-      "support"
-    ],
+    "releaseYear": 2020,
+    "masteryDifficulty": "easy",
+    "roles": ["adc", "support"],
     "img": "assets/images/champion_icons/Seraphine.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -11932,9 +11882,9 @@
   {
     "id": 99,
     "name": "Sivir",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Sivir.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -12052,9 +12002,9 @@
   {
     "id": 100,
     "name": "Twitch",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/Twitch.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -12172,9 +12122,9 @@
   {
     "id": 101,
     "name": "Bard",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2015,
+    "masteryDifficulty": "hard",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Bard.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -12292,9 +12242,9 @@
   {
     "id": 102,
     "name": "Leona",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Leona.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -12412,9 +12362,9 @@
   {
     "id": 103,
     "name": "Thresh",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2013,
+    "masteryDifficulty": "hard",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Thresh.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -12532,9 +12482,9 @@
   {
     "id": 104,
     "name": "Heimerdinger",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Heimerdinger.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -12652,9 +12602,9 @@
   {
     "id": 105,
     "name": "Janna",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Janna.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -12772,9 +12722,9 @@
   {
     "id": 106,
     "name": "Pyke",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2018,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Pyke.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -12892,10 +12842,9 @@
   {
     "id": 107,
     "name": "Lux",
-    "roles": [
-      "support",
-      "mid"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["support", "mid"],
     "img": "assets/images/champion_icons/Lux.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -13013,9 +12962,9 @@
   {
     "id": 108,
     "name": "Zyra",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Zyra.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -13133,9 +13082,9 @@
   {
     "id": 109,
     "name": "Morgana",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Morgana.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -13253,9 +13202,9 @@
   {
     "id": 110,
     "name": "Sona",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Sona.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -13373,9 +13322,9 @@
   {
     "id": 111,
     "name": "Miss Fortune",
-    "roles": [
-      "adc"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["adc"],
     "img": "assets/images/champion_icons/MissFortune.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -13493,9 +13442,9 @@
   {
     "id": 112,
     "name": "Yuumi",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2019,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Yuumi.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -13613,9 +13562,9 @@
   {
     "id": 113,
     "name": "Pantheon",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Pantheon.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -13733,10 +13682,9 @@
   {
     "id": 114,
     "name": "Sett",
-    "roles": [
-      "support",
-      "top"
-    ],
+    "releaseYear": 2020,
+    "masteryDifficulty": "medium",
+    "roles": ["support", "top"],
     "img": "assets/images/champion_icons/Sett.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -13854,10 +13802,9 @@
   {
     "id": 115,
     "name": "Shen",
-    "roles": [
-      "top",
-      "support"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["top", "support"],
     "img": "assets/images/champion_icons/Shen.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -13975,9 +13922,9 @@
   {
     "id": 116,
     "name": "Soraka",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Soraka.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -14095,9 +14042,9 @@
   {
     "id": 117,
     "name": "Taric",
-    "roles": [
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["support"],
     "img": "assets/images/champion_icons/Taric.webp",
     "dmgType": "utility",
     "gameStateAttributes": {
@@ -14215,9 +14162,9 @@
   {
     "id": 118,
     "name": "Akshan",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2021,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Akshan.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -14335,9 +14282,9 @@
   {
     "id": 119,
     "name": "Cassiopeia",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Cassiopeia.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -14455,9 +14402,9 @@
   {
     "id": 120,
     "name": "Darius",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Darius.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -14575,9 +14522,9 @@
   {
     "id": 121,
     "name": "Ekko",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2015,
+    "masteryDifficulty": "hard",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Ekko.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -14695,9 +14642,9 @@
   {
     "id": 122,
     "name": "Fiora",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "hard",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Fiora.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -14815,9 +14762,9 @@
   {
     "id": 123,
     "name": "Garen",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Garen.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -14935,9 +14882,9 @@
   {
     "id": 124,
     "name": "Illaoi",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2015,
+    "masteryDifficulty": "medium",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Illaoi.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -15055,9 +15002,9 @@
   {
     "id": 125,
     "name": "Kassadin",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Kassadin.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -15175,9 +15122,9 @@
   {
     "id": 126,
     "name": "Kayle",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Kayle.webp",
     "dmgType": "high mix",
     "gameStateAttributes": {
@@ -15295,9 +15242,9 @@
   {
     "id": 127,
     "name": "Kennen",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Kennen.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -15415,9 +15362,9 @@
   {
     "id": 128,
     "name": "Malphite",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Malphite.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -15535,9 +15482,9 @@
   {
     "id": 129,
     "name": "Mordekaiser",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Mordekaiser.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -15655,9 +15602,9 @@
   {
     "id": 130,
     "name": "Nunu & Willump",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Nunu.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -15775,9 +15722,9 @@
   {
     "id": 131,
     "name": "Rengar",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Rengar.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -15895,9 +15842,9 @@
   {
     "id": 132,
     "name": "Riven",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "hard",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Riven.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -16015,10 +15962,9 @@
   {
     "id": 133,
     "name": "Skarner",
-    "roles": [
-      "top",
-      "jungle"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["top", "jungle"],
     "img": "assets/images/champion_icons/Skarner.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -16136,9 +16082,9 @@
   {
     "id": 134,
     "name": "Tryndamere",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Tryndamere.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -16256,9 +16202,9 @@
   {
     "id": 135,
     "name": "Viktor",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Viktor.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -16376,9 +16322,9 @@
   {
     "id": 136,
     "name": "Vladimir",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "medium",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Vladimir.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -16496,9 +16442,9 @@
   {
     "id": 137,
     "name": "Xerath",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Xerath.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -16616,10 +16562,9 @@
   {
     "id": 138,
     "name": "Amumu",
-    "roles": [
-      "jungle",
-      "support"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle", "support"],
     "img": "assets/images/champion_icons/Amumu.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -16737,9 +16682,9 @@
   {
     "id": 139,
     "name": "Anivia",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "medium",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Anivia.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -16857,9 +16802,9 @@
   {
     "id": 140,
     "name": "Cho'Gath",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Chogath.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -16977,9 +16922,9 @@
   {
     "id": 141,
     "name": "Dr. Mundo",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/DrMundo.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -17097,9 +17042,9 @@
   {
     "id": 142,
     "name": "Elise",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Elise.webp",
     "dmgType": "low ap",
     "gameStateAttributes": {
@@ -17217,9 +17162,9 @@
   {
     "id": 143,
     "name": "Fiddlesticks",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Fiddlesticks.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -17337,9 +17282,9 @@
   {
     "id": 144,
     "name": "Gangplank",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "hard",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Gangplank.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -17457,9 +17402,9 @@
   {
     "id": 145,
     "name": "Hecarim",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2012,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Hecarim.webp",
     "dmgType": "low ad",
     "gameStateAttributes": {
@@ -17577,9 +17522,9 @@
   {
     "id": 146,
     "name": "Kayn",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2017,
+    "masteryDifficulty": "medium",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Kayn.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -17697,10 +17642,9 @@
   {
     "id": 147,
     "name": "Lissandra",
-    "roles": [
-      "mid",
-      "support"
-    ],
+    "releaseYear": 2013,
+    "masteryDifficulty": "medium",
+    "roles": ["mid", "support"],
     "img": "assets/images/champion_icons/Lissandra.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -17818,9 +17762,9 @@
   {
     "id": 148,
     "name": "Malzahar",
-    "roles": [
-      "mid"
-    ],
+    "releaseYear": 2010,
+    "masteryDifficulty": "easy",
+    "roles": ["mid"],
     "img": "assets/images/champion_icons/Malzahar.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -17938,9 +17882,9 @@
   {
     "id": 149,
     "name": "Nasus",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Nasus.webp",
     "dmgType": "low mix",
     "gameStateAttributes": {
@@ -18058,9 +18002,9 @@
   {
     "id": 150,
     "name": "Quinn",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2013,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Quinn.webp",
     "dmgType": "high ad",
     "gameStateAttributes": {
@@ -18178,10 +18122,9 @@
   {
     "id": 151,
     "name": "Shyvana",
-    "roles": [
-      "jungle",
-      "top"
-    ],
+    "releaseYear": 2011,
+    "masteryDifficulty": "easy",
+    "roles": ["jungle", "top"],
     "img": "assets/images/champion_icons/Shyvana.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -18299,9 +18242,9 @@
   {
     "id": 152,
     "name": "Teemo",
-    "roles": [
-      "top"
-    ],
+    "releaseYear": 2009,
+    "masteryDifficulty": "easy",
+    "roles": ["top"],
     "img": "assets/images/champion_icons/Teemo.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -18419,9 +18362,9 @@
   {
     "id": 153,
     "name": "Zoe",
-    "roles": [
-      "jungle"
-    ],
+    "releaseYear": 2017,
+    "masteryDifficulty": "hard",
+    "roles": ["jungle"],
     "img": "assets/images/champion_icons/Zoe.webp",
     "dmgType": "high ap",
     "gameStateAttributes": {
@@ -18454,6 +18397,126 @@
       "defense": {
         "mitigation": false,
         "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
+  },
+  {
+    "id": 154,
+    "name": "Yorick",
+    "releaseYear": 2011,
+    "masteryDifficulty": "medium",
+    "roles": ["top"],
+    "img": "assets/images/champion_icons/Yorick.webp",
+    "dmgType": "low mix",
+    "gameStateAttributes": {
+      "early": 9,
+      "mid": 11,
+      "late": 10
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": false
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": true
       },
       "support": {
         "peel": false,

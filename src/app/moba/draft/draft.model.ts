@@ -75,8 +75,8 @@ export interface AllRolesTierList {
 export interface CompStyleStats {
   engage: number;
   pick: number;
-  protect: number;
-  siege: number;
+  disengage: number;
+  poke: number;
   split: number;
 }
 
@@ -90,13 +90,14 @@ export interface DraftFormData {
   userIsRedSide: boolean;
   patchVersion: PatchVersion;
   useAiOpponent: boolean;
-  difficulty: DraftDifficulty;
+  difficulty: DifficultyLevel;
   useRandomTeam: boolean;
 }
 
 export interface PatchData {
   name: PatchName;
   version: PatchVersion;
+  description: string;
   excludedChamps: number[];
   patchTierList: AllRolesTierList;
   // counters?: AllRolesTierList;
@@ -111,14 +112,15 @@ export interface ChampionAdvice {
   support: DraftAdviceTag[];
 }
 
-export type CompStyle = 'engage' | 'pick' | 'protect' | 'siege' | 'split';
-export type PatchName = 'MSI 2024' | 'Summer 2024';
-export type PatchVersion = 14.8 | 14.13;
+export type CompStyle = 'engage' | 'pick' | 'disengage' | 'poke' | 'split';
+export type PatchName = 'MSI 2024' | 'Summer 2024' | 'Summer 14.14 2024';
+export type PatchVersion = 14.8 | 14.13 | 14.14;
 export type DraftSortHeader = 'name' | 'mastery' | 'meta' | 'synergy' | 'counter';
-export type DraftDifficulty = 'easy' | 'medium' | 'hard';
+export type DifficultyLevel = 'easy' | 'medium' | 'hard';
 export type DraftAdviceTag = 'Counters Banned' | 'Recommended' | 'Counter Pick' | 'Not Recommended' | 'High Synergy';
 
 export type LetterRank = 'S' | 'A' | 'B' | 'C' | 'D' | 'F' | 'N/A' | 'S+' | 'S-' | 'A+' | 'A-' | 'B+' | 'B-' | 'C+' | 'C-' | 'D+' | 'D-';
+export type Proficiency = '+' | '-' | '++' | '--' | '+-';
 export type DraftPhase =
   | 'Blue Ban 1'
   | 'Blue Ban 2'
@@ -171,7 +173,8 @@ export const tierValues: { [key: string]: TierValue } = {
   f: TierValue.F,
 };
 
-export const patchNames: PatchName[] = ['MSI 2024', 'Summer 2024'];
+export const patchNames: PatchName[] = ['MSI 2024', 'Summer 2024', 'Summer 14.14 2024'];
+export const latestPatch: PatchName = 'Summer 14.14 2024';
 
 export const redSidePickRounds = [8, 9, 12, 17, 20];
 export const blueSidePickRounds = [7, 10, 11, 18, 19];
@@ -213,12 +216,12 @@ export const compStyleReqs: CompStyleData[] = [
     secondary: ['crowdControl.range', 'mobility.engage', 'mobility.reposition', 'crowdControl.impact'],
   },
   {
-    name: 'protect',
+    name: 'disengage',
     primary: ['dmg.dps', 'support.peel', 'support.utility', 'support.zoneControl'],
     secondary: ['dmg.singleTarget', 'dmg.aoe', 'defense.sustain', 'defense.mitigation'],
   },
   {
-    name: 'siege',
+    name: 'poke',
     primary: ['dmg.poke', 'dmg.siege', 'support.zoneControl', 'support.peel'],
     secondary: ['dmg.waveClear', 'support.utility', 'dmg.dps', 'dmg.aoe'],
   },

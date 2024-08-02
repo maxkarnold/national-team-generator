@@ -24,6 +24,8 @@ import {
   DraftMetaData,
   hasAllPropsDraftMetaData,
   patchNames,
+  Proficiency,
+  latestPatch,
 } from './draft.model';
 import {
   checkForAvailableRoles,
@@ -67,7 +69,7 @@ export class DraftComponent {
   redRounds = [...redSideBanRounds, ...redSidePickRounds];
 
   draftForm: FormGroup = new FormGroup({
-    patchName: new FormControl<PatchName>('Summer 2024'),
+    patchName: new FormControl<PatchName>(latestPatch),
     userIsRedSide: new FormControl<boolean>(false),
     useAiOpponent: new FormControl<boolean>(false),
     difficulty: new FormControl<'easy' | 'medium' | 'hard'>('medium'),
@@ -348,19 +350,19 @@ export class DraftComponent {
     console.log('blueside scores', this.blueSideDraftScores(), 'redside scores', this.redSideDraftScores());
   }
 
-  getLetterRank(rating: number): LetterRank {
+  getTableDisplayScore(rating: number, isProficiency = false): LetterRank | Proficiency {
     if (rating > 18) {
-      return 'S';
+      return isProficiency ? '++' : 'S';
     } else if (rating > 14) {
-      return 'A';
+      return isProficiency ? '+' : 'A';
     } else if (rating > 10) {
-      return 'B';
+      return isProficiency ? '+' : 'B';
     } else if (rating > 6) {
-      return 'C';
+      return isProficiency ? '+-' : 'C';
     } else if (rating > 2) {
-      return 'D';
+      return isProficiency ? '-' : 'D';
     } else {
-      return 'F';
+      return isProficiency ? '--' : 'F';
     }
   }
 
@@ -423,7 +425,7 @@ export class DraftComponent {
     const compStats = getTeamCompStyleScoring(currentSelectedChamps as DraftChampion[]);
 
     const teamSynergy = compareCompStyle(compStats, evaluatedChamp, currentSelectedChamps.length);
-    console.log(teamSynergy);
+    // console.log(teamSynergy);
     if (side === 'player') {
       evaluatedChamp.currentSynergy.player.team = teamSynergy;
     } else {
@@ -611,7 +613,7 @@ export class DraftComponent {
 
   getTopChampsInMeta(masteries: TierListRankings, role: Role): DraftChampion[] {
     const patchTierList = getPatchData(this.patchName).patchTierList;
-    const masteredChamps = [...masteries.s, ...masteries.a, ...masteries.b, ...masteries.c];
+    const masteredChamps = [...masteries.s, ...masteries.a, ...masteries.b];
     const metaChamps = [...patchTierList[role].s, ...patchTierList[role].a, ...patchTierList[role].b];
     const mainChamps = masteredChamps.filter(id => metaChamps.includes(id)).map(id => this.getChampionFromId(id));
     const filteredChamps: DraftChampion[] = [...mainChamps].filter((champ): champ is DraftChampion => !!champ);

@@ -69,8 +69,8 @@ export function getTeamCompStyleScoring(selectedTeamChamps: DraftChampion[]): Co
   const compStats: CompStyleStats = {
     engage: 0,
     pick: 0,
-    protect: 0,
-    siege: 0,
+    disengage: 0,
+    poke: 0,
     split: 0,
   };
 
@@ -103,7 +103,7 @@ export function compareCompStyle(compStats: CompStyleStats, champ: DraftChampion
       compDiffArr.push(Math.abs(compStyle[1] - style[1]));
     }
   }
-  console.log(compDiffArr, { ...compStats }, champ.name, champStyle);
+  // console.log(compDiffArr, { ...compStats }, champ.name, champStyle);
   const arrSum = sum(compDiffArr);
   if (arrSum <= 5) {
     return TierValue.S;

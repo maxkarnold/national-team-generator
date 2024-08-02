@@ -134,8 +134,6 @@ export function mapRange(value: number, fromMin: number, fromMax: number, toMin:
 }
 
 export function getRandomInt(mn: number, mx: number): number {
-  // let seed = xmur3("string-seed");
-  // let rand = mulberry32(seed());
   const min = Math.ceil(mn);
   const max = Math.floor(mx);
 
@@ -143,6 +141,14 @@ export function getRandomInt(mn: number, mx: number): number {
   // The maximum is inclusive and the minimum is inclusive
 }
 
+/**
+ * Generates a random integer within a specified range with a bell curve distribution.
+ *
+ * @param {number} min - The minimum value of the range (inclusive).
+ * @param {number} max - The maximum value of the range (inclusive).
+ * @param {number} skew - The skew factor, where a value less than 1 creates larger numbers and a value greater than 1 creates smaller numbers.
+ * @return {number} A random integer within the specified range with the given skew.
+ */
 export function getRandomIntBC(min: number, max: number, skew: number) {
   // smaller skew, a value less than 1: creates larger numbers 0.99-0.25
   // larger skew, a value more than 1: creates smaller numbers 1.01-3
