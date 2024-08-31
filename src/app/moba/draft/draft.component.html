@@ -115,7 +115,7 @@
   <!-- BAN DASHBOARD -->
   <div class="flex flex-col gap-4 md:flex-row md:gap-0">
     <ul class="flex justify-around md:justify-normal text-gray-200">
-      <li *ngFor="let champ of blueSideBans()" class="sm:mx-2">
+      <li *ngFor="let champ of draftService.blueSideBans()" class="sm:mx-2">
         <div class="avatar placeholder" *ngIf="champ?.isPlaceholder">
           <div class="w-12 rounded bg-blue-700">
             <span class="text-2xl">{{ champ.name }}</span>
@@ -138,7 +138,7 @@
       </svg>
     </label>
     <ul class="flex justify-around md:justify-normal text-gray-200">
-      <li *ngFor="let champ of redSideBans()" class="sm:mx-2">
+      <li *ngFor="let champ of draftService.redSideBans()" class="sm:mx-2">
         <div class="avatar placeholder" *ngIf="champ?.isPlaceholder">
           <div class="w-12 rounded bg-red-700">
             <span class="text-2xl">{{ champ.name }}</span>
@@ -167,7 +167,7 @@
   <div class="flex pb-16 gap-16 md:pb-8 md:gap-4 flex-col md:flex-row">
     <!-- Blue SIDE -->
     <ul class="flex justify-around flex-wrap order-1 md:mb-0 md:order-none md:flex-col md:justify-normal text-gray-200">
-      <li *ngFor="let champ of blueSideChamps(); let i = index" class="my-4">
+      <li *ngFor="let champ of draftService.blueSideChamps(); let i = index" class="my-4">
         <!-- EMPTY CHAMP SLOT -->
         <div class="relative" *ngIf="champ?.isPlaceholder">
           <div class="w-12 h-12 md:w-24 md:h-24 rounded bg-blue-700 items-center justify-center flex">
@@ -311,7 +311,7 @@
 
     <!-- RED SIDE -->
     <ul class="flex justify-around flex-wrap order-1 md:mb-0 md:order-none md:flex-col md:justify-normal text-gray-200">
-      <li *ngFor="let champ of redSideChamps(); let i = index" class="my-4">
+      <li *ngFor="let champ of draftService.redSideChamps(); let i = index" class="my-4">
         <!-- EMPTY CHAMP SLOT -->
         <div class="relative" *ngIf="champ?.isPlaceholder">
           <div class="w-12 h-12 md:w-24 md:h-24 rounded bg-red-700 items-center justify-center flex">
@@ -344,23 +344,5 @@
       </li>
     </ul>
   </div>
-  <!-- ADVICE ON DRAFT FOR BOTH SIDES -->
-  <div class="flex flex-col md:flex-row justify-between text-gray-200">
-    <div class="p-4 bg-blue-600 rounded-lg mb-8">
-      <h2 class="mb-2 text-xl">Blue Side</h2>
-      <ul>
-        <li *ngFor="let item of getCompositionAdvice(true)" class="mb-1">
-          {{ item }}
-        </li>
-      </ul>
-    </div>
-    <div class="md:text-right p-4 bg-red-600 rounded-lg mb-8">
-      <h2 class="mb-2 text-xl">Red Side</h2>
-      <ul>
-        <li *ngFor="let item of getCompositionAdvice(false)" class="mb-1">
-          {{ item }}
-        </li>
-      </ul>
-    </div>
-  </div>
+  <app-draft-advice></app-draft-advice>
 </div>

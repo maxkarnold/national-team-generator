@@ -18598,5 +18598,125 @@
         "d": []
       }
     }
+  },
+  {
+    "id": 155,
+    "name": "Aurora",
+    "releaseYear": 2024,
+    "masteryDifficulty": "hard",
+    "roles": ["mid"],
+    "img": "assets/images/champion_icons/Aurora.webp",
+    "dmgType": "high ap",
+    "gameStateAttributes": {
+      "early": 8,
+      "mid": 10,
+      "late": 12
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": true,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": false,
+        "poke": false,
+        "siege": false,
+        "waveClear": true,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": true
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
   }
 ]

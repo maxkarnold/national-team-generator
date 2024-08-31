@@ -5,7 +5,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
 import { MobaService } from './moba.service';
 import { PlayerSelectComponent } from './player-select/player-select.component';
-import { DraftComponent } from './draft/draft.component';
 
 const routes: Routes = [
   {
@@ -13,14 +12,14 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: 'player-select', component: PlayerSelectComponent },
-      { path: 'draft', component: DraftComponent },
+      { path: 'draft', loadChildren: () => import('./draft/draft.module').then(m => m.DraftModule) },
       { path: '', redirectTo: 'draft', pathMatch: 'full' },
     ],
   },
 ];
 
 @NgModule({
-  declarations: [HomeComponent, PlayerSelectComponent, DraftComponent],
+  declarations: [HomeComponent, PlayerSelectComponent],
   providers: [MobaService],
   imports: [CommonModule, SharedModule, RouterModule.forChild(routes)],
 })

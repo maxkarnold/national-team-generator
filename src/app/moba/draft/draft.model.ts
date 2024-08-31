@@ -255,6 +255,14 @@ export const emptyDraftPicks: Partial<DraftChampion>[] = [
   },
 ];
 
+export const defaultPlayers = {
+  top: [],
+  jungle: [],
+  mid: [],
+  adc: [],
+  support: [],
+};
+
 export const defaultPlayerMasteries: DraftPlayer[] = [
   {
     mainRole: 'top',

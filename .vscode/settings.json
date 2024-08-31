@@ -3,5 +3,11 @@
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "angular-schematics.schematicsDefaultOptions": {
+    "angular-*": {
+      "style": "scss",
+      "externalTemplate": true
+    }
   }
 }

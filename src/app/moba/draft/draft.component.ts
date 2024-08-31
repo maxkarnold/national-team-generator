@@ -1,18 +1,13 @@
 import { Component, HostListener, Signal, WritableSignal, computed, signal } from '@angular/core';
-import * as championsJson from 'assets/json/moba/champions.json';
-import { Champion, DamageType } from '../champion/champion.model';
+import { DamageType } from '../champion/champion.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   DraftChampion,
-  emptyDraftBans,
-  emptyDraftPicks,
   blueSideBanRounds,
   blueSidePickRounds,
   redSideBanRounds,
   redSidePickRounds,
   LetterRank,
-  defaultOpponentMasteries,
-  defaultPlayerMasteries,
   DraftPlayer,
   DraftPhase,
   TierListRankings,
@@ -27,19 +22,13 @@ import {
   Proficiency,
   latestPatch,
 } from './draft.model';
-import {
-  checkForAvailableRoles,
-  getDraftChampions,
-  getRandomMasteries,
-  getChampMasteries,
-  getChampPropFromDraftPhase,
-  getPatchData,
-} from './draft.utils';
+import { checkForAvailableRoles, getChampMasteries, getChampPropFromDraftPhase, getPatchData } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role, positionFilters } from '../player/player.model';
 import { shuffle } from 'lodash-es';
 import { MobaService } from '../moba.service';
-import { compareCompStyle, getCompositionAdviceAndGrade, getTeamCompStyleScoring } from './draft-grader';
+import { DraftAdviceService } from './draft-advice/draft-advice.service';
+import { DraftService } from './draft.service';
 
 @Component({
   selector: 'app-draft',
@@ -52,7 +41,6 @@ export class DraftComponent {
   draftPhase: DraftPhase = 'Blue Ban 1';
   currentDraftRound = 1;
   aiTimer = -1;
-  champions: DraftChampion[] = [];
   getRoleFromFilter = getRoleFromFilter;
   getChampPropFromDraftPhase = getChampPropFromDraftPhase;
   patchNames = patchNames;
@@ -83,52 +71,28 @@ export class DraftComponent {
     return this.userIsRedSide ? !blueSideChoosing : blueSideChoosing;
   });
 
+  redSideAdvice: WritableSignal<string[]> = signal([]);
+  blueSideAdvice: WritableSignal<string[]> = signal([]);
+
   blueSideDraftScores: WritableSignal<number[]> = signal([]);
   redSideDraftScores: WritableSignal<number[]> = signal([]);
-  blueSideMasteries: DraftPlayer[] = [];
-  redSideMasteries: DraftPlayer[] = [];
-  blueSidePlayers: {
-    [key: string]: DraftChampion[];
-  } = {
-    top: [],
-    jungle: [],
-    mid: [],
-    adc: [],
-    support: [],
-  };
-  redSidePlayers: {
-    [key: string]: DraftChampion[];
-  } = {
-    top: [],
-    jungle: [],
-    mid: [],
-    adc: [],
-    support: [],
-  };
+
   searchControl = new FormControl<string>('');
   searchControlValue = toSignal(this.searchControl.valueChanges);
   roleFilter: WritableSignal<Role | 'all'> = signal('all');
   sortBy: WritableSignal<DraftSortHeader> = signal('meta');
 
-  availableChampions: Signal<DraftChampion[]> = computed(() => {
-    const redBans = this.redSideBans();
-    const blueBans = this.blueSideBans();
-    const redSideChamps = this.redSideChamps();
-    const blueSideChamps = this.blueSideChamps();
-    const selectedChampionsIds = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps].map(c => c.id);
-    return this.champions.filter(c => !selectedChampionsIds.includes(c.id));
-  });
-
   filteredChampions: Signal<DraftChampion[]> = computed(() => {
-    const availableChampions = this.availableChampions();
+    const availableChampions = this.service.availableChampions();
     const searchValue = this.searchControlValue();
     const roleFilterValue = this.roleFilter();
     const sortBy = this.sortBy();
-    const redBans = this.redSideBans();
-    const blueBans = this.blueSideBans();
-    const redSideChamps = this.redSideChamps();
-    const blueSideChamps = this.blueSideChamps();
+    const redBans = this.service.redSideBans();
+    const blueBans = this.service.blueSideBans();
+    const redSideChamps = this.service.redSideChamps();
+    const blueSideChamps = this.service.blueSideChamps();
     const selectedChampionIds = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps].map(c => c.id);
+    console.log(availableChampions);
     const champions = availableChampions
       .filter(c => {
         if (selectedChampionIds.includes(c.id)) {
@@ -154,19 +118,23 @@ export class DraftComponent {
       .sort((a, b) => this.getDisplayMetaScore(b) - this.getDisplayMetaScore(a));
     return this.chooseSortBy(champions, sortBy);
   });
-  redSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
-  blueSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
-  redSideChamps: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftPicks]);
-  blueSideChamps: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftPicks]);
 
-  constructor(private service: MobaService) {
-    const draftMetaData = this.service.getLocalStorage<DraftMetaData>('draft_metaData');
+  constructor(
+    private service: DraftService,
+    private localStorage: MobaService,
+    private draftAdviceService: DraftAdviceService
+  ) {
+    const draftMetaData = this.localStorage.getLocalStorage<DraftMetaData>('draft_metaData');
     if (draftMetaData && hasAllPropsDraftMetaData(draftMetaData)) {
       this.draftForm.setValue(draftMetaData);
     }
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
-    this.initiateMasteries();
+    this.service.initiateMasteries(this.patchName, this.useRandomTeam, this.difficulty, this.userIsRedSide, this.filteredChampions());
+  }
+
+  get draftService(): DraftService {
+    return this.service;
   }
 
   get userIsRedSide(): boolean {
@@ -190,7 +158,7 @@ export class DraftComponent {
   }
 
   get masteriesForSide(): DraftPlayer[] {
-    return this.userIsRedSide ? this.redSideMasteries : this.blueSideMasteries;
+    return this.userIsRedSide ? this.service.redSideMasteries : this.service.blueSideMasteries;
   }
 
   get selectedRoleFilter(): Role {
@@ -206,6 +174,10 @@ export class DraftComponent {
   getScreenSize() {
     this.screenWidth = window.innerWidth;
   }
+
+  getChampionFromId(id: number | undefined): DraftChampion | undefined {
+    return this.service.getChampionFromId(id);
+  }
   getBadgeClass(dmgType: DamageType): string {
     if (dmgType.includes('ad')) {
       return 'badge-error';
@@ -220,40 +192,15 @@ export class DraftComponent {
 
   startDraft() {
     this.draftStarted = true;
-    this.service.setLocalStorage<DraftMetaData>('draft_metaData', {
+    this.localStorage.setLocalStorage<DraftMetaData>('draft_metaData', {
       userIsRedSide: this.userIsRedSide,
       useAiOpponent: this.useAiOpponent,
       difficulty: this.difficulty,
       patchName: this.patchName,
       useRandomTeam: this.useRandomTeam,
     });
-    this.initiateMasteries();
-    console.log(this.difficulty);
-    console.log('blueSide', this.blueSideMasteries, '\nredSide', this.redSideMasteries);
-    console.log('blueSide', this.blueSidePlayers, '\nredSide', this.redSidePlayers);
+    this.service.initiateMasteries(this.patchName, this.useRandomTeam, this.difficulty, this.userIsRedSide, this.filteredChampions());
     this.checkAndStartAiTimer();
-  }
-
-  initiateMasteries() {
-    const champions = Array.from(championsJson) as Champion[];
-    const patchData = getPatchData(this.patchName);
-    const playerMasteries: DraftPlayer[] = this.useRandomTeam ? getRandomMasteries(patchData) : [...defaultPlayerMasteries];
-    const opponentMasteries: DraftPlayer[] = this.useRandomTeam
-      ? getRandomMasteries(patchData, this.difficulty)
-      : [...defaultOpponentMasteries];
-
-    this.champions = getDraftChampions(champions, patchData, playerMasteries, opponentMasteries);
-
-    this.blueSideMasteries = this.userIsRedSide ? opponentMasteries : playerMasteries;
-    this.redSideMasteries = this.userIsRedSide ? playerMasteries : opponentMasteries;
-
-    for (const player of this.blueSideMasteries) {
-      this.getTopChampsForEachRole(player, true);
-    }
-
-    for (const player of this.redSideMasteries) {
-      this.getTopChampsForEachRole(player, false);
-    }
   }
 
   resetDraft() {
@@ -263,32 +210,15 @@ export class DraftComponent {
     this.draftPhase = 'Blue Ban 1';
     this.currentDraftRound = 1;
     this.aiTimer = -1;
-    this.champions = [];
-    this.initiateMasteries();
+
+    this.service.initiateMasteries(this.patchName, this.useRandomTeam, this.difficulty, this.userIsRedSide, this.filteredChampions());
 
     this.isAiChoosing = false;
 
     this.blueSideDraftScores.set([]);
     this.redSideDraftScores.set([]);
-    this.blueSidePlayers = {
-      top: [],
-      jungle: [],
-      mid: [],
-      adc: [],
-      support: [],
-    };
-    this.redSidePlayers = {
-      top: [],
-      jungle: [],
-      mid: [],
-      adc: [],
-      support: [],
-    };
 
-    this.redSideBans.set([...emptyDraftBans]);
-    this.blueSideBans.set([...emptyDraftBans]);
-    this.redSideChamps.set([...emptyDraftPicks]);
-    this.blueSideChamps.set([...emptyDraftPicks]);
+    this.service.resetDraft();
   }
 
   callNotification(message: string, color = 'green') {
@@ -308,24 +238,19 @@ export class DraftComponent {
     }, 4000);
   }
 
-  getChampionFromId(id: number | undefined) {
-    const champion = this.champions.find(c => c.id === id);
-    return champion;
-  }
-
   selectRole(role: Role, champ: Partial<DraftChampion>, isBlueSide: boolean, index: number) {
     if ((isBlueSide && !this.userIsRedSide) || !this.useAiOpponent) {
       champ.selectedRole = role;
-      const updatedChamps = [...this.blueSideChamps()];
+      const updatedChamps = [...this.service.blueSideChamps()];
       updatedChamps[index] = champ;
-      this.blueSideChamps.set(updatedChamps);
-      console.log(this.blueSideChamps().map(c => c.selectedRole));
+      this.service.blueSideChamps.set(updatedChamps);
+      console.log(this.service.blueSideChamps().map(c => c.selectedRole));
     } else if ((!isBlueSide && this.userIsRedSide) || !this.useAiOpponent) {
       champ.selectedRole = role;
-      const updatedChamps = [...this.redSideChamps()];
+      const updatedChamps = [...this.service.redSideChamps()];
       updatedChamps[index] = champ;
-      this.redSideChamps.set(updatedChamps);
-      console.log(this.redSideChamps().map(c => c.selectedRole));
+      this.service.redSideChamps.set(updatedChamps);
+      console.log(this.service.redSideChamps().map(c => c.selectedRole));
     }
     for (const filteredChamp of this.filteredChampions()) {
       this.setSynergyScore(filteredChamp);
@@ -413,18 +338,18 @@ export class DraftComponent {
     const side = playerSide ?? getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
     let currentSelectedChamps: Partial<DraftChampion>[];
     if (blueSideBanRounds.includes(this.currentDraftRound) || redSidePickRounds.includes(this.currentDraftRound)) {
-      currentSelectedChamps = this.redSideChamps();
+      currentSelectedChamps = this.service.redSideChamps();
     } else {
-      currentSelectedChamps = this.blueSideChamps();
+      currentSelectedChamps = this.service.blueSideChamps();
     }
 
     currentSelectedChamps = currentSelectedChamps.filter(c => !c.isPlaceholder);
     if (currentSelectedChamps.length < 1) {
       return TierValue.F;
     }
-    const compStats = getTeamCompStyleScoring(currentSelectedChamps as DraftChampion[]);
+    const compStats = this.draftAdviceService.getTeamCompStyleScoring(currentSelectedChamps as DraftChampion[]);
 
-    const teamSynergy = compareCompStyle(compStats, evaluatedChamp, currentSelectedChamps.length);
+    const teamSynergy = this.draftAdviceService.compareCompStyle(compStats, evaluatedChamp, currentSelectedChamps.length);
     // console.log(teamSynergy);
     if (side === 'player') {
       evaluatedChamp.currentSynergy.player.team = teamSynergy;
@@ -478,9 +403,9 @@ export class DraftComponent {
     const side = playerSide ?? getChampPropFromDraftPhase(this.draftPhase, this.currentDraftRound, this.userIsRedSide);
     let currentSelectedChamps: Partial<DraftChampion>[];
     if (blueSideBanRounds.includes(this.currentDraftRound) || redSidePickRounds.includes(this.currentDraftRound)) {
-      currentSelectedChamps = this.blueSideChamps();
+      currentSelectedChamps = this.service.blueSideChamps();
     } else {
-      currentSelectedChamps = this.redSideChamps();
+      currentSelectedChamps = this.service.redSideChamps();
     }
 
     currentSelectedChamps = currentSelectedChamps.filter(c => !c.isPlaceholder);
@@ -590,7 +515,7 @@ export class DraftComponent {
     if (this.draftPhase.includes('Red Ban') || this.draftPhase.includes('Blue Pick')) {
       // When red team is banning or blue team is picking
       // if champ has only one role and the same role as one of the selected blueSideChamps return 0
-      const pickedChampRoles = this.blueSideChamps().map(c => c.selectedRole);
+      const pickedChampRoles = this.service.blueSideChamps().map(c => c.selectedRole);
       const availableRoles = checkForAvailableRoles(pickedChampRoles);
       // console.log(availableRoles);
       // if any of the availableRoles is in the currentChamp's roles then it can be returned as normal
@@ -600,7 +525,7 @@ export class DraftComponent {
     } else if (this.draftPhase.includes('Blue Ban') || this.draftPhase.includes('Red Pick')) {
       // When blue team is banning or red team is picking
       // if champ has only one role and the same role as one of the selected redSideChamps return 0
-      const pickedChampRoles = this.redSideChamps().map(c => c.selectedRole);
+      const pickedChampRoles = this.service.redSideChamps().map(c => c.selectedRole);
       const availableRoles = checkForAvailableRoles(pickedChampRoles);
       // console.log(availableRoles);
       // if any of the availableRoles is in the currentChamp's roles then it can be returned as normal
@@ -618,23 +543,6 @@ export class DraftComponent {
     const mainChamps = masteredChamps.filter(id => metaChamps.includes(id)).map(id => this.getChampionFromId(id));
     const filteredChamps: DraftChampion[] = [...mainChamps].filter((champ): champ is DraftChampion => !!champ);
     return filteredChamps.slice(0, 3);
-  }
-
-  getTopChampsForEachRole(player: DraftPlayer, isBlueSide: boolean) {
-    const role = player.mainRole;
-    if (!role) {
-      return;
-    }
-    const champs = Array.from(
-      this.filteredChampions()
-        .filter(c => c.roles.includes(role as Role) && player.championMastery?.s.includes(c.id))
-        .concat(...this.filteredChampions().filter(c => c.roles.includes(role as Role) && player.championMastery?.a.includes(c.id)))
-    );
-    if (isBlueSide) {
-      this.blueSidePlayers[role] = champs;
-    } else {
-      this.redSidePlayers[role] = champs;
-    }
   }
 
   checkAndStartAiTimer() {
@@ -667,18 +575,20 @@ export class DraftComponent {
     let champOptions = [];
     // if AI is Blue Side and is currently picking a champ
     if (this.userIsRedSide && blueSidePickRounds.includes(this.currentDraftRound)) {
-      const selectedRoles = this.blueSideChamps()
+      const selectedRoles = this.service
+        .blueSideChamps()
         .filter(c => c.selectedRole)
         .map(c => c.selectedRole as Role);
-      champOptions = [...this.availableChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
+      champOptions = [...this.service.availableChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
     } else if (!this.userIsRedSide && redSidePickRounds.includes(this.currentDraftRound)) {
       // if AI is Red Side and is currently picking a champ
-      const selectedRoles = this.redSideChamps()
+      const selectedRoles = this.service
+        .redSideChamps()
         .filter(c => c.selectedRole)
         .map(c => c.selectedRole as Role);
-      champOptions = [...this.availableChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
+      champOptions = [...this.service.availableChampions().filter(c => !selectedRoles.includes(c.selectedRole))];
     } else {
-      champOptions = [...this.availableChampions()]; // this will return all champions
+      champOptions = [...this.service.availableChampions()]; // this will return all champions
     }
     const sortedChamps = champOptions.sort((a, b) => this.getPickScore(b) - this.getPickScore(a));
     const draftChampion = shuffle(sortedChamps.slice(0, 3))[0];
@@ -704,16 +614,16 @@ export class DraftComponent {
     if (firstBanPhase || secondBanPhase) {
       const isRed = redSideBanRounds.includes(this.currentDraftRound);
       if (isRed) {
-        const arr = [...this.redSideBans()];
+        const arr = [...this.service.redSideBans()];
         const index = redSideBanRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
-        this.redSideBans.set(arr);
+        this.service.redSideBans.set(arr);
         this.callNotification(`Red side has banned ${champ.name}.`, 'red');
       } else {
-        const arr = [...this.blueSideBans()];
+        const arr = [...this.service.blueSideBans()];
         const index = blueSideBanRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
-        this.blueSideBans.set(arr);
+        this.service.blueSideBans.set(arr);
         this.callNotification(`Blue side has banned ${champ.name}.`, 'blue');
       }
     } else if (firstPickPhase || secondPickPhase) {
@@ -723,24 +633,24 @@ export class DraftComponent {
 
       const isRed = redSidePickRounds.includes(this.currentDraftRound);
       if (isRed) {
-        const arr = [...this.redSideChamps()];
+        const arr = [...this.service.redSideChamps()];
         const index = redSidePickRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
         this.redSideDraftScores.set([...this.redSideDraftScores(), draftPickScore]);
-        this.redSideChamps.set(arr);
+        this.service.redSideChamps.set(arr);
         this.callNotification(`Red side has chosen ${champ.name}.`, `'red'`);
         console.log(`Red side has chosen ${champ.name}.`, `With a score of ${draftPickScore}/20`);
       } else {
-        const arr = [...this.blueSideChamps()];
+        const arr = [...this.service.blueSideChamps()];
         const index = blueSidePickRounds.indexOf(this.currentDraftRound);
         arr[index] = champ;
         this.blueSideDraftScores.set([...this.blueSideDraftScores(), draftPickScore]);
-        this.blueSideChamps.set(arr);
+        this.service.blueSideChamps.set(arr);
         this.callNotification(`Blue side has chosen ${champ.name}.`, 'blue');
         console.log(`Blue side has chosen ${champ.name}.`, `With a score of ${draftPickScore}/20`);
       }
     }
-    console.log(this.blueSideDraftScores(), this.redSideDraftScores());
+    // console.log(this.blueSideDraftScores(), this.redSideDraftScores());
     this.currentDraftRound++;
     this.checkPickPhase();
     this.checkAndStartAiTimer();
@@ -781,16 +691,6 @@ export class DraftComponent {
       }
     }
     this.draftPhase = (firstPhrase + (index + 1).toString()) as DraftPhase;
-  }
-
-  getCompositionAdvice(isBlueSide: boolean): string[] {
-    return getCompositionAdviceAndGrade(
-      isBlueSide,
-      this.blueSideChamps,
-      this.redSideChamps,
-      this.blueSideDraftScores,
-      this.redSideDraftScores
-    );
   }
 
   displaySynergyAndCounter() {
