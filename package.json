@@ -93,7 +93,7 @@
     "prettier-eslint": "^16.3.0",
     "storybook": "^8.2.4",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "typescript": "5.5.4"
   },
   "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.2.",
   "main": "./src/main.ts",
@@ -104,6 +104,7 @@
     "*.spec.ts"
   ],
   "volta": {
-    "node": "20.13.1"
+    "node": "20.13.1",
+    "yarn": "4.4.1-git.20240825.hash-b2f315f6"
   }
 }
