@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'moba',
     loadChildren: () => import('./moba/moba.module').then(m => m.MobaModule),
   },
+  {
+    path: 'rank-playlist',
+    loadChildren: () => import('./spotify/spotify.module').then(m => m.SpotifyModule),
+  },
   { path: '**', redirectTo: '/simulation/group-stage' },
 ];
 
