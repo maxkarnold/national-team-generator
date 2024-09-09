@@ -28,6 +28,10 @@ export class NavBarComponent {
       routerLink: '/moba',
       displayName: 'MOBA',
     },
+    {
+      routerLink: '/rank-playlist',
+      displayName: 'Spotify',
+    },
   ];
   constructor(public auth: AuthService) {}
 }

@@ -7,7 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'moba',
+    redirectTo: 'rank-playlist',
     pathMatch: 'full',
   },
   {

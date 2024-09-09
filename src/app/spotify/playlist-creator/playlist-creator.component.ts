@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-playlist-creator',
@@ -6,4 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './playlist-creator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlaylistCreatorComponent {}
+export class PlaylistCreatorComponent {
+  createPlaylistForm = new FormGroup({});
+}

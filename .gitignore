@@ -59,3 +59,11 @@ firestore.rules
 .runtimeconfig.json
 
 *storybook.log
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
