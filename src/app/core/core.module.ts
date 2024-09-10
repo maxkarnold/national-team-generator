@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '@env';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   imports: [
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirebaseApp(() => initializeApp({ ...environment.firebase })),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
+    provideAnalytics(() => getAnalytics()),
+    ScreenTrackingService,
+    UserTrackingService,
+    provideFirestore(() => getFirestore())
   ],
 })
 export class CoreModule {}
