@@ -18718,5 +18718,125 @@
         "d": []
       }
     }
+  },
+  {
+    "id": 156,
+    "name": "Kled",
+    "releaseYear": 2016,
+    "masteryDifficulty": "medium",
+    "roles": ["top"],
+    "img": "assets/images/champion_icons/Kled.webp",
+    "dmgType": "high ad",
+    "gameStateAttributes": {
+      "early": 12,
+      "mid": 10,
+      "late": 8
+    },
+    "attributes": {
+      "mobility": {
+        "engage": false,
+        "reposition": true
+      },
+      "dmg": {
+        "aoe": false,
+        "burst": false,
+        "singleTarget": true,
+        "skirmish": true,
+        "dps": true,
+        "poke": false,
+        "siege": false,
+        "waveClear": false,
+        "splitPush": true
+      },
+      "crowdControl": {
+        "impact": false,
+        "aoe": false,
+        "singleTarget": false,
+        "ranged": false
+      },
+      "defense": {
+        "mitigation": false,
+        "sustain": false
+      },
+      "support": {
+        "peel": false,
+        "utility": false,
+        "zoneControl": false
+      }
+    },
+    "synergies": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    },
+    "counters": {
+      "top": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "jungle": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "mid": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "adc": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      },
+      "support": {
+        "s": [],
+        "a": [],
+        "b": [],
+        "c": [],
+        "d": []
+      }
+    }
   }
 ]

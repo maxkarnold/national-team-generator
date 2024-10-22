@@ -78,6 +78,12 @@ export enum RoleIndex {
 }
 export type FilterRole = Role | 'all';
 export type GameState = 'early-game' | 'mid-game' | 'late-game';
+// Should add PlayStyles/Prefrences for each role
+// Top: carry top, tank top, balanced top
+// Jungle: carry jungle, support jungle, balanced jungle
+// Mid: mage mid, adc mid, assassin mid, balanced mid
+// ADC: hyper carry adc, lane bully adc, balanced adc
+// Support: engage support, ranged support, balanced support
 export type PlayStyle =
   | 'scaler'
   | 'mechanical god'

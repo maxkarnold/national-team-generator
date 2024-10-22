@@ -6,13 +6,13 @@ import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingServ
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
-  imports: [
-    provideFirebaseApp(() => initializeApp({ ...environment.firebase })),
+  providers: [
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
     ScreenTrackingService,
     UserTrackingService,
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
   ],
 })
 export class CoreModule {}

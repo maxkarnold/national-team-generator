@@ -6,6 +6,7 @@ import { PlaylistCreatorComponent } from './playlist-creator/playlist-creator.co
 import { PlaylistEditorComponent } from './playlist-editor/playlist-editor.component';
 import { SongSearchComponent } from './song-search/song-search.component';
 import { SpotifyService } from './spotify.service';
+import { SpotifyApiService } from './spotify-api.service';
 
 const routes: Routes = [
   {
@@ -13,7 +14,7 @@ const routes: Routes = [
     component: PlaylistCreatorComponent,
   },
   {
-    path: 'edit',
+    path: 'edit/:id',
     component: PlaylistEditorComponent,
   },
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [PlaylistCreatorComponent, PlaylistEditorComponent, SongSearchComponent],
-  providers: [SpotifyService],
+  providers: [SpotifyService, SpotifyApiService],
   imports: [CommonModule, SharedModule, RouterModule.forChild(routes)],
 })
 export class SpotifyModule {}

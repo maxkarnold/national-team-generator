@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { SpotifyService } from '../spotify.service';
 
 @Component({
   selector: 'app-playlist-editor',
@@ -6,4 +7,17 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './playlist-editor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlaylistEditorComponent {}
+export class PlaylistEditorComponent {
+  playlist: unknown;
+
+  constructor(private apiService: SpotifyService) {
+    apiService.initializeSpotifyWebApi();
+  }
+
+  @Input()
+  set id(playlistId: string) {
+    this.apiService.getPlaylist(playlistId).subscribe(playlist => {
+      this.playlist = playlist;
+    });
+  }
+}

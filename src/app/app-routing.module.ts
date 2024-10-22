@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { provideRouter, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/services/auth.guard';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -37,5 +37,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [provideRouter(routes)],
 })
 export class AppRoutingModule {}
