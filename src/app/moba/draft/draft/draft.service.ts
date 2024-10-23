@@ -11,9 +11,9 @@ import {
   PatchName,
 } from './draft.model';
 import * as championsJson from 'assets/json/moba/champions.json';
-import { Champion } from '../champion/champion.model';
+import { Champion } from '../../champion/champion.model';
 import { getPatchData, getRandomMasteries, getDraftChampions } from './draft.utils';
-import { Role } from '../player/player.model';
+import { Role } from '../../player-draft/player/player.model';
 
 @Injectable({
   providedIn: 'root',

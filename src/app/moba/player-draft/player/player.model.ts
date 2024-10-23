@@ -1,5 +1,5 @@
 import { Nation } from 'app/football/models/nation.model';
-import { Champion } from '../champion/champion.model';
+import { Champion } from '../../champion/champion.model';
 
 export interface Player {
   id: number;

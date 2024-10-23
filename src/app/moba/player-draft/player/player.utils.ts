@@ -17,7 +17,7 @@ import * as gamerTags from 'assets/json/moba/gamerTags.json';
 import * as champions from 'assets/json/moba/champions.json';
 import { round, shuffle } from 'lodash-es';
 import { Nation, allNations } from 'app/football/models/nation.model';
-import { Champion } from '../champion/champion.model';
+import { Champion } from '../../champion/champion.model';
 import { MobaRegion } from '../region/region.model';
 import { getNameNationality, getRegionSkew } from '../region/region.utils';
 

@@ -1,5 +1,5 @@
-import { Champion } from '../champion/champion.model';
-import { AllRoles, Role } from '../player/player.model';
+import { Champion } from '../../champion/champion.model';
+import { AllRoles, Role } from '../../player-draft/player/player.model';
 import {
   DraftChampion,
   DraftPhase,

@@ -1,5 +1,5 @@
 import { Component, HostListener, Signal, WritableSignal, computed, signal } from '@angular/core';
-import { DamageType } from '../champion/champion.model';
+import { DamageType } from '../../champion/champion.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   DraftChampion,
@@ -24,9 +24,9 @@ import {
 } from './draft.model';
 import { checkForAvailableRoles, getChampMasteries, getChampPropFromDraftPhase, getPatchData } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AllRoles, Role, positionFilters } from '../player/player.model';
+import { AllRoles, Role, positionFilters } from '../../player-draft/player/player.model';
 import { shuffle } from 'lodash-es';
-import { MobaService } from '../moba.service';
+import { MobaService } from '../../moba.service';
 import { DraftAdviceService } from './draft-advice/draft-advice.service';
 import { DraftService } from './draft.service';
 

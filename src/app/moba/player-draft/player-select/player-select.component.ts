@@ -3,7 +3,7 @@ import { Player, positions, sortByMainRole } from '../player/player.model';
 import { getCurrentRoles, getPlayerOptions, sortMapAttributes } from '../player/player.utils';
 import { LeagueName, MobaRegion, regions as mobaRegions } from '../region/region.model';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MobaService } from '../moba.service';
+import { MobaService } from '../../moba.service';
 
 @Component({
   selector: 'app-player-select',

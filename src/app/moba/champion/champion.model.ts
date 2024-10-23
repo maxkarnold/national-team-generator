@@ -1,5 +1,5 @@
-import { AllRolesTierList, DifficultyLevel } from '../draft/draft.model';
-import { Role } from '../player/player.model';
+import { AllRolesTierList, DifficultyLevel } from '../draft/draft/draft.model';
+import { Role } from '../player-draft/player/player.model';
 
 export interface Champion {
   id: number;

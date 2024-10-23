@@ -1,5 +1,5 @@
-import { Champion } from '../champion/champion.model';
-import { Role } from '../player/player.model';
+import { Champion } from '../../champion/champion.model';
+import { Role } from '../../player-draft/player/player.model';
 
 export interface DraftMetaData {
   userIsRedSide: boolean;
