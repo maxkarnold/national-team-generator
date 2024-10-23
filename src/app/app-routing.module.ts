@@ -7,12 +7,12 @@ import { LoginComponent } from './pages/login/login.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'rank-playlist',
+    redirectTo: 'moba',
     pathMatch: 'full',
   },
   {
     path: 'simulation',
-    loadChildren: () => import('./simulation/simulation.module').then(m => m.SimulationModule),
+    loadChildren: () => import('./football/simulation/simulation.module').then(m => m.SimulationModule),
   },
   {
     path: 'leaderboard',
@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   {
     path: 'career',
-    loadChildren: () => import('./career/career.module').then(m => m.CareerModule),
+    loadChildren: () => import('./football/career/career.module').then(m => m.CareerModule),
   },
   {
     path: 'moba',
@@ -31,7 +31,7 @@ const routes: Routes = [
     path: 'rank-playlist',
     loadChildren: () => import('./spotify/spotify.module').then(m => m.SpotifyModule),
   },
-  { path: '**', redirectTo: '/simulation/group-stage' },
+  { path: '**', redirectTo: '/moba' },
 ];
 
 @NgModule({

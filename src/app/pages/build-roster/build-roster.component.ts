@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CreateRosterService } from '@core/services/create-roster.service';
-import { Roster, RosterData } from 'app/models/roster.model';
+import { Roster, RosterData } from 'app/football/models/roster.model';
 import { Observable } from 'rxjs';
-import { Club } from 'app/models/club.model';
+import { Club } from 'app/football/models/club.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService } from '@core/services/auth.service';
 import { User } from '@core/services/firestore.model';

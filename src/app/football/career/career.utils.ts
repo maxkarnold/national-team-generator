@@ -1,4 +1,4 @@
-import { Club } from 'app/models/club.model';
+import { Club } from 'app/football/models/club.model';
 import { playerToClubAbility } from './career.constants';
 import { LeagueDifficulty, TransferOption, TransferType, ClubStats } from './club/club.model';
 import { Season, PlayingTime, CareerOverview, CareerScore, defaultCompStats } from './player/player.model';

@@ -1,4 +1,4 @@
-import { GroupTeam } from 'app/models/nation.model';
+import { GroupTeam } from 'app/football/models/nation.model';
 
 export interface Match {
   goalsFor: number;

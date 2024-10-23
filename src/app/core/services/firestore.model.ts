@@ -1,5 +1,5 @@
 import { Timestamp } from '@firebase/firestore-types';
-import { Roster } from '../../models/roster.model';
+import { Roster } from '../../football/models/roster.model';
 
 export interface User {
   uid: string;

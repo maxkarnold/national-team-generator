@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Roster } from 'app/models/roster.model';
+import { Roster } from 'app/football/models/roster.model';
 import { AuthService } from '@core/services/auth.service';
 import { FirestoreService } from '@core/services/firestore.service';
 import { LeaderboardItem, LeaderboardService } from './leaderboard.service';

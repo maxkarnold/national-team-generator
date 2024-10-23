@@ -1,5 +1,5 @@
 import { Component, HostListener, Input } from '@angular/core';
-import { checkHalfStar } from 'app/career/career.utils';
+import { checkHalfStar } from 'app/football/career/career.utils';
 
 @Component({
   selector: 'app-star-rating',

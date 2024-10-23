@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { getRandomInt } from '@shared/utils';
-import { Nation } from 'app/models/nation.model';
-import { Player } from '../../models/player.model';
-import { Roster } from '../../models/roster.model';
+import { Nation } from 'app/football/models/nation.model';
+import { Player } from '../../football/models/player.model';
+import { Roster } from '../../football/models/roster.model';
 import * as nationsJson from '../../../assets/json/nations.json';
 import {
   addDoc,

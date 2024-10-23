@@ -1,4 +1,4 @@
-import { Club } from 'app/models/club.model';
+import { Club } from 'app/football/models/club.model';
 import { PlayingTime, SeasonStats } from '../player/player.model';
 
 export interface ClubStats extends Club {

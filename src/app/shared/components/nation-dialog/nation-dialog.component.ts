@@ -1,9 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { GroupTeam } from 'app/models/nation.model';
+import { GroupTeam } from 'app/football/models/nation.model';
 import { originalOrder } from '@shared/utils';
-import { RegionName, Tournament } from 'app/simulation/simulation.model';
-import { findTeamInTournament, getDisplayRating, getGradeStyle, getGradeSummary } from 'app/simulation/simulation.utils';
-import { SimulationService } from 'app/simulation/simulation.service';
+import { RegionName, Tournament } from 'app/football/simulation/simulation.model';
+import { findTeamInTournament, getDisplayRating, getGradeStyle, getGradeSummary } from 'app/football/simulation/simulation.utils';
+import { SimulationService } from 'app/football/simulation/simulation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest } from 'rxjs';
 

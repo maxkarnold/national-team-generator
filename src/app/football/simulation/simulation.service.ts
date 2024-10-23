@@ -1,7 +1,7 @@
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { compare } from '@shared/utils';
 import { findTeamInTournament, matchScore, roundOf32Helper } from './simulation.utils';
-import { GroupTeam } from 'app/models/nation.model';
+import { GroupTeam } from 'app/football/models/nation.model';
 import { KnockoutRound, Region, Tournament } from './simulation.model';
 import { BehaviorSubject } from 'rxjs';
 import { CreatePlayerService } from '@core/services/create-player.service';

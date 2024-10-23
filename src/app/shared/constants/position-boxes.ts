@@ -1,4 +1,4 @@
-import { PositionBox } from '../../models/position-box.model';
+import { PositionBox } from '../../football/models/position-box.model';
 
 const defaultPosBox = {
   playerClass: 'inactive player-box',

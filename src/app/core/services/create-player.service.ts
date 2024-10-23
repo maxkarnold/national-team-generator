@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { getRandomInt } from '@shared/utils';
 import * as nationsModule from 'assets/json/nations.json';
-import { Nation } from 'app/models/nation.model';
+import { Nation } from 'app/football/models/nation.model';
 import { FirestoreService } from './firestore.service';
 
 @UntilDestroy()

@@ -1,5 +1,5 @@
-import { Club } from 'app/models/club.model';
-import { Nation } from 'app/models/nation.model';
+import { Club } from 'app/football/models/club.model';
+import { Nation } from 'app/football/models/nation.model';
 import { ClubStats, LeagueDifficulty, TransferOption } from '../club/club.model';
 
 export interface PlayerCareer {

@@ -1,5 +1,5 @@
 import { compare } from '@shared/utils';
-import { GroupTeam } from 'app/models/nation.model';
+import { GroupTeam } from 'app/football/models/nation.model';
 import { Region, RegionName } from './simulation.model';
 
 export const compareFn = (first: string[], a: string, b: string) => {

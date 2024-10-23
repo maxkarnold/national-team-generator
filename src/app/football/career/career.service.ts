@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { getRandomInts } from '@shared/utils';
-import { Club } from 'app/models/club.model';
+import { Club } from 'app/football/models/club.model';
 import { calcCareerScore, getPlayingTime, getTransferFee, getWage, totalSeasonsStr } from './career.utils';
 import { ageFactor } from './career.constants';
 import { getCurrentClub, getCurrentClubAsTransfer } from './club/club.utils';

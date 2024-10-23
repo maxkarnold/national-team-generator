@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Player } from 'app/models/player.model';
+import { Player } from 'app/football/models/player.model';
 import { LastName, FirstName } from 'app/core/services/firestore.model';
 
 import { SQUAD_RULES } from '@shared/constants/squad-rules.model';
 import { POSITION_BOXES } from '@shared/constants/position-boxes';
 
 import { Observable, Subscription } from 'rxjs';
-import { Nation } from 'app/models/nation.model';
+import { Nation } from 'app/football/models/nation.model';
 import { AuthService } from '../../core/services/auth.service';
 import { FirestoreService } from '../../core/services/firestore.service';
 

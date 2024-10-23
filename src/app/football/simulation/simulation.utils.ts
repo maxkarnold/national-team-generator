@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { compare, getRandFloat, getRandomInt, getRandomInts } from '@shared/utils';
-import { GroupTeam } from 'app/models/nation.model';
+import { GroupTeam } from 'app/football/models/nation.model';
 import { sum } from 'lodash-es';
 import { Match, Region, MatchEvent, EventEmoji, RegionName, KnockoutRound } from './simulation.model';
 

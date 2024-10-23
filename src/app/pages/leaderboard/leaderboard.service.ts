@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Person } from 'app/models/player.model';
+import { Person } from 'app/football/models/player.model';
 
 export interface LeaderboardItem {
   time: string;

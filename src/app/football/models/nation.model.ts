@@ -1,4 +1,4 @@
-import { Match, RegionName } from 'app/simulation/simulation.model';
+import { Match, RegionName } from 'app/football/simulation/simulation.model';
 import { Person } from './player.model';
 import { getRandFloat } from '@shared/utils';
 import * as nationsJson from 'assets/json/nations.json';

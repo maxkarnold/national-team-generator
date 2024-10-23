@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { GroupTeam } from 'app/models/nation.model';
+import { GroupTeam } from 'app/football/models/nation.model';
 import { SimulationService } from './simulation.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 

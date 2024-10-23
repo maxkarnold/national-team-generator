@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Roster, RosterData } from 'app/models/roster.model';
+import { Roster, RosterData } from 'app/football/models/roster.model';
 import { Observable, of } from 'rxjs';
-import { Nation } from 'app/models/nation.model';
-import { Club } from 'app/models/club.model';
+import { Nation } from 'app/football/models/nation.model';
+import { Club } from 'app/football/models/club.model';
 import { SQUAD_RULES } from '@shared/constants/squad-rules.model';
 import { compare, getRandomInt } from '@shared/utils';
 import * as pitchPositionsModule from '../../../assets/json/pitchPositions.json';

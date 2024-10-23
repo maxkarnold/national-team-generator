@@ -1,8 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import nationsJson from 'assets/json/nations.json';
 import clubsJson from 'assets/json/clubs.json';
-import { Nation } from 'app/models/nation.model';
-import { Club } from 'app/models/club.model';
+import { Nation } from 'app/football/models/nation.model';
+import { Club } from 'app/football/models/club.model';
 import { newSeasonStr, adjustClubStats } from './career.utils';
 import { getAbbrevNumber, getAbbrevString, originalOrder } from '@shared/utils';
 import { CareerService } from './career.service';

@@ -1,9 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { originalOrder } from '@shared/utils';
-import { GroupTeam } from 'app/models/nation.model';
-import { Tournament } from 'app/simulation/simulation.model';
-import { SimulationService } from 'app/simulation/simulation.service';
+import { GroupTeam } from 'app/football/models/nation.model';
+import { Tournament } from 'app/football/simulation/simulation.model';
+import { SimulationService } from 'app/football/simulation/simulation.service';
 import { filter } from 'rxjs/operators';
 
 @UntilDestroy()

@@ -1,4 +1,4 @@
-import { Club } from 'app/models/club.model';
+import { Club } from 'app/football/models/club.model';
 import { ClubStats, TransferOption } from './club.model';
 import { Season } from '../player/player.model';
 import { getPlayingTime, getWage } from '../career.utils';

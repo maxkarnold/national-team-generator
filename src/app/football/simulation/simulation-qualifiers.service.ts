@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { getRandomInt, groupByProp } from '@shared/utils';
-import { GroupTeam } from 'app/models/nation.model';
+import { GroupTeam } from 'app/football/models/nation.model';
 import { get } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { drawAndSort } from './group-draw.utils';

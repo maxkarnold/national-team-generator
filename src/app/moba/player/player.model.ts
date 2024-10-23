@@ -1,4 +1,4 @@
-import { Nation } from 'app/models/nation.model';
+import { Nation } from 'app/football/models/nation.model';
 import { Champion } from '../champion/champion.model';
 
 export interface Player {
