@@ -1,9 +1,13 @@
 import { Champion } from '../../champion/champion.model';
 import { Role } from '../../player-draft/player/player.model';
+import { patchMSI24 } from '../patch-lists/msi-24';
+import { patchSummer24 } from '../patch-lists/summer-24';
+import { patchSummer24v2 } from '../patch-lists/summer-24-v2';
+import { patchWorlds24 } from '../patch-lists/worlds-24';
 
 export interface DraftMetaData {
   userIsRedSide: boolean;
-  patchName: PatchName;
+  patchData: PatchData;
   useAiOpponent: boolean;
   difficulty: string;
   useRandomTeam: boolean;
@@ -100,6 +104,7 @@ export interface PatchData {
   description: string;
   excludedChamps: number[];
   patchTierList: AllRolesTierList;
+  disabled: boolean;
   // counters?: AllRolesTierList;
   // synergies?: AllRolesTierList;
 }
@@ -113,8 +118,8 @@ export interface ChampionAdvice {
 }
 
 export type CompStyle = 'engage' | 'pick' | 'disengage' | 'poke' | 'split';
-export type PatchName = 'MSI 2024' | 'Summer 2024' | 'Summer 14.14 2024';
-export type PatchVersion = 14.8 | 14.13 | 14.14;
+export type PatchName = 'MSI 2024' | 'Summer 2024' | 'Summer 14.14 2024' | 'Worlds 2024';
+export type PatchVersion = 14.8 | 14.13 | 14.14 | 14.18;
 export type DraftSortHeader = 'name' | 'mastery' | 'meta' | 'synergy' | 'counter';
 export type DifficultyLevel = 'easy' | 'medium' | 'hard';
 export type DraftAdviceTag = 'Counters Banned' | 'Recommended' | 'Counter Pick' | 'Not Recommended' | 'High Synergy';
@@ -152,7 +157,7 @@ export function hasAllPropsDraftMetaData(obj: object): obj is DraftMetaData {
   if (typeof obj !== 'object' || obj === null) {
     return false;
   }
-  return 'userIsRedSide' in obj && 'patchName' in obj && 'useAiOpponent' in obj && 'difficulty' in obj && 'useRandomTeam' in obj;
+  return 'userIsRedSide' in obj && 'patchData' in obj && 'useAiOpponent' in obj && 'difficulty' in obj && 'useRandomTeam' in obj;
 }
 
 export enum TierValue {
@@ -173,8 +178,8 @@ export const tierValues: { [key: string]: TierValue } = {
   f: TierValue.F,
 };
 
-export const patchNames: PatchName[] = ['MSI 2024', 'Summer 2024', 'Summer 14.14 2024'];
-export const latestPatch: PatchName = 'Summer 14.14 2024';
+export const patches: PatchData[] = [patchWorlds24, patchMSI24, patchSummer24, patchSummer24v2];
+export const latestPatch: PatchData = patchWorlds24;
 
 export const redSidePickRounds = [8, 9, 12, 17, 20];
 export const blueSidePickRounds = [7, 10, 11, 18, 19];

@@ -53,4 +53,5 @@ export const patchSummer24v2: PatchData = {
   excludedChamps: [],
   patchTierList: Summer24v2TierList,
   description: 'Poke ADC Meta',
+  disabled: true,
 };

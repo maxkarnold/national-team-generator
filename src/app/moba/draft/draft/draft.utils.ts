@@ -22,6 +22,7 @@ import { get as _get, shuffle } from 'lodash-es';
 import { patchSummer24 } from '../patch-lists/summer-24';
 import { patchMSI24 } from '../patch-lists/msi-24';
 import { patchSummer24v2 } from '../patch-lists/summer-24-v2';
+import { patchWorlds24 } from '../patch-lists/worlds-24';
 
 function getRoleMetaStrength(id: number, roleTierList: TierListRankings): number {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -93,8 +94,10 @@ export function getPatchData(name: PatchName): PatchData {
       return patchSummer24;
     case 'Summer 14.14 2024':
       return patchSummer24v2;
+    case 'Worlds 2024':
+      return patchWorlds24;
     default:
-      return patchMSI24;
+      return patchWorlds24;
   }
 }
 

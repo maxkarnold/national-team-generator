@@ -14,15 +14,15 @@ import {
   getRoleFromFilter,
   tierValues,
   DraftSortHeader,
-  PatchName,
   TierValue,
   DraftMetaData,
   hasAllPropsDraftMetaData,
-  patchNames,
+  patches,
   Proficiency,
   latestPatch,
+  PatchData,
 } from './draft.model';
-import { checkForAvailableRoles, getChampMasteries, getChampPropFromDraftPhase, getPatchData } from './draft.utils';
+import { checkForAvailableRoles, getChampMasteries, getChampPropFromDraftPhase } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role, positionFilters } from '../../player-draft/player/player.model';
 import { shuffle } from 'lodash-es';
@@ -43,7 +43,7 @@ export class DraftComponent {
   aiTimer = -1;
   getRoleFromFilter = getRoleFromFilter;
   getChampPropFromDraftPhase = getChampPropFromDraftPhase;
-  patchNames = patchNames;
+  patches = patches;
   positionFilters = positionFilters;
   notification = {
     isActive: false,
@@ -57,7 +57,7 @@ export class DraftComponent {
   redRounds = [...redSideBanRounds, ...redSidePickRounds];
 
   draftForm: FormGroup = new FormGroup({
-    patchName: new FormControl<PatchName>(latestPatch),
+    patchData: new FormControl<PatchData>(latestPatch),
     userIsRedSide: new FormControl<boolean>(false),
     useAiOpponent: new FormControl<boolean>(false),
     difficulty: new FormControl<'easy' | 'medium' | 'hard'>('medium'),
@@ -92,7 +92,7 @@ export class DraftComponent {
     const redSideChamps = this.service.redSideChamps();
     const blueSideChamps = this.service.blueSideChamps();
     const selectedChampionIds = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps].map(c => c.id);
-    console.log(availableChampions);
+    // console.log(availableChampions);
     const champions = availableChampions
       .filter(c => {
         if (selectedChampionIds.includes(c.id)) {
@@ -130,7 +130,7 @@ export class DraftComponent {
     }
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
-    this.service.initiateMasteries(this.patchName, this.useRandomTeam, this.difficulty, this.userIsRedSide, this.filteredChampions());
+    this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
   }
 
   get draftService(): DraftService {
@@ -141,8 +141,8 @@ export class DraftComponent {
     return this.draftForm.get('userIsRedSide')?.value;
   }
 
-  get patchName(): PatchName {
-    return this.draftForm.get('patchName')?.value;
+  get patchData(): PatchData {
+    return this.draftForm.get('patchData')?.value;
   }
 
   get useAiOpponent(): boolean {
@@ -196,10 +196,10 @@ export class DraftComponent {
       userIsRedSide: this.userIsRedSide,
       useAiOpponent: this.useAiOpponent,
       difficulty: this.difficulty,
-      patchName: this.patchName,
+      patchData: this.patchData,
       useRandomTeam: this.useRandomTeam,
     });
-    this.service.initiateMasteries(this.patchName, this.useRandomTeam, this.difficulty, this.userIsRedSide, this.filteredChampions());
+    this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
     this.checkAndStartAiTimer();
   }
 
@@ -211,7 +211,7 @@ export class DraftComponent {
     this.currentDraftRound = 1;
     this.aiTimer = -1;
 
-    this.service.initiateMasteries(this.patchName, this.useRandomTeam, this.difficulty, this.userIsRedSide, this.filteredChampions());
+    this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
 
     this.isAiChoosing = false;
 
@@ -537,8 +537,8 @@ export class DraftComponent {
   }
 
   getTopChampsInMeta(masteries: TierListRankings, role: Role): DraftChampion[] {
-    const patchTierList = getPatchData(this.patchName).patchTierList;
-    const masteredChamps = [...masteries.s, ...masteries.a, ...masteries.b];
+    const patchTierList = this.patchData.patchTierList;
+    const masteredChamps = [...masteries.s, ...masteries.a];
     const metaChamps = [...patchTierList[role].s, ...patchTierList[role].a, ...patchTierList[role].b];
     const mainChamps = masteredChamps.filter(id => metaChamps.includes(id)).map(id => this.getChampionFromId(id));
     const filteredChamps: DraftChampion[] = [...mainChamps].filter((champ): champ is DraftChampion => !!champ);

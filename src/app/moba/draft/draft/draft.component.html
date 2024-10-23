@@ -12,8 +12,8 @@
       <div class="label">
         <span class="label-text">Selected Patch</span>
       </div>
-      <select class="select select-bordered" formControlName="patchName">
-        <option *ngFor="let patchName of patchNames" [value]="patchName">{{ patchName }}</option>
+      <select class="select select-bordered" formControlName="patchData">
+        <option *ngFor="let patch of patches" [ngValue]="patchData" [disabled]="patch.disabled">{{ patch.name }}</option>
       </select>
     </label>
 
@@ -25,7 +25,7 @@
           class="toggle mx-2"
           [ngClass]="{
             'bg-blue-500 hover:bg-blue-700 border-blue-500': !userIsRedSide,
-            'bg-red-500 hover:bg-red-700 border-red-500': userIsRedSide
+            'bg-red-500 hover:bg-red-700 border-red-500': userIsRedSide,
           }"
           formControlName="userIsRedSide" />
         <span class="label-text">Red Side</span>

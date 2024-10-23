@@ -8,18 +8,18 @@ import {
   DraftPlayer,
   emptyDraftBans,
   emptyDraftPicks,
-  PatchName,
+  PatchData,
 } from './draft.model';
 import * as championsJson from 'assets/json/moba/champions.json';
 import { Champion } from '../../champion/champion.model';
-import { getPatchData, getRandomMasteries, getDraftChampions } from './draft.utils';
+import { getRandomMasteries, getDraftChampions } from './draft.utils';
 import { Role } from '../../player-draft/player/player.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DraftService {
-  champions: DraftChampion[] = [];
+  champions: Champion[] = Array.from(championsJson) as Champion[];
   blueSideMasteries: DraftPlayer[] = [];
   redSideMasteries: DraftPlayer[] = [];
   blueSidePlayers: {
@@ -33,6 +33,7 @@ export class DraftService {
   blueSideChamps: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftPicks]);
   redSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
   blueSideBans: WritableSignal<Partial<DraftChampion>[]> = signal([...emptyDraftBans]);
+  draftChampions: WritableSignal<DraftChampion[]> = signal([]);
 
   availableChampions: Signal<DraftChampion[]> = computed(() => {
     const redBans = this.redSideBans();
@@ -40,26 +41,19 @@ export class DraftService {
     const redSideChamps = this.redSideChamps();
     const blueSideChamps = this.blueSideChamps();
     const selectedChampionsIds = [...redBans, ...blueBans, ...redSideChamps, ...blueSideChamps].map(c => c.id);
-    return this.champions.filter(c => !selectedChampionsIds.includes(c.id));
+    return this.draftChampions().filter(c => !selectedChampionsIds.includes(c.id));
   });
   constructor() {}
 
-  initiateMasteries(
-    patchName: PatchName,
-    useRandomTeam: boolean,
-    difficulty: DifficultyLevel,
-    userIsRedSide: boolean,
-    filteredChampions: DraftChampion[]
-  ) {
-    const champions = Array.from(championsJson) as Champion[];
-    const patchData = getPatchData(patchName);
+  initiateMasteries(patchData: PatchData, useRandomTeam: boolean, difficulty: DifficultyLevel, userIsRedSide: boolean) {
     const playerMasteries: DraftPlayer[] = useRandomTeam ? getRandomMasteries(patchData) : [...defaultPlayerMasteries];
     const opponentMasteries: DraftPlayer[] = useRandomTeam ? getRandomMasteries(patchData, difficulty) : [...defaultOpponentMasteries];
 
-    this.champions = getDraftChampions(champions, patchData, playerMasteries, opponentMasteries);
+    this.draftChampions.set(getDraftChampions(this.champions, patchData, playerMasteries, opponentMasteries));
 
     this.blueSideMasteries = userIsRedSide ? opponentMasteries : playerMasteries;
     this.redSideMasteries = userIsRedSide ? playerMasteries : opponentMasteries;
+    const filteredChampions = this.draftChampions();
 
     for (const player of this.blueSideMasteries) {
       this.getTopChampsForEachRole(filteredChampions, player, true);
@@ -110,7 +104,7 @@ export class DraftService {
   }
 
   getChampionFromId(id: number | undefined) {
-    const champion = this.champions.find(c => c.id === id);
+    const champion = this.draftChampions().find(c => c.id === id);
     return champion;
   }
 }

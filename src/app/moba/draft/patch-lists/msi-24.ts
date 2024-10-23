@@ -64,4 +64,5 @@ export const patchMSI24: PatchData = {
   excludedChamps: [133],
   patchTierList: MSI24TierList,
   description: 'Lane Swap Meta',
+  disabled: true,
 };
