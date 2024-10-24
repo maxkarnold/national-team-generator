@@ -65,7 +65,7 @@ export class DraftService {
   }
 
   resetDraft() {
-    this.champions = [];
+    this.draftChampions.set([]);
     this.blueSidePlayers = {
       top: [],
       jungle: [],

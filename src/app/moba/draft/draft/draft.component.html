@@ -96,8 +96,9 @@
   <!-- HEADER -->
   <div class="flex flex-col md:flex-row justify-center items-center mb-4 gap-4">
     <div class="flex">
-      <h1 class="text-2xl mx-4">{{ draftPhase }}</h1>
-      <button class="btn btn-secondary btn-sm" (click)="resetDraft()">Reset</button>
+      <h1 class="text-2xl mr-4">{{ draftPhase }}</h1>
+      <button class="btn btn-secondary btn-sm mx-2" (click)="restartDraft()">New</button>
+      <button class="btn btn-secondary btn-sm mx-2" (click)="resetDraft()">Reset</button>
     </div>
     <div *ngIf="useAiOpponent" class="text-center">
       <p *ngIf="aiTimer > -1; else playerPick">

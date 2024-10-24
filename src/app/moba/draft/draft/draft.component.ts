@@ -15,8 +15,6 @@ import {
   tierValues,
   DraftSortHeader,
   TierValue,
-  DraftMetaData,
-  hasAllPropsDraftMetaData,
   patches,
   Proficiency,
   latestPatch,
@@ -26,7 +24,6 @@ import { checkForAvailableRoles, getChampMasteries, getChampPropFromDraftPhase }
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role, positionFilters } from '../../player-draft/player/player.model';
 import { shuffle } from 'lodash-es';
-import { MobaService } from '../../moba.service';
 import { DraftAdviceService } from './draft-advice/draft-advice.service';
 import { DraftService } from './draft.service';
 
@@ -121,13 +118,8 @@ export class DraftComponent {
 
   constructor(
     private service: DraftService,
-    private localStorage: MobaService,
     private draftAdviceService: DraftAdviceService
   ) {
-    const draftMetaData = this.localStorage.getLocalStorage<DraftMetaData>('draft_metaData');
-    if (draftMetaData && hasAllPropsDraftMetaData(draftMetaData)) {
-      this.draftForm.setValue(draftMetaData);
-    }
     this.screenWidth = window.innerWidth;
     this.getScreenSize();
     this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
@@ -192,13 +184,6 @@ export class DraftComponent {
 
   startDraft() {
     this.draftStarted = true;
-    this.localStorage.setLocalStorage<DraftMetaData>('draft_metaData', {
-      userIsRedSide: this.userIsRedSide,
-      useAiOpponent: this.useAiOpponent,
-      difficulty: this.difficulty,
-      patchData: this.patchData,
-      useRandomTeam: this.useRandomTeam,
-    });
     this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
     this.checkAndStartAiTimer();
   }
@@ -219,6 +204,11 @@ export class DraftComponent {
     this.redSideDraftScores.set([]);
 
     this.service.resetDraft();
+  }
+
+  restartDraft() {
+    this.resetDraft();
+    this.startDraft();
   }
 
   callNotification(message: string, color = 'green') {
