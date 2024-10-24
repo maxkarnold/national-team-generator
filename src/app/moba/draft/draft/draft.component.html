@@ -4,6 +4,59 @@
   </div>
 </div>
 
+<dialog id="draftResultsDialog" #draftResultsDialog class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h2>Draft Results</h2>
+    <div class="flex justify-around">
+      <!-- Blue SIDE -->
+      <ul class="flex flex-col text-gray-200">
+        <li *ngFor="let champ of blueChampResults; let i = index" class="my-4">
+          <div class="avatar cursor-pointer">
+            <div class="absolute right-1/4 top-full w-6 mt-1 md:mt-0 md:top-0 md:right-full h-[4.5rem] md:h-full md:mr-2">
+              <ul>
+                <li *ngFor="let role of champ.roles" class="w-6 aspect-square" [class.bg-neutral-700]="role === champ.selectedRole">
+                  <img [src]="'assets/images/role_icons/' + role + '.webp'" />
+                </li>
+              </ul>
+            </div>
+            <div class="relative w-12 md:w-24 rounded">
+              <img [src]="champ.img" class="w-full" (click)="getChampionFromId(champ.id)" />
+            </div>
+            <span class="badge badge-info absolute -bottom-6">
+              {{ champ?.currentScore?.player || 0 | number: '1.0-0' }}
+            </span>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="flex flex-col text-gray-200">
+        <li *ngFor="let champ of redChampResults; let i = index" class="my-4">
+          <div class="avatar cursor-pointer">
+            <div class="absolute left-1/4 top-full mt-1 md:mt-0 md:top-0 md:left-full h-[4.5rem] md:h-full w-6 md:ml-2">
+              <ul>
+                <li *ngFor="let role of champ.roles" class="w-6 aspect-square" [class.bg-neutral-700]="role === champ.selectedRole">
+                  <img [src]="'assets/images/role_icons/' + role + '.webp'" />
+                </li>
+              </ul>
+            </div>
+            <div class="relative w-12 md:w-24 rounded">
+              <img [src]="champ.img" class="w-full" (click)="getChampionFromId(champ.id)" />
+            </div>
+            <span class="badge absolute -bottom-6 badge-error">
+              {{ champ?.currentScore?.opp || 0 | number: '1.0-0' }}
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Continue</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
 <div *ngIf="!draftStarted" class="container flex flex-col items-center">
   <h1 class="text-3xl font-bold">Pro LoL Draft Sim</h1>
   <!-- DRAFT FORM -->

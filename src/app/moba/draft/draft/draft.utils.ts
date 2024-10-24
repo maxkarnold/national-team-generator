@@ -1,5 +1,5 @@
 import { Champion } from '../../champion/champion.model';
-import { AllRoles, Role } from '../../player-draft/player/player.model';
+import { AllRoles, Role, RoleIndex } from '../../player-draft/player/player.model';
 import {
   DraftChampion,
   DraftPhase,
@@ -337,3 +337,10 @@ export function getRandomMasteries({ patchTierList }: PatchData, difficulty: Dif
 
   return playerMasteries;
 }
+
+export const sortRoles = (a?: Role, b?: Role) => {
+  if (!a || !b) {
+    return 0;
+  }
+  return AllRoles.indexOf(a) - AllRoles.indexOf(b);
+};

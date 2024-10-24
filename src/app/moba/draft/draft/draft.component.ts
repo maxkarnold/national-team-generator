@@ -1,4 +1,4 @@
-import { Component, HostListener, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, Signal, ViewChild, WritableSignal, computed, signal } from '@angular/core';
 import { DamageType } from '../../champion/champion.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
@@ -20,7 +20,7 @@ import {
   latestPatch,
   PatchData,
 } from './draft.model';
-import { checkForAvailableRoles, getChampMasteries, getChampPropFromDraftPhase } from './draft.utils';
+import { checkForAvailableRoles, getChampMasteries, getChampPropFromDraftPhase, sortRoles } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AllRoles, Role, positionFilters } from '../../player-draft/player/player.model';
 import { shuffle } from 'lodash-es';
@@ -33,6 +33,7 @@ import { DraftService } from './draft.service';
   styleUrl: './draft.component.scss',
 })
 export class DraftComponent {
+  @ViewChild('draftResultsDialog') draftResultsDialog!: ElementRef<HTMLDialogElement>;
   screenWidth: number;
   draftStarted = false;
   draftPhase: DraftPhase = 'Blue Ban 1';
@@ -52,6 +53,8 @@ export class DraftComponent {
   redSideBanRounds = redSideBanRounds;
   blueRounds = [...blueSideBanRounds, ...blueSidePickRounds];
   redRounds = [...redSideBanRounds, ...redSidePickRounds];
+  blueChampResults: Partial<DraftChampion>[] = [];
+  redChampResults: Partial<DraftChampion>[] = [];
 
   draftForm: FormGroup = new FormGroup({
     patchData: new FormControl<PatchData>(latestPatch),
@@ -189,6 +192,8 @@ export class DraftComponent {
   }
 
   resetDraft() {
+    this.redChampResults = [];
+    this.blueChampResults = [];
     this.isBlueSideChoosing.set(true);
     this.isBanPhase.set(true);
     this.draftStarted = false;
@@ -196,14 +201,13 @@ export class DraftComponent {
     this.currentDraftRound = 1;
     this.aiTimer = -1;
 
-    this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
-
     this.isAiChoosing = false;
 
     this.blueSideDraftScores.set([]);
     this.redSideDraftScores.set([]);
 
     this.service.resetDraft();
+    this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
   }
 
   restartDraft() {
@@ -649,6 +653,8 @@ export class DraftComponent {
   checkPickPhase() {
     if (this.currentDraftRound > 20) {
       this.draftPhase = 'Draft Complete';
+      this.showChampResults();
+
       return;
     }
 
@@ -691,5 +697,34 @@ export class DraftComponent {
     } else {
       return;
     }
+  }
+
+  showChampResults() {
+    // need to select based on player chosen side not based on default sides
+    // this will only work if the player chose blue side, need to account for red side as a choice
+    console.log(this.draftService.blueSideChamps(), this.draftService.redSideChamps());
+    const blueScores = this.blueSideDraftScores();
+    const redScores = this.redSideDraftScores();
+    const blueChamps = this.draftService.blueSideChamps().map((c, i) => {
+      return {
+        ...c,
+        currentScore: {
+          player: blueScores[i],
+          opp: 0,
+        },
+      };
+    });
+    const redChamps = this.draftService.redSideChamps().map((c, i) => {
+      return {
+        ...c,
+        currentScore: {
+          player: 0,
+          opp: redScores[i],
+        },
+      };
+    });
+    this.blueChampResults = [...blueChamps].sort((a, b) => sortRoles(a.selectedRole, b.selectedRole));
+    this.redChampResults = [...redChamps].sort((a, b) => sortRoles(a.selectedRole, b.selectedRole));
+    this.draftResultsDialog.nativeElement.showModal();
   }
 }
