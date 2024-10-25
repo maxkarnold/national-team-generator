@@ -50,6 +50,7 @@ Thumbs.db
 # Custom
 */secrets/*
 */environments/*
+
 /.angular
 firestore.rules
 
