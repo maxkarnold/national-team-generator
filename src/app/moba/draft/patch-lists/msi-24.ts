@@ -1,4 +1,4 @@
-import { AllRolesTierList, PatchData } from '../draft/draft.model';
+import { AllRolesTierList, PatchData } from '../draft.model';
 
 // JUDGING META STRENGTH
 // Z/S+ Tier: champs that are so strong they deserve their own tier, not every role will have champs in this tier

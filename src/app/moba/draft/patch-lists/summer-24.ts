@@ -1,4 +1,4 @@
-import { AllRolesTierList, PatchData } from '../draft/draft.model';
+import { AllRolesTierList, PatchData } from '../draft.model';
 
 // Patch 14.13
 export const Summer24TierList: AllRolesTierList = {

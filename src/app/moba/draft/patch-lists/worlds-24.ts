@@ -1,4 +1,4 @@
-import { AllRolesTierList, PatchData } from '../draft/draft.model';
+import { AllRolesTierList, PatchData } from '../draft.model';
 
 // Patch 14.18
 export const Worlds24TierList: AllRolesTierList = {

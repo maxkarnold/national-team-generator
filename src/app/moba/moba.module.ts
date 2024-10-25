@@ -12,7 +12,7 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: 'player-select', component: PlayerSelectComponent },
-      { path: 'draft', loadChildren: () => import('./draft/draft/draft.module').then(m => m.DraftModule) },
+      { path: 'draft', loadChildren: () => import('./draft/draft.module').then(m => m.DraftModule) },
       { path: '', redirectTo: 'draft', pathMatch: 'full' },
     ],
   },

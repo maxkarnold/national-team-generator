@@ -1,9 +1,9 @@
-import { Champion } from '../../champion/champion.model';
-import { Role } from '../../player-draft/player/player.model';
-import { patchMSI24 } from '../patch-lists/msi-24';
-import { patchSummer24 } from '../patch-lists/summer-24';
-import { patchSummer24v2 } from '../patch-lists/summer-24-v2';
-import { patchWorlds24 } from '../patch-lists/worlds-24';
+import { Champion } from '../champion/champion.model';
+import { Role } from '../player-draft/player/player.model';
+import { patchMSI24 } from './patch-lists/msi-24';
+import { patchSummer24 } from './patch-lists/summer-24';
+import { patchSummer24v2 } from './patch-lists/summer-24-v2';
+import { patchWorlds24 } from './patch-lists/worlds-24';
 
 export interface DraftMetaData {
   userIsRedSide: boolean;
