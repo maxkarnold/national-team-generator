@@ -49,3 +49,5 @@ Thumbs.db
 # Custom
 */secrets/*
 */environments/*
+.yarn/*
+.angular/*
