@@ -1,0 +1,29 @@
+<div class="group-stage">
+  <div class="group" *ngFor="let group of tournament?.groups; index as i; trackBy: groupLetters">
+    <span class="group-name">Group {{ groupLetters(i) }}</span>
+    <table>
+      <thead>
+        <tr class="group-headings">
+          <th colspan="2">Team</th>
+          <th *ngFor="let heading of headings">{{ heading }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [class]="getNationClass(nation)" *ngFor="let nation of group">
+          <td>
+            <img class="nation-flag" (click)="openNationStats(nation)" [src]="nation.logo" [alt]="nation.name" />
+          </td>
+          <td class="name" (click)="openNationStats(nation)">
+            {{ screenWidth < 350 ? nation.abbreviation.toLocaleUpperCase() : nation.name }}
+          </td>
+          <td>{{ nation.ranking }}</td>
+          <td>{{ nation.matchesPlayed }}</td>
+          <td>{{ nation.points }}</td>
+          <td>{{ nation.gDiff }}</td>
+          <td>{{ nation.gFor }}</td>
+          <td>{{ nation.gOpp }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

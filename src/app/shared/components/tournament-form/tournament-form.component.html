@@ -1,0 +1,98 @@
+<div class="flex flex-col mx-8 py-8">
+  <form class="flex flex-col" [formGroup]="tournamentForm" (ngSubmit)="checkTournamentForm()">
+    <div class="flex flex-col justify-center text-xl items-center">
+      <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
+        <label for="hostNations">Host Nation(s)</label>
+        <ng-select
+          formControlName="hostNations"
+          [items]="potentialHosts"
+          [multiple]="true"
+          placeholder="Please Select A Host Nation(s)"
+          (ngModelChange)="hostChanged($event)"
+          [compareWith]="compareHosts"
+          bindLabel="name"
+          [groupBy]="groupHosts"
+          required
+          class="w-full">
+          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value flex" *ngFor="let item of items">
+              <span class="flex items-center px-1"
+                ><img [src]="item.logo" [alt]="item.name" class="h-4 w-6 object-cover mr-1 drop-shadow-lg" /> {{ item.name }}</span
+              >
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">x</span>
+            </div>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <span class="flex items-center">
+              <img [src]="item.logo" [alt]="item.name" class="h-4 w-6 object-cover mr-1 drop-shadow-lg" /> {{ item.name }}</span
+            >
+          </ng-template>
+        </ng-select>
+      </div>
+      <!-- TEMPORARILY DISABLED UNTIL FIXED -->
+      <!-- <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
+        <label for="region">Regions Available</label>
+        <ng-select
+          formControlName="availableRegions"
+          [items]="regions"
+          [multiple]="true"
+          [selectableGroup]="true"
+          [selectableGroupAsModel]="false"
+          [closeOnSelect]="false"
+          [groupBy]="groupRegion"
+          (ngModelChange)="regionChanged($event)"
+          [compareWith]="compareRegions"
+          required
+          placeholder="Please Select A Region"
+          class="w-full">
+        </ng-select>
+      </div> -->
+
+      <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
+        <label for="numOfTeams">Number of Teams</label>
+        <select formControlName="numOfTeams" (ngModelChange)="numOfTeamsChanged($event)" required class="border p-1 rounded w-full h-10">
+          <option value="48">48 - World Cup (2026)</option>
+          <option value="32" disabled>32 - World Cup (1998-2022)</option>
+          <option value="24" disabled>24 - EUROS, AFCON</option>
+          <option value="12" disabled>12 - Copa América</option>
+        </select>
+      </div>
+
+      <div class="mx-8 mb-4 flex flex-col justify-between items-start w-full md:w-1/2">
+        <label for="numOfGames">Group Games Per Opponent (1-3)</label>
+        <input
+          type="number"
+          formControlName="numOfGames"
+          min="1"
+          max="3"
+          (ngModelChange)="numOfGamesChanged($event)"
+          class="border p-1 rounded w-full h-10" />
+      </div>
+    </div>
+
+    <div class="space-y-4 flex flex-col md:flex-row md:space-y-0 md:space-x-5 md:justify-center">
+      <div *ngIf="!tournamentForm.valid" class="tooltip" data-tip="Invalid hosts; please select different host(s) to setup.">
+        <button type="submit" disabled class="btn btn-disabled">Setup Tournament</button>
+      </div>
+      <button *ngIf="tournamentForm.valid" type="submit" class="btn">Setup Tournament</button>
+
+      <!-- <button type="button" *ngIf="user() && coaches.length < 1" (click)="addCoaches()" class="btn disabled:btn-disabled">
+        Add Coaches (Beta)
+      </button> -->
+      <!-- <button
+        type="button"
+        [disabled]="!tournamentForm.valid || cannotSave"
+        (click)="setupAndSaveTournament()"
+        class="btn disabled:btn-disabled">
+        {{ buttonDisplay }}
+      </button> -->
+    </div>
+  </form>
+  <button
+    class="button"
+    *ngIf="tournament?.groups"
+    (click)="simulateTournamentButton()"
+    class="btn btn-primary disabled:btn-disabled my-8 md:mx-auto md:w-80">
+    Simulate
+  </button>
+</div>

@@ -1,0 +1,191 @@
+<!-- <div class="lineup-container">
+  <h2>Roster</h2>
+  <div class="lineup-grid">
+    <ul class="lineup-headers">
+      <li class="name-header">Name</li>
+      <li>Position</li>
+      <li>Age</li>
+      <li>Rating</li>
+    </ul>
+    <div class="lineup-spots">
+      <ul class="pitch-players">
+        <li class="header">Pos</li>
+        <li *ngFor="let pos of pitchPlayers">{{ pos.pitchPosition }}</li>
+      </ul>
+      <ul class="bench">
+        <li>Sub 1</li>
+        <li>Sub 2</li>
+        <li>Sub 3</li>
+        <li>Sub 4</li>
+        <li>Sub 5</li>
+        <li>Sub 6</li>
+        <li>Sub 7</li>
+        <li>Sub 8</li>
+        <li>Sub 9</li>
+        <li>Sub 10</li>
+        <li>Sub 11</li>
+        <li>Sub 12</li>
+      </ul>
+      <ul class="reserves">
+        <li *ngFor="let player of players.slice(12); let i = index">
+          {{ i + 24 }}
+        </li>
+      </ul>
+    </div>
+    <div class="players-container">
+      <mat-accordion multi>
+        <div class="starters-container">
+          <mat-expansion-panel *ngFor="let player of sortedPitchPlayers">
+            <mat-expansion-panel-header>
+              <ul class="player-row">
+                <li class="name-cell">
+                  {{ player.firstInitial }}. {{ player.singleLastName }}
+                </li>
+                <li>
+                  <span
+                    *ngFor="let pos of player.mainPositions"
+                    class="positions-span"
+                    >{{ pos }}</span
+                  >
+                </li>
+                <li>{{ player.age }}</li>
+                <li>{{ player.rating }}</li>
+              </ul>
+            </mat-expansion-panel-header>
+            <p class="expanded-info">
+              <span>Full Name:</span>
+              <span class="expanded-names">
+                <span *ngFor="let firstName of player.firstNames">
+                  {{ firstName }}
+                </span>
+                <span *ngFor="let lastName of player.lastNames">
+                  {{ lastName }}
+                </span>
+              </span>
+            </p>
+            <p class="expanded-info">
+              <span>Preferred Role/Duty:</span
+              ><span
+                >{{ player.preferredRole }} - {{ player.preferredDuty }}</span
+              >
+            </p>
+            <p class="expanded-info">
+              <span>Other Positions:</span>
+              <span>
+                <span
+                  *ngFor="let pos of player.altPositions"
+                  class="positions-span"
+                  >{{ pos }}</span
+                >
+              </span>
+            </p>
+            <p class="expanded-info">
+              <span>Club:</span>
+              <span>
+                <img [src]="player.clubLogo" [alt]="player.club" />
+                <span>{{ player.club }}</span>
+              </span>
+            </p>
+            <p class="expanded-info">
+              <span>Nationality:</span>
+              <span>
+                <img [src]="player.nationalityLogo" alt="" />
+                <span>{{ player.nationality }}</span>
+              </span>
+            </p>
+            <p class="expanded-info">
+              <span>Preferred Foot:</span><span>{{ player.foot }}</span>
+            </p>
+          </mat-expansion-panel>
+        </div>
+        <div
+          class="bench-container"
+          cdkDropList
+          id="bench-players"
+          [cdkDropListData]="players"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <mat-expansion-panel
+            *ngFor="let player of players"
+            cdkDrag
+            [cdkDragData]="player"
+            (cdkDragStarted)="getPositionOutline($event)"
+            (cdkDragReleased)="removeOutlineRelease($event)"
+            (cdkDragDropped)="removeOutlineDrop($event)"
+          >
+            <mat-expansion-panel-header>
+              <ul class="player-row">
+                <li class="name-cell">
+                  {{ player.firstInitial }}. {{ player.singleLastName }}
+                </li>
+                <li>
+                  <span
+                    *ngFor="let pos of player.mainPositions"
+                    class="positions-span"
+                    >{{ pos }}</span
+                  >
+                </li>
+                <li>{{ player.age }}</li>
+                <li>{{ player.rating }}</li>
+                <li *cdkDragPreview>
+                  <div class="player-preview">
+                    {{ player.lastNames[0] }} {{ player.mainPositions[0] }}
+                    {{ player.rating }}
+                  </div>
+                </li>
+              </ul>
+            </mat-expansion-panel-header>
+            <p class="expanded-info">
+              <span>Full Name:</span>
+              <span class="expanded-names">
+                <span *ngFor="let firstName of player.firstNames">
+                  {{ firstName }}
+                </span>
+                <span *ngFor="let lastName of player.lastNames">
+                  {{ lastName }}
+                </span>
+              </span>
+            </p>
+            <p class="expanded-info">
+              <span>Preferred Role/Duty:</span
+              ><span
+                >{{ player.preferredRole }} - {{ player.preferredDuty }}</span
+              >
+            </p>
+            <p class="expanded-info">
+              <span>Other Positions:</span>
+              <span>
+                <span
+                  *ngFor="let pos of player.altPositions"
+                  class="positions-span"
+                  >{{ pos }}</span
+                >
+              </span>
+            </p>
+            <p class="expanded-info">
+              <span>Club:</span>
+              <span>
+                <img [src]="player.clubLogo" [alt]="player.club" />
+                <span>{{ player.club }}</span>
+              </span>
+            </p>
+            <p class="expanded-info">
+              <span>Nationality:</span>
+              <span>
+                <img [src]="player.nationalityLogo" alt="" />
+                <span>{{ player.nationality }}</span>
+              </span>
+            </p>
+            <p class="expanded-info">
+              <span>Preferred Foot:</span><span>{{ player.foot }}</span>
+            </p>
+            <div class="lineup-drag-placeholder" *cdkDragPlaceholder>
+              {{ player.firstInitial }}. {{ player.singleLastName }}
+              {{ player.rating }} {{ player.mainPositions[0] }}
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </mat-accordion>
+    </div>
+  </div>
+</div> -->

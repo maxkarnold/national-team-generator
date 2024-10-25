@@ -1,56 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
 
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatSortModule } from '@angular/material/sort';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { MatSelectModule } from '@angular/material/select';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { OverlayModule } from '@angular/cdk/overlay';
-
+import { SharedModule } from '@shared/shared.module';
+import { CoreModule } from '@core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { environment } from 'src/environments/environment';
-import { HomeComponent } from './components/home/home.component';
-import { FirestoreService } from './services/firestore.service';
-import { AuthService } from './services/auth.service';
-import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
-
+import { HomeComponent } from './pages/home/home.component';
+import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
+import { LineupComponent } from './pages/lineup/lineup.component';
+import { RosterComponent } from './pages/roster/roster.component';
+import { LoginComponent } from './pages/login/login.component';
+import { BuildRosterComponent } from './pages/build-roster/build-roster.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LeaderboardComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    DragDropModule,
-    OverlayModule,
-    MatSortModule,
-    MatIconModule,
-    MatButtonModule,
-    MatListModule,
-    MatToolbarModule,
-    MatSelectModule,
-    MatExpansionModule,
-    FormsModule,
-    BrowserAnimationsModule
-  ],
-  providers: [FirestoreService, AuthService],
-  bootstrap: [AppComponent]
+  declarations: [AppComponent, HomeComponent, LeaderboardComponent, LineupComponent, RosterComponent, LoginComponent, BuildRosterComponent],
+  imports: [BrowserModule, AppRoutingModule, SharedModule, CoreModule, CommonModule, BrowserAnimationsModule],
+  providers: [],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

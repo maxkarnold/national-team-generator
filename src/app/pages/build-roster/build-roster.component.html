@@ -1,0 +1,135 @@
+<!-- <mat-form-field class="team-generator-form">
+  <mat-label>-- Choose a Nation --</mat-label>
+  <mat-select
+    #nationSelect
+    appearance="fill"
+    [(value)]="nationSelectValue"
+    class="select-nations"
+  >
+    <mat-optgroup
+      *ngFor="let tierGroup of this.nations"
+      [label]="tierGroup.tier"
+    >
+      <mat-option [value]="tierGroup.tier" class="nation-option">
+        Random Nationalities
+      </mat-option>
+      <mat-option
+        *ngFor="let nation of tierGroup.nations"
+        [value]="nation.name"
+        class="nation-option"
+      >
+        <img [src]="nation.logo" alt="" /> {{ nation.name }}
+      </mat-option>
+    </mat-optgroup>
+  </mat-select>
+</mat-form-field>
+<div class="form-buttons">
+  <button
+    mat-raised-button
+    color="primary"
+    class="generate"
+    type="button"
+    (click)="createRoster()"
+  >
+    Generate
+  </button>
+  <div class="load-data-buttons">
+    <button
+      mat-raised-button
+      color="primary"
+      class="load-button"
+      type="button"
+      (click)="loadDataOverlay()"
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
+    >
+      Load
+    </button>
+    <button
+      mat-raised-button
+      color="warn"
+      *ngIf="loadDataOverlayOpen"
+      type="button"
+      (click)="closeLoadDataOverlay()"
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
+    >
+      Close Overlay
+    </button>
+  </div>
+</div>
+<div class="save-buttons" *ngIf="players.length > 0">
+  <button
+    class="save-button"
+    type="button"
+    (click)="saveDataOverlay()"
+    mat-raised-button
+    color="primary"
+    cdkOverlayOrigin
+    #trigger="cdkOverlayOrigin"
+  >
+    Save to Cloud
+  </button>
+  <button
+    class="save-button"
+    type="button"
+    (click)="savePlayers('localStorage')"
+    mat-raised-button
+    color="primary"
+  >
+    Save to Local Storage
+  </button>
+</div>
+<ng-container *ngIf="saveDataOverlayOpen">
+  <div class="save-data-overlay">
+    <div class="exit-container">
+      <button mat-button (click)="saveDataOverlay()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <input
+      type="text"
+      #saveFile
+      placeholder="Roster Name"
+      required
+      minlength="4"
+      maxlength="20"
+    />
+    <label>* name must be 4-20 characters long</label>
+    <button
+      mat-raised-button
+      type="submit"
+      (click)="savePlayers('firestore', saveFile.value)"
+      class="save-button"
+    >
+      Save
+    </button>
+  </div>
+</ng-container>
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="loadDataOverlayOpen"
+>
+  <ul class="load-roster-overlay">
+    <li>
+      <button type="button" (click)="loadPlayers('loadLocalStorage')">
+        Load from local storage
+      </button>
+    </li>
+    <li>
+      <button type="button" (click)="loadDataOverlay('check')">
+        Check cloud saved data
+      </button>
+    </li>
+    <ul>
+      Save Data Ids:
+      <li *ngFor="let data of savedData">
+        <button type="button" (click)="loadPlayers(data.id)">
+          {{ data.id }}
+        </button>
+      </li>
+    </ul>
+  </ul>
+</ng-template> -->

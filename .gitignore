@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/.yarn
 
 # profiling files
 chrome-profiler-events*.json
@@ -49,5 +50,21 @@ Thumbs.db
 # Custom
 */secrets/*
 */environments/*
+
+/.angular
+firestore.rules
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json
+
+*storybook.log
+
 .yarn/*
-.angular/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

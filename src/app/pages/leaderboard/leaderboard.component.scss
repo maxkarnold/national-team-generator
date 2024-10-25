@@ -1,0 +1,90 @@
+@import 'variables.scss';
+
+.leaderboards-container {
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  h3 {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+
+  >div {
+    ul {
+      display: flex;
+      flex-flow: row wrap;
+      background-color: $primary;
+      color: white;
+      li {
+        display: flex;
+        flex-flow: column;
+        padding: 1.5rem 1rem;
+        max-width: 500px;
+        .index {
+          margin-bottom: 0.75rem;
+        }
+
+        >div {
+          display: flex;
+          // justify-content: space-between;
+          :first-child {
+            margin-right: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// .stars {
+//     --star-color: #9e9e9e;
+//     display: inline-block;
+//     font-size: 0.8rem;
+//     font-family: Times;
+//     line-height: 1;
+//     &::after {
+//         content: '★★★★★';
+//         letter-spacing: 3px;
+//         color: transparent;
+//     }
+// }
+
+// .collection-container .attribute.starter-rating {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-evenly;
+//     .stars {
+//         &::after {
+//             background: linear-gradient(90deg,
+//                 var(--star-background) var(--starter-rating),
+//                 var(--star-color) var(--starter-rating)
+//             );
+//             background-clip: text;
+//         }
+
+//     }
+// }
+// .collection-container .attribute.squad-rating {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-evenly;
+//     .stars {
+//         &::after {
+//             background: linear-gradient(90deg,
+//                 var(--star-background) var(--squad-rating),
+//                 var(--star-color) var(--squad-rating)
+//             );
+//             background-clip: text;
+//         }
+//     }
+// }
+
+
+
+

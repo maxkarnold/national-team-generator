@@ -31,23 +31,23 @@
               "src/assets/img"
             ],
             "styles": [
-              "./node_modules/font-awesome/css/font-awesome.css",
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "./node_modules/materialize-css/dist/css/materialize.css",
               "./src/styles.scss"
             ],
-            "scripts": [
-              "./node_modules/jquery/dist/jquery.js",
-              "./node_modules/materialize-css/dist/js/materialize.js"
-            ]
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles",
+                "./node_modules"
+              ]
+            },
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -76,12 +76,16 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "publicHost": "localhost:4200",
+            "buildTarget": "test-app:build"
+          },
           "configurations": {
             "production": {
-              "browserTarget": "team-gen:build:production"
+              "buildTarget": "team-gen:build:production"
             },
             "development": {
-              "browserTarget": "team-gen:build:development"
+              "buildTarget": "team-gen:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,7 +93,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "team-gen:build"
+            "buildTarget": "team-gen:build"
           }
         },
         "test": {
@@ -105,18 +109,80 @@
               "src/assets/img"
             ],
             "styles": [
-              "src/styles.scss",
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              "src/styles.scss"
             ],
-            "scripts": []
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles"
+              ]
+            },
+            "scripts": [],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           }
         },
         "deploy": {
           "builder": "@angular/fire:deploy",
-          "options": {}
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "team-gen:build:production",
+              "serveTarget": "team-gen:serve:production"
+            },
+            "development": {
+              "buildTarget": "team-gen:build:development",
+              "serveTarget": "team-gen:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "team-gen:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "."
+            ],
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "team-gen:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "."
+            ],
+            "outputDir": "storybook-static"
+          }
         }
       }
     }
   },
-  "defaultProject": "team-gen"
+  "cli": {
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ],
+    "analytics": false
+  }
 }

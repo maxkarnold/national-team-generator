@@ -1,0 +1,19 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
+})
+export class HomeComponent {
+  tabs = [
+    {
+      name: 'Player Selection',
+      url: 'player-select',
+    },
+    {
+      name: 'Draft',
+      url: 'draft',
+    },
+  ];
+}

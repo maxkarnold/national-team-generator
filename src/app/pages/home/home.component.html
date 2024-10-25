@@ -1,0 +1,107 @@
+<!-- <div class="page-container">
+  <app-build-roster></app-build-roster>
+  <div class="buttons-container">
+    <button
+      class="save-button"
+      type="button"
+      (click)="submitRoster()"
+      mat-raised-button
+      color="primary"
+    >
+      Submit to Leaderboards
+    </button>
+    <div class="instructions">
+      <div class="info">
+        <button
+          mat-raised-button
+          type="button"
+          color="accent"
+          (click)="infoOverlay()"
+          *ngIf="!instructionsOpen"
+          cdkOverlayOrigin
+          #trigger="cdkOverlayOrigin"
+        >
+          Instructions
+        </button>
+        <button
+          mat-raised-button
+          type="button"
+          color="accent"
+          (click)="infoOverlay()"
+          *ngIf="instructionsOpen"
+          cdkOverlayOrigin
+          #trigger="cdkOverlayOrigin"
+        >
+          Close Instructions
+        </button>
+        <ng-template
+          cdkConnectedOverlay
+          [cdkConnectedOverlayOrigin]="trigger"
+          [cdkConnectedOverlayOpen]="instructionsOpen"
+        >
+          <div class="info-overlay">
+            <div class="exit-container">
+              <button mat-button (click)="infoOverlay()">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <div class="info-paragraph">
+              Drag and drop players from the bench to the pitch. Players'
+              ratings are adjusted based on their position on the pitch and
+              their familiarity. The overall rating of the first eleven is an
+              average of the player ratings with certain positions weighted more
+              than others. Full backs are weigted the lowest, while central
+              midfielders and strikers are weighted the highest.
+              <ul>
+                <li>
+                  <div class="color-code natural"></div>
+                  <div>
+                    Highlighted in light green is the best position for a
+                    player.
+                  </div>
+                </li>
+                <li>
+                  <div class="color-code accomplished"></div>
+                  <div>
+                    Highlighted in dark green is an alternate position (-3
+                    rating).
+                  </div>
+                </li>
+                <li>
+                  <div class="color-code competent"></div>
+                  <div>
+                    Highlighted in green-yellow is a competent position (-6
+                    rating).
+                  </div>
+                </li>
+                <li>
+                  <div class="color-code unconvincing"></div>
+                  <div>
+                    Highlighted in dark yellow is an unconvincing position (-12
+                    rating).
+                  </div>
+                </li>
+                <li>
+                  <div class="color-code awkward"></div>
+                  <div>
+                    Highlighted in dark orange is an awkward position (-25
+                    rating).
+                  </div>
+                </li>
+                <li>
+                  <div class="color-code ineffectual"></div>
+                  <div>
+                    Highlighted in dark red is an ineffectual position (set to
+                    20).
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <app-lineup></app-lineup>
+  <app-roster *ngIf="roster" [roster]="roster"></app-roster>
+</div> -->

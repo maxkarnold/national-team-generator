@@ -1,0 +1,40 @@
+<div class="stats">
+  <ul *ngIf="tournament?.awards" class="awards">
+    <h4>Awards</h4>
+    <li *ngFor="let award of tournament?.awards; let i = index">
+      <div *ngIf="award" class="stat" (click)="openNationStats(award)">
+        {{ tournamentStats[i].emoji }}
+        <img class="nation-flag" [src]="award.logo" [alt]="award.name" />
+        <span>{{ award.name }}</span>
+      </div>
+    </li>
+  </ul>
+  <div *ngIf="tournament?.allTeams">
+    <h4>World Rankings</h4>
+    <div class="overflow-x-auto">
+      <table class="table table-compact table-zebra w-full">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Overall</th>
+            <th>Attack</th>
+            <th>Midfield</th>
+            <th>Defense</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rankings; let i = index">
+            <th>{{ i + 1 }}</th>
+            <td *ngFor="let nation of row">
+              <div class="cursor-pointer md:flex" (click)="openNationStats(nation)">
+                <img [src]="nation.logo" [alt]="nation.name" class="w-8 h-6 md:mr-4 drop-shadow-lg" />
+                <!-- <img [src]="nation.logo" [alt]="nation.name" class="w-6 h-6 rounded object-cover md:mr-4 drop-shadow-lg" /> -->
+                <span>{{ nation.abbreviation.toLocaleUpperCase() }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,13 +1,15 @@
-import { Player } from '../src/app/models/player';
-import * as nations from '../src/app/data/nations/nations.json';
-import * as clubs from '../src/app/data/clubs/clubs.json';
-import { GkAttributes } from 'src/app/models/gkAttributes';
-import { OutfieldAttributes } from 'src/app/models/outfieldAttributes';
+import { Player } from '../src/app/football/models/player.model';
+import * as nations from '../src/assets/json/nations.json';
+import * as clubs from '../src/assets/json/clubs.json';
+import {
+  OutfieldAttributes,
+  GkAttributes,
+} from 'src/app/models/player-attributes.model';
 
 interface NationRoster {
-    nation: string;
-    fullSquad: Player[];
-    region: string;
+  nation: string;
+  fullSquad: Player[];
+  region: string;
 }
 
 const nationRosters: NationRoster[] = [];
@@ -18,32 +20,33 @@ const nationRosters: NationRoster[] = [];
 // Height is in inches
 // Weight is in pounds
 const rosters: Player[][] = [
-    [
-        {
-            firstName: 'Kevin',
-            lastName: 'De Bruyne',
-            mainPositions: ['MC', 'AMC'],
-            altPositions: ['MR', 'ML'],
-            competentPositions: ['AMR', 'AML', 'DM'],
-            unconvincingPositions: [],
-            rating: 94,
-            foot: 'right',
-            firstInitial: 'K',
-            nationality: '',
-            nationalityLogo: '',
-            age: 30,
-            club: "manchester city",
-            clubLogo: "https://tmssl.akamaized.net/images/wappen/normal/281.png?lm=1467356331",
-            playerFace: '',
-            preferredRole: 'MEZ',
-            preferredDuty: 'At', 
-            attributes: {} as OutfieldAttributes,
-            weakFoot: 16,
-            height: 71,
-            weight: 150
-        }
-    ]
-]
+  [
+    {
+      firstNames: ['Kevin'],
+      lastNames: ['De Bruyne'],
+      mainPositions: ['MC', 'AMC'],
+      altPositions: ['MR', 'ML'],
+      competentPositions: ['AMR', 'AML', 'DM'],
+      unconvincingPositions: [],
+      rating: 94,
+      foot: 'right',
+      firstInitial: 'K',
+      nationality: '',
+      nationalityLogo: '',
+      age: 30,
+      club: 'manchester city',
+      clubLogo:
+        'https://tmssl.akamaized.net/images/wappen/normal/281.png?lm=1467356331',
+      playerFace: '',
+      preferredRole: 'MEZ',
+      preferredDuty: 'At',
+      attributes: {} as OutfieldAttributes,
+      weakFoot: 16,
+      height: 71,
+      weight: 150,
+    },
+  ],
+];
 
 // kdb mc, amc, MEZ, At, - MR, ML - AMR, AML, DM right footed/strong
 // thibaut gk GK, De left footed/reasonable
@@ -58,12 +61,12 @@ const rosters: Player[][] = [
 // eden AML, AMC, IW, Su - AMR - ML, MC - ST, MR right footed/strong
 // doku AML, ST, IW, Su - AMR right footed/reasonable
 for (let i = 0; i < nations.length; i++) {
-    for (const nation of nations[i].nations) {
-        nationRosters[i].nation = nation.name;
-        nationRosters[i].region = nation.region;
-        for (const player of rosters[i]) {
-            player.nationality = nation.name;
-            player.nationalityLogo = nation.logo;
-        }
+  for (const nation of nations[i].nations) {
+    nationRosters[i].nation = nation.name;
+    nationRosters[i].region = nation.region;
+    for (const player of rosters[i]) {
+      player.nationality = nation.name;
+      player.nationalityLogo = nation.logo;
     }
+  }
 }

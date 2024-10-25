@@ -1,76 +1,74 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-// ANGULAR MATERIAL THEME
-@import "~@angular/material/theming";
+@import "@ng-select/ng-select/themes/default.theme.css";
+@import "css-star-rating/css/star-rating.min.css";
 
-// Define a custom mixin that takes in the current theme
-@mixin theme-color-grabber($theme) {
-  // Parse the theme and create variables for each color in the pallete
-  $primary: map-get($theme, primary);
-  $accent: map-get($theme, accent);
-  $warn: map-get($theme, warn);
-  // Create theme specfic styles
-  .primaryColorBG {
-    background-color: mat-color($primary);
-  }
-  .accentColorBG {
-    background-color: mat-color($accent);
-  }
-  .warnColorBG {
-    background-color: mat-color($warn);
-  }
+@font-face {
+  font-family: 'aeonik-regular';
+  src: url(assets/fonts/aeonik/AeonikTRIAL-Regular.otf) format('opentype');
 }
 
-// GLOBAL STYLES
-
-:root {
-  --star-size: 1rem;
-  --star-color: #fff;
-  --star-background: #fc0;
-  --starter-rating: 0%;
-  --squad-rating: 0%;
+@font-face {
+  font-family: 'aeonik-bold';
+  src: url(assets/fonts/aeonik/AeonikTRIAL-Bold.otf) format('opentype');
 }
+
+html, body {
+  height: 100%;
+ }
 
 *,
 *::after,
 *::before {
   box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-size: auto 100%;
+  font-family: 'aeonik-regular', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 button {
   cursor: pointer;
 }
 
-// CLASS OVERRIDES
-
-input.login-overlay__input.login-overlay__input--override,
-input.register-overlay__input.register-overlay__input--override {
-  margin: 0.5rem 1.5rem;
-  width: auto;
+select {
+  text-transform: inherit;
 }
 
-// ANGULAR MATERIAL CLASSES *DO NOT TOUCH*
-
-.mat-expansion-indicator::after {
-  color: #c8c8c887;
+li {
+  list-style: none;
 }
 
-.mat-list-base.list .mat-list-item .mat-list-item-content {
-  justify-content: center;
-  width: 100%;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.mat-list-base {
-  background-color: #3f51b5;
+input:disabled {
+  cursor: not-allowed;
+}
+
+.nation-flag {
+  cursor: pointer;
+  border-radius: 5px;
+  object-fit: cover;
+  max-width: 5rem;
+}
+
+.rating.color-ok .star-container .star {
+  svg {
+    fill: darkorange!important;
+  }
+  i {
+    color: darkorange!important;
+  }
 }

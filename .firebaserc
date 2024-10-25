@@ -1,14 +1,18 @@
 {
+  "projects": {
+    "default": "national-team-generator"
+  },
   "targets": {
     "national-team-generator": {
       "hosting": {
-        "team-gen": [
+        "updated-site": [
+          "football-sim"
+        ],
+        "old-site": [
           "national-team-generator"
         ]
       }
     }
   },
-  "projects": {
-    "default": "national-team-generator"
-  }
+  "etags": {}
 }

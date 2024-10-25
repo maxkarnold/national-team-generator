@@ -16,11 +16,7 @@
 Initiate NodeJS environment and install node modules
 <br>
 ```
-npm install firebase --save
-```
-Angular Dependencies
-```
-ng add @angular/material
+npm install
 ```
 ### Create or edit the environments folder in src/
 <p>Firebase information can be found in your firebase console.</p>
@@ -72,7 +68,7 @@ export const environment = {
 
 ```
 
-### Create the secrets folder src/
+<!-- ### Create the secrets folder src/
 <p>Go to your Firebase Console -> Project Settings -> Service Accounts -> Click "Generate new private key" -> Click "Generate key" -> Rename the new file `ServiceAccountKey.json`.</p>
 <p>You should add that file to this folder and it should look something like this:</p>
 
@@ -89,7 +85,7 @@ export const environment = {
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "CLIENT_X509_CERT_URL"
 }
-```
+``` -->
 
 ### Build/Deploy the app
 Delete anything in the `dist/` directory (especially the `index.html`) and build the app with:
@@ -113,11 +109,29 @@ firebase deploy
 
 ## CSS Styling Guide
 
-We use BEM methodology for all CSS files. Please refer to this [reference site](https://en.bem.info/methodology/key-concepts/) for help. For this project, we have some specific rules to follow over the BEM standards.
+We use BEM methodology for all SCSS files. Please refer to this [reference site](https://en.bem.info/methodology/key-concepts/) for help. For this project, we have some specific rules to follow over the BEM standards.
 
 * Blocks can be contained within other blocks.
 * Blocks can be modified just like elements using a class like: `block--modifier`.
 * The class name of elements within elements should be added on. `element__element__element`.
-* Some styles will have to be overwritten with `mat` or `cdk` classes.
 * Global styles should only be implemented in `styles.scss`.
 * Don't add class names to `ng-container`, `ng-template` and other specialized html tags unless necessary.
+
+## Project Structure
+
+### Core
+The Core Module is where we want to put our shared singleton services. So the services that we want only one instance of while having them shared among multiple modules should live here.
+
+The Angular injector creates a new instance of a service for each lazily loaded module it is provided.
+
+Another piece of our application that should live in the Core Modules is app-level components. A good example of an app-level component would be the navigation bar. Only the app needs to know about our navigation component.
+
+We do not want to put, are components used throughout the application inside of the Core Module. We have the Shared Module for that and we will look at that now.
+### Models
+
+### Pages
+
+### Shared
+The Shared Module is where we want everything to live that is shared throughout the application. Components, directives, guards, & pipes can all live in the Shared Module.
+
+It is also common to import and export Angular built modules inside your Shared Module if you need to access them in multiple locations. Because Shared is imported into many of your Feature Modules, it's common to import/export Common Module or Angular Material modules. Import/Export the modules once in Shared Module and now anyone that imports Shared will have access to them.

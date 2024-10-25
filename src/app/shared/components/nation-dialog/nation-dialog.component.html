@@ -1,0 +1,171 @@
+<div class="container z-50" click-stop-propagation *ngIf="nation" [class.app]="isApp">
+  <div class="header">
+    <div class="name-row">
+      <div class="nation">
+        <img class="w-16 h-16 rounded object-cover" [src]="nation.logo" [alt]="nation.name" />
+        <!-- <span class="nation-flag">{{ nation.emoji }}</span> -->
+        <h2>
+          {{ nation.name.length > 9 && screenWidth < 450 ? nation.abbreviation.toLocaleUpperCase() : nation.name }}
+        </h2>
+      </div>
+      <fa-icon icon="xmark" class="exit-button" (click)="changeSelectedNation()"></fa-icon>
+    </div>
+
+    <div class="stats-row">
+      <div class="left-side">
+        <div class="first">
+          <span>Rank</span>
+          <h3>{{ nation.ranking }}</h3>
+        </div>
+        <div>
+          <span>OVR</span>
+          <h3>{{ getDisplayRating(nation.rating || 0) }}</h3>
+        </div>
+        <div>
+          <span>ATT</span>
+          <h3 [class.is-debuffed]="nation.isDebuffed.att" [class.is-buffed]="nation.isBuffed.att">
+            {{ getDisplayRating(nation.dynamicRating.att || 0, true) }}
+          </h3>
+          <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.att, true) }}</span> -->
+        </div>
+        <div>
+          <span>MID</span>
+          <h3 [class.is-debuffed]="nation.isDebuffed.mid" [class.is-buffed]="nation.isBuffed.mid">
+            {{ getDisplayRating(nation.dynamicRating.mid || 0, true) }}
+          </h3>
+          <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.mid, true) }}</span> -->
+        </div>
+        <div>
+          <span>DEF</span>
+          <h3 [class.is-debuffed]="nation.isDebuffed.def" [class.is-buffed]="nation.isBuffed.def">
+            {{ getDisplayRating(nation.dynamicRating.def || 0, true) }}
+          </h3>
+          <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.def, true) }}</span> -->
+        </div>
+        <div>
+          <span>PEN</span>
+          <h3 [class.is-debuffed]="nation.isDebuffed.pen" [class.is-buffed]="nation.isBuffed.pen">
+            {{ getDisplayRating(nation.dynamicRating.pen || 0, true) }}
+          </h3>
+          <!-- <span class="small-rating">{{ getDisplayRating(nation.startingRating.pen, true) }}</span> -->
+        </div>
+      </div>
+      <div class="right-side">
+        <div>
+          <span>POT</span>
+          <h3>{{ nation.pot ?? 'N/A' }}</h3>
+        </div>
+        <div>
+          <span>Region</span>
+          <h3>{{ nation.region.toLocaleUpperCase() }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="flex-container">
+      <ul class="personel" *ngIf="nation.coach && nation.coach.rating">
+        <h3>Head Coach</h3>
+        <table>
+          <tr>
+            <th>Name</th>
+            <td>
+              <span>{{ nation.coach.firstNames[0] }} </span>
+              <span>{{ nation.coach.singleLastName }}</span>
+            </td>
+          </tr>
+          <tr>
+            <th>Tier</th>
+            <td>
+              <span>{{ getCoachRating(nation.coach.rating || 0) }}</span>
+            </td>
+          </tr>
+        </table>
+        <details>
+          <summary>Additional Info</summary>
+          <table>
+            <tr>
+              <th>Full Name</th>
+              <td>
+                <span *ngFor="let firstName of nation.coach.firstNames">{{ firstName }} </span>
+                <span *ngFor="let lastName of nation.coach.lastNames">{{ lastName }} </span>
+              </td>
+            </tr>
+            <tr>
+              <th>Nationality</th>
+              <td>
+                <span>{{ nation.coach.nationality }}</span>
+              </td>
+            </tr>
+            <tr>
+              <th>Age</th>
+              <td>
+                <span>{{ nation.coach.age }}</span>
+              </td>
+            </tr>
+            <tr>
+              <th>Personality</th>
+              <td>
+                <span>{{ nation.coach.personality || 'N/A' }}</span>
+              </td>
+            </tr>
+          </table>
+        </details>
+      </ul>
+      <ul class="matches">
+        <h3>Match History</h3>
+        <li *ngFor="let stage of nation.matchHistory | keyvalue: originalOrder; let i = index" class="match-stages">
+          <span *ngIf="stage.value.length > 0" class="match-stages">{{ stages[i].heading }}</span>
+          <div *ngFor="let item of stage.value; let j = index" class="match-row">
+            <span *ngIf="stages[i].prop === 'bracket'" class="round">{{ rounds[j] }}</span>
+            <img
+              class="nation-flag"
+              [src]="item.match.winner.logo"
+              [alt]="item.match.winner.name"
+              (click)="changeSelectedNation(item.match.winner)"
+              [ngClass]="item.match.winner.name === nation.name ? 'disabled' : ''" />
+            <span class="team-name"
+              >{{ item.match.winner.name }} {{ screenWidth > 350 ? '[' + item.match.winner.ranking + ']' : '' }}
+            </span>
+            <span class="score"
+              >{{ item.match.score }}
+              {{
+                item.match.isPenaltyWin && stages[i].prop !== 'group'
+                  ? '(P)'
+                  : item.match.isEtWin && stages[i].prop !== 'group'
+                    ? '(AET)'
+                    : ''
+              }}
+              <span class="score-tooltip">
+                <span class="title">Match Recap</span>
+                <span *ngIf="!(item.match.eventTimes.winner.length > 0) && !(item.match.eventTimes.loser.length > 0)">N/A</span>
+                <div class="flex">
+                  <div>
+                    <span *ngFor="let event of item.match.eventTimes.winner">{{ event.time }}' {{ event.emoji }}</span>
+                  </div>
+                  <div>
+                    <span *ngFor="let event of item.match.eventTimes.loser">{{ event.emoji }} {{ event.time }}'</span>
+                  </div>
+                </div>
+              </span>
+            </span>
+            <img
+              class="nation-flag"
+              [src]="item.match.loser.logo"
+              [alt]="item.match.loser.name"
+              (click)="changeSelectedNation(item.match.loser)"
+              [ngClass]="item.match.loser.name === nation.name ? 'disabled' : ''" />
+            <span class="team-name">{{ item.match.loser.name }} {{ screenWidth > 350 ? '[' + item.match.loser.ranking + ']' : '' }}</span>
+          </div>
+        </li>
+      </ul>
+      <ul class="report-card" *ngIf="nation.reportCard.grade">
+        <h3>Performance Grade</h3>
+        <li [ngClass]="['grade', nation.reportCard.gradeStyle]">
+          {{ nation.reportCard.grade }} - {{ nation.reportCard.tournamentFinish }}
+        </li>
+        <span>{{ nation.reportCard.gradeSummary }}</span>
+      </ul>
+    </div>
+  </div>
+</div>

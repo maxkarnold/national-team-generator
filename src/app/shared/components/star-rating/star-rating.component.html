@@ -1,0 +1,4 @@
+<div class="sm:text-2xl text-yellow-600 flex flex-nowrap">
+  <fa-icon icon="star" *ngFor="let star of stars"></fa-icon>
+  <fa-icon icon="star-half" *ngIf="adjustedRating % 1 !== 0"></fa-icon>
+</div>

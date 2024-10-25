@@ -1,0 +1,71 @@
+<div class="bracket bg-neutral" *ngIf="tournament?.bracket && tournament">
+  <ul class="text-neutral-content" [ngClass]="tournament.bracket?.roundOf32 ? 'headings48' : 'headings32'">
+    <li *ngIf="tournament.bracket?.roundOf32">Round Of 32</li>
+    <li>Round of 16</li>
+    <li>Quarter Finals</li>
+    <li>Semi Finals</li>
+  </ul>
+  <div [ngClass]="tournament.bracket?.roundOf32 ? 'grid48' : 'grid32'">
+    <!-- Each Round = Column in bracket | different styling in grid and round-->
+    <div class="round" *ngFor="let round of tournament?.bracket | keyvalue: originalOrder">
+      <!-- Each Match in Round = box in bracket | match is pretty much same styling except for screen size breakpoint-->
+      <div class="match bg-primary rounded" *ngFor="let match of round.value; let i = index">
+        <!-- If the final round - then give special headings for each match in same column | again same styling but diff breakpoint. | 1200px instead of 1600px-->
+        <h3 *ngIf="round.key === 'finals'" class="text-neutral-content" [ngClass]="i === 0 ? 'first' : 'second'">
+          {{ i === 0 ? 'Finals' : '3rd Place' }}
+        </h3>
+        <!-- First Team in matchup | same except for `ngIf round.key === 16 instead of 32`-->
+        <div [ngClass]="match[2].loser.name === match[0].name ? 'text-primary-content/50' : 'text-primary-content'">
+          <div (click)="openNationStats(match[0])" class="nation">
+            <span *ngIf="tournament.bracket?.roundOf32 ? round.key === 'roundOf32' : round.key === 'roundOf16'" class="group-finish">{{
+              match[0].groupFinish
+            }}</span>
+            <img class="nation-flag" [src]="match[0].logo" [alt]="match[0].name" />
+            <span>
+              {{ screenWidth < 600 ? match[0].abbreviation.toLocaleUpperCase() : match[0].name }}
+              {{ screenWidth > 350 ? '[' + match[0].ranking + ']' : '' }}
+            </span>
+          </div>
+          <div class="score">
+            <span
+              >{{ match[2].goalsFor }}
+              {{
+                match[2].isPenaltyWin && match[0].name === match[2].winner.name
+                  ? '(P)'
+                  : match[2].isEtWin && match[0].name === match[2].winner.name
+                    ? '(AET)'
+                    : ''
+              }}</span
+            >
+            <span>{{ match[0].name === match[2].winner.name ? '◀' : '' }}</span>
+          </div>
+        </div>
+        <div [ngClass]="match[2].loser.name === match[1].name ? 'text-primary-content/50' : 'text-primary-content'">
+          <div (click)="openNationStats(match[1])" class="nation">
+            <span *ngIf="tournament.bracket?.roundOf32 ? round.key === 'roundOf32' : round.key === 'roundOf16'" class="group-finish">{{
+              match[1].groupFinish
+            }}</span>
+            <img class="nation-flag" [src]="match[1].logo" [alt]="match[1].name" />
+            <span>
+              {{ screenWidth < 600 ? match[1].abbreviation.toLocaleUpperCase() : match[1].name }}
+              {{ screenWidth > 350 ? '[' + match[1].ranking + ']' : '' }}
+            </span>
+          </div>
+          <div class="score">
+            <span
+              >{{ match[2].goalsAg }}
+              {{
+                match[2].isPenaltyWin && match[1].name === match[2].winner.name
+                  ? '(P)'
+                  : match[2].isEtWin && match[1].name === match[2].winner.name
+                    ? '(AET)'
+                    : ''
+              }}</span
+            >
+            <span>{{ match[1].name === match[2].winner.name ? '◀' : '' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,16 +1,42 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
+import { provideRouter, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '@core/services/auth.guard';
+import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'leaderboard', component: LeaderboardComponent },
-  { path: '**', component: HomeComponent }
+  {
+    path: '',
+    redirectTo: 'moba',
+    pathMatch: 'full',
+  },
+  {
+    path: 'simulation',
+    loadChildren: () => import('./football/simulation/simulation.module').then(m => m.SimulationModule),
+  },
+  {
+    path: 'leaderboard',
+    component: LeaderboardComponent,
+  },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+  {
+    path: 'career',
+    loadChildren: () => import('./football/career/career.module').then(m => m.CareerModule),
+  },
+  {
+    path: 'moba',
+    loadChildren: () => import('./moba/moba.module').then(m => m.MobaModule),
+  },
+  {
+    path: 'rank-playlist',
+    loadChildren: () => import('./spotify/spotify.module').then(m => m.SpotifyModule),
+  },
+  { path: '**', redirectTo: '/moba' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [provideRouter(routes)],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
