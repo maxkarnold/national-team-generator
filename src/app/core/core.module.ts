@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { environment } from '@env';
+import { environment } from '@env/environment';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';

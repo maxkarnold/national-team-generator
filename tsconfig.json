@@ -5,8 +5,8 @@
     "skipLibCheck": true,
     "baseUrl": "src",
     "paths": {
-      "@env": [
-        "environments/environment"
+      "@env/*": [
+        "environments/*"
       ],
       "@shared/*": [
         "app/shared/*"

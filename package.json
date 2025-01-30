@@ -107,8 +107,6 @@
     "*.spec.ts"
   ],
   "volta": {
-    "node": "20.13.1",
-    "yarn": "4.4.1"
-  },
-  "packageManager": "yarn@4.4.1"
+    "node": "20.13.1"
+  }
 }

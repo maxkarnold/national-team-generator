@@ -22,24 +22,24 @@ npm install
 <p>Firebase information can be found in your firebase console.</p>
 <p>`environment.prod.ts` file</p>
 
-```
+```typescript
 export const environment = {
   production: true,
   firebase: {
-    apiKey: "API_KEY",
-    authDomain: "national-team-generator.firebaseapp.com",
-    projectId: "national-team-generator",
-    storageBucket: "national-team-generator.appspot.com",
-    messagingSenderId: "30261669176",
-    appId: "APP_ID",
-    measurementId: "G-QV0DJSQSL2"
+    apiKey: '{API_KEY}',
+    authDomain: 'national-team-generator.firebaseapp.com',
+    projectId: 'national-team-generator',
+    storageBucket: 'national-team-generator.appspot.com',
+    messagingSenderId: '30261669176',
+    appId: '{APP_ID}',
+    measurementId: 'G-QV0DJSQSL2'
   }
 };
 ```
 
 <p>`environment.ts` file</p>
 
-```javascript
+```typescript
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -47,13 +47,13 @@ export const environment = {
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "API_KEY",
-    authDomain: "national-team-generator.firebaseapp.com",
-    projectId: "national-team-generator",
-    storageBucket: "national-team-generator.appspot.com",
-    messagingSenderId: "30261669176",
-    appId: "APP_ID",
-    measurementId: "G-QV0DJSQSL2"
+    apiKey: '{API_KEY}',
+    authDomain: 'national-team-generator.firebaseapp.com',
+    projectId: 'national-team-generator',
+    storageBucket: 'national-team-generator.appspot.com',
+    messagingSenderId: '30261669176',
+    appId: '{APP_ID}',
+    measurementId: 'G-QV0DJSQSL2'
   }
 };
 
