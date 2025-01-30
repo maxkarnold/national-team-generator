@@ -103,7 +103,7 @@ export class DraftService {
     }
   }
 
-  getChampionFromId(id: number | undefined) {
+  getChampionFromId(id?: number) {
     const champion = this.draftChampions().find(c => c.id === id);
     return champion;
   }

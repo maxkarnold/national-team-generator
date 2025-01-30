@@ -1,0 +1,30 @@
+<div>
+  <h1 class="text-xl font-bold">Current Team Strengths</h1>
+  <table class="table table-zebra table-xs">
+    <tbody>
+      <tr *ngFor="let player of userIsRedSide() ? redSideMasteries : blueSideMasteries" class="hover">
+        <th>{{ player.mainRole | uppercase }}</th>
+        <ng-container *ngFor="let champ of getTopChampsInMeta(player.championMastery, player.mainRole); let i = index">
+          <td *ngIf="champ; else emptySlot">
+            <div class="flex items-center gap-3">
+              <div class="avatar">
+                <div class="rounded w-10 sm:w-12">
+                  <img [src]="champ.img" [alt]="champ.name" />
+                </div>
+              </div>
+              <div *ngIf="screenWidth > 640">
+                <div class="font-bold">{{ champ.name }}</div>
+              </div>
+            </div>
+          </td>
+          <ng-template #emptySlot>
+            <td></td>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngFor="let i of [].constructor(3 - getTopChampsInMeta(player.championMastery, player.mainRole).length)">
+          <td></td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,1 +1,57 @@
-<p>draft-start works!</p>
+<div class="container flex flex-col items-center">
+  <h1 class="text-3xl font-bold">Pro LoL Draft Sim</h1>
+  <!-- DRAFT FORM -->
+  <form class="flex flex-col w-full" [formGroup]="draftForm">
+    <label class="form-control w-full max-w-xs m-2 self-center">
+      <div class="label">
+        <span class="label-text">Selected Patch</span>
+      </div>
+      <select class="select select-bordered" formControlName="patchData">
+        <option *ngFor="let patch of patches" [ngValue]="patchData" [disabled]="patch.disabled">{{ patch.name }}</option>
+      </select>
+    </label>
+
+    <div class="form-control">
+      <label class="label cursor-pointer flex justify-center">
+        <span class="label-text">Blue Side</span>
+        <input
+          type="checkbox"
+          class="toggle mx-2"
+          [ngClass]="{
+            'bg-blue-500 hover:bg-blue-700 border-blue-500': !userIsRedSide,
+            'bg-red-500 hover:bg-red-700 border-red-500': userIsRedSide,
+          }"
+          formControlName="userIsRedSide" />
+        <span class="label-text">Red Side</span>
+      </label>
+    </div>
+
+    <div class="form-control">
+      <label class="label cursor-pointer flex justify-center">
+        <input type="checkbox" class="toggle mx-2" formControlName="useAiOpponent" />
+        <span class="label-text">Use AI Opponent</span>
+      </label>
+    </div>
+
+    <div class="form-control" *ngIf="useAiOpponent">
+      <!-- <label>AI Difficulty</label> -->
+      <div class="join justify-center">
+        <input class="join-item btn" type="radio" value="easy" aria-label="Easy" formControlName="difficulty" />
+        <input class="join-item btn" type="radio" value="medium" aria-label="Normal" formControlName="difficulty" />
+        <input class="join-item btn" type="radio" value="hard" aria-label="Hard" formControlName="difficulty" />
+      </div>
+    </div>
+
+    <div class="form-control">
+      <label class="label cursor-pointer flex justify-center">
+        <span class="label-text">Fixed Team</span>
+        <input type="checkbox" class="toggle mx-2" formControlName="useRandomTeam" />
+        <span class="label-text">Random Team</span>
+      </label>
+    </div>
+
+    <app-draft-start-table [patchData]="patchData" [userIsRedSide]="userIsRedSide"></app-draft-start-table>
+
+    <button class="btn btn-primary" (click)="startDraft()" type="button">Start Draft</button>
+  </form>
+</div>

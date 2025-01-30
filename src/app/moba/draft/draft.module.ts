@@ -9,6 +9,7 @@ import { DraftAdviceService } from './draft-advice/draft-advice.service';
 import { DraftRosterComponent } from './draft-roster/draft-roster.component';
 import { DraftSelectionComponent } from './draft-selection/draft-selection.component';
 import { DraftStartComponent } from './draft-start/draft-start.component';
+import { DraftStartTableComponent } from './draft-start/draft-start-table/draft-start-table.component';
 
 const routes: Routes = [
   {
@@ -18,8 +19,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DraftComponent, DraftAdviceComponent],
-  imports: [CommonModule, SharedModule, RouterModule.forChild(routes), DraftRosterComponent, DraftSelectionComponent, DraftStartComponent],
+  declarations: [
+    DraftComponent,
+    DraftAdviceComponent,
+    DraftRosterComponent,
+    DraftSelectionComponent,
+    DraftStartComponent,
+    DraftStartTableComponent,
+  ],
+  imports: [CommonModule, SharedModule, RouterModule.forChild(routes)],
   providers: [MobaService, DraftAdviceService],
 })
 export class DraftModule {}
