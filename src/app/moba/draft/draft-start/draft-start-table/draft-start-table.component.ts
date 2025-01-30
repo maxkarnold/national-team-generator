@@ -22,6 +22,7 @@ export class DraftStartTableComponent {
   constructor(private service: DraftService) {
     this.redSideMasteries = this.service.redSideMasteries;
     this.blueSideMasteries = this.service.blueSideMasteries;
+    console.log(this.redSideMasteries, this.blueSideMasteries);
   }
 
   getScreenSize(_event: unknown) {

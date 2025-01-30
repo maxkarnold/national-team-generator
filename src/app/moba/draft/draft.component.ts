@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, Signal, ViewChild, WritableSignal, computed, signal } from '@angular/core';
 import { DamageType } from '../champion/champion.model';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import {
   DraftChampion,
   blueSideBanRounds,
@@ -8,17 +8,16 @@ import {
   redSideBanRounds,
   redSidePickRounds,
   LetterRank,
-  DraftPlayer,
   DraftPhase,
-  TierListRankings,
   getRoleFromFilter,
   tierValues,
   DraftSortHeader,
   TierValue,
   patches,
   Proficiency,
+  DraftMetaData,
   latestPatch,
-  PatchData,
+  DifficultyLevel,
 } from './draft.model';
 import { checkForAvailableRoles, getChampMasteries, getChampPropFromDraftPhase, sortRoles } from './draft.utils';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -31,10 +30,19 @@ import { DraftService } from './draft.service';
   selector: 'app-draft',
   templateUrl: './draft.component.html',
   styleUrl: './draft.component.scss',
+  host: {
+    '(window:resize)': 'getScreenSize($event)',
+  },
 })
 export class DraftComponent {
   @ViewChild('draftResultsDialog') draftResultsDialog!: ElementRef<HTMLDialogElement>;
-  screenWidth: number;
+  screenWidth = window.innerWidth;
+  userIsRedSide = false;
+  patchData = latestPatch;
+  useAiOpponent = false;
+  difficulty: DifficultyLevel = 'medium';
+  useRandomTeam = true;
+
   draftStarted = false;
   draftPhase: DraftPhase = 'Blue Ban 1';
   currentDraftRound = 1;
@@ -55,14 +63,6 @@ export class DraftComponent {
   redRounds = [...redSideBanRounds, ...redSidePickRounds];
   blueChampResults: Partial<DraftChampion>[] = [];
   redChampResults: Partial<DraftChampion>[] = [];
-
-  draftForm: FormGroup = new FormGroup({
-    patchData: new FormControl<PatchData>(latestPatch),
-    userIsRedSide: new FormControl<boolean>(false),
-    useAiOpponent: new FormControl<boolean>(false),
-    difficulty: new FormControl<'easy' | 'medium' | 'hard'>('medium'),
-    useRandomTeam: new FormControl<boolean>({ value: true, disabled: true }),
-  });
 
   isBlueSideChoosing = signal(true);
   isBanPhase = signal(true);
@@ -122,38 +122,10 @@ export class DraftComponent {
   constructor(
     private service: DraftService,
     private draftAdviceService: DraftAdviceService
-  ) {
-    this.screenWidth = window.innerWidth;
-    this.getScreenSize();
-    this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
-  }
+  ) {}
 
   get draftService(): DraftService {
     return this.service;
-  }
-
-  get userIsRedSide(): boolean {
-    return this.draftForm.get('userIsRedSide')?.value;
-  }
-
-  get patchData(): PatchData {
-    return this.draftForm.get('patchData')?.value;
-  }
-
-  get useAiOpponent(): boolean {
-    return this.draftForm.get('useAiOpponent')?.value;
-  }
-
-  get useRandomTeam(): boolean {
-    return this.draftForm.get('useRandomTeam')?.value;
-  }
-
-  get difficulty(): 'easy' | 'medium' | 'hard' {
-    return this.draftForm.get('difficulty')?.value;
-  }
-
-  get masteriesForSide(): DraftPlayer[] {
-    return this.userIsRedSide ? this.service.redSideMasteries : this.service.blueSideMasteries;
   }
 
   get selectedRoleFilter(): Role {
@@ -165,9 +137,16 @@ export class DraftComponent {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  getScreenSize() {
+  getScreenSize(_event: unknown) {
     this.screenWidth = window.innerWidth;
+  }
+
+  setDraftData({ patchData, userIsRedSide, useAiOpponent, difficulty, useRandomTeam }: DraftMetaData) {
+    this.patchData = patchData;
+    this.userIsRedSide = userIsRedSide;
+    this.useAiOpponent = useAiOpponent;
+    this.difficulty = difficulty;
+    this.useRandomTeam = useRandomTeam;
   }
 
   getChampionFromId(id: number | undefined): DraftChampion | undefined {
@@ -187,7 +166,6 @@ export class DraftComponent {
 
   startDraft() {
     this.draftStarted = true;
-    this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
     this.checkAndStartAiTimer();
   }
 
@@ -207,7 +185,13 @@ export class DraftComponent {
     this.redSideDraftScores.set([]);
 
     this.service.resetDraft();
-    this.service.initiateMasteries(this.patchData, this.useRandomTeam, this.difficulty, this.userIsRedSide);
+    this.service.initiateMasteries({
+      useRandomTeam: this.useRandomTeam,
+      patchData: this.patchData,
+      userIsRedSide: this.userIsRedSide,
+      useAiOpponent: this.useAiOpponent,
+      difficulty: this.difficulty,
+    });
   }
 
   restartDraft() {
@@ -528,15 +512,6 @@ export class DraftComponent {
       }
     }
     return true;
-  }
-
-  getTopChampsInMeta(masteries: TierListRankings, role: Role): DraftChampion[] {
-    const patchTierList = this.patchData.patchTierList;
-    const masteredChamps = [...masteries.s, ...masteries.a];
-    const metaChamps = [...patchTierList[role].s, ...patchTierList[role].a, ...patchTierList[role].b];
-    const mainChamps = masteredChamps.filter(id => metaChamps.includes(id)).map(id => this.getChampionFromId(id));
-    const filteredChamps: DraftChampion[] = [...mainChamps].filter((champ): champ is DraftChampion => !!champ);
-    return filteredChamps.slice(0, 3);
   }
 
   checkAndStartAiTimer() {

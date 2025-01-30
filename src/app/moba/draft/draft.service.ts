@@ -3,12 +3,11 @@ import {
   defaultOpponentMasteries,
   defaultPlayerMasteries,
   defaultPlayers,
-  DifficultyLevel,
   DraftChampion,
+  DraftMetaData,
   DraftPlayer,
   emptyDraftBans,
   emptyDraftPicks,
-  PatchData,
 } from './draft.model';
 import * as championsJson from 'assets/json/moba/champions.json';
 import { Champion } from '../champion/champion.model';
@@ -45,7 +44,19 @@ export class DraftService {
   });
   constructor() {}
 
-  initiateMasteries(patchData: PatchData, useRandomTeam: boolean, difficulty: DifficultyLevel, userIsRedSide: boolean) {
+  /**
+   * Initializes the player and opponent masteries and draft champions based on the provided draft metadata.
+   *
+   * @param {DraftMetaData} param0 - An object containing metadata for the draft, including:
+   *   - useRandomTeam: A boolean indicating whether to use randomly generated teams.
+   *   - patchData: The patch data containing tier lists and other relevant information.
+   *   - userIsRedSide: A boolean indicating whether the user is on the red side.
+   *   - difficulty: The difficulty level for generating random masteries, applicable if useRandomTeam is true.
+   *
+   * This function sets up the draft champions and assigns masteries and top champions for each role
+   * based on the user's side and whether random teams are used.
+   */
+  initiateMasteries({ useRandomTeam, patchData, userIsRedSide, difficulty }: DraftMetaData) {
     const playerMasteries: DraftPlayer[] = useRandomTeam ? getRandomMasteries(patchData) : [...defaultPlayerMasteries];
     const opponentMasteries: DraftPlayer[] = useRandomTeam ? getRandomMasteries(patchData, difficulty) : [...defaultOpponentMasteries];
 

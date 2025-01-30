@@ -1,6 +1,7 @@
 import { Component, output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PatchData, latestPatch, patches } from '../draft.model';
+import { DraftMetaData, PatchData, latestPatch, patches } from '../draft.model';
+import { DraftService } from '../draft.service';
 
 @Component({
   selector: 'app-draft-start',
@@ -12,6 +13,7 @@ import { PatchData, latestPatch, patches } from '../draft.model';
 })
 export class DraftStartComponent {
   draftStarted = output<void>();
+  draftDataSet = output<DraftMetaData>();
 
   screenWidth = window.innerWidth;
   patches = patches;
@@ -23,7 +25,9 @@ export class DraftStartComponent {
     difficulty: new FormControl<'easy' | 'medium' | 'hard'>('medium'),
     useRandomTeam: new FormControl<boolean>({ value: true, disabled: true }),
   });
-  constructor() {}
+  constructor(private service: DraftService) {
+    this.service.initiateMasteries(this.draftForm.getRawValue());
+  }
 
   get userIsRedSide(): boolean {
     return this.draftForm.get('userIsRedSide')?.value;
@@ -45,11 +49,14 @@ export class DraftStartComponent {
     return this.draftForm.get('difficulty')?.value;
   }
 
-  getScreenWidth(_event: unknown) {
+  getScreenSize(_event: unknown) {
     this.screenWidth = window.innerWidth;
   }
 
   startDraft() {
+    const data: DraftMetaData = this.draftForm.getRawValue();
+    this.service.initiateMasteries(data);
+    this.draftDataSet.emit(data);
     this.draftStarted.emit();
   }
 }

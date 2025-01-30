@@ -9,7 +9,7 @@ export interface DraftMetaData {
   userIsRedSide: boolean;
   patchData: PatchData;
   useAiOpponent: boolean;
-  difficulty: string;
+  difficulty: DifficultyLevel;
   useRandomTeam: boolean;
 }
 
@@ -88,14 +88,6 @@ export interface CompStyleData {
   name: CompStyle;
   primary: string[];
   secondary: string[];
-}
-
-export interface DraftFormData {
-  userIsRedSide: boolean;
-  patchVersion: PatchVersion;
-  useAiOpponent: boolean;
-  difficulty: DifficultyLevel;
-  useRandomTeam: boolean;
 }
 
 export interface PatchData {
