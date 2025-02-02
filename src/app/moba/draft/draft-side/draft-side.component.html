@@ -1,0 +1,48 @@
+<ul class="flex text-gray-200 mb-4">
+  <li *ngFor="let champ of draftBans()" class="flex-1 divide-x-2 divide-gray-400">
+    <div class="w-full" *ngIf="champ?.isPlaceholder">
+      <div class="flex justify-center" [ngClass]="draftSide() === 'red' ? 'bg-red-700' : 'bg-blue-700'">
+        <span class="text-2xl">{{ champ.name }}</span>
+      </div>
+    </div>
+    <div class="w-full" *ngIf="!champ?.isPlaceholder">
+      <div class="flex justify-center">
+        <img [src]="champ.img" />
+      </div>
+    </div>
+  </li>
+</ul>
+
+<ul class="flex flex-col text-gray-200 h-3/4 divide-y-2 divide-gray-400">
+  <li *ngFor="let champ of service.blueSideChamps(); let i = index" class="flex-1">
+    <!-- EMPTY CHAMP SLOT -->
+    <div class="relative h-full" *ngIf="champ?.isPlaceholder">
+      <div class="w-full h-full md:w-24 items-center justify-center flex" [ngClass]="draftSide() === 'red' ? 'bg-red-700' : 'bg-blue-700'">
+        <span class="text-xs md:text-2xl">{{ draftSide() === 'blue' ? 'B' : 'R' }}{{ i + 1 }}</span>
+      </div>
+    </div>
+    <!-- FILLED CHAMP SLOT -->
+    <div *ngIf="!champ?.isPlaceholder" class="avatar cursor-pointer h-full">
+      <div class="absolute right-1/4 top-full w-6 mt-1 md:mt-0 md:top-0 md:right-full h-[4.5rem] md:h-full md:mr-2">
+        <ul>
+          <li
+            *ngFor="let role of champ.roles"
+            class="w-6 aspect-square"
+            [class.bg-neutral-700]="role === champ.selectedRole"
+            (click)="selectRole(role, champ, true, i)">
+            <img [src]="'assets/images/role_icons/' + role + '.webp'" />
+          </li>
+        </ul>
+      </div>
+      <div class="relative w-12 md:w-24 rounded">
+        <img [src]="champ.img" class="w-full" (click)="getChampionFromId(champ.id)" />
+      </div>
+      <span
+        *ngIf="champ.dmgType"
+        class="badge badge-sm badge-outline absolute -bottom-4 left-[20%]"
+        [ngClass]="getBadgeClass(champ.dmgType)">
+        {{ champ.dmgType | uppercase }}
+      </span>
+    </div>
+  </li>
+</ul>

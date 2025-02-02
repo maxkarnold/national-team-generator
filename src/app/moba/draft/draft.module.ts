@@ -6,10 +6,11 @@ import { DraftComponent } from './draft.component';
 import { MobaService } from '../moba.service';
 import { DraftAdviceComponent } from './draft-advice/draft-advice.component';
 import { DraftAdviceService } from './draft-advice/draft-advice.service';
-import { DraftRosterComponent } from './draft-roster/draft-roster.component';
+import { DraftSideComponent } from './draft-side/draft-side.component';
 import { DraftSelectionComponent } from './draft-selection/draft-selection.component';
 import { DraftStartComponent } from './draft-start/draft-start.component';
 import { DraftStartTableComponent } from './draft-start/draft-start-table/draft-start-table.component';
+import { BottomNavComponent } from './bottom-nav/bottom-nav.component';
 
 const routes: Routes = [
   {
@@ -22,10 +23,11 @@ const routes: Routes = [
   declarations: [
     DraftComponent,
     DraftAdviceComponent,
-    DraftRosterComponent,
+    DraftSideComponent,
     DraftSelectionComponent,
     DraftStartComponent,
     DraftStartTableComponent,
+    BottomNavComponent,
   ],
   imports: [CommonModule, SharedModule, RouterModule.forChild(routes)],
   providers: [MobaService, DraftAdviceService],

@@ -1,1 +1,127 @@
-<p>draft-selection works!</p>
+<!-- <label class="input input-lg input-bordered flex items-center gap-2 flex-1 order-2 md:order-none md:input-md">
+  <input type="text" class="grow" placeholder="Search" [formControl]="searchControl" id="searchControl" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+    <path
+      fill-rule="evenodd"
+      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+      clip-rule="evenodd" />
+  </svg>
+</label>
+<ul class="flex my-2 justify-around md:justify-center">
+  <button
+    *ngFor="let role of positionFilters"
+    class="btn btn-ghost btn-square p-1 md:mx-4"
+    [class.btn-active]="this.roleFilter() === role.name"
+    (click)="this.roleFilter.set(role.name)">
+    <img [src]="role.url" class="w-full" />
+  </button>
+</ul>
+<div class="flex pb-16 gap-16 md:pb-8 md:gap-4 flex-col md:flex-row">
+  <div class="overflow-x-auto max-h-[50vh] md:max-h-[68vh] flex-1">
+    <table class="table table-pin-rows table-zebra table-xs sm:table-md">
+      <thead>
+        <tr>
+          <th (click)="sortBy.set('name')" class="cursor-pointer">
+            {{ screenWidth > 640 ? 'Champion / Roles' : 'Champion' }}
+          </th>
+          <th (click)="sortBy.set('meta')" class="cursor-pointer">Meta</th>
+          <th (click)="sortBy.set('mastery')" class="cursor-pointer">
+            {{ screenWidth > 640 && roleFilter() !== 'all' ? 'Mastery / Opp' : draftPhase.includes('ban') ? 'Opp Mastery' : 'Mastery' }}
+          </th>
+          <th (click)="sortBy.set('synergy')" class="cursor-pointer">
+            {{ screenWidth > 640 && roleFilter() !== 'all' ? 'Synergy / Opp' : 'Synergy' }}
+          </th>
+          <th (click)="sortBy.set('counter')" class="cursor-pointer">Counter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let champ of filteredChampions()" class="hover cursor-pointer" (click)="chooseChampion(champ)">
+          <td>
+            <div class="flex items-center gap-3">
+              <div class="flex flex-col items-center justify-center">
+                <div class="avatar">
+                  <div class="rounded w-10 sm:w-12">
+                    <img [src]="champ.img" [alt]="champ.name" />
+                  </div>
+                </div>
+                <div *ngIf="screenWidth > 640" class="badge badge-xs badge-outline" [ngClass]="getBadgeClass(champ.dmgType)">
+                  {{ champ.dmgType | uppercase }}
+                </div>
+              </div>
+
+              <div *ngIf="screenWidth > 640">
+                <div class="font-bold">{{ champ.name }}</div>
+              </div>
+              <ul class="flex">
+                <li *ngFor="let role of champ.roles" class="flex flex-col items-center w-4 sm:w-8">
+                  <img [src]="'assets/images/role_icons/' + role + '.webp'" />
+                </li>
+              </ul>
+              <ul
+                *ngIf="
+                  this.roleFilter() !== 'all' && getChampPropFromDraftPhase(draftPhase, currentDraftRound, userIsRedSide) === 'player'
+                ">
+                <li *ngFor="let badge of champ.adviceTags.player[selectedRoleFilter]" class="flex flex-col mb-1">
+                  <div class="badge badge-success badge-sm">{{ badge }}</div>
+                </li>
+              </ul>
+              <ul
+                *ngIf="
+                  this.roleFilter() !== 'all' && getChampPropFromDraftPhase(draftPhase, currentDraftRound, userIsRedSide) === 'opponent'
+                ">
+                <li *ngFor="let badge of champ.adviceTags.opp[selectedRoleFilter]" class="flex flex-col mb-1">
+                  <div class="badge badge-success badge-sm">{{ badge }}</div>
+                </li>
+              </ul>
+            </div>
+          </td>
+          <td>
+            <ng-container *ngIf="roleFilter() === 'all'; else filteredMeta">
+              <span *ngFor="let role of champ.roles; let i = index">
+                {{ getTableDisplayScore(getDisplayMetaScore(champ, role)) }}
+                <span *ngIf="i < champ.roles.length - 1"> / </span>
+              </span>
+            </ng-container>
+            <ng-template #filteredMeta>
+              <span>{{ getTableDisplayScore(getDisplayMetaScore(champ)) }}</span>
+            </ng-template>
+          </td>
+          <td>
+            <ng-container *ngIf="roleFilter() === 'all'; else filteredMastery">
+              <span *ngFor="let role of champ.roles; let i = index">
+                {{ getTableDisplayScore(getDisplayMasteryScore(champ, role), true) }}
+                <span *ngIf="i < champ.roles.length - 1"> / </span>
+              </span>
+            </ng-container>
+            <ng-template #filteredMastery>
+              <span
+                >{{ getTableDisplayScore(getDisplayMasteryScore(champ, undefined, 'player'), true) }} /
+                {{ getTableDisplayScore(getDisplayMasteryScore(champ, undefined, 'opponent'), true) }}</span
+              >
+            </ng-template>
+          </td>
+          <td>
+            <ng-container [ngSwitch]="displaySynergyAndCounter()">
+              <span *ngSwitchCase="'n/a'"> N/A </span>
+              <span *ngSwitchCase="'roleSpecific'">
+                {{ getTableDisplayScore(getSynergyScore(champ, 'player')) }} /
+                {{ getTableDisplayScore(getSynergyScore(champ, 'opponent')) }}</span
+              >
+              <span *ngSwitchDefault> {{ getTableDisplayScore(getSynergyScore(champ)) }} </span>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container [ngSwitch]="displaySynergyAndCounter()">
+              <span *ngSwitchCase="'n/a'"> N/A </span>
+              <span *ngSwitchCase="'roleSpecific'">
+                {{ getTableDisplayScore(getCounterScore(champ, 'player')) }} /
+                {{ getTableDisplayScore(getCounterScore(champ, 'opponent')) }}</span
+              >
+              <span *ngSwitchDefault> {{ 'N/A' }} </span>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->

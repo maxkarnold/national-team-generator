@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DraftRosterComponent } from './draft-roster.component';
+import { DraftSideComponent } from './draft-side.component.js';
 
 describe('DraftRosterComponent', () => {
-  let component: DraftRosterComponent;
-  let fixture: ComponentFixture<DraftRosterComponent>;
+  let component: DraftSideComponent;
+  let fixture: ComponentFixture<DraftSideComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DraftRosterComponent]
+      imports: [DraftSideComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DraftRosterComponent);
+    fixture = TestBed.createComponent(DraftSideComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

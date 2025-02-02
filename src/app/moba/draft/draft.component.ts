@@ -1,5 +1,4 @@
-import { Component, ElementRef, HostListener, Signal, ViewChild, WritableSignal, computed, signal } from '@angular/core';
-import { DamageType } from '../champion/champion.model';
+import { Component, ElementRef, Signal, ViewChild, WritableSignal, computed, signal } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   DraftChampion,
@@ -37,6 +36,7 @@ import { DraftService } from './draft.service';
 export class DraftComponent {
   @ViewChild('draftResultsDialog') draftResultsDialog!: ElementRef<HTMLDialogElement>;
   screenWidth = window.innerWidth;
+  activeTab = 'blue';
   userIsRedSide = false;
   patchData = latestPatch;
   useAiOpponent = false;
@@ -149,19 +149,12 @@ export class DraftComponent {
     this.useRandomTeam = useRandomTeam;
   }
 
+  changeActiveTab(tab: string) {
+    this.activeTab = tab;
+  }
+
   getChampionFromId(id: number | undefined): DraftChampion | undefined {
     return this.service.getChampionFromId(id);
-  }
-  getBadgeClass(dmgType: DamageType): string {
-    if (dmgType.includes('ad')) {
-      return 'badge-error';
-    } else if (dmgType.includes('ap')) {
-      return 'badge-info';
-    } else if (dmgType.includes('mix')) {
-      return 'badge-primary';
-    } else {
-      return 'badge-accent';
-    }
   }
 
   startDraft() {
@@ -214,43 +207,6 @@ export class DraftComponent {
       this.notification.isActive = false;
       this.notification.message = '';
     }, 4000);
-  }
-
-  selectRole(role: Role, champ: Partial<DraftChampion>, isBlueSide: boolean, index: number) {
-    if ((isBlueSide && !this.userIsRedSide) || !this.useAiOpponent) {
-      champ.selectedRole = role;
-      const updatedChamps = [...this.service.blueSideChamps()];
-      updatedChamps[index] = champ;
-      this.service.blueSideChamps.set(updatedChamps);
-      console.log(this.service.blueSideChamps().map(c => c.selectedRole));
-    } else if ((!isBlueSide && this.userIsRedSide) || !this.useAiOpponent) {
-      champ.selectedRole = role;
-      const updatedChamps = [...this.service.redSideChamps()];
-      updatedChamps[index] = champ;
-      this.service.redSideChamps.set(updatedChamps);
-      console.log(this.service.redSideChamps().map(c => c.selectedRole));
-    }
-    for (const filteredChamp of this.filteredChampions()) {
-      this.setSynergyScore(filteredChamp);
-      this.setCounterScore(filteredChamp);
-    }
-
-    // this should
-    // if (isBlueSide) {
-    //   this.blueSideDraftScores.update(arr => {
-    //     const newArr = [...arr];
-    //     newArr.splice(index, 1, this.getPickScore(champ as DraftChampion));
-    //     // console.log()
-    //     return newArr;
-    //   });
-    // } else {
-    //   this.redSideDraftScores.update(arr => {
-    //     const newArr = [...arr];
-    //     newArr[index] = this.getPickScore(champ as DraftChampion);
-    //     return newArr;
-    //   });
-    // }
-    console.log('blueside scores', this.blueSideDraftScores(), 'redside scores', this.redSideDraftScores());
   }
 
   getTableDisplayScore(rating: number, isProficiency = false): LetterRank | Proficiency {

@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DraftMetaData, PatchData, latestPatch, patches } from '../draft.model';
 import { DraftService } from '../draft.service';
@@ -11,7 +11,7 @@ import { DraftService } from '../draft.service';
     '(window:resize)': 'getScreenSize($event)',
   },
 })
-export class DraftStartComponent {
+export class DraftStartComponent implements OnInit {
   draftStarted = output<void>();
   draftDataSet = output<DraftMetaData>();
 
@@ -47,6 +47,12 @@ export class DraftStartComponent {
 
   get difficulty(): 'easy' | 'medium' | 'hard' {
     return this.draftForm.get('difficulty')?.value;
+  }
+
+  ngOnInit(): void {
+    // for skipping draft start NOT FOR PROD USE
+    console.log('test');
+    this.startDraft();
   }
 
   getScreenSize(_event: unknown) {
