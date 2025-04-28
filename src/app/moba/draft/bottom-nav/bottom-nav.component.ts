@@ -8,5 +8,5 @@ import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 })
 export class BottomNavComponent {
   selectedTab = output<string>();
-  currentTab = 'blue';
+  currentTab = 'draft';
 }

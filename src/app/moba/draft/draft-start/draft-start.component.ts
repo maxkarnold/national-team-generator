@@ -1,7 +1,7 @@
 import { Component, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DraftMetaData, PatchData, latestPatch, patches } from '../draft.model';
-import { DraftService } from '../draft.service';
+import { DraftService } from '../services/draft.service';
 
 @Component({
   selector: 'app-draft-start',

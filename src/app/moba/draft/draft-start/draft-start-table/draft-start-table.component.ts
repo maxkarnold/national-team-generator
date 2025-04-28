@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { DraftChampion, PatchData, TierListRankings } from '../../draft.model';
-import { DraftService } from '../../draft.service';
+import { DraftService } from '../../services/draft.service';
 import { Role } from 'app/moba/player-draft/player/player.model';
 
 @Component({

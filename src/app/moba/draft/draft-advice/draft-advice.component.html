@@ -3,7 +3,7 @@
   <div class="p-4 bg-blue-600 rounded-lg mb-8">
     <h2 class="mb-2 text-xl">Blue Side</h2>
     <ul>
-      <li *ngFor="let item of blueSideAdvice" class="mb-1">
+      <li *ngFor="let item of blueSideAdvice()" class="mb-1">
         {{ item }}
       </li>
     </ul>
@@ -11,7 +11,7 @@
   <div class="md:text-right p-4 bg-red-600 rounded-lg mb-8">
     <h2 class="mb-2 text-xl">Red Side</h2>
     <ul>
-      <li *ngFor="let item of redSideAdvice" class="mb-1">
+      <li *ngFor="let item of redSideAdvice()" class="mb-1">
         {{ item }}
       </li>
     </ul>

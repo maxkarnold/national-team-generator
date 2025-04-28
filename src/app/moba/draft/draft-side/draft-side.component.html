@@ -14,7 +14,7 @@
 </ul>
 
 <ul class="flex flex-col text-gray-200 h-3/4 divide-y-2 divide-gray-400">
-  <li *ngFor="let champ of service.blueSideChamps(); let i = index" class="flex-1">
+  <li *ngFor="let champ of sideChamps(); let i = index" class="flex-1">
     <!-- EMPTY CHAMP SLOT -->
     <div class="relative h-full" *ngIf="champ?.isPlaceholder">
       <div class="w-full h-full md:w-24 items-center justify-center flex" [ngClass]="draftSide() === 'red' ? 'bg-red-700' : 'bg-blue-700'">
