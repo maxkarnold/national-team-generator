@@ -3,11 +3,12 @@ import { provideRouter, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/services/auth.guard';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { LoginComponent } from './pages/login/login.component';
+import { WorkInProgressComponent } from './pages/work-in-progress/work-in-progress.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'moba',
+    redirectTo: 'simulation',
     pathMatch: 'full',
   },
   {
@@ -25,13 +26,15 @@ const routes: Routes = [
   },
   {
     path: 'moba',
-    loadChildren: () => import('./moba/moba.module').then(m => m.MobaModule),
+    component: WorkInProgressComponent,
+    // loadChildren: () => import('./moba/moba.module').then(m => m.MobaModule),
   },
   {
     path: 'rank-playlist',
-    loadChildren: () => import('./spotify/spotify.module').then(m => m.SpotifyModule),
+    component: WorkInProgressComponent,
+    // loadChildren: () => import('./spotify/spotify.module').then(m => m.SpotifyModule),
   },
-  { path: '**', redirectTo: '/moba' },
+  { path: '**', redirectTo: '/simulation' },
 ];
 
 @NgModule({
