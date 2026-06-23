@@ -1,4 +1,4 @@
-<div class="toast toast-top toast-center z-20" *ngIf="notification.isActive">
+<!-- <div class="toast toast-top toast-center z-20" *ngIf="notification.isActive">
   <div class="alert" [class.alert-info]="notification.type === 'info'" [class.alert-error]="notification.type === 'error'">
     <span>{{ notification.message }}</span>
   </div>
@@ -7,9 +7,9 @@
 <dialog id="draftResultsDialog" #draftResultsDialog class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
     <h2>Draft Results</h2>
-    <div class="flex justify-around">
+    <div class="flex justify-around"> -->
       <!-- Blue SIDE -->
-      <ul class="flex flex-col text-gray-200">
+      <!-- <ul class="flex flex-col text-gray-200">
         <li *ngFor="let champ of blueChampResults; let i = index" class="my-4">
           <div class="avatar cursor-pointer">
             <div class="absolute right-1/4 top-full w-6 mt-1 md:mt-0 md:top-0 md:right-full h-[4.5rem] md:h-full md:mr-2">
@@ -57,12 +57,12 @@
   </div>
 </dialog>
 
-<app-draft-start *ngIf="!draftStarted" (draftStarted)="startDraft()" (draftDataSet)="setDraftData($event)"></app-draft-start>
+<app-draft-start *ngIf="!draftStarted" (draftStarted)="startDraft()" (draftDataSet)="setDraftData($event)"></app-draft-start> -->
 
 <!-- DRAFT INTERFACE -->
-<div *ngIf="draftStarted" class="flex flex-col max-w-screen-lg h-screen mx-auto">
+<!-- <div *ngIf="draftStarted" class="flex flex-col max-w-screen-lg h-screen mx-auto"> -->
   <!-- HEADER -->
-  <div class="flex flex-col md:flex-row justify-center items-center mb-4 gap-4">
+  <!-- <div class="flex flex-col md:flex-row justify-center items-center mb-4 gap-4">
     <div class="flex">
       <h1 class="text-2xl mr-4">{{ draftPhase }}</h1>
       <button class="btn btn-secondary btn-sm mx-2" (click)="restartDraft()">New</button>
@@ -100,4 +100,4 @@
   <ng-template #desktopSize> </ng-template>
 
   <app-draft-advice *ngIf="false" [blueSideAdvice]="blueSideAdvice" [redSideAdvice]="redSideAdvice"></app-draft-advice>
-</div>
+</div> -->

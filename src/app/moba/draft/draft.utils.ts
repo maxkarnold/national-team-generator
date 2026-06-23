@@ -19,10 +19,10 @@ import {
 } from './draft.model';
 
 import { get as _get, shuffle } from 'lodash-es';
-import { patchSummer24 } from './patch-lists/summer-24';
-import { patchMSI24 } from './patch-lists/msi-24';
-import { patchSummer24v2 } from './patch-lists/summer-24-v2';
-import { patchWorlds24 } from './patch-lists/worlds-24';
+import { patchSummer24 } from './constants/patch-lists/summer-24';
+import { patchMSI24 } from './constants/patch-lists/msi-24';
+import { patchSummer24v2 } from './constants/patch-lists/summer-24-v2';
+import { patchWorlds24 } from './constants/patch-lists/worlds-24';
 
 function getRoleMetaStrength(id: number, roleTierList: TierListRankings): number {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,8 +1,9 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { sum } from 'lodash-es';
+import { capitalize, sum } from 'lodash-es';
 import { DraftChampion, CompStyleStats, compStyleReqs, CompStyle, TierValue } from '../draft.model';
 import { get as _get } from 'lodash-es';
 import { DraftService } from './draft.service';
+import { startsWithVowel } from '@shared/utils';
 
 @Injectable()
 export class DraftAdviceService {
@@ -93,10 +94,10 @@ export class DraftAdviceService {
     const { needsMoreAdDmg, needsMoreApDmg } = this.needsMoreDmgAdvice(selectedTeamChamps);
 
     // team comp should have attributes that fill one comp style
-    const compStyles: CompStyleStats = this.service.getTeamCompStyleScoring(selectedTeamChamps);
-    const sortedComps = Object.entries(compStyles)
-      .map(([a, b]) => [capitalize(a), b])
-      .sort((a, b) => b[1] - a[1]);
+    // const compStyles: CompStyleStats = this.service.getTeamCompStyleScoring(selectedTeamChamps);
+    // const sortedComps = Object.entries(compStyles)
+    //   .map(([a, b]) => [capitalize(a), b])
+    //   .sort((a, b) => b[1] - a[1]);
 
     // TODO: add scoring calculation here
     // if (selectedTeamChamps.length === 5) {
@@ -121,10 +122,10 @@ export class DraftAdviceService {
       advice.push('You need more AP damage sources.');
     }
 
-    if (selectedTeamChamps.length < 3) {
-      advice.push(`Your team is most suited to ${startsWithVowel(sortedComps[0][0]) ? 'an' : 'a'} ${sortedComps[0][0]} composition.`);
-      return advice;
-    }
+    // if (selectedTeamChamps.length < 3) {
+    //   advice.push(`Your team is most suited to ${startsWithVowel(sortedComps[0][0]) ? 'an' : 'a'} ${sortedComps[0][0]} composition.`);
+    //   return advice;
+    // }
 
     if (needsMoreEarlyChamps) {
       advice.push('Your team lacks Early game capability.');
@@ -135,8 +136,8 @@ export class DraftAdviceService {
     if (needsMoreLateChamps) {
       advice.push('Your team lacks Late game capability.');
     }
-    advice.push(`Your team is most suited to ${startsWithVowel(sortedComps[0][0]) ? 'an' : 'a'} ${sortedComps[0][0]} composition. `);
-    advice.push(`A secondary option would be ${startsWithVowel(sortedComps[1][0]) ? 'an' : 'a'} ${sortedComps[1][0]} composition.`);
+    // advice.push(`Your team is most suited to ${startsWithVowel(sortedComps[0][0]) ? 'an' : 'a'} ${sortedComps[0][0]} composition. `);
+    // advice.push(`A secondary option would be ${startsWithVowel(sortedComps[1][0]) ? 'an' : 'a'} ${sortedComps[1][0]} composition.`);
     return advice;
   }
 

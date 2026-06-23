@@ -26,7 +26,7 @@ export class DraftStartComponent implements OnInit {
     useRandomTeam: new FormControl<boolean>({ value: true, disabled: true }),
   });
   constructor(private service: DraftService) {
-    this.service.initiateMasteries(this.draftForm.getRawValue());
+    // this.service.initiateMasteries(this.draftForm.getRawValue());
   }
 
   get userIsRedSide(): boolean {
@@ -61,7 +61,7 @@ export class DraftStartComponent implements OnInit {
 
   startDraft() {
     const data: DraftMetaData = this.draftForm.getRawValue();
-    this.service.initiateMasteries(data);
+    // this.service.initiateMasteries(data);
     this.draftDataSet.emit(data);
     this.draftStarted.emit();
   }

@@ -32,13 +32,13 @@ export class DraftService {
   });
   constructor() {}
 
-  setDraftData({ patchData, userIsRedSide, useAiOpponent, difficulty, useRandomTeam }: DraftMetaData) {
-    this.patchData = patchData;
-    this.userIsRedSide = userIsRedSide;
-    this.useAiOpponent = useAiOpponent;
-    this.difficulty = difficulty;
-    this.useRandomTeam = useRandomTeam;
-  }
+  // setDraftData({ patchData, userIsRedSide, useAiOpponent, difficulty, useRandomTeam }: DraftMetaData) {
+  //   this.patchData = patchData;
+  //   this.userIsRedSide = userIsRedSide;
+  //   this.useAiOpponent = useAiOpponent;
+  //   this.difficulty = difficulty;
+  //   this.useRandomTeam = useRandomTeam;
+  // }
 
   getChampionFromId(id?: number) {
     const champion = this.draftChampions().find(c => c.id === id);

@@ -18,10 +18,32 @@ export const compareFn = (first: string[], a: string, b: string) => {
   return returnValue;
 };
 
-export const sortGroups = (h: string[]) => (t: GroupTeam[][]) =>
-  t
-    .map(team => team.sort(({ name: a }: { name: string }, { name: b }: { name: string }) => compareFn(h, a, b)))
-    .sort(([{ name: a }], [{ name: b }]) => compareFn(h, a, b));
+export const sortGroups = (h: string[]) => (t: GroupTeam[][]) => {
+  const sortedTeamsInGroups = t.map(team =>
+    team.sort(({ name: a }: { name: string }, { name: b }: { name: string }) => compareFn(h, a, b))
+  );
+
+  if (h.length === 3) {
+    const hostGroups: GroupTeam[][] = [];
+    const nonHostGroups: GroupTeam[][] = [];
+
+    sortedTeamsInGroups.forEach(group => {
+      if (h.includes(group[0].name)) {
+        hostGroups.push(group);
+      } else {
+        nonHostGroups.push(group);
+      }
+    });
+
+    // Sort host groups alphabetically by host name to ensure a stable order
+    hostGroups.sort(([{ name: a }], [{ name: b }]) => compareFn(h, a, b));
+    nonHostGroups.sort(([{ name: a }], [{ name: b }]) => compare(a, b));
+
+    return [hostGroups[0], hostGroups[1], nonHostGroups[0], hostGroups[2], ...nonHostGroups.slice(1)];
+  }
+
+  return sortedTeamsInGroups.sort(([{ name: a }], [{ name: b }]) => compareFn(h, a, b));
+};
 
 export const draw = (
   pts: GroupTeam[][],
@@ -34,17 +56,15 @@ export const draw = (
   const allTeams: GroupTeam[] = pts.flatMap((p, i) => {
     const team = p.map(x => ({ ...x, pot: i + 1 }));
     if (availableRegions.length > 1) {
-      team.sort(({ region: a }, { region: b }) => compare(a, b, true));
+      team.sort(({ region: a }, { region: b }) => compare(a, b));
     }
     return team;
   });
   let test = false;
-  // console.log(allTeams.map(a => a.name));
   const groups: GroupTeam[][] = Array.from({ length: nbrOfGroups }, _ => []);
   for (let i = 0; i < allTeams.length; i++) {
     // for each team in the draw
     const team = allTeams[i];
-    // console.log('TEAM', team.region, team.pot);
     const candidateGroups = groups.filter(
       // return each group that returns true to ...
       group => {
@@ -123,7 +143,7 @@ export const backupDraw = (pts: GroupTeam[][], nbrOfGroups: number, availableReg
   const allTeams: GroupTeam[] = pts.flatMap((p, i) => {
     const team = p.map(x => ({ ...x, pot: i + 1 }));
     if (availableRegions.length > 1) {
-      team.sort(({ region: a }, { region: b }) => compare(a, b, true));
+      team.sort(({ region: a }, { region: b }) => compare(a, b));
     }
     return team;
   });
