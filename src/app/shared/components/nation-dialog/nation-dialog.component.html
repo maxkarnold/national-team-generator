@@ -130,9 +130,9 @@
             <span class="score"
               >{{ item.match.score }}
               {{
-                item.match.isPenaltyWin && stages[i].prop !== 'group'
+                item.match.isPenaltyWin
                   ? '(P)'
-                  : item.match.isEtWin && stages[i].prop !== 'group'
+                  : item.match.isEtWin
                     ? '(AET)'
                     : ''
               }}

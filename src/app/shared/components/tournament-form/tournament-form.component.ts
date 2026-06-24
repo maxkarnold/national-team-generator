@@ -8,7 +8,7 @@ import { LeaderboardItem, LeaderboardService } from 'app/pages/leaderboard/leade
 import { SimulationQualifiersService } from 'app/football/simulation/simulation-qualifiers.service';
 import { Region, Tournament } from 'app/football/simulation/simulation.model';
 import { SimulationService } from 'app/football/simulation/simulation.service';
-import { addRankings, getHostNations, regions, regionsValidator, validateHosts } from 'app/football/simulation/simulation.utils';
+import { addRankings, getHostNations, regions, regionsValidator, simulateGroups, validateHosts } from 'app/football/simulation/simulation.utils';
 import nationsModule from 'assets/json/nations.json';
 import { filter, take } from 'rxjs/operators';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -316,7 +316,7 @@ export class TournamentFormComponent {
     const hostNations = tournament.hostNations;
     const allTeams = tournament.allTeams;
     const availableRegions = tournament.availableRegions;
-    const groups = this.simulator.simulateGroups(numOfGames, groupsArr);
+    const groups = simulateGroups(groupsArr, numOfGames, true);
     const { bracket, groupWinners } = this.simulator.simulateBracket(groups);
     const awards = this.simulator.getTournamentAwards(bracket, groups, availableRegions);
     const newTournament = {

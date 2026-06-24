@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { drawAndSort } from './group-draw.utils';
 import { Match, Region, RegionName, TeamsByRegion, Tournament } from './simulation.model';
 import { SimulationService } from './simulation.service';
-import { extraTimeResult, matchScore, regionQualifierHelper } from './simulation.utils';
+import { autoBracketQualifiers, extraTimeResult, matchScore, qualifyingPotDraw, regionQualifierHelper, simulateGroups, sortGroupStandings,  } from './simulation.utils';
 
 @UntilDestroy()
 @Injectable({
@@ -34,7 +34,6 @@ export class SimulationQualifiersService {
     // create a list of the teams from each region and choose random teams from each region
     // to take up all the spots that are alloted at the world cup for each region
     // this should be realistic based on the number of teams in the tournament
-    // console.log('TESTS\n\n\n\n\n\n\n\n\n\n\nCHOOSE QUALIFYING1', numberOfTeams);
     return this.tournamentFormat(regionsSelected, nationsList, hostNations, numberOfTeams);
   }
 
@@ -66,8 +65,8 @@ export class SimulationQualifiersService {
       uefa: 12 - uefaHosts,
       conmebol: 6 - conmebolHosts,
       caf: 9 - cafHosts,
-      afc: 8 - afcHosts,
-      concacaf: ofcHosts === 4 ? 5 : 6 - concacafHosts,
+      afc: 6 - afcHosts,
+      concacaf: ofcHosts === 4 ? 2 : 3 - concacafHosts,
       ofc: 0 - ofcHosts,
     };
 
@@ -107,7 +106,7 @@ export class SimulationQualifiersService {
       );
       teamsQualified.push(...nationsLeft.slice(0, qualifyingSpots));
 
-      const qualifiers = this.autoBracketQualifiers(playoffMatches, nationsLeft, qualifyingSpots, region);
+      const qualifiers = autoBracketQualifiers(playoffMatches, nationsLeft, region, qualifyingSpots);
 
       teamsQualified.push(...qualifiers.map(m => m.winner));
 
@@ -118,7 +117,6 @@ export class SimulationQualifiersService {
       const numOfNationsLeft = nationsLeft.length;
       const ratio = numOfNationsLeft / (numberOfTeams - hostNations.length);
       const teamsByRegion: TeamsByRegion = groupByProp(nationsLeft, 'region');
-      // console.log(teamsByRegion, 'Available Nations', numOfNationsLeft, 'Ratio', ratio);
       // ====== Automatic Qualifiers =======
       // assign qualifying spot to each region based on the total number of teams and then dividing by the same ratio
       Object.entries(teamsByRegion).forEach(([region, nations]: [string, GroupTeam[]]) => {
@@ -148,19 +146,8 @@ export class SimulationQualifiersService {
           `qualified automatically for World Cup from ${region.toLocaleUpperCase()}`,
           nations.slice(0, regions[index].qualifiers.auto).map(a => `${a.name} ${a.ranking}`)
         );
-        // console.log(
-        //   `didn't qualify automatically from ${region.toLocaleUpperCase()}`,
-        //   nations.slice(regions[index].qualifiers.auto).map(t => `${t.name}-${t.ranking}`)
-        // );
       });
 
-      // console.log(
-      //   '# automatically qualified spots',
-      //   regions.reduce((a, b) => a + b.qualifiers.auto, 0) + 1,
-      //   '# of extra spots',
-      //   regions.reduce((a, b) => a + b.qualifiers.extra, 0),
-      //   teamsQualified
-      // );
       // ====== Playoff Qualifiers =======
       let numQualified = teamsQualified.length;
       Object.entries(teamsByRegion).forEach(([region, nations]: [string, GroupTeam[]]) => {
@@ -171,7 +158,7 @@ export class SimulationQualifiersService {
         if (numQualified === numberOfTeams || extra === 0) {
           return;
         }
-        const qualifiers = this.autoBracketQualifiers(extra, nations, auto, regions[index]);
+        const qualifiers = autoBracketQualifiers(extra, nations,regions[index], auto);
         teamsQualified.push(...qualifiers.map(m => m.winner));
         numQualified += extra;
         this.extraTeams += extra;
@@ -182,7 +169,6 @@ export class SimulationQualifiersService {
     else {
       this.extraTeams = 2;
       const teamsByRegion: TeamsByRegion = groupByProp(nationsLeft, 'region');
-      // console.log(teamsByRegion, nationsLeft);
 
       Object.entries(teamsByRegion).forEach(([region, nations]: [string, GroupTeam[]]) => {
         const qualifyingSpot = get(autoQualifyingSpots, region, 0);
@@ -194,59 +180,22 @@ export class SimulationQualifiersService {
           teamsQualified[0].region === region ? [`${teamsQualified[0].name} ${teamsQualified[0].ranking}`] : '',
           nations.slice(0, qualifyingSpot).map(a => `${a.name} ${a.ranking}`)
         );
-        // console.log(
-        //   `didn't qualify automatically from ${region.toLocaleUpperCase()}`,
-        //   nations.slice(qualifyingSpot).map(t => `${t.name}-${t.ranking}`)
-        // );
         teamsQualified.push(...nations.slice(0, qualifyingSpot));
       });
-      // console.log('TESTS\n\n\n\n\n\n\n\n\n\n\n');
       return numberOfTeams === 48
         ? this.regionSpecificQualifiers48(teamsQualified, teamsByRegion, regions, hostNations, autoQualifyingSpots)
         : this.regionSpecificQualifiers32(teamsQualified, teamsByRegion, regions, hostNations);
     }
   }
 
-  autoBracketQualifiers(
-    matches: number,
-    availableNations: GroupTeam[],
-    alreadyQualified: number,
-    region: Region | 'inter',
-    isFinalQualifier = true
-  ): Match[] {
-    const qualifiers: Match[] = [];
-    for (let i = 0; i < matches; i++) {
-      const wtIndex = alreadyQualified + (matches * 2 - 1 - i);
-      qualifiers.push(matchScore(availableNations[alreadyQualified + i], availableNations[wtIndex], true));
-    }
-    qualifiers.forEach(match => {
-      match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
-      match.loser.matchHistory.qualifiers.push({ match, opp: match.winner });
-      console.log(
-        `${region === 'inter' ? 'inter-confederation' : region.label + ' qualifier'} playoff where ${match.winner.name} defeated ${
-          match.loser.name
-        } with a score of ${match.score}${extraTimeResult(match)}`
-      );
-    });
-    if (isFinalQualifier && matches > 0) {
-      console.log(
-        `qualified from ${region === 'inter' ? 'inter-confederation' : region.label + ' via'} playoff`,
-        qualifiers.map(a => `${a.winner.name} ${a.winner.ranking}`)
-      );
-      console.log(
-        `didn't qualify from ${region === 'inter' ? 'inter-confederation' : region.label + ' via'} playoff`,
-        qualifiers.map(t => `${t.loser.name} ${t.loser.ranking}`)
-      );
-    }
-    return qualifiers;
-  }
+
 
   regionSpecificQualifiers48(
     teamsQualified: GroupTeam[],
     teamsByRegion: TeamsByRegion,
     regions: Region[],
     hostNations: GroupTeam[],
-    alreadyQualified: {
+    autoQualifyingSpots: {
       uefa: number;
       caf: number;
       afc: number;
@@ -265,11 +214,14 @@ export class SimulationQualifiersService {
       // REAL LIFE QUALIFIER FORMAT:
       // 9 groups of 6 teams : round robin matches of 10 total (5 home, 5 away) : top team from each qualifies (9)
       // 4 best runner ups in a 2 round tournament : for 1 spot in inter-confederation play-off (+1)
-      const cafQualified = alreadyQualified.caf;
+
+      // SIMULATED QUALIFIER FORMAT:
+      // Top (9 - cafHosts) Teams auto advance to tournament
+      // next 4 teams advance to inter-conf playoff through 2 round tournament
       const { matches: cafMatches, matches2: cafMatches2 } = regionQualifierHelper(regions[1], numOfTeams, hostNations);
-      const cafFirstRound = this.autoBracketQualifiers(cafMatches, caf, cafQualified, regions[1], false);
+      const cafFirstRound = autoBracketQualifiers(cafMatches, caf, regions[1],autoQualifyingSpots.caf, false);
       const cafWinners = cafFirstRound.map(m => m.winner);
-      const cafQualifiers = this.autoBracketQualifiers(cafMatches2, cafWinners, 0, regions[1]);
+      const cafQualifiers = autoBracketQualifiers(cafMatches2, cafWinners, regions[1]);
       const cafTeams = cafQualifiers.map(m => m.winner);
 
       // ===== UEFA Qualifiers =====
@@ -277,12 +229,14 @@ export class SimulationQualifiersService {
       // 1ST ROUND -- All teams compete in 12 groups of 4-5 teams (8-10 matches each team) : winners qualify automatically (12)
       // 2ND ROUND -- 12 runner ups and 4 best nation league teams compete in a 2 round tournament : for 4 spots to qualify (4)
 
-      const uefaQualified = alreadyQualified.uefa;
+      // SIMULATED QUALIFIER FORMAT:
+      // Top (12 - uefaHosts) Teams auto advance to tournament
+      // next 16 teams play in a 2 round tournament for the 4 qualifying spots
       const { matches: uefaMatches, matches2: uefaMatches2 } = regionQualifierHelper(regions[0], numOfTeams, hostNations);
 
-      const uefaFirstRound = this.autoBracketQualifiers(uefaMatches, uefa, uefaQualified, regions[0], false);
+      const uefaFirstRound = autoBracketQualifiers(uefaMatches, uefa, regions[0],autoQualifyingSpots.uefa, false);
       const uefaWinners = uefaFirstRound.map(m => m.winner);
-      const uefaQualifiers = this.autoBracketQualifiers(uefaMatches2, uefaWinners, 0, regions[0]);
+      const uefaQualifiers = autoBracketQualifiers(uefaMatches2, uefaWinners,regions[0], 0);
 
       teamsQualified.push(...uefaQualifiers.map(m => m.winner));
 
@@ -291,23 +245,39 @@ export class SimulationQualifiersService {
       // 3RD ROUND -- 18 teams compete in 3 groups of 6 teams (10 matches each team) : top 2 spots of each group qualify automatically (6)
       // 4TH ROUND -- 6 leftover teams compte in 2 groups of 3 teams round robin (2 matches each team) : top spot qualifies (2)
       // 5TH ROUND -- Two 2nd place teams face in a 2 legged playoff tie to make inter-confederation-playoffs (+1)
-      const afcQualified = alreadyQualified.afc;
+
+      // SIMULATED QUALIFIER FORMAT:
+      // Top (6 - afcHosts) Teams auto advance to tournament
+      // next 6 teams compete in 2 groups of 3 teams round robin (2 matches each team): top spot qualifies
+      // 2 runner ups go to a one-off game to decide which team goes to the inter-confederation playoffs
+
+      const afcQualified = autoQualifyingSpots.afc;
+
+      const afcGroups = qualifyingPotDraw(afc.slice(afcQualified, afcQualified + 6), 2, 3);
+      const afcRound4 = simulateGroups(afcGroups, 1);
+      teamsQualified.push(...[afcRound4[0][0], afcRound4[1][0]]);
+      console.log(`${afcRound4[0][0].name} and ${afcRound4[1][0].name} qualify for the tournament from Round 4 after finishing top of their groups`);
+
       const { matches: afcMatches } = regionQualifierHelper(regions[2], numOfTeams, hostNations);
-      const afcQualifiers = this.autoBracketQualifiers(afcMatches, afc, afcQualified, regions[2], false);
+      const afcQualifiers = autoBracketQualifiers(afcMatches, [afcRound4[0][1], afcRound4[1][1]], regions[2], 0, false);
       const afcTeams = afcQualifiers.map(m => m.winner);
 
       // ===== OFC Qualifier =====
       // REAL LIFE QUALIFIER FORMAT:
       // 2ND ROUND -- 8 teams compete in 2 groups of 4 teams (3 or 6 matches - TBD) : top 2 spots of each group advance rounds
       // 3RD ROUND -- 4 teams compete in a bracket (2 matches each team) : top spot qualifies (1+1)
-      const ofcQualified = alreadyQualified.ofc < -1 ? Math.abs(alreadyQualified.ofc) : 0;
+
+      // SIMULATED QUALIFIER FORMAT:
+      // Top 4 teams play in a 2 round bracket
+      // Winner auto qualifies for tournament and runner up goes to inter-confederation playoffs
+      const ofcQualified = autoQualifyingSpots.ofc < -1 ? Math.abs(autoQualifyingSpots.ofc) : 0;
       const ofcTeams: GroupTeam[] = [];
       if (ofcQualified === 0) {
         const { matches: ofcMatches, matches2: ofcMatches2 } = regionQualifierHelper(regions[5], numOfTeams, hostNations);
-        const ofcFirstRound = this.autoBracketQualifiers(ofcMatches, ofc, ofcQualified, regions[5], false);
+        const ofcFirstRound = autoBracketQualifiers(ofcMatches, ofc, regions[5], ofcQualified, false);
         const ofcWinners = ofcFirstRound.map(m => m.winner);
-        const ofcFinalists = this.autoBracketQualifiers(ofcMatches2, ofcWinners, 0, regions[5]);
-        if (alreadyQualified.ofc === -1) {
+        const ofcFinalists = autoBracketQualifiers(ofcMatches2, ofcWinners, regions[5]);
+        if (autoQualifyingSpots.ofc === -1) {
           ofcTeams.push(...ofcFinalists.map(m => m.winner));
         } else {
           teamsQualified.push(...ofcFinalists.map(m => m.winner));
@@ -317,38 +287,42 @@ export class SimulationQualifiersService {
 
       // ===== CONCACAF Qualifier =====
       // REAL LIFE QUALIFIER FORMAT:
+      // 3 teams are qualified automatically as hosts
       // 3RD ROUND -- 3 groups of 4 teams compete in a round robin (6 matches each team) : top from each group qualifies and best 2 runner ups go to inter-confederation playoffs (3+2)
-      const concacafQualified = alreadyQualified.concacaf;
-      // const { matches: concacafMatches } = regionQualifierHelper(regions[3], numOfTeams, hostNations);
-      const concacafTeams = concacaf.slice(concacafQualified, concacafQualified + 2);
-      // const concacafQualifiers = this.autoBracketQualifiers(concacafMatches, afc, concacafQualified, regions[3]);
+      const concacafQualified = autoQualifyingSpots.concacaf;
+      const concacafGroups = qualifyingPotDraw(concacaf.slice(concacafQualified, concacafQualified + 12), 3, 4);
+      const concacafRound3 = simulateGroups(concacafGroups, 1);
+      teamsQualified.push(...[concacafRound3[0][0], concacafRound3[1][0], concacafRound3[2][0]]);
+      console.log(`${concacafRound3[0][0].name}, ${concacafRound3[1][0].name} and ${concacafRound3[2][0].name} qualify for the tournament from Round 3 after finishing top of their groups`);
+
+      const concacafTeams = sortGroupStandings(concacafRound3.map(g => g[1])).slice(0, 2);
+      // const concacafQualifiers = autoBracketQualifiers(concacafMatches, afc, concacafQualified, regions[3]);
       // teamsQualified.push(...concacafQualifiers.map(m => m.winner));
 
       // ===== CONMEBOL Qualifier =====
       // REAL LIFE QUALIFIER FORMAT:
       // 1ST ROUND -- All 10 teams compete in a round robin group (18 matches each) : top 6 qualify and 7th goes to inter-confederation playoffs (6+1)
-      const conmebolQualified = alreadyQualified.conmebol;
-      const conmebolTeam = conmebol[conmebolQualified];
+      const conmebolTeam = conmebol[autoQualifyingSpots.conmebol];
 
       // ===== Inter-confederation Qualifiers =====
       const sortedInterTeams = [conmebolTeam, ...concacafTeams, ...ofcTeams, ...afcTeams, ...cafTeams].sort((a, b) => b.rating - a.rating);
       if (ofcQualified < 2) {
         // 0 - 1 OFC HOSTS
-        const interFirstRound = this.autoBracketQualifiers(2, sortedInterTeams, 2, 'inter', false);
+        const interFirstRound = autoBracketQualifiers(2, sortedInterTeams, 'inter', 2, false);
         const interWinners = interFirstRound.map(m => m.winner);
         // TOP 2 rated teams get a bye to second round
         const interSecondRoundTeams = [...interWinners, ...sortedInterTeams.slice(0, 2)].sort((a, b) => b.rating - a.rating);
-        const interSecondRound = this.autoBracketQualifiers(2, interSecondRoundTeams, 0, 'inter');
+        const interSecondRound = autoBracketQualifiers(2, interSecondRoundTeams, 'inter');
         teamsQualified.push(...interSecondRound.map(m => m.winner));
       } else if (ofcQualified === 2) {
         // 2 OFC HOSTS
         // 1 TEAM QUALIFIES INTERNATIONALLY
         // TOP rated team gets a bye to third round
-        const interFirstRound = this.autoBracketQualifiers(2, sortedInterTeams, 1, 'inter', false);
+        const interFirstRound = autoBracketQualifiers(2, sortedInterTeams, 'inter', 1, false);
         const interWinners = interFirstRound.map(m => m.winner);
-        const interSecondRound = this.autoBracketQualifiers(1, interWinners, 0, 'inter', false);
+        const interSecondRound = autoBracketQualifiers(1, interWinners, 'inter', 0, false);
         const interThirdRoundTeams = [sortedInterTeams[0], ...interSecondRound.map(m => m.winner)];
-        const interThirdRound = this.autoBracketQualifiers(1, interThirdRoundTeams, 0, 'inter', true);
+        const interThirdRound = autoBracketQualifiers(1, interThirdRoundTeams,'inter');
         teamsQualified.push(...interThirdRound.map(m => m.winner));
       }
       // 3-4 OFC HOSTS
@@ -375,10 +349,9 @@ export class SimulationQualifiersService {
       // ====== CAF Qualifiers ======
       const multiHosts = hostNations.length > 1 && hostRegions.includes(RegionName.caf);
       const matches = multiHosts ? 4 : 5;
-      const alreadyQualified = 0;
       const region = regions[1];
 
-      const cafQualifiers = this.autoBracketQualifiers(matches, caf, alreadyQualified, region);
+      const cafQualifiers = autoBracketQualifiers(matches, caf, region);
 
       teamsQualified.push(...cafQualifiers.map(m => m.winner));
 
@@ -400,9 +373,9 @@ export class SimulationQualifiersService {
       const alreadyQualified = 10;
       const region = regions[0];
 
-      const uefaFirstRound = this.autoBracketQualifiers(matches, uefa, alreadyQualified, region, false);
+      const uefaFirstRound = autoBracketQualifiers(matches, uefa, region, alreadyQualified, false);
       const winners = uefaFirstRound.map(m => m.winner);
-      const uefaQualifiers = this.autoBracketQualifiers(matches2, winners, 0, region);
+      const uefaQualifiers = autoBracketQualifiers(matches2, winners, region);
 
       teamsQualified.push(...uefaQualifiers.map(m => m.winner));
       // console.log(
@@ -421,13 +394,12 @@ export class SimulationQualifiersService {
           : 1;
       const alreadyQualified = 4;
       const region = regions[2];
-      const afcQualifiers: (Match | undefined)[] = this.autoBracketQualifiers(matches, afc, alreadyQualified, region, false);
+      const afcQualifiers: (Match | undefined)[] = autoBracketQualifiers(matches, afc, region, alreadyQualified, false);
       const ofcQualifiers: (Match | undefined)[] = [];
       if (ofc) {
         const ofcMatches = hostRegions.includes(RegionName.afc) && hostRegions.includes(RegionName.ofc) ? 0 : 1;
-        const ofcQualified = 0;
         const ofcRegion = regions[5];
-        ofcQualifiers.push(...this.autoBracketQualifiers(ofcMatches, ofc, ofcQualified, ofcRegion, false));
+        ofcQualifiers.push(...autoBracketQualifiers(ofcMatches, ofc, ofcRegion, 0, false));
       }
       // ===== Inter-confederation Qualifiers =====
       if (afcQualifiers[0] === undefined) {
@@ -437,7 +409,7 @@ export class SimulationQualifiersService {
         hasFirstPlayoff = false;
         // console.log(`${afcQualifiers[0].winner.name} automatically qualified from AFC via bye`);
       } else {
-        const playoff1 = matchScore(afcQualifiers[0].winner, conmebol[4], true);
+        const playoff1 = matchScore(afcQualifiers[0].winner, conmebol[4]);
         playoff1.winner.matchHistory.qualifiers.push({
           match: playoff1,
           opp: playoff1.loser,
@@ -462,7 +434,7 @@ export class SimulationQualifiersService {
         teamsQualified.push(concacaf[3]);
         console.log(`${concacaf[3].name} automatically qualified from CONCACAF via bye`);
       } else {
-        const playoff2 = matchScore(ofcQualifiers[0].winner, concacaf[3], true);
+        const playoff2 = matchScore(ofcQualifiers[0].winner, concacaf[3]);
         playoff2.winner.matchHistory.qualifiers.push({
           match: playoff2,
           opp: playoff2.loser,

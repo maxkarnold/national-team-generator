@@ -630,10 +630,27 @@ function getTeamBuffs(
   otherTeam.isBuffed.pen = otherTeam.dynamicRating.pen > otherTeam.startingRating.pen;
 }
 
-export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: boolean): Match {
+/**
+ *  Main function that simulates soccer matches. The function will take two teams and determine the winner and loser while also simulating other outcomes of the match.
+ *
+ * @remarks uses the calcScore() helper function to grab the score and eventTimes
+ * @param team - first team
+ * @param otherTeam - second team
+ * @param hasExtraTime - boolean that determines if
+ * @returns the Match object which includes:
+ * goalsFor,
+    goalsAg,
+    isEtWin,
+    isPenaltyWin,
+    winner,
+    loser,
+    score,
+    eventTimes
+ */
+export function matchScore(team: GroupTeam, otherTeam: GroupTeam, hasExtraTime: boolean = true): Match {
   const { goalsFor, goalsAg, isEtWin, forEventTimes, oppEventTimes } = calcScore(team, otherTeam, hasExtraTime);
 
-  const isPenaltyWin = goalsFor === goalsAg;
+  const isPenaltyWin = goalsFor === goalsAg && hasExtraTime;
 
   const { winner, loser, score, adjustedEventTimes } = whoWon(
     goalsFor,
@@ -758,6 +775,63 @@ export function validateHosts(control: AbstractControl) {
   return null;
 }
 
+/**
+ * a helper function that when given a number of matches to play it will simulate the matches. If you grab the prop {winner} from each match you can create a bracket-like structure with these simulated matches.
+ *
+ * @remarks this uses the matchScore() function to simulate matches
+ *
+ * @param matches - number of matches that need to be simulated
+ * @param availableNations - pool of available teams/nations to choose from
+ * @param alreadyQualified - number of teams that have already qualified and therefore will be excluded from calculations
+ * @param region - the region that the qualifiers will take place in with an alt option for the inter-confederation playoffs
+ * @param isFinalQualifier - default is true; if true it will log to the console the final results
+ * @returns an array of world cup qualifier matches
+ */
+export function autoBracketQualifiers(
+  matches: number,
+  availableNations: GroupTeam[],
+  region: Region | 'inter',
+  alreadyQualified = 0,
+  isFinalQualifier = true
+): Match[] {
+  const qualifiers: Match[] = [];
+  for (let i = 0; i < matches; i++) {
+    const wtIndex = alreadyQualified + (matches * 2 - 1 - i);
+    qualifiers.push(matchScore(availableNations[alreadyQualified + i], availableNations[wtIndex]));
+  }
+  qualifiers.forEach(match => {
+    match.winner.matchHistory.qualifiers.push({ match, opp: match.loser });
+    match.loser.matchHistory.qualifiers.push({ match, opp: match.winner });
+    console.log(
+      `${region === 'inter' ? 'inter-confederation' : region.label + ' qualifier'} playoff where ${match.winner.name} defeated ${
+        match.loser.name
+      } with a score of ${match.score}${extraTimeResult(match)}`
+    );
+  });
+  if (isFinalQualifier && matches > 0) {
+    console.log(
+      `qualified from ${region === 'inter' ? 'inter-confederation' : region.label + ' via'} playoff`,
+      qualifiers.map(a => `${a.winner.name} ${a.winner.ranking}`)
+    );
+    console.log(
+      `didn't qualify from ${region === 'inter' ? 'inter-confederation' : region.label + ' via'} playoff`,
+      qualifiers.map(t => `${t.loser.name} ${t.loser.ranking}`)
+    );
+  }
+  return qualifiers;
+}
+
+/**
+ * Retrieves the specific number of matches that need to be played for each world cup region.
+ * This is a helper function that helps abstract region information.
+ *
+ * @remarks this function helps inform the number of matches played in autoBracketQualifiers() function
+ *
+ * @param {Region} region
+ * @param tournamentSize
+ * @param hostNations
+ * @returns an object containing the number of matches needed to play
+ */
 export function regionQualifierHelper(
   region: Region,
   tournamentSize: 32 | 48,
@@ -827,22 +901,22 @@ export function roundOf32Helper(groups: GroupTeam[][]): { gWinners: GroupTeam[][
     const knockoutCandidates = thirdPlaceTeams.slice(0, 8);
     const gWinners = groups.map(group => group.slice(0, 2));
     const roundOf32: KnockoutRound = [
-      [gWinners[a][0], knockoutCandidates[0], matchScore(gWinners[a][0], knockoutCandidates[0], true)],
-      [gWinners[c][0], knockoutCandidates[7], matchScore(gWinners[c][0], knockoutCandidates[7], true)],
-      [gWinners[b][0], gWinners[f][1], matchScore(gWinners[b][0], gWinners[f][1], true)],
-      [gWinners[d][1], gWinners[e][1], matchScore(gWinners[d][1], gWinners[e][1], true)],
-      [gWinners[g][0], knockoutCandidates[3], matchScore(gWinners[g][0], knockoutCandidates[3], true)],
-      [gWinners[h][0], knockoutCandidates[4], matchScore(gWinners[h][0], knockoutCandidates[4], true)],
-      [gWinners[i][0], gWinners[l][1], matchScore(gWinners[i][0], gWinners[l][1], true)],
-      [gWinners[j][1], gWinners[k][1], matchScore(gWinners[j][1], gWinners[k][1], true)],
-      [gWinners[l][0], knockoutCandidates[1], matchScore(gWinners[l][0], knockoutCandidates[1], true)],
-      [gWinners[k][0], knockoutCandidates[6], matchScore(gWinners[k][0], knockoutCandidates[6], true)],
-      [gWinners[j][0], gWinners[i][1], matchScore(gWinners[j][0], gWinners[i][1], true)],
-      [gWinners[g][1], gWinners[h][1], matchScore(gWinners[g][1], gWinners[h][1], true)],
-      [gWinners[b][1], gWinners[a][1], matchScore(gWinners[b][1], gWinners[a][1], true)],
-      [gWinners[d][0], gWinners[c][1], matchScore(gWinners[d][0], gWinners[c][1], true)],
-      [gWinners[e][0], knockoutCandidates[2], matchScore(gWinners[e][0], knockoutCandidates[2], true)],
-      [gWinners[f][0], knockoutCandidates[5], matchScore(gWinners[f][0], knockoutCandidates[5], true)],
+      [gWinners[a][0], knockoutCandidates[0], matchScore(gWinners[a][0], knockoutCandidates[0])],
+      [gWinners[c][0], knockoutCandidates[7], matchScore(gWinners[c][0], knockoutCandidates[7])],
+      [gWinners[b][0], gWinners[f][1], matchScore(gWinners[b][0], gWinners[f][1])],
+      [gWinners[d][1], gWinners[e][1], matchScore(gWinners[d][1], gWinners[e][1])],
+      [gWinners[g][0], knockoutCandidates[3], matchScore(gWinners[g][0], knockoutCandidates[3])],
+      [gWinners[h][0], knockoutCandidates[4], matchScore(gWinners[h][0], knockoutCandidates[4])],
+      [gWinners[i][0], gWinners[l][1], matchScore(gWinners[i][0], gWinners[l][1])],
+      [gWinners[j][1], gWinners[k][1], matchScore(gWinners[j][1], gWinners[k][1])],
+      [gWinners[l][0], knockoutCandidates[1], matchScore(gWinners[l][0], knockoutCandidates[1])],
+      [gWinners[k][0], knockoutCandidates[6], matchScore(gWinners[k][0], knockoutCandidates[6])],
+      [gWinners[j][0], gWinners[i][1], matchScore(gWinners[j][0], gWinners[i][1])],
+      [gWinners[g][1], gWinners[h][1], matchScore(gWinners[g][1], gWinners[h][1])],
+      [gWinners[b][1], gWinners[a][1], matchScore(gWinners[b][1], gWinners[a][1])],
+      [gWinners[d][0], gWinners[c][1], matchScore(gWinners[d][0], gWinners[c][1])],
+      [gWinners[e][0], knockoutCandidates[2], matchScore(gWinners[e][0], knockoutCandidates[2])],
+      [gWinners[f][0], knockoutCandidates[5], matchScore(gWinners[f][0], knockoutCandidates[5])],
     ];
 
     roundOf32.forEach(t => {
@@ -864,4 +938,180 @@ export function roundOf32Helper(groups: GroupTeam[][]): { gWinners: GroupTeam[][
       roundOf32,
     };
   }
+}
+
+/**
+ * this function simulates all group games and will return the mutated value of the "groups" after resolving
+ *
+ * @param groups an array of arrays representing multiple groups in a tournament
+ * @param groupGamesPerOpponent the number of games that each team plays against the other; by default set to 1
+ * @param mainStage is this the mainStage of the tournament; default set to false
+ * @returns returns all the groups
+ */
+export function simulateGroups(groups: GroupTeam[][], groupGamesPerOpponent = 1, mainStage = false): GroupTeam[][] {
+  const allGroups: GroupTeam[][] = groups || [];
+
+  // MAIN STAGE GROUP GAMES
+
+  for (let group = 0; group < allGroups.length; group++) {
+    for (let team = 0; team < allGroups[group].length; team++) {
+      // resets
+      const groupTeam = allGroups[group][team];
+      groupTeam.points = 0;
+      groupTeam.gDiff = 0;
+      groupTeam.gFor = 0;
+      groupTeam.gOpp = 0;
+      groupTeam.matchesPlayed = 0;
+      groupTeam.matchHistory = {
+        qualifiers: mainStage ? groupTeam.matchHistory.qualifiers: [],
+        group: [],
+        bracket: [],
+      };
+      groupTeam.reportCard = {
+        grade: null,
+        gradeStyle: null,
+        gradeSummary: null,
+        tournamentFinish: null,
+      };
+    }
+  }
+  // go through each group
+  // simulate each game and reward that team that many points
+  // sort the teams by points
+
+  // for each gamePerOpponent (all games); default is 1
+  for (let c = 0; c < groupGamesPerOpponent; c++) {
+    let goalsFor = 0;
+    let goalsAg = 0;
+    // for each group
+    for (
+      let groupIndex = 0;
+      groupIndex < allGroups.length;
+      groupIndex++
+    ) {
+      // for each team in each group
+      for (let index1 = 0; index1 < allGroups[groupIndex].length; index1++) {
+        const team1 = allGroups[groupIndex][index1];
+        // for each opponent in the group
+        for (let index2 = index1 + 1; index2 < allGroups[groupIndex].length; index2++) {
+          const match = simGroupGame(allGroups, groupIndex, index2, team1, goalsFor, goalsAg);
+
+
+          match.winner.matchHistory[mainStage ? 'group' : 'qualifiers'].push({
+            match: match,
+            opp: match.loser,
+          });
+          match.loser.matchHistory[mainStage ? 'group' : 'qualifiers'].push({
+            match: match,
+            opp: match.winner,
+          });
+
+        }
+      }
+      sortGroupStandings(allGroups[groupIndex], mainStage);
+    }
+  }
+  // assign group finishes to teams
+  if (mainStage) {
+    const groupLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'].slice(0, groups.length);
+    for (let i = 0; i < groupLetters.length; i++) {
+      for (let j = 0; j < allGroups[i].length; j++) {
+        allGroups[i][j].groupFinish = groupLetters[i] + (j + 1).toString();
+      }
+    }
+  }
+  if (!mainStage) {
+    console.log(`${allGroups[0][0].region.toUpperCase()} Qualifying Group`)
+    allGroups.forEach((g, i) => {
+      console.log(`Group ${i+1}`, g.map(t => `${t.name}: Rnk ${t.ranking}, PTS: ${t.points}`));
+    })
+  }
+  return allGroups;
+}
+// TODO: need to assign head-to-head standings to make for different tiebreakers when goal diff is not tiebreaker
+/**
+ *
+ * @param allGroups A 2D array that stores all the data for the groups
+ * @param i the index for the current group
+ * @param k the index for the current opponent
+ * @param team1 current team
+ * @param goalsFor current GOALS for
+ * @param goalsAg current GOALS against
+ * @returns a Match object
+ */
+function simGroupGame(allGroups: GroupTeam[][], i: number, k: number, team1: GroupTeam, goalsFor: number, goalsAg: number): Match {
+
+  const otherTeam = allGroups[i][k];
+  const match = matchScore(team1, otherTeam, false);
+
+  goalsFor = match.goalsFor;
+  goalsAg = match.goalsAg;
+  if (goalsFor > goalsAg) {
+    team1.points += 3;
+    team1.gDiff += goalsFor - goalsAg;
+    otherTeam.gDiff += goalsAg - goalsFor;
+  } else if (goalsFor < goalsAg) {
+    otherTeam.points += 3;
+    team1.gDiff += goalsFor - goalsAg;
+    otherTeam.gDiff += goalsAg - goalsFor;
+  } else {
+    team1.points += 1;
+    otherTeam.points += 1;
+  }
+  team1.gFor += goalsFor;
+  team1.gOpp += goalsAg;
+  otherTeam.gFor += goalsAg;
+  otherTeam.gOpp += goalsFor;
+  team1.matchesPlayed++;
+  otherTeam.matchesPlayed++;
+
+  return match
+}
+
+// TODO: need to apply head2head sorting here
+export function sortGroupStandings(group: GroupTeam[], tieHeadToHead = false): GroupTeam[] {
+  return group.sort((a, b) => b.points - a.points || b.gDiff - a.gDiff || b.gFor - a.gFor || compare(a.name, b.name, true));
+}
+
+/**
+ * Distributes a sorted array of teams into groups using a randomized Pot Draw system.
+ * @param teams - The sorted array of team objects (best to worst).
+ * @param numGroups - The total number of groups to create.
+ * @param teamsPerGroup - The maximum number of teams allowed per group.
+ * @returns A 2D array representing the groups with randomized pot assignments.
+ */
+export function qualifyingPotDraw<T>(teams: T[], numGroups: number, teamsPerGroup: number): T[][] {
+  const groups: T[][] = Array.from({ length: numGroups }, () => []);
+
+  // Helper function to safely shuffle a localized array (Fisher-Yates algorithm)
+  const shufflePot = (pot: T[]): T[] => {
+    const cloned = [...pot];
+    for (let i = cloned.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cloned[i], cloned[j]] = [cloned[j], cloned[i]];
+    }
+    return cloned;
+  };
+
+  // Iterate through each "layer" (or seed tier) of the tournament
+  for (let round = 0; round < teamsPerGroup; round++) {
+    const startIdx = round * numGroups;
+    const endIdx = startIdx + numGroups;
+
+    // Extract the current tier of teams (e.g., top 8, next 8...)
+    const currentPot = teams.slice(startIdx, endIdx);
+
+    // If we run out of teams entirely, break early
+    if (currentPot.length === 0) break;
+
+    // Shuffle only this specific tier
+    const randomizedPot = shufflePot(currentPot);
+
+    // Assign the randomized tier to the sequential group slots
+    for (let groupIdx = 0; groupIdx < randomizedPot.length; groupIdx++) {
+      groups[groupIdx].push(randomizedPot[groupIdx]);
+    }
+  }
+
+  return groups;
 }
